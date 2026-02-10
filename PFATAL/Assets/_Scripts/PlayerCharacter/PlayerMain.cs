@@ -14,8 +14,6 @@ public class PlayerMain : NetworkBehaviour
     public PlayerInput playerInput { get; private set; }
 
     [Header("Scripts")]
-    [field : SerializeField]
-    public PlayerMovement playerMovement { get; private set; }
 
     [field : SerializeField]
     public PlayerHealth playerHealth { get; private set; }
@@ -47,7 +45,6 @@ public class PlayerMain : NetworkBehaviour
             playerCamera.enabled = false;
             playerCamera.GetComponent<AudioListener>().enabled = false;
 
-            playerMovement.enabled = false;
             playerHealth.enabled = false;
             playerInteraction.enabled = false;
             playerHands.enabled = false;

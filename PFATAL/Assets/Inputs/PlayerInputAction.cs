@@ -174,6 +174,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""ScrollItems"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""dec92d9c-a98d-4be7-b22b-bd6879fdaeab"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Open/Close"",
                     ""type"": ""Button"",
                     ""id"": ""769e5220-54bf-453e-9ea9-c10d172ec2c9"",
@@ -542,6 +551,17 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Open Chat"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9bd2aa56-2288-4c82-bb02-9b16631bebac"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ScrollItems"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1158,6 +1178,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_ShootLeft = m_Player.FindAction("ShootLeft", throwIfNotFound: true);
         m_Player_ShootRight = m_Player.FindAction("ShootRight", throwIfNotFound: true);
+        m_Player_ScrollItems = m_Player.FindAction("ScrollItems", throwIfNotFound: true);
         m_Player_OpenClose = m_Player.FindAction("Open/Close", throwIfNotFound: true);
         m_Player_OpenChat = m_Player.FindAction("Open Chat", throwIfNotFound: true);
         // UI
@@ -1263,6 +1284,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_ShootLeft;
     private readonly InputAction m_Player_ShootRight;
+    private readonly InputAction m_Player_ScrollItems;
     private readonly InputAction m_Player_OpenClose;
     private readonly InputAction m_Player_OpenChat;
     /// <summary>
@@ -1312,6 +1334,10 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/ShootRight".
         /// </summary>
         public InputAction @ShootRight => m_Wrapper.m_Player_ShootRight;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ScrollItems".
+        /// </summary>
+        public InputAction @ScrollItems => m_Wrapper.m_Player_ScrollItems;
         /// <summary>
         /// Provides access to the underlying input action "Player/OpenClose".
         /// </summary>
@@ -1373,6 +1399,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @ShootRight.started += instance.OnShootRight;
             @ShootRight.performed += instance.OnShootRight;
             @ShootRight.canceled += instance.OnShootRight;
+            @ScrollItems.started += instance.OnScrollItems;
+            @ScrollItems.performed += instance.OnScrollItems;
+            @ScrollItems.canceled += instance.OnScrollItems;
             @OpenClose.started += instance.OnOpenClose;
             @OpenClose.performed += instance.OnOpenClose;
             @OpenClose.canceled += instance.OnOpenClose;
@@ -1417,6 +1446,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @ShootRight.started -= instance.OnShootRight;
             @ShootRight.performed -= instance.OnShootRight;
             @ShootRight.canceled -= instance.OnShootRight;
+            @ScrollItems.started -= instance.OnScrollItems;
+            @ScrollItems.performed -= instance.OnScrollItems;
+            @ScrollItems.canceled -= instance.OnScrollItems;
             @OpenClose.started -= instance.OnOpenClose;
             @OpenClose.performed -= instance.OnOpenClose;
             @OpenClose.canceled -= instance.OnOpenClose;
@@ -1797,6 +1829,13 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnShootRight(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ScrollItems" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnScrollItems(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Open/Close" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

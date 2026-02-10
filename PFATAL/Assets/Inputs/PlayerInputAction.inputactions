@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerInputAction",
     "maps": [
         {
@@ -82,6 +83,15 @@
                     "type": "Button",
                     "id": "98883d11-4fc6-4f13-a05e-527cd2c9b649",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ScrollItems",
+                    "type": "PassThrough",
+                    "id": "dec92d9c-a98d-4be7-b22b-bd6879fdaeab",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -455,6 +465,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Open Chat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9bd2aa56-2288-4c82-bb02-9b16631bebac",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ScrollItems",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

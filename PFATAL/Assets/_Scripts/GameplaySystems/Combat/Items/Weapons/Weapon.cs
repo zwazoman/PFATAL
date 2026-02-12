@@ -70,9 +70,6 @@ public class Weapon : ItemScriptable
     [Rpc(SendTo.Server)]
     void ShootRpc()
     {
-        foreach (NetworkPrefab prefab in NetworkManager.Singleton.NetworkConfig.Prefabs.Prefabs)
-            Debug.Log(prefab);
-
         if(_shootSocket != null)
             NetworkObject.InstantiateAndSpawn(_projectile, NetworkManager.Singleton, 0, true, true, false, _shootSocket.position, _shootSocket.rotation);
         else

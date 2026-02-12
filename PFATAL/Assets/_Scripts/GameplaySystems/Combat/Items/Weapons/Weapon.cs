@@ -58,6 +58,7 @@ public class Weapon : ItemScriptable
     {
         if (canShoot)
         {
+            Debug.Log("shoot");
             ShootRpc();
             canShoot = false;
             ShootDelay();
@@ -69,9 +70,12 @@ public class Weapon : ItemScriptable
     [Rpc(SendTo.Server)]
     void ShootRpc()
     {
+        foreach (NetworkPrefab prefab in NetworkManager.Singleton.NetworkConfig.Prefabs.Prefabs)
+            Debug.Log(prefab);
+
         if(_shootSocket != null)
-            NetworkObject.InstantiateAndSpawn(_projectile, main.NetworkManager, 0, true, true, false, _shootSocket.position, _shootSocket.rotation);
+            NetworkObject.InstantiateAndSpawn(_projectile, NetworkManager.Singleton, 0, true, true, false, _shootSocket.position, _shootSocket.rotation);
         else
-            NetworkObject.InstantiateAndSpawn(_projectile, main.NetworkManager, 0, true, true, false, main.transform.position, main.transform.rotation);
+            NetworkObject.InstantiateAndSpawn(_projectile, NetworkManager.Singleton, 0, true, true, false, main.transform.position, main.transform.rotation);
     }
 }

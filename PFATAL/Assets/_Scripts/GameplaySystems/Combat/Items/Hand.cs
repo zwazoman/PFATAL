@@ -1,10 +1,11 @@
+using _scripts.PlayerCharacter;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Hand: MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] PlayerMain _main;
+    [SerializeField] PlayerCharacter _main;
     [SerializeField] ItemVisuals _itemVisuals;
 
     [Header("Parameters")]

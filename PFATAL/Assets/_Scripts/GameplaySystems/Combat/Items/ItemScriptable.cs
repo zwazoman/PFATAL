@@ -1,9 +1,10 @@
+using _scripts.PlayerCharacter;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newItem",menuName = "Item")]
 public class ItemScriptable : ScriptableObject
 {
-    [HideInInspector] protected PlayerMain main;
+    [HideInInspector] protected PlayerCharacter main;
 
     [SerializeField] public Mesh mesh;
     [SerializeField] public ItemType type;
@@ -34,7 +35,7 @@ public class ItemScriptable : ScriptableObject
         Debug.Log(name + "Dropped !");
     }
 
-    public virtual void OnPickup(ref PlayerMain mainRef)
+    public virtual void OnPickup(ref PlayerCharacter mainRef)
     {
         Debug.Log(name + "Picked up !");
 

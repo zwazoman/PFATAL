@@ -15,8 +15,8 @@ public class PlayerMain : NetworkBehaviour
 
     [Header("Scripts")]
 
-    [field : SerializeField]
-    public PlayerHealth playerHealth { get; private set; }
+    //[field : SerializeField]
+    //public PlayerHealth playerHealth { get; private set; }
 
     [field: SerializeField]
     public PlayerInteraction playerInteraction { get; private set; }
@@ -39,13 +39,13 @@ public class PlayerMain : NetworkBehaviour
         }
         else
         {
-            //désactive les scripts inutiles et les inputs des non-owners
+            //dï¿½sactive les scripts inutiles et les inputs des non-owners
 
             playerInput.enabled = false;
             playerCamera.enabled = false;
             playerCamera.GetComponent<AudioListener>().enabled = false;
-
-            playerHealth.enabled = false;
+            
+            //playerHealth.enabled = false;
             playerInteraction.enabled = false;
             playerHands.enabled = false;
         }

@@ -1,9 +1,10 @@
+using _scripts.PlayerCharacter;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    [SerializeField] public PlayerMain main;
+    [SerializeField] public PlayerCharacter main;
 
     Interactable _currentInteractable;
 

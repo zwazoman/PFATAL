@@ -34,14 +34,14 @@ public class PlayerCharacterInputs : NetworkBehaviour
     
     void Update()
     {
-        if (!IsOwner) return;
+        if (IsSpawned && !IsOwner) return;
         
-        //chat
-        if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Escape))
-        {
-            GameChat.Instance.Hide();
-            _paused = false;
-        }
+        ////chat
+        //if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    GameChat.Instance.Hide();
+        //    _paused = false;
+        //}
         
         if (_paused) return;
         

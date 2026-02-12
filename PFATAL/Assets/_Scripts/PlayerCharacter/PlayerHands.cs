@@ -32,6 +32,7 @@ public class PlayerHands : MonoBehaviour
         }
         return false;
     }
+
     #region Inputs
 
     public void UseRight(InputAction.CallbackContext ctx)
@@ -70,7 +71,14 @@ public class PlayerHands : MonoBehaviour
 
     public void SwitchEquip(InputAction.CallbackContext ctx)
     {
-
+        if (ctx.performed)
+        {
+            Vector2 value = ctx.ReadValue<Vector2>();
+            if (value.y == 1)
+                leftHand.SwitchToNextHeldItem();
+            else if (value.y == -1)
+                leftHand.SwitchToPreviousHeldItem();
+        }
     }
 
     #endregion

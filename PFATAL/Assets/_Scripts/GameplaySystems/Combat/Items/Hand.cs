@@ -16,13 +16,6 @@ public class Hand: MonoBehaviour
     [HideInInspector] public ItemScriptable heldItem;
     [HideInInspector] public List<ItemScriptable> itemSlots = new();
 
-    private void Update()
-    {
-        //if(heldItem != null)
-        //{
-        //    heldItem.transform.SetPositionAndRotation(_holdingSocket.position, _holdingSocket.rotation);
-        //}
-    }
 
     public void PickupItem(ItemScriptable item)
     {
@@ -33,15 +26,6 @@ public class Hand: MonoBehaviour
 
         item.OnPickup(ref _main);
         EquipItem(item);
-
-        //print(heldItem.NetworkObject);
-        //print(heldItem.IsSpawned);
-
-        //print("ask for ownership");
-        //TryChangeOwnershipRpc(NetworkManager.Singleton.LocalClientId, heldItem.NetworkObject);
-        //await WaitForOwnership(NetworkManager.Singleton.LocalClientId, heldItem);
-
-        //item.transform.parent = _main.transform;
     }
 
     public bool TryPickupItem(ItemScriptable item)
@@ -67,28 +51,28 @@ public class Hand: MonoBehaviour
 
     public void SwitchToPreviousHeldItem()
     {
-        EquipItem(itemSlots.GetPreviousObjectWrapped(heldItem));
+        print(gameObject + " try next item");
+        if(itemSlots.Count > 1)
+        {
+            print("next Item");
+            EquipItem(itemSlots.GetPreviousObjectWrapped(heldItem));
+        }
     }
 
     public void SwitchToNextHeldItem()
     {
-        EquipItem(itemSlots.GetNextObjectWrapped(heldItem));
+        print(gameObject + " try previous item");
+
+        if (itemSlots.Count > 1)
+        {
+            print("previous Item");
+            EquipItem(itemSlots.GetNextObjectWrapped(heldItem));
+        }
+
     }
 
     public void DropItem()
     {
-        //if (heldItem == null)
-        //    return;
-
-        //itemSlots.Remove(heldItem);
-
-        //heldItem.transform.parent = null;
-
-        //heldItem.OnDrop();
-
-        //heldItem.NetworkObject.ChangeOwnership(0);
-        //heldItem = null;
+        print(gameObject + " drop");
     }
-
-    //todo : extension networkObj
 }

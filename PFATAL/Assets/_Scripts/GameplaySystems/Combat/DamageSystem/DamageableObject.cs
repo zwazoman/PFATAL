@@ -6,9 +6,9 @@ using UnityEngine;
 public class DamageableObject : NetworkBehaviour, IDamageable
 {
     public int LastDamageSourceClientID { get; private set; }
-    
     public float HP {get; private set;}
     [field:SerializeField] public float MaxHP { get; private set; }
+    public bool IsDead => HP == 0;
     
     //events
     public event Action<DamageData> OnDamageTaken;

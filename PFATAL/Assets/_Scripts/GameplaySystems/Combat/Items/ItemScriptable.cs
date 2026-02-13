@@ -1,7 +1,6 @@
 using _scripts.PlayerCharacter;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "newItem",menuName = "Item")]
 public class ItemScriptable : ScriptableObject
 {
     [HideInInspector] protected PlayerCharacter main;

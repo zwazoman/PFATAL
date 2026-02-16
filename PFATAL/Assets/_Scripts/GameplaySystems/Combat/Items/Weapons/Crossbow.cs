@@ -71,8 +71,8 @@ public class Crossbow : ItemScriptable
     void ShootRpc()
     {
         if (_shootSocket != null)
-            NetworkObject.InstantiateAndSpawn(_projectile, NetworkManager.Singleton, 0, true, true, false, _shootSocket.position, _shootSocket.rotation);
+            Summoner.Instance.ShootRpc("crossbowProj", _shootSocket.position, _shootSocket.rotation);
         else
-            NetworkObject.InstantiateAndSpawn(_projectile, NetworkManager.Singleton, 0, true, true, false, main.transform.position, main.transform.rotation);
+            Summoner.Instance.ShootRpc("crossbowProj", main.transform.position, main.transform.rotation);
     }
 }

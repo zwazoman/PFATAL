@@ -27,14 +27,14 @@ public class BaseProjectile : NetworkBehaviour
 
         if (_timer >= _lifetime)
         {
-            NetworkObject.Despawn();
+            DespawnRpc();
             _timer = 0;
         }
     }
 
-    //[Rpc(SendTo.Server)]
-    //void DespawnRpc()
-    //{
-    //    NetworkObject.Despawn();
-    //}
+    [Rpc(SendTo.Server)]
+    void DespawnRpc()
+    {
+        NetworkObject.Despawn();
+    }
 }

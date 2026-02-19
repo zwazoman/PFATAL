@@ -1,9 +1,9 @@
+using AYellowpaper.SerializedCollections;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Summoner : NetworkBehaviour
 {
-
     #region Singleton
     private static Summoner instance;
 
@@ -29,13 +29,11 @@ public class Summoner : NetworkBehaviour
     }
     #endregion
 
-
-    [SerializeField] GameObject _projectile;
+    [SerializedDictionary] public SerializedDictionary<string, GameObject> objects;
 
     [Rpc(SendTo.Server)]
     public void ShootRpc(string projectileName, Vector3 spawnPos, Quaternion spawnRot)
     {
-        NetworkObject.InstantiateAndSpawn(_projectile, NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
-
+        NetworkObject.InstantiateAndSpawn(objects[projectileName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
     }
 }

@@ -46,7 +46,7 @@ public class Hand: MonoBehaviour
 
         heldItem = item;
 
-        _itemVisuals.ShowItemRpc(item.mesh.name);
+        _itemVisuals.ShowItem(item.mesh.name);
         heldItem.OnEquip();
     }
 

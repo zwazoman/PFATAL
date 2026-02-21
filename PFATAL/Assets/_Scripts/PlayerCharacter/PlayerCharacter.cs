@@ -7,7 +7,7 @@ namespace _scripts.PlayerCharacter
     /// <summary>
     /// Contient toutes les refs de components du personnage
     /// </summary>
-    public class PlayerCharacter : MonoBehaviour
+    public class PlayerCharacter : NetworkBehaviour
     {
         [Header("Scene References")] 
         public PlayerPhysics physics;
@@ -28,6 +28,13 @@ namespace _scripts.PlayerCharacter
         [field: SerializeField]
         public PlayerHands playerHands { get; private set; }
 
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+
+            gameObject.name = gameObject.name + NetworkBehaviourId + OwnerClientId;
+
+        }
 
         public bool CheckActionmap(InputActionMap actionMap)
         {

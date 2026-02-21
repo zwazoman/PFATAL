@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Crossbow", menuName = "Item/Weapon/Crossbow")]
@@ -67,12 +68,16 @@ public class Crossbow : ItemScriptable
         return false;
     }
 
-    [Rpc(SendTo.Server)]
-    void ShootRpc()
+    async void ShootRpc()
     {
+        SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
+
         if (_shootSocket != null)
-            Summoner.Instance.ShootRpc("crossbowProj", _shootSocket.position, _shootSocket.rotation);
+        {
+            GameObject projectile =  await Summoner.Instance.SpawnObject("crossbowProj", _shootSocket.position, _shootSocket.rotation, spawnContext);
+            Debug.Log(projectile.name);
+        }
         else
-            Summoner.Instance.ShootRpc("crossbowProj", main.transform.position, main.transform.rotation);
+            Summoner.Instance.SpawnObject("crossbowProj", main.transform.position, main.transform.rotation, spawnContext);
     }
 }

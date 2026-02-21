@@ -3,25 +3,24 @@ using UnityEngine;
 
 public class BaseProjectile : NetworkBehaviour
 {
+    [HideInInspector] public ulong spawnerID;
+
     [SerializeField] float _speed = 50;
     [SerializeField] float _lifetime = 3;
 
     bool _move;
     float _timer;
 
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-
-
-    }
-
     private void Update()
     {
         if (!IsSpawned || !IsServer)
             return;
 
+        //mouvement
+
         transform.Translate(transform.forward * _speed * Time.deltaTime,Space.World);
+
+        //lifetime
 
         _timer += Time.deltaTime;
 
@@ -29,6 +28,26 @@ public class BaseProjectile : NetworkBehaviour
         {
             DespawnRpc();
             _timer = 0;
+        }
+
+        //collisions
+
+        foreach(Collider coll in Physics.OverlapSphere(transform.position, 1))
+        {
+            if(coll.gameObject.TryGetComponent(out DamageableObject damageable))
+            {
+                if(damageable.OwnerClientId == spawnerID)
+                {
+                    Debug.Log("hit the shooter !");
+                    continue;
+                }
+
+                DamageData data = new();
+
+                damageable.TakeDamage(data);
+                DespawnRpc();
+                break;
+            }   
         }
     }
 

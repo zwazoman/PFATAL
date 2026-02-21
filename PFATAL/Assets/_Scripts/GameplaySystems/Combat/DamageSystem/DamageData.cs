@@ -13,9 +13,9 @@ public struct DamageData : INetworkSerializeByMemcpy
     public float Amount;
     
     /// <summary>
-    /// Le client ID du joueur qui a provoqué les dégats. -1 -> dégats pas provoqués par un joueur (piège...)
+    /// Le client ID du joueur qui a provoqué les dégats. 1000 -> dégats pas provoqués par un joueur (piège...)
     /// </summary>
-    public int SourcePlayerClientID;
+    public ulong SourcePlayerClientID;
     
     /// <summary>
     /// Le centre de l’explosion / l'endroit où l'ennemi a été touché
@@ -29,7 +29,7 @@ public struct DamageData : INetworkSerializeByMemcpy
     /// </summary>
     public float Radius;
 
-    public DamageData(float amount, Vector3 point,int sourcePlayerClientID = -1, float radius = 0)
+    public DamageData(float amount, Vector3 point,ulong sourcePlayerClientID = 1000, float radius = 0)
     {
         Amount = amount;
         SourcePlayerClientID = sourcePlayerClientID;

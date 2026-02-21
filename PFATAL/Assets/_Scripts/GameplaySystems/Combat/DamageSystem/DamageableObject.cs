@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DamageableObject : NetworkBehaviour, IDamageable
 {
-    public int LastDamageSourceClientID { get; private set; }
+    public ulong LastDamageSourceClientID { get; private set; }
     public float HP {get; private set;}
     [field:SerializeField] public float MaxHP { get; private set; }
     public bool IsDead => HP == 0;

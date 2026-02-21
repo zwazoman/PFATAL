@@ -78,6 +78,9 @@ public class Crossbow : ItemScriptable
             Debug.Log(projectile.name);
         }
         else
-            Summoner.Instance.SpawnObject("crossbowProj", main.transform.position, main.transform.rotation, spawnContext);
+        {
+            GameObject projectile = await Summoner.Instance.SpawnObject("crossbowProj", main.playerCamera.transform.position, main.playerCamera.transform.rotation, spawnContext);
+            Debug.Log(projectile.name);
+        }
     }
 }

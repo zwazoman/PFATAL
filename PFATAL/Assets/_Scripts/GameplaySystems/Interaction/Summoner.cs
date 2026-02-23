@@ -1,7 +1,5 @@
 using AYellowpaper.SerializedCollections;
 using Unity.Netcode;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class Summoner : NetworkBehaviour
@@ -71,7 +69,7 @@ public class Summoner : NetworkBehaviour
         }
     }
 }
-[GenerateSerializationForType(typeof(SpawnContext))]
+
 public struct SpawnContext
 {
     public ulong askerID;

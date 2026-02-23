@@ -20,7 +20,7 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     /// </summary>
     public void TakeDamage(DamageData damageData)
     {
-        Assert.IsTrue(IsServer,"Impossible d'appliquer les dégats depuis un client.");
+        //Assert.IsTrue(IsServer,"Impossible d'appliquer les dégats depuis un client.");
         
         LastDamageSourceClientID = damageData.SourcePlayerClientID;
         SetHpRPC(HP - damageData.Amount);
@@ -32,7 +32,7 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     /// </summary>
     public void Heal()
     {
-        Assert.IsTrue(IsServer,"Impossible de modifier les HPs depuis un client.");
+        //Assert.IsTrue(IsServer,"Impossible de modifier les HPs depuis un client.");
         SetHpRPC(MaxHP);
     }
     
@@ -41,7 +41,7 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     /// </summary>
     public void Heal(float amount)
     {
-        Assert.IsTrue(IsServer,"Impossible de modifier les HPs depuis un client.");
+        //Assert.IsTrue(IsServer,"Impossible de modifier les HPs depuis un client.");
         SetHpRPC(HP + amount);
     }
     

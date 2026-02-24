@@ -47,7 +47,7 @@ public class Hand: MonoBehaviour
 
         heldItem = item;
 
-        _itemVisuals.ShowItem(item.mesh.name, _isLeft);
+        _itemVisuals.ShowItemRpc(item.mesh.name, _isLeft);
         heldItem.OnEquip();
     }
 
@@ -75,6 +75,20 @@ public class Hand: MonoBehaviour
 
     public void DropItem()
     {
+        if(heldItem == null)
+        {
+            print("y'a rien à drop dans ta main ducon");
+            return;
+        }
+
         print(gameObject + " drop");
+        
+        heldItem.OnDrop();
+
+        _itemVisuals.HideItemRpc(_isLeft);
+
+        itemSlots.Remove(heldItem);
+        heldItem = null;
+
     }
 }

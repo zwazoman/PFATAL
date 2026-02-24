@@ -8,6 +8,8 @@ public class ItemScriptable : ScriptableObject
     [SerializeField] public Mesh mesh;
     [SerializeField] public ItemType type;
 
+    [SerializeField] GameObject _pickup;
+
     protected bool isUsing;
 
     public virtual void StartUsing()
@@ -32,6 +34,19 @@ public class ItemScriptable : ScriptableObject
     public virtual void OnDrop()
     {
         Debug.Log(name + "Dropped !");
+
+        if(_pickup == null)
+        {
+            Debug.Log("pickup null NATHAN");
+            return;
+        }
+
+        SpawnContext context = new();
+
+        Vector3 spawnPos = main.playerCamera.transform.position + main.playerCamera.transform.forward * 2;
+        Quaternion spawnRot = main.playerCamera.transform.rotation;
+
+        Summoner.Instance.SpawnObject(_pickup, spawnPos, spawnRot, context);
     }
 
     public virtual void OnPickup(ref PlayerCharacter mainRef)

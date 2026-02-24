@@ -60,7 +60,7 @@ public class Crossbow : ItemScriptable
         if (canShoot)
         {
             Debug.Log("shoot");
-            ShootRpc();
+            Shoot();
             canShoot = false;
             ShootDelay();
             return true;
@@ -68,19 +68,16 @@ public class Crossbow : ItemScriptable
         return false;
     }
 
-    async void ShootRpc()
+    async void Shoot()
     {
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
 
-        if (_shootSocket != null)
+        if (_shootSocket == null)
         {
-            GameObject projectile =  await Summoner.Instance.SpawnObject("crossbowProj", _shootSocket.position, _shootSocket.rotation, spawnContext);
-            Debug.Log(projectile.name);
+            _shootSocket = main.playerCamera.transform;
         }
-        else
-        {
-            GameObject projectile = await Summoner.Instance.SpawnObject("crossbowProj", main.playerCamera.transform.position, main.playerCamera.transform.rotation, spawnContext);
-            Debug.Log(projectile.name);
-        }
+
+        GameObject projectile = await Summoner.Instance.SpawnObject(_projectile, _shootSocket.position, _shootSocket.rotation, spawnContext);
+        Debug.Log(projectile.name);
     }
 }

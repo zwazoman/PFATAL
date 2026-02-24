@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,15 +17,11 @@ public class PlayerHands : MonoBehaviour
 
     public bool TryEquipItem(ItemScriptable item)
     {
-        //desequip item actuel ? check la quantité et l'inventaire
-        bool itemEquipped = false;
-
         foreach(Hand hand in hands)
         {
-            print(hand.gameObject.name);
-            print(item.name);
+            print($"try equip {item.name}");
 
-            if(hand.type == item.type && !itemEquipped)
+            if(hand.type == item.type)
             {
                 if (hand.TryPickupItem(item))
                     return true;
@@ -59,9 +56,6 @@ public class PlayerHands : MonoBehaviour
 
     public void DropLeft(InputAction.CallbackContext ctx)
     {
-        if (leftHand.heldItem == null)
-            return;
-
         if (ctx.started)
         {
             leftHand.DropItem();

@@ -1,5 +1,7 @@
 using AYellowpaper.SerializedCollections;
+using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 
 public class Summoner : NetworkBehaviour
@@ -29,14 +31,27 @@ public class Summoner : NetworkBehaviour
     }
     #endregion
 
-    [SerializedDictionary] public SerializedDictionary<string, GameObject> objects;
+    [SerializeField] List<GameObject> spawnableObjects;
+
+    Dictionary<string, GameObject> spawnableObjectsDict = new();
 
     GameObject _currentObject;
 
-    public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, SpawnContext context)
+    private void Start()
     {
-        SpawnRpc(context.askerID, objectName, spawnPos, spawnRot);
-        while(_currentObject == null)
+        foreach(GameObject spawnableObject in spawnableObjects)
+        {
+            if (!spawnableObjectsDict.ContainsKey(spawnableObject.name))
+            {
+                spawnableObjectsDict.Add(spawnableObject.name, spawnableObject);
+            }
+        }
+    }
+
+    public async Awaitable<GameObject> SpawnObject(GameObject gameObject, Vector3 spawnPos, Quaternion spawnRot, SpawnContext context)
+    {
+        SpawnRpc(context.askerID, gameObject.name, spawnPos, spawnRot);
+        while (_currentObject == null)
         {
             await Awaitable.NextFrameAsync();
         }
@@ -47,10 +62,15 @@ public class Summoner : NetworkBehaviour
         return newObject;
     }
 
+    public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, SpawnContext context)
+    {
+        return await SpawnObject(spawnableObjectsDict[objectName], spawnPos, spawnRot, context);
+    }
+
     [Rpc(SendTo.Server)]
     void SpawnRpc(ulong askerID, string objectName, Vector3 spawnPos, Quaternion spawnRot)
     {
-        NetworkObject newObject = NetworkObject.InstantiateAndSpawn(objects[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
+        NetworkObject newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
 
         if (newObject.TryGetComponent(out BaseProjectile projectile))
         {

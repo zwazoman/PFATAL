@@ -30,7 +30,7 @@ public class GameRulesDeathMatch : GameRulesBase
                 }
                 
                 //puis on update le score board
-                UpdatePlayersRanks();
+                UpdateScoreBoard();
             };
         }
         

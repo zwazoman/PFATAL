@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using _scripts.PlayerCharacter;
 using JetBrains.Annotations;
@@ -16,8 +17,9 @@ using UnityEngine;
 public abstract class GameRulesBase
 {
     public bool IsPlaying = false;
-    public event Action OnGameStarted;
+    public event Action<float> OnGameStarted;
     public event Action<GameResult> OnGameEnded;
+    public event Action<SortedSet<ScoreEntry>> OnScoreBoardUpdated; 
     
     private float _gameStartTime;
     public float TimeSinceGameStart => TimeStamp.Now - _gameStartTime;
@@ -41,12 +43,27 @@ public abstract class GameRulesBase
         /// ClientID, Player ScoreEntry
         /// </summary>
         public SortedSet<ScoreEntry> ScoreBoard;
-        //...
+
+        public override string ToString()
+        {
+            const string space = " | ";
+            string s = "";
+            foreach (var score in ScoreBoard)
+            {
+                s +=
+                    "Player : " + score.ClientID + space +
+                    "Kills : " + score.Kills + space +
+                    "Deaths : " + score.Deaths + space +
+                    "Points : " + score.Points + space +
+                    "Rank : " + score.Rank + '\n';
+            }
+
+            return s;
+        }
     }
     
     public struct ScoreEntry :IComparable<ScoreEntry>
     {
-        public string PlayerName;
         public ulong ClientID;
         public int Rank,Kills,Deaths,Points;
         public int CompareTo(ScoreEntry other)
@@ -57,7 +74,7 @@ public abstract class GameRulesBase
     
     //score
     
-    protected void UpdatePlayersRanks()
+    protected void UpdateScoreBoard()
     {
         SortedSet<ScoreEntry> scores = new SortedSet<ScoreEntry>();
         foreach (var player in _players.Values)
@@ -66,10 +83,12 @@ public abstract class GameRulesBase
         }
 
         int i = 0;
-        foreach (var rank in scores.ToArray())
+        foreach (var rank in scores)
         {
             _players[rank.ClientID].Score.Rank = i++;
         }
+        
+        OnScoreBoardUpdated?.Invoke(scores);
     }
 
     /// <summary>
@@ -114,7 +133,7 @@ public abstract class GameRulesBase
         await SpawnPlayerCharacters();
         _gameStartTime = TimeStamp.Now;
         StartGame();
-        OnGameStarted?.Invoke();
+        OnGameStarted?.Invoke(TimeStamp.Now);
     }
 
     private async Task SpawnPlayerCharacters()

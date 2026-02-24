@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class DamageableObject : NetworkBehaviour, IDamageable
 {
+    
+    /// <summary>
+    /// Le client ID du dernier joueur qui a provoqué les dégats. DamageData.NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID -> dégats pas provoqués par un joueur (piège...)
+    /// </summary>
     public ulong LastDamageSourceClientID { get; private set; }
     public float HP {get; private set;}
     [field:SerializeField] public float MaxHP { get; private set; }

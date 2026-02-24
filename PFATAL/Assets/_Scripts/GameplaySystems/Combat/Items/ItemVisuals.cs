@@ -2,29 +2,47 @@ using UnityEngine;
 using Unity.Netcode;
 using AYellowpaper.SerializedCollections;
 
-public class ItemVisuals : MonoBehaviour
+public class ItemVisuals : NetworkBehaviour
 {
-    [SerializeField] MeshFilter _meshFilter;
-    [SerializeField] MeshRenderer _meshrender;
+    [Header("left Hand")]
+    [SerializeField] MeshFilter _leftFilter;
+    [SerializeField] MeshRenderer _leftRenderer;
+
+    [Header("Right Hand")]
+    [SerializeField] MeshFilter _rightFilter;
+    [SerializeField] MeshRenderer _rightRenderer;
 
     [Header("Meshes")]
 
     [SerializedDictionary("Name","Mesh")]
     public SerializedDictionary<string, Mesh> itemMeshes = new();
 
-    [Rpc(SendTo.Everyone)]
-    public void ShowItemRpc(string meshName)
+    public void ShowItem(string meshName, bool leftHand = true)
     {
-        //faut trouver un moyen d'exposer le mesh par autre chose qu'un rpc. ça coute trop cher de le serializer
-        //quoi que
-
-        print("show mesh");
-        _meshFilter.mesh = itemMeshes[meshName];
+        if (leftHand)
+        {
+            _leftFilter.mesh = itemMeshes[meshName];
+            ShowItemLeftRpc(meshName);
+        }
+        else
+        {
+            _rightFilter.mesh = itemMeshes[meshName];
+            ShowItemRightRpc(meshName);
+        }
+           
     }
 
-    //[Rpc(SendTo.ClientsAndHost)]
-    //public void SwapItemRpc(Mesh mesh)
-    //{
-    //    _meshFilter.sharedMesh = mesh;
-    //}
+    [Rpc(SendTo.NotMe)]
+    void ShowItemRightRpc(string meshName)
+    {
+        print("show mesh");
+        _rightFilter.mesh = itemMeshes[meshName];
+    }
+
+    [Rpc(SendTo.NotMe)]
+    void ShowItemLeftRpc(string meshName)
+    {
+        print("show mesh");
+        _leftFilter.mesh = itemMeshes[meshName];
+    }
 }

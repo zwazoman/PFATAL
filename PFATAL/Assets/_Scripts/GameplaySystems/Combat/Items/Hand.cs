@@ -1,14 +1,16 @@
+using _scripts.PlayerCharacter;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Hand: MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] PlayerMain _main;
+    [SerializeField] PlayerCharacter _main;
     [SerializeField] ItemVisuals _itemVisuals;
 
     [Header("Parameters")]
 
+    [SerializeField] bool _isLeft;
     [SerializeField] public ItemType type;
 
     [SerializeField] int _inventorySize = 1;
@@ -45,7 +47,7 @@ public class Hand: MonoBehaviour
 
         heldItem = item;
 
-        _itemVisuals.ShowItemRpc(item.mesh.name);
+        _itemVisuals.ShowItem(item.mesh.name, _isLeft);
         heldItem.OnEquip();
     }
 

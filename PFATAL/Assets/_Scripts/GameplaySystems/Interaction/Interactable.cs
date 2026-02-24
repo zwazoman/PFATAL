@@ -14,8 +14,8 @@ public class Interactable : NetworkBehaviour
         if (_mR = GetComponent<MeshRenderer>())
             _initialMaterial = _mR.material;
 
-        if (gameObject.layer != 6)
-            gameObject.layer = 6;
+        if (gameObject.layer != 7)
+            gameObject.layer = 7;
     }
 
     public virtual void Interact(PlayerInteraction interaction) { }

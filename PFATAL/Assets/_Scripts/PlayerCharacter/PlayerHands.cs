@@ -58,7 +58,7 @@ public class PlayerHands : MonoBehaviour
     {
         if (ctx.started)
         {
-            leftHand.DropItem();
+            leftHand.DropHeldItem();
         }
 
     }

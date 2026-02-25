@@ -31,7 +31,7 @@ public class ItemScriptable : ScriptableObject
 
     public virtual void Break() { }
 
-    public virtual void OnDrop()
+    public void OnDrop()
     {
         Debug.Log(name + "Dropped !");
 

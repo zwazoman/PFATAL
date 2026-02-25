@@ -1,4 +1,5 @@
 using AYellowpaper.SerializedCollections;
+using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEditor;
@@ -70,14 +71,21 @@ public class Summoner : NetworkBehaviour
     [Rpc(SendTo.Server)]
     void SpawnRpc(ulong askerID, string objectName, Vector3 spawnPos, Quaternion spawnRot)
     {
-        NetworkObject newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
-
-        if (newObject.TryGetComponent(out BaseProjectile projectile))
+        try
         {
-            projectile.spawnerID = askerID;
-        }
+            NetworkObject newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
 
-        SendToAskerRpc(newObject, RpcTarget.Single(askerID, RpcTargetUse.Temp));
+            if (newObject.TryGetComponent(out BaseProjectile projectile))
+            {
+                projectile.spawnerID = askerID;
+            }
+
+            SendToAskerRpc(newObject, RpcTarget.Single(askerID, RpcTargetUse.Temp));
+        }
+        catch(Exception e)
+        {
+            Debug.LogError(e);
+        }
     }
 
     [Rpc(SendTo.SpecifiedInParams)]

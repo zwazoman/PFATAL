@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 646555042086170767}
   - component: {fileID: 6019585670990109844}
   - component: {fileID: 3094859251984814126}
+  - component: {fileID: 6643599345549026562}
   m_Layer: 0
   m_Name: NetworkPool
   m_TagString: Untagged
@@ -78,6 +79,7 @@ MonoBehaviour:
   - {fileID: 3951725978927039632, guid: af39c84c55295ac43ace5d12e42504f4, type: 3}
   - {fileID: 7832820956731758131, guid: 41b1dcd080432fa4aa123ff6317ceeb1, type: 3}
   - {fileID: 5604889624952730010, guid: 46a4c616ba28e7141bf4a2fc99c67c09, type: 3}
+  - {fileID: 1503240031692001133, guid: 93cc053ef9fd99a46a784515666cf7c9, type: 3}
 --- !u!114 &646555042086170767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,4 +124,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   _prefab: {fileID: 7832820956731758131, guid: 41b1dcd080432fa4aa123ff6317ceeb1, type: 3}
+  _poolSize: 15
+--- !u!114 &6643599345549026562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7237108463547982156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4361d997545fd0543989a610fa58b07c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  _prefab: {fileID: 1503240031692001133, guid: 93cc053ef9fd99a46a784515666cf7c9, type: 3}
   _poolSize: 15

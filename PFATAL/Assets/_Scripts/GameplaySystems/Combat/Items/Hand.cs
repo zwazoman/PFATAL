@@ -8,6 +8,7 @@ public class Hand : MonoBehaviour
     [Header("References")]
     [SerializeField] PlayerCharacter _main;
     [SerializeField] ItemVisuals _itemVisuals;
+    [SerializeField] public Transform visualsTransform;
 
     [Header("Parameters")]
 
@@ -16,15 +17,20 @@ public class Hand : MonoBehaviour
 
     [SerializeField] int _inventorySize = 1;
 
-    [HideInInspector] public ItemScriptable heldItem;
-    [HideInInspector] public List<ItemScriptable> itemSlots = new();
+    [HideInInspector] public Item equippedItem;
+    [HideInInspector] public List<Item> itemInventory = new();
 
-    public bool TryPickupItem(ItemScriptable item)
+    /// <summary>
+    /// essaye de ramasser un item en fonction de la place présente dans l'inventaire et l'équipe si possible. retourne le résultat.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public bool TryPickupItem(Item item)
     {
-        if (itemSlots.Count < _inventorySize)
+        if (itemInventory.Count < _inventorySize)
         {
-            itemSlots.Add(item);
-            item.OnPickup(ref _main);
+            itemInventory.Add(item);
+            item.OnPickup(_main, this);
             EquipItem(item);
 
             return true;
@@ -32,36 +38,37 @@ public class Hand : MonoBehaviour
         return false;
     }
 
-    void EquipItem(ItemScriptable item)
+    /// <summary>
+    /// définit "item" comme l'item porté par la main et l'affiche au yeux de tous les joueurs.
+    /// </summary>
+    /// <param name="item"></param>
+    void EquipItem(Item item)
     {
         //animation
 
-        if (!itemSlots.Contains(item))
+        if (!itemInventory.Contains(item))
         {
             print("item not pickedUp");
             return;
         }
 
-        if (heldItem != null)
+        if (equippedItem != null)
         {
-            UnEquipHeldItem();
+            UnEquipEquippedItem();
         }
 
-        heldItem = item;
+        equippedItem = item;
 
         _itemVisuals.ShowItemRpc(item.mesh.name, _isLeft);
-        heldItem.OnEquip();
+        equippedItem.OnEquip();
     }
 
-    void UnEquipHeldItem()
-    {
-        _itemVisuals.HideItemRpc(_isLeft);
-        heldItem = null;
-    }
-
+    /// <summary>
+    /// appelle "OnDrop" sur l'item équipé puis, le retire de la main et définit l'item précédent de la liste comme le nouveau dans la main
+    /// </summary>
     public void DropHeldItem()
     {
-        if (heldItem == null)
+        if (equippedItem == null)
         {
             print("y'a rien à drop dans ta main ducon");
             return;
@@ -69,39 +76,76 @@ public class Hand : MonoBehaviour
 
         print(gameObject + " drop");
 
-        heldItem.OnDrop();
+        equippedItem.OnDrop();
 
-        int oldItemIndex = itemSlots.IndexOf(heldItem);
-        itemSlots.Remove(heldItem);
-        UnEquipHeldItem();
+        Item oldEquippedOtem = equippedItem;
 
-        if(itemSlots.Count > 0)
+        if(itemInventory.Count > 1)
         {
-            if (oldItemIndex == 0)
-                EquipItem(itemSlots[itemSlots.Count - 1]);
-            else
-                EquipItem(itemSlots[oldItemIndex - 1]);
+            SwitchEquippedItem(true);
         }
+        else
+        {
+            UnEquipEquippedItem();
+        }
+
+        itemInventory.Remove(oldEquippedOtem);
     }
 
-    public void SwitchToPreviousHeldItem()
+    /// <summary>
+    /// définit le prochain ou le précédent (en fonction de "isPrevious") item de la liste d'items comme celui équipé
+    /// </summary>
+    /// <param name="isPrevious"></param>
+    /// <returns></returns>
+    public void SwitchEquippedItem(bool isPrevious)
     {
-        print(gameObject + " try next item");
-        if (itemSlots.Count > 1)
+        if(equippedItem == null && itemInventory.Count <= 0)
+        {
+            print("not enough items to scroll into");
+            return;
+        }
+
+        Item oldHeldItem = equippedItem;
+
+        if (isPrevious)
         {
             print("next Item");
-            EquipItem(itemSlots.GetPreviousObjectWrapped(heldItem));
+            EquipItem(itemInventory.GetPreviousObjectWrapped(equippedItem));
+        }
+        else
+        {
+            print("previous Item");
+            EquipItem(itemInventory.GetNextObjectWrapped(equippedItem));
         }
     }
 
-    public void SwitchToNextHeldItem()
+    /// <summary>
+    /// retire l'item actuellement porté de la main et update le visuel pour les autres joueurs
+    /// </summary>
+    public void UnEquipEquippedItem()
     {
-        print(gameObject + " try previous item");
+        _itemVisuals.HideItemRpc(_isLeft);
+        equippedItem = null;
+    }
 
-        if (itemSlots.Count > 1)
-        {
-            print("previous Item");
-            EquipItem(itemSlots.GetNextObjectWrapped(heldItem));
-        }
+    /// <summary>
+    /// retire un item présent dans l'inventaire du joueur
+    /// </summary>
+    /// <param name="item"></param>
+    public void UnEquipItem(Item item)
+    {
+        if (!itemInventory.Contains(item))
+            return;
+
+        if (equippedItem == item)
+            UnEquipEquippedItem();
+        else
+            itemInventory.Remove(item);
+    }
+
+    public void DeleteItem(Item item)
+    {
+        UnEquipItem(item);
+        itemInventory.Remove(item);
     }
 }

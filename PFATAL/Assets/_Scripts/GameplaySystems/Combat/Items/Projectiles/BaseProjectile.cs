@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class BaseProjectile : NetworkBehaviour
+public class BaseProjectile : Projectile
 {
     [HideInInspector] public ulong spawnerID;
 

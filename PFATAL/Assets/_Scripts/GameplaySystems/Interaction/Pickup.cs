@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Pickup : Interactable
 {
-    [SerializeField] ItemScriptable _item;
+    [SerializeField] Item _item;
 
     PlayerInteraction _currentPlayerInteraction;
     //Item _currentItem = null;

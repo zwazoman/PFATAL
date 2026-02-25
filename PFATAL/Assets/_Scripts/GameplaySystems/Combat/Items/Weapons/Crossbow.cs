@@ -1,9 +1,11 @@
+using _scripts.PlayerCharacter;
 using Unity.Netcode;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [CreateAssetMenu(fileName = "Crossbow", menuName = "Item/Weapon/Crossbow")]
-public class Crossbow : ItemScriptable
+public class Crossbow : Item
 {
     [Header("References")]
     [SerializeField] public Transform _shootSocket;
@@ -20,10 +22,16 @@ public class Crossbow : ItemScriptable
 
     //todo context dans le shoot 
 
+    public override void OnPickup(PlayerCharacter main, Hand hand)
+    {
+        base.OnPickup(main, hand);
+        canShoot = true;
+        isWaiting = false;
+    }
+
     public override void StartUsing()
     {
         base.StartUsing();
-
         TryShoot();
     }
 
@@ -59,7 +67,6 @@ public class Crossbow : ItemScriptable
     {
         if (canShoot)
         {
-            Debug.Log("shoot");
             Shoot();
             canShoot = false;
             ShootDelay();

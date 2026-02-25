@@ -49,10 +49,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _main: {fileID: 0}
   _itemVisuals: {fileID: 553245394684909368}
+  visualsTransform: {fileID: 5470100038316778371}
+  _isLeft: 0
   type: 1
   _inventorySize: 2
-  heldItem: {fileID: 0}
-  itemSlots: []
+  equippedItem: {fileID: 0}
+  itemInventory: []
 --- !u!114 &4889848191477350745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,14 +126,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4563a5faced00a841a0292e7617ca070, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshFilter: {fileID: 2899134674058281784}
-  _meshrender: {fileID: 6389212713575333478}
+  ShowTopMostFoldoutHeaderGroup: 1
+  _leftFilter: {fileID: 0}
+  _rightFilter: {fileID: 0}
   itemMeshes:
     _serializedList:
     - Key: crossbow
-      Value: {fileID: 3082765854986325582, guid: 874f51c3dd3e3a842ba10fe13e8a0a13, type: 3}
+      Value:
+        mesh: {fileID: 0}
+        positionOffset: {x: 0, y: 0, z: 0}
+        rotation: {x: 0, y: 0, z: 0}
+        scaleMultiplyer: 1
     - Key: Cube
-      Value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      Value:
+        mesh: {fileID: 0}
+        positionOffset: {x: 0, y: 0, z: 0}
+        rotation: {x: 0, y: 0, z: 0}
+        scaleMultiplyer: 1
 --- !u!33 &2899134674058281784
 MeshFilter:
   m_ObjectHideFlags: 0

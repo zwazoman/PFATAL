@@ -15,7 +15,7 @@ public class PlayerHands : MonoBehaviour
         hands[1] = rightHand;
     }
 
-    public bool TryEquipItem(ItemScriptable item)
+    public bool TryEquipItem(Item item)
     {
         foreach(Hand hand in hands)
         {
@@ -34,24 +34,24 @@ public class PlayerHands : MonoBehaviour
 
     public void UseRight(InputAction.CallbackContext ctx)
     {
-        if (rightHand.heldItem == null)
+        if (rightHand.equippedItem == null)
             return;
 
         if (ctx.started)
-            rightHand.heldItem.StartUsing();
+            rightHand.equippedItem.StartUsing();
         if (ctx.canceled)
-            rightHand.heldItem.StopUsing();
+            rightHand.equippedItem.StopUsing();
     }
 
     public void UseLeft(InputAction.CallbackContext ctx)
     {
-        if (leftHand.heldItem == null)
+        if (leftHand.equippedItem == null)
             return;
 
         if (ctx.started)
-            leftHand.heldItem.StartUsing();
+            leftHand.equippedItem.StartUsing();
         if (ctx.canceled)
-            leftHand.heldItem.StopUsing();
+            leftHand.equippedItem.StopUsing();
     }
 
     public void DropLeft(InputAction.CallbackContext ctx)
@@ -69,9 +69,9 @@ public class PlayerHands : MonoBehaviour
         {
             Vector2 value = ctx.ReadValue<Vector2>();
             if (value.y == 1)
-                leftHand.SwitchToNextHeldItem();
+                leftHand.SwitchEquippedItem(false);
             else if (value.y == -1)
-                leftHand.SwitchToPreviousHeldItem();
+                leftHand.SwitchEquippedItem(true);
         }
     }
 

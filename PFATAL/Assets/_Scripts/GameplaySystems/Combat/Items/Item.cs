@@ -1,9 +1,10 @@
 using _scripts.PlayerCharacter;
 using UnityEngine;
 
-public class ItemScriptable : ScriptableObject
+public class Item : ScriptableObject
 {
     [HideInInspector] protected PlayerCharacter main;
+    [HideInInspector] protected Hand carryingHand;
 
     [SerializeField] public Mesh mesh;
     [SerializeField] public ItemType type;
@@ -14,8 +15,6 @@ public class ItemScriptable : ScriptableObject
 
     public virtual void StartUsing()
     {
-        Debug.Log(name + " : Start Using");
-
         isUsing = true;
         Use();
     }
@@ -24,12 +23,8 @@ public class ItemScriptable : ScriptableObject
 
     public virtual void StopUsing()
     {
-        Debug.Log(name + " : Stop Using");
-
         isUsing = false;
     }
-
-    public virtual void Break() { }
 
     public void OnDrop()
     {
@@ -41,19 +36,18 @@ public class ItemScriptable : ScriptableObject
             return;
         }
 
-        SpawnContext context = new();
-
         Vector3 spawnPos = main.playerCamera.transform.position + main.playerCamera.transform.forward * 2;
         Quaternion spawnRot = main.playerCamera.transform.rotation;
 
-        Summoner.Instance.SpawnObject(_pickup, spawnPos, spawnRot, context);
+        Summoner.Instance.SpawnObject(_pickup, spawnPos, spawnRot);
     }
 
-    public virtual void OnPickup(ref PlayerCharacter mainRef)
+    public virtual void OnPickup(PlayerCharacter main, Hand hand)
     {
         Debug.Log(name + "Picked up !");
 
-        main = mainRef;
+        this.main = main;
+        carryingHand = hand;
     }
 
     public virtual void OnEquip()

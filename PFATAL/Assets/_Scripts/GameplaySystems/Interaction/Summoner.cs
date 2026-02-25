@@ -32,7 +32,7 @@ public class Summoner : NetworkBehaviour
     }
     #endregion
 
-    [SerializeField] List<GameObject> spawnableObjects;
+    [SerializeField] NetworkPrefabsList prefabs;
 
     Dictionary<string, GameObject> spawnableObjectsDict = new();
 
@@ -40,17 +40,22 @@ public class Summoner : NetworkBehaviour
 
     private void Start()
     {
-        foreach(GameObject spawnableObject in spawnableObjects)
+        foreach (NetworkPrefab spawnableObject in prefabs.PrefabList)
         {
-            if (!spawnableObjectsDict.ContainsKey(spawnableObject.name))
+            if (!spawnableObjectsDict.ContainsKey(spawnableObject.Prefab.name))
             {
-                spawnableObjectsDict.Add(spawnableObject.name, spawnableObject);
+                spawnableObjectsDict.Add(spawnableObject.Prefab.name, spawnableObject.Prefab);
             }
         }
     }
 
-    public async Awaitable<GameObject> SpawnObject(GameObject gameObject, Vector3 spawnPos, Quaternion spawnRot, SpawnContext context)
+    public async Awaitable<GameObject> SpawnObject(GameObject gameObject, Vector3 spawnPos, Quaternion spawnRot, SpawnContext context = null)
     {
+        print("sapwn ! ");
+
+        if (context == null)
+            context = new(0);
+
         SpawnRpc(context.askerID, gameObject.name, spawnPos, spawnRot);
         while (_currentObject == null)
         {
@@ -63,7 +68,7 @@ public class Summoner : NetworkBehaviour
         return newObject;
     }
 
-    public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, SpawnContext context)
+    public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, SpawnContext context = null)
     {
         return await SpawnObject(spawnableObjectsDict[objectName], spawnPos, spawnRot, context);
     }
@@ -71,34 +76,27 @@ public class Summoner : NetworkBehaviour
     [Rpc(SendTo.Server)]
     void SpawnRpc(ulong askerID, string objectName, Vector3 spawnPos, Quaternion spawnRot)
     {
-        try
-        {
-            NetworkObject newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
+        NetworkObject newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
 
-            if (newObject.TryGetComponent(out BaseProjectile projectile))
-            {
-                projectile.spawnerID = askerID;
-            }
-
-            SendToAskerRpc(newObject, RpcTarget.Single(askerID, RpcTargetUse.Temp));
-        }
-        catch(Exception e)
+        if (newObject.TryGetComponent(out BaseProjectile projectile))
         {
-            Debug.LogError(e);
+            projectile.spawnerID = askerID;
         }
+
+        SendToAskerRpc(newObject, RpcTarget.Single(askerID, RpcTargetUse.Temp));
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
     void SendToAskerRpc(NetworkObjectReference networkObjRef, RpcParams rpcParams = default)
     {
-        if(networkObjRef.TryGet(out NetworkObject networkObj))
+        if (networkObjRef.TryGet(out NetworkObject networkObj))
         {
             _currentObject = networkObj.gameObject;
         }
     }
 }
 
-public struct SpawnContext
+public class SpawnContext
 {
     public ulong askerID;
 

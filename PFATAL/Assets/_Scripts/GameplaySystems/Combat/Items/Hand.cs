@@ -78,18 +78,7 @@ public class Hand : MonoBehaviour
 
         equippedItem.OnDrop();
 
-        Item oldEquippedOtem = equippedItem;
-
-        if(itemInventory.Count > 1)
-        {
-            SwitchEquippedItem(true);
-        }
-        else
-        {
-            UnEquipEquippedItem();
-        }
-
-        itemInventory.Remove(oldEquippedOtem);
+        DeleteItem(equippedItem);
     }
 
     /// <summary>
@@ -99,7 +88,7 @@ public class Hand : MonoBehaviour
     /// <returns></returns>
     public void SwitchEquippedItem(bool isPrevious)
     {
-        if(equippedItem == null && itemInventory.Count <= 0)
+        if(equippedItem == null || itemInventory.Count <= 0)
         {
             print("not enough items to scroll into");
             return;
@@ -145,7 +134,17 @@ public class Hand : MonoBehaviour
 
     public void DeleteItem(Item item)
     {
-        UnEquipItem(item);
-        itemInventory.Remove(item);
+        Item oldEquippedOtem = equippedItem;
+
+        if (itemInventory.Count > 1)
+        {
+            SwitchEquippedItem(true);
+        }
+        else
+        {
+            UnEquipEquippedItem();
+        }
+
+        itemInventory.Remove(oldEquippedOtem);
     }
 }

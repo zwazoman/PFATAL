@@ -12,14 +12,14 @@ using UnityEngine;
 /// <summary>
 /// Le server doit appeler TriggerGameStart,
 /// et peut récupérer l'event OnGameEnded pour afficher le résultat de la partie.
-/// Il y'a également une méthode GetScoreBoard().
+/// Il y'a également une méthode GetLeaderBoard().
 /// </summary>
 public abstract class GameRulesBase
 {
     public bool IsPlaying = false;
     public event Action<float> OnGameStarted;
     public event Action<GameResult> OnGameEnded;
-    public event Action<SortedSet<ScoreEntry>> OnScoreBoardUpdated; 
+    public event Action<LeaderBoardData> OnScoreBoardUpdated; 
     
     private float _gameStartTime;
     public float TimeSinceGameStart => TimeStamp.Now - _gameStartTime;
@@ -37,32 +37,37 @@ public abstract class GameRulesBase
         public ScoreEntry Score;
     }
     
-    public class GameResult
+    public class GameResult : INetworkSerializable
     {
         /// <summary>
         /// ClientID, Player ScoreEntry
         /// </summary>
-        public SortedSet<ScoreEntry> ScoreBoard;
+        public LeaderBoardData LeaderBoard;
 
         public override string ToString()
         {
             const string space = " | ";
             string s = "";
-            foreach (var score in ScoreBoard)
+            foreach (var entry in LeaderBoard.entries)
             {
                 s +=
-                    "Player : " + score.ClientID + space +
-                    "Kills : " + score.Kills + space +
-                    "Deaths : " + score.Deaths + space +
-                    "Points : " + score.Points + space +
-                    "Rank : " + score.Rank + '\n';
+                    "Player : " + entry.ClientID + space +
+                    "Kills : " + entry.Kills + space +
+                    "Deaths : " + entry.Deaths + space +
+                    "Points : " + entry.Points + space +
+                    "Rank : " + entry.Rank + '\n';
             }
 
             return s;
         }
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            throw new NotImplementedException();
+        }
     }
     
-    public struct ScoreEntry :IComparable<ScoreEntry>
+    public struct ScoreEntry :IComparable<ScoreEntry>, INetworkSerializeByMemcpy
     {
         public ulong ClientID;
         public int Rank,Kills,Deaths,Points;
@@ -76,34 +81,34 @@ public abstract class GameRulesBase
     
     protected void UpdateScoreBoard()
     {
-        SortedSet<ScoreEntry> scores = new SortedSet<ScoreEntry>();
+        LeaderBoardData leaderBoard = new();
         foreach (var player in _players.Values)
         {
-            scores.Add(player.Score);
+            leaderBoard.entries.Add(player.Score);
         }
 
         int i = 0;
-        foreach (var rank in scores)
+        foreach (var rank in leaderBoard.entries)
         {
             _players[rank.ClientID].Score.Rank = i++;
         }
         
-        OnScoreBoardUpdated?.Invoke(scores);
+        OnScoreBoardUpdated?.Invoke(leaderBoard);
     }
 
     /// <summary>
     /// retourne le classement des joeurs trié par rank.
     /// </summary>
-    public SortedSet<ScoreEntry> GetScoreBoard()
+    public LeaderBoardData GetLeaderBoard()
     {
-        SortedSet<ScoreEntry> scoreBoard = new();
+        LeaderBoardData leaderBoard = new();
 
         foreach (PlayerData player in _players.Values)
         {
-            scoreBoard.Add(player.Score);
+            leaderBoard.entries.Add(player.Score);
         }
         
-        return scoreBoard;
+        return leaderBoard;
     }
     
     // == game flow ==
@@ -128,7 +133,7 @@ public abstract class GameRulesBase
     public async void TriggerGameStart()
     {
         if(IsPlaying) throw new Exception("Game has started already.");
-        
+
         IsPlaying = true;
         await SpawnPlayerCharacters();
         _gameStartTime = TimeStamp.Now;

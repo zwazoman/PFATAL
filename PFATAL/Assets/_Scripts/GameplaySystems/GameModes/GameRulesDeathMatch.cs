@@ -47,7 +47,7 @@ public class GameRulesDeathMatch : GameRulesBase
     protected override GameResult EndGame()
     {
         GameResult gameResult = new GameResult();
-        gameResult.ScoreBoard = GetScoreBoard();
+        gameResult.LeaderBoard = GetLeaderBoard();
         return gameResult;
     }
 }

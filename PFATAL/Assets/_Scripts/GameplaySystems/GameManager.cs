@@ -23,7 +23,7 @@ public class GameManager : NetworkBehaviour
     public event Action<GameRulesBase.GameResult> OnGameEnded;
     
     //synced variables
-    public SortedSet<GameRulesBase.ScoreEntry> scoreBoard = new();
+    LeaderBoardData leaderBoard;
     public bool IsPlaying = false;
     
     private float _startTime;
@@ -45,34 +45,34 @@ public class GameManager : NetworkBehaviour
                     break;
             };
 
-            //serverGameRules.OnGameStarted += OnServerStartGameRPC;
-            //serverGameRules.OnGameEnded += OnServerEndGameRPC;
-            //serverGameRules.OnScoreBoardUpdated += OnScoreBoardUpdatedRpc;
+            serverGameRules.OnGameStarted += OnServerStartGameRPC;
+            serverGameRules.OnGameEnded += OnServerEndGameRPC;
+            serverGameRules.OnScoreBoardUpdated += OnScoreBoardUpdatedRpc;
         }
     }
 
     
 //sync RPCs
 
-    // [Rpc(SendTo.Everyone)]
-    // void OnScoreBoardUpdatedRpc(SortedSet<GameRulesBase.ScoreEntry> newScoreboard)
-    // {
-    //     scoreBoard = newScoreboard;
-    // }
-    //
-    // [Rpc(SendTo.Everyone)]
-    // void OnServerStartGameRPC(float startTime)
-    // {
-    //     IsPlaying = true;
-    //     _startTime = startTime;
-    //     OnGameStarted?.Invoke();
-    // }
-    //
-    // [Rpc(SendTo.Everyone)]
-    // void OnServerEndGameRPC(GameRulesBase.GameResult gameResult)
-    // {
-    //     IsPlaying = false;
-    //     print("Game ended. Result : \n" + gameResult.ToString());
-    //     OnGameEnded?.Invoke(gameResult);
-    // }
+    [Rpc(SendTo.Everyone)]
+    void OnScoreBoardUpdatedRpc(LeaderBoardData newLeaderboard)
+    {
+        leaderBoard = newLeaderboard;
+    }
+    
+    [Rpc(SendTo.Everyone)]
+    void OnServerStartGameRPC(float startTime)
+    {
+        IsPlaying = true;
+        _startTime = startTime;
+        OnGameStarted?.Invoke();
+    }
+    
+    [Rpc(SendTo.Everyone)]
+    void OnServerEndGameRPC(GameRulesBase.GameResult gameResult)
+    {
+        IsPlaying = false;
+        print("Game ended. Result : \n" + gameResult.ToString());
+        OnGameEnded?.Invoke(gameResult);
+    }
 }

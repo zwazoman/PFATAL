@@ -15,6 +15,7 @@ namespace _scripts.PlayerCharacter
         public PlayerCharacterInputs inputs;
         public PlayerStateMachine stateMachine;
         public NetworkObject networkObject;
+        public DamageableObject health;
 
         [field: SerializeField]
         public Camera playerCamera { get; private set; }

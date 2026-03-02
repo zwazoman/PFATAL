@@ -7,13 +7,15 @@ using UnityEngine;
 /// <typeparam name="T">La source du dégat (joueur, piège, killzone...) </typeparam>
 public struct DamageData : INetworkSerializeByMemcpy
 {
+    public const ulong NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID = 1000;
+    
     /// <summary>
     /// La quantité de dégats à appliquer
     /// </summary>
     public float Amount;
     
     /// <summary>
-    /// Le client ID du joueur qui a provoqué les dégats. 1000 -> dégats pas provoqués par un joueur (piège...)
+    /// Le client ID du joueur qui a provoqué les dégats. NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID -> dégats pas provoqués par un joueur (piège...)
     /// </summary>
     public ulong SourcePlayerClientID;
     
@@ -29,7 +31,7 @@ public struct DamageData : INetworkSerializeByMemcpy
     /// </summary>
     public float Radius;
 
-    public DamageData(float amount, Vector3 point,ulong sourcePlayerClientID = 1000, float radius = 0)
+    public DamageData(float amount, Vector3 point,ulong sourcePlayerClientID = NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID, float radius = 0)
     {
         Amount = amount;
         SourcePlayerClientID = sourcePlayerClientID;

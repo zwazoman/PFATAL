@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 using TMPro;
-using System.Collections.Generic;
 using _scripts.PlayerCharacter;
 
 public class Rebinds : MonoBehaviour
@@ -30,16 +28,22 @@ public class Rebinds : MonoBehaviour
     //needs to be somewhere else.
     public void OpenClose(InputAction.CallbackContext context)
     {
-        if (_menu.activeInHierarchy == true)
+        //Why does it not work?
+        if (context.performed && _menu.activeInHierarchy == true)
         {
-            _menu.SetActive(false);
-            _playerCharacter.SwapActionMapToPlayer();
+            CloseAndSwapAction();
         }
         else
         {
             _menu.SetActive(true);
             _playerCharacter.SwapActionMapToUI();
         }
+    }
+
+    public void CloseAndSwapAction()
+    {
+        _menu.SetActive(false);
+        _playerCharacter.SwapActionMapToPlayer();
     }
 
     //To change later for the script in wich it will do every changes for the UI.

@@ -38,7 +38,6 @@ public class BaseProjectile : Projectile
             {
                 if(damageable.OwnerClientId == spawnerID)
                 {
-                    Debug.Log("hit the shooter !");
                     continue;
                 }
 

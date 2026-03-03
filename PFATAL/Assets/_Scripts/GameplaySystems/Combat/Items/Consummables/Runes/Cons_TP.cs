@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Tp", menuName = "Item/Consummables/Runes/Tp")]
 public class Cons_TP : Consummable
 {
     public override void StartUsing()

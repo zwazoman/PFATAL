@@ -2,58 +2,69 @@ using UnityEngine;
 using Unity.Netcode;
 using AYellowpaper.SerializedCollections;
 using System;
+using System.Collections.Generic;
+using UnityEditor;
 
 public class ItemVisuals : NetworkBehaviour
 {
     [Header("left Hand")]
-    [SerializeField] MeshFilter _leftFilter;
-    Vector3 _initialLeftPos;
+    [SerializeField] Hand _leftHand;
 
     [Header("Right Hand")]
-    [SerializeField] MeshFilter _rightFilter;
-    Vector3 _initialRightPos;
+    [SerializeField] Hand _rightHand;
 
-    [Header("Meshes")]
+    [Header("Prefabs")]
 
-    [SerializedDictionary("Name", "Mesh")]
-    public SerializedDictionary<string, ItemVisual> itemMeshes = new();
+    [SerializeField] List<GameObject> _prefabs;
 
-    private void Start()
+    Dictionary<string, GameObject> itemPrefabsDict = new();
+
+    Dictionary<string, GameObject> equippedPrefabs = new();
+
+    private void Awake()
     {
-        _initialLeftPos = _leftFilter.transform.localPosition;
-        _initialRightPos = _rightFilter.transform.localPosition;
+        foreach (GameObject prefab in _prefabs)
+        {
+            itemPrefabsDict.Add(prefab.name, prefab);
+            print(prefab.name + " added to dictionary");
+        }
     }
 
-    [Rpc(SendTo.Everyone)]
-    public void ShowItemRpc(string meshName, bool leftHand = true)
+    public GameObject ShowItem(string prefabName, bool leftHand)
     {
-        MeshFilter filter;
+        Hand hand;
 
-        if (leftHand)
-            filter = _leftFilter;
+        if(leftHand)
+            hand = _leftHand;
         else
-            filter = _rightFilter;
+            hand = _rightHand;
 
-        filter.mesh = itemMeshes[meshName].mesh;
-        filter.transform.localPosition += itemMeshes[meshName].positionOffset;
-        filter.transform.localRotation = Quaternion.Euler(itemMeshes[meshName].rotation.x, itemMeshes[meshName].rotation.y, itemMeshes[meshName].rotation.z);
-        filter.transform.localScale *= itemMeshes[meshName].scaleMultiplyer;
+        print(prefabName);
+
+        ShowItemRpc(prefabName, leftHand);
+
+        return Instantiate(itemPrefabsDict[prefabName], hand.visualsTransform.position, hand.visualsTransform.rotation);
+
+
+    }
+
+    [Rpc(SendTo.NotMe)]
+    void ShowItemRpc(string objectName, bool leftHand = true)
+    {
+        Hand hand;
+
+        if(leftHand)
+            hand = _leftHand;
+        else
+            hand = _rightHand;
+
+        Instantiate(itemPrefabsDict[objectName], hand.visualsTransform.position, hand.visualsTransform.rotation);
     }
 
     [Rpc(SendTo.Everyone)]
     public void HideItemRpc(bool leftHand = true)
     {
-        MeshFilter filter;
 
-        if (leftHand)
-            filter = _leftFilter;
-        else
-            filter = _rightFilter;
-
-        filter.mesh = null;
-        filter.transform.localPosition = _initialLeftPos;
-        filter.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        filter.transform.localScale = Vector3.one;
     }
 }
 

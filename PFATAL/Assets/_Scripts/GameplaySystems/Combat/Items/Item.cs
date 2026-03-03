@@ -1,12 +1,12 @@
 using _scripts.PlayerCharacter;
 using UnityEngine;
 
-public class Item : ScriptableObject
+public class Item : MonoBehaviour
 {
     [HideInInspector] protected PlayerCharacter main;
     [HideInInspector] protected Hand carryingHand;
 
-    [SerializeField] public Mesh mesh;
+    [SerializeField] public string prefabName;
     [SerializeField] public ItemType type;
 
     [SerializeField] GameObject _pickup;

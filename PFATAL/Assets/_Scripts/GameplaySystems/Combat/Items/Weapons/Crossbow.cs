@@ -4,7 +4,6 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[CreateAssetMenu(fileName = "Crossbow", menuName = "Item/Weapon/Crossbow")]
 public class Crossbow : Item
 {
     [Header("References")]

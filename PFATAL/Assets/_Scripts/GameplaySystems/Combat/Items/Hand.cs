@@ -25,17 +25,31 @@ public class Hand : MonoBehaviour
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public bool TryPickupItem(Item item)
+    public bool TryPickupItem(Item item, GameObject itemPrefab)
     {
         if (itemInventory.Count < _inventorySize)
         {
-            itemInventory.Add(item);
+            print(item.type);
+            print(item.prefabName);
+
+            GameObject itemObject = _itemVisuals.ShowItem(item.prefabName, _isLeft);
+            Item itemComponent = itemObject.GetComponent<Item>();
+            itemInventory.Add(itemComponent);
             item.OnPickup(_main, this);
-            EquipItem(item);
+            EquipItem(itemComponent);
 
             return true;
         }
         return false;
+    }
+
+    void EquipNewItem(GameObject itemPrefab)
+    {
+        //instancie le prefab
+        //récupère l'item
+        //l'ajoute a l'inventaire
+        //appelle OnPickup dessus
+        //EquipItem()
     }
 
     /// <summary>
@@ -59,7 +73,6 @@ public class Hand : MonoBehaviour
 
         equippedItem = item;
 
-        _itemVisuals.ShowItemRpc(item.mesh.name, _isLeft);
         equippedItem.OnEquip();
     }
 
@@ -113,7 +126,7 @@ public class Hand : MonoBehaviour
     /// </summary>
     public void UnEquipEquippedItem()
     {
-        _itemVisuals.HideItemRpc(_isLeft);
+        //_itemVisuals.HideItemRpc(_isLeft);
         equippedItem = null;
     }
 

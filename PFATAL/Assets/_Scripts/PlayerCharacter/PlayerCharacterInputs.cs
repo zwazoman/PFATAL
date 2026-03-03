@@ -80,10 +80,10 @@ public class PlayerCharacterInputs : NetworkBehaviour
             _paused = true;
         }
 
-        //old aim, needs fixing
+        //aim, needs fixing with diagonals
         aimInput = Vector2.SmoothDamp(
-            aimInput,
-            new Vector2(Input.mousePositionDelta.x/(float)Screen.height,-Input.mousePositionDelta.y/(float)Screen.height),
+            new Vector2(aimInput.x,-aimInput.y),
+            new Vector2(Input.mousePositionDelta.x/(float)Screen.height,Input.mousePositionDelta.y/(float)Screen.height),
             ref aimVel,
             _aimSmoothingTime);
     }

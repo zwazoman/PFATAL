@@ -32,14 +32,13 @@ public class LobbyManager : MonoBehaviour
         HandleLobbyHeartbeat();
     }
 
-
     public async Task<string> CreateLobby(string lobbyName = "MyGame")
     {
         try
         {
             CreateLobbyOptions options = new CreateLobbyOptions
             {
-                IsPrivate = true,
+                IsPrivate = false,
                 Data = new Dictionary<string, DataObject>
                 {
                     { RELAY_JOIN_CODE_KEY, new DataObject(DataObject.VisibilityOptions.Member, "") }
@@ -47,13 +46,13 @@ public class LobbyManager : MonoBehaviour
             };
 
             currentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MAX_PLAYERS, options);
-            Debug.Log($"[Lobby] Lobby créé avec le code: {currentLobby.LobbyCode}");
+            Debug.Log($"[Lobby] Lobby cree avec le code: {currentLobby.LobbyCode}");
 
             return currentLobby.LobbyCode;
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Lobby] Erreur lors de la création du lobby: {e.Message}");
+            Debug.LogError($"[Lobby] Erreur lors de la creation du lobby: {e.Message}");
             return null;
         }
     }
@@ -85,12 +84,12 @@ public class LobbyManager : MonoBehaviour
             };
 
             currentLobby = await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id, options);
-            Debug.Log($"[Lobby] Code Relay mis à jour dans le lobby");
+            Debug.Log($"[Lobby] Code Relay mis a jour dans le lobby");
             return true;
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Lobby] Erreur lors de la mise à jour du code Relay: {e.Message}");
+            Debug.LogError($"[Lobby] Erreur lors de la mise a jour du code Relay: {e.Message}");
             return false;
         }
     }
@@ -104,16 +103,16 @@ public class LobbyManager : MonoBehaviour
             if (currentLobby.Data.ContainsKey(RELAY_JOIN_CODE_KEY))
             {
                 string relayCode = currentLobby.Data[RELAY_JOIN_CODE_KEY].Value;
-                Debug.Log($"[Lobby] Code Relay récupéré: {relayCode}");
+                Debug.Log($"[Lobby] Code Relay rï¿½cupï¿½rï¿½: {relayCode}");
                 return relayCode;
             }
 
-            Debug.LogWarning("[Lobby] Aucun code Relay trouvé dans le lobby");
+            Debug.LogWarning("[Lobby] Aucun code Relay trouvï¿½ dans le lobby");
             return null;
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Lobby] Erreur lors de la récupération du code Relay: {e.Message}");
+            Debug.LogError($"[Lobby] Erreur lors de la rï¿½cupï¿½ration du code Relay: {e.Message}");
             return null;
         }
     }
@@ -130,7 +129,7 @@ public class LobbyManager : MonoBehaviour
                 try
                 {
                     await LobbyService.Instance.SendHeartbeatPingAsync(currentLobby.Id);
-                    Debug.Log("[Lobby] Heartbeat envoyé");
+                    Debug.Log("[Lobby] Heartbeat envoyï¿½");
                 }
                 catch (Exception e)
                 {
@@ -146,7 +145,7 @@ public class LobbyManager : MonoBehaviour
         try
         {
             await LobbyService.Instance.RemovePlayerAsync(currentLobby.Id, UnityServicesManager.Instance.GetPlayerId());
-            Debug.Log("[Lobby] Lobby quitté");
+            Debug.Log("[Lobby] Lobby quittï¿½");
             currentLobby = null;
         }
         catch (Exception e)
@@ -162,7 +161,7 @@ public class LobbyManager : MonoBehaviour
         try
         {
             await LobbyService.Instance.DeleteLobbyAsync(currentLobby.Id);
-            Debug.Log("[Lobby] Lobby supprimé");
+            Debug.Log("[Lobby] Lobby supprimï¿½");
             currentLobby = null;
         }
         catch (Exception e)

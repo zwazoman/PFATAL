@@ -7,7 +7,7 @@ public class NetworkConnectionManager : MonoBehaviour
 {
     public static NetworkConnectionManager Instance { get; private set; }
 
-    [Header("Scènes")]
+    [Header("Scï¿½nes")]
     [SerializeField] private string gameSceneName = "GameScene";
 
     private void Awake()
@@ -33,7 +33,7 @@ public class NetworkConnectionManager : MonoBehaviour
         string lobbyCode = await LobbyManager.Instance.CreateLobby(lobbyName);
         if (string.IsNullOrEmpty(lobbyCode))
         {
-            Debug.LogError("[Network] Impossible de créer le lobby");
+            Debug.LogError("[Network] Impossible de crï¿½er le lobby");
             return false;
         }
 
@@ -42,7 +42,7 @@ public class NetworkConnectionManager : MonoBehaviour
         string relayJoinCode = await RelayManager.Instance.CreateRelayAllocation();
         if (string.IsNullOrEmpty(relayJoinCode))
         {
-            Debug.LogError("[Network] Impossible de créer l'allocation Relay");
+            Debug.LogError("[Network] Impossible de crï¿½er l'allocation Relay");
             await LobbyManager.Instance.DeleteLobby();
             return false;
         }
@@ -50,7 +50,7 @@ public class NetworkConnectionManager : MonoBehaviour
         bool lobbyUpdated = await LobbyManager.Instance.UpdateLobbyRelayCode(relayJoinCode);
         if (!lobbyUpdated)
         {
-            Debug.LogError("[Network] Impossible de mettre à jour le lobby avec le code Relay");
+            Debug.LogError("[Network] Impossible de mettre ï¿½ jour le lobby avec le code Relay");
             await LobbyManager.Instance.DeleteLobby();
             return false;
         }
@@ -58,12 +58,12 @@ public class NetworkConnectionManager : MonoBehaviour
         bool hostStarted = NetworkManager.Singleton.StartHost();
         if (!hostStarted)
         {
-            Debug.LogError("[Network] Impossible de démarrer Netcode en mode host");
+            Debug.LogError("[Network] Impossible de dï¿½marrer Netcode en mode host");
             await LobbyManager.Instance.DeleteLobby();
             return false;
         }
 
-        Debug.Log("[Network] Host démarré avec succès");
+        Debug.Log("[Network] Host dï¿½marrï¿½ avec succï¿½s");
 
         NetworkManager.Singleton.SceneManager.LoadScene(gameSceneName, LoadSceneMode.Single);
 
@@ -97,7 +97,7 @@ public class NetworkConnectionManager : MonoBehaviour
 
         if (string.IsNullOrEmpty(relayJoinCode))
         {
-            Debug.LogError("[Network] Impossible de récupérer le code Relay du lobby");
+            Debug.LogError("[Network] Impossible de rï¿½cupï¿½rer le code Relay du lobby");
             await LobbyManager.Instance.LeaveLobby();
             return false;
         }
@@ -110,15 +110,16 @@ public class NetworkConnectionManager : MonoBehaviour
             return false;
         }
 
+
         bool clientStarted = NetworkManager.Singleton.StartClient();
         if (!clientStarted)
         {
-            Debug.LogError("[Network] Impossible de démarrer Netcode en mode client");
+            Debug.LogError("[Network] Impossible de dï¿½marrer Netcode en mode client");
             await LobbyManager.Instance.LeaveLobby();
             return false;
         }
 
-        Debug.Log("[Network] Client connecté avec succès");
+        Debug.Log("[Network] Client connectï¿½ avec succï¿½s");
         return true;
     }
 
@@ -127,7 +128,7 @@ public class NetworkConnectionManager : MonoBehaviour
         if (NetworkManager.Singleton != null)
         {
             NetworkManager.Singleton.Shutdown();
-            Debug.Log("[Network] Netcode arrêté");
+            Debug.Log("[Network] Netcode arrï¿½tï¿½");
         }
 
         if (LobbyManager.Instance.IsHost())
@@ -139,7 +140,7 @@ public class NetworkConnectionManager : MonoBehaviour
             await LobbyManager.Instance.LeaveLobby();
         }
 
-        Debug.Log("[Network] Déconnexion terminée");
+        Debug.Log("[Network] Dï¿½connexion terminï¿½e");
     }
 
     private void OnApplicationQuit()

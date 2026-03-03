@@ -5,16 +5,14 @@ using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
+    //todo : scriptable object avec game settings ?
+    private const float DEATH_MATCH_GAME_DURATION = 100;
+    
     public enum GameMode
     {
         DeathMatch,
         None
     }
-    
-    /// <summary>
-    /// permet de set le game mode en dehors de la scène principale
-    /// </summary>
-    public static GameMode gameMode = GameMode.DeathMatch;
 
     private GameRulesBase serverGameRules;
     
@@ -23,11 +21,12 @@ public class GameManager : NetworkBehaviour
     public event Action<GameRulesBase.GameResult> OnGameEnded;
     
     //synced variables
-    LeaderBoardData leaderBoard;
-    public bool IsPlaying = false;
-    
-    private float _startTime;
+    public bool IsPlaying { get; private set ; } = false;
     public float TimeSinceGameStart => TimeStamp.Now - _startTime;
+    
+    public LeaderBoardData LeaderBoard;
+
+    private float _startTime;
 
     //todo : relier au lobby et au game rule
     
@@ -38,7 +37,7 @@ public class GameManager : NetworkBehaviour
             switch (gameMode)
             {
                 case GameMode.DeathMatch:
-                    serverGameRules = new GameRulesDeathMatch(clientIDs,100);
+                    serverGameRules = new GameRulesDeathMatch(clientIDs,DEATH_MATCH_GAME_DURATION);
                     break;
                 default:
                     throw new Exception("Game Mode not set");
@@ -48,6 +47,8 @@ public class GameManager : NetworkBehaviour
             serverGameRules.OnGameStarted += OnServerStartGameRPC;
             serverGameRules.OnGameEnded += OnServerEndGameRPC;
             serverGameRules.OnScoreBoardUpdated += OnScoreBoardUpdatedRpc;
+            
+            serverGameRules.TriggerGameStart();
         }
     }
 
@@ -57,7 +58,7 @@ public class GameManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void OnScoreBoardUpdatedRpc(LeaderBoardData newLeaderboard)
     {
-        leaderBoard = newLeaderboard;
+        LeaderBoard = newLeaderboard;
     }
     
     [Rpc(SendTo.Everyone)]

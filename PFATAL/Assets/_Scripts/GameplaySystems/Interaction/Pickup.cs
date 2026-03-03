@@ -5,14 +5,12 @@ public class Pickup : Interactable
 {
     [SerializeField] Item _item;
 
-    PlayerInteraction _currentPlayerInteraction;
-    //Item _currentItem = null;
-
     public override void Interact(PlayerInteraction interaction)
     {
         base.Interact(interaction);
 
-        _currentPlayerInteraction = interaction;
+        print("pickup par pitié");
+        print(interaction);
 
         if (interaction.main.playerHands.TryEquipItem(_item))
             DespawnRpc();

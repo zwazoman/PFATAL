@@ -20,7 +20,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.SphereCast(main.playerCamera.transform.position, _interactionWidth, /*main.playerCamera.transform.position + */main.playerCamera.transform.forward, out hit, _interactionRange, _interactionmask))
+        if (Physics.SphereCast(main.playerCamera.transform.position, _interactionWidth,main.playerCamera.transform.forward, out hit, _interactionRange, _interactionmask))
         {
             if (hit.collider.gameObject.TryGetComponent(out Interactable interactable))
             {
@@ -45,7 +45,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (ctx.started)
         {
-            print("try interact");
             if(_currentInteractable != null)
                 _currentInteractable.Interact(this);
         }

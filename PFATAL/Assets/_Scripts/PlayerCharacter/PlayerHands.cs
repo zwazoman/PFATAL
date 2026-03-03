@@ -17,6 +17,7 @@ public class PlayerHands : MonoBehaviour
 
     public bool TryEquipItem(Item item)
     {
+        print("équipe nan ?");
         foreach(Hand hand in hands)
         {
             print($"try equip {item.name}");

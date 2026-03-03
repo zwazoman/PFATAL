@@ -29,12 +29,10 @@ public class BaseProjectile : Projectile
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        print("ahhhhhhhhh");
         //_spawnTime = TimeStamp.Now;
         //_spawnPosition = transform.position;
         if (NetworkManager.Singleton.IsServer)
         {
-            print("bbbbbbb");
             InitRPC(TimeStamp.Now,transform.position);
         }
     }
@@ -42,11 +40,9 @@ public class BaseProjectile : Projectile
     [Rpc(SendTo.Everyone)]
     void InitRPC(float timestamp, Vector3 position)
     {
-        print("initRPC");
         _spawnTime = timestamp;
         _spawnPosition = position;
         _initialized = true;
-        Debug.DrawRay(transform.position, transform.up, Color.red,10000);
     }
 
     protected virtual void UpdatePosition(float timeSinceSpawn)
@@ -74,7 +70,7 @@ public class BaseProjectile : Projectile
             if (timeSinceSpawn >= _maxLifetime)
                 DespawnRpc();
             
-            Debug.DrawLine(transform.position, _oldPosition, Color.white,1000);
+            Debug.DrawLine(transform.position, _oldPosition, Color.white,_maxLifetime);
             
             //collisions
             Vector3 movement = transform.position - _oldPosition;

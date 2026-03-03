@@ -18,7 +18,7 @@ public class Hand : MonoBehaviour
     [SerializeField] int _inventorySize = 1;
 
     [HideInInspector] public Item equippedItem;
-    [HideInInspector] public List<Item> itemInventory = new();
+    [HideInInspector] List<Item> itemInventory = new();
 
     /// <summary>
     /// essaye de ramasser un item en fonction de la place présente dans l'inventaire et l'équipe si possible. retourne le résultat.

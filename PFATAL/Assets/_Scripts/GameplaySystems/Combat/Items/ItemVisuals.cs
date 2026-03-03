@@ -15,9 +15,10 @@ public class ItemVisuals : NetworkBehaviour
 
     [SerializeField] List<GameObject> _prefabs;
 
+    Dictionary<string, Item> _itemsDict = new();
 
-    public Item equippedItem = null;
-    Dictionary<string, Item> itemsDict = new();
+    Item _leftItem = null;
+    Item _rightItem = null;
 
     private void Start()
     {
@@ -28,7 +29,7 @@ public class ItemVisuals : NetworkBehaviour
 
             if(itemObject.TryGetComponent(out Item item))
             {
-                itemsDict.Add(prefab.name, item);
+                _itemsDict.Add(prefab.name, item);
             }
             else
                 Debug.LogError($"{prefab.name} does not contain an Item component.");
@@ -39,13 +40,13 @@ public class ItemVisuals : NetworkBehaviour
 
     public Item GetItem(string prefabName)
     {
-        return itemsDict[prefabName];
+        return _itemsDict[prefabName];
     }
 
     [Rpc(SendTo.Everyone)]
     public void ShowItemRpc(string prefabName, bool leftHand)
     {
-        if (!itemsDict.ContainsKey(prefabName))
+        if (!_itemsDict.ContainsKey(prefabName))
         {
             Debug.LogError($"{prefabName} not found in ItemsDictionary");
             return;
@@ -57,15 +58,25 @@ public class ItemVisuals : NetworkBehaviour
         currentItem.transform.parent = hand.visualsTransform;
         currentItem.transform.position = hand.visualsTransform.position;
         currentItem.gameObject.SetActive(true);
+
+        if (leftHand)
+            _leftItem = currentItem;
+        else
+            _rightItem = currentItem;
     }
 
     [Rpc(SendTo.Everyone)]
     public void HideEquippedItemRpc(bool leftHand)
     {
-        Hand hand = GetHand(leftHand);
+        Item currentItem;
 
-        hand.equippedItem.gameObject.SetActive(false);
-        hand.equippedItem.transform.parent = _leftHand.transform.parent;
+        if (leftHand)
+            currentItem = _leftItem;
+        else
+            currentItem = _rightItem;
+
+        currentItem.gameObject.SetActive(false);
+        currentItem.transform.parent = _leftHand.transform.parent;
     }
 
     Hand GetHand(bool isLeft)

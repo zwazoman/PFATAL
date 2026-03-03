@@ -6,9 +6,6 @@ public class Item : MonoBehaviour
     [HideInInspector] protected PlayerCharacter main;
     [HideInInspector] protected Hand carryingHand;
 
-    [SerializeField] public string prefabName;
-    [SerializeField] public ItemType type;
-
     [SerializeField] GameObject _pickup;
 
     protected bool isUsing;
@@ -63,4 +60,10 @@ public class Item : MonoBehaviour
             await Awaitable.NextFrameAsync();
         }
     }
+}
+
+public enum ItemType
+{
+    Weapon,
+    Consummable
 }

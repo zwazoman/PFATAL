@@ -7,72 +7,72 @@ using UnityEditor;
 
 public class ItemVisuals : NetworkBehaviour
 {
-    [Header("left Hand")]
+    [Header("References")]
     [SerializeField] Hand _leftHand;
-
-    [Header("Right Hand")]
     [SerializeField] Hand _rightHand;
 
-    [Header("Prefabs")]
+    [Header("Settings")]
 
     [SerializeField] List<GameObject> _prefabs;
 
-    Dictionary<string, GameObject> itemPrefabsDict = new();
 
-    Dictionary<string, GameObject> equippedPrefabs = new();
+    public Item equippedItem = null;
+    Dictionary<string, Item> itemsDict = new();
 
-    private void Awake()
+    private void Start()
     {
         foreach (GameObject prefab in _prefabs)
         {
-            itemPrefabsDict.Add(prefab.name, prefab);
-            print(prefab.name + " added to dictionary");
+            GameObject itemObject = Instantiate(prefab, _leftHand.transform.parent);
+            itemObject.name = prefab.name;
+
+            if(itemObject.TryGetComponent(out Item item))
+            {
+                itemsDict.Add(prefab.name, item);
+            }
+            else
+                Debug.LogError($"{prefab.name} does not contain an Item component.");
+
+            itemObject.SetActive(false);
         }
     }
 
-    public GameObject ShowItem(string prefabName, bool leftHand)
+    public Item GetItem(string prefabName)
     {
-        Hand hand;
-
-        if(leftHand)
-            hand = _leftHand;
-        else
-            hand = _rightHand;
-
-        print(prefabName);
-
-        ShowItemRpc(prefabName, leftHand);
-
-        return Instantiate(itemPrefabsDict[prefabName], hand.visualsTransform.position, hand.visualsTransform.rotation);
-
-
-    }
-
-    [Rpc(SendTo.NotMe)]
-    void ShowItemRpc(string objectName, bool leftHand = true)
-    {
-        Hand hand;
-
-        if(leftHand)
-            hand = _leftHand;
-        else
-            hand = _rightHand;
-
-        Instantiate(itemPrefabsDict[objectName], hand.visualsTransform.position, hand.visualsTransform.rotation);
+        return itemsDict[prefabName];
     }
 
     [Rpc(SendTo.Everyone)]
-    public void HideItemRpc(bool leftHand = true)
+    public void ShowItemRpc(string prefabName, bool leftHand)
     {
+        if (!itemsDict.ContainsKey(prefabName))
+        {
+            Debug.LogError($"{prefabName} not found in ItemsDictionary");
+            return;
+        }
 
+        Hand hand = GetHand(leftHand);
+
+        Item currentItem =  GetItem(prefabName);
+        currentItem.transform.parent = hand.visualsTransform;
+        currentItem.transform.position = hand.visualsTransform.position;
+        currentItem.gameObject.SetActive(true);
     }
-}
 
-[Serializable]
-public class ItemVisual
-{
-    public Mesh mesh;
-    public Vector3 positionOffset;
-    public Vector3 rotation;
-    public float scaleMultiplyer = 1;
+    [Rpc(SendTo.Everyone)]
+    public void HideEquippedItemRpc(bool leftHand)
+    {
+        Hand hand = GetHand(leftHand);
+
+        hand.equippedItem.gameObject.SetActive(false);
+        hand.equippedItem.transform.parent = _leftHand.transform.parent;
+    }
+
+    Hand GetHand(bool isLeft)
+    {
+        if (isLeft)
+            return _leftHand;
+        else
+            return _rightHand;
+    }
 }

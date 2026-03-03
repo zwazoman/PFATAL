@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 8810651330805395723}
   - component: {fileID: 3363668477320220546}
   m_Layer: 0
-  m_Name: Crossbow
+  m_Name: Item_Crossbow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -295,8 +295,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8138086813635680726}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -3.86086, y: 4.84976, z: 11.64474}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -304,7 +304,7 @@ Transform:
   - {fileID: 5770242023463863656}
   - {fileID: 2560805704586005805}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
 --- !u!114 &3363668477320220546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,8 +317,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 842e73017926d704ba43ec4c074379d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Crossbow
-  _prefabName: Crossbow
-  type: 0
   _pickup: {fileID: 3951725978927039632, guid: af39c84c55295ac43ace5d12e42504f4, type: 3}
   _shootSocket: {fileID: 0}
   _projectile: {fileID: 5604889624952730010, guid: 46a4c616ba28e7141bf4a2fc99c67c09, type: 3}

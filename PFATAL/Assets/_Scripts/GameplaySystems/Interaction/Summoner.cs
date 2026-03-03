@@ -51,8 +51,6 @@ public class Summoner : NetworkBehaviour
 
     public async Awaitable<GameObject> SpawnObject(GameObject gameObject, Vector3 spawnPos, Quaternion spawnRot, SpawnContext context = null)
     {
-        print("sapwn ! ");
-
         if (context == null)
             context = new(0);
 

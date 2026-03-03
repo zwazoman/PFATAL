@@ -1,35 +1,20 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Pickup : Interactable
 {
-    [SerializeField] Item _item;
-
-    [SerializeField] GameObject _itemPrefab;
+    [Header("Item Info")]
+    [SerializeField] ItemInfo _itemInfo;
 
     public override void Interact(PlayerInteraction interaction)
     {
         base.Interact(interaction);
 
-        Item item;
-
-        if(_itemPrefab.TryGetComponent(out item))
-        {
-            if (interaction.main.playerHands.TryEquipItem(_item, _itemPrefab))
-                DespawnRpc();
-            else
-                print("couldn't equip item");
-        }
+        if(interaction.main.playerHands.TryEquipItem(_itemInfo))
+            DespawnRpc();
         else
-        {
-            print("no item on item prefab");
-        }
-
-        //if (interaction.main.playerHands.TryEquipItem(_item))
-        //    DespawnRpc();
-        //else
-        //    print("couldn't equip item");
-
+            print("couldn't equip item");
     }
 
     [Rpc(SendTo.Server)]
@@ -37,4 +22,11 @@ public class Pickup : Interactable
     {
         NetworkObject.Despawn();
     }
+}
+
+[Serializable]
+public struct ItemInfo
+{
+    public ItemType itemType;
+    public GameObject itemPrefab;
 }

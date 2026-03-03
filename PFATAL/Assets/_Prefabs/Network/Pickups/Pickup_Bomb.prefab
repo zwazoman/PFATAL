@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 2484509946618073726}
   - component: {fileID: 1865857117880369231}
   m_Layer: 6
-  m_Name: Bomb Pickup
+  m_Name: Pickup_Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,7 +159,9 @@ MonoBehaviour:
   _mR: {fileID: 3424579275926837875}
   _initialMaterial: {fileID: 0}
   _hoveredMaterial: {fileID: 2100000, guid: d14dee7d3f164f745ae70d52128bcc34, type: 2}
-  _item: {fileID: 11400000, guid: 6932f3b7e9c6a4244947bf2f8f6dfec4, type: 2}
+  _itemInfo:
+    itemType: 1
+    itemPrefab: {fileID: 4084173529431785421, guid: 21918f97f8b656b43b05a07e9b798d77, type: 3}
 --- !u!114 &6001157075066597747
 MonoBehaviour:
   m_ObjectHideFlags: 0

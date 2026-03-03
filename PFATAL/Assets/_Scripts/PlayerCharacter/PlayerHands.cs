@@ -15,13 +15,13 @@ public class PlayerHands : MonoBehaviour
         hands[1] = rightHand;
     }
 
-    public bool TryEquipItem(Item item, GameObject itemPrefab)
+    public bool TryEquipItem(ItemInfo itemInfo)
     {
         foreach(Hand hand in hands)
         {
-            if(hand.type == item.type)
+            if(hand.type == itemInfo.itemType)
             {
-                if (hand.TryPickupItem(item, itemPrefab))
+                if (hand.TryPickupItem(itemInfo))
                     return true;
             }
         }
@@ -74,10 +74,4 @@ public class PlayerHands : MonoBehaviour
     }
 
     #endregion
-}
-
-public enum ItemType
-{
-    Weapon,
-    Consummable
 }

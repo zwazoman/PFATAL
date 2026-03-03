@@ -25,31 +25,19 @@ public class Hand : MonoBehaviour
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public bool TryPickupItem(Item item, GameObject itemPrefab)
+    public bool TryPickupItem(ItemInfo itemInfo)
     {
         if (itemInventory.Count < _inventorySize)
         {
-            print(item.type);
-            print(item.prefabName);
+            Item item = _itemVisuals.GetItem(itemInfo.itemPrefab.name);
 
-            GameObject itemObject = _itemVisuals.ShowItem(item.prefabName, _isLeft);
-            Item itemComponent = itemObject.GetComponent<Item>();
-            itemInventory.Add(itemComponent);
+            itemInventory.Add(item);
             item.OnPickup(_main, this);
-            EquipItem(itemComponent);
+            EquipItem(item);
 
             return true;
         }
         return false;
-    }
-
-    void EquipNewItem(GameObject itemPrefab)
-    {
-        //instancie le prefab
-        //récupère l'item
-        //l'ajoute a l'inventaire
-        //appelle OnPickup dessus
-        //EquipItem()
     }
 
     /// <summary>
@@ -72,6 +60,7 @@ public class Hand : MonoBehaviour
         }
 
         equippedItem = item;
+        _itemVisuals.ShowItemRpc(item.gameObject.name, _isLeft);
 
         equippedItem.OnEquip();
     }
@@ -82,15 +71,9 @@ public class Hand : MonoBehaviour
     public void DropHeldItem()
     {
         if (equippedItem == null)
-        {
-            print("y'a rien à drop dans ta main ducon");
             return;
-        }
-
-        print(gameObject + " drop");
 
         equippedItem.OnDrop();
-
         DeleteItem(equippedItem);
     }
 
@@ -110,15 +93,10 @@ public class Hand : MonoBehaviour
         Item oldHeldItem = equippedItem;
 
         if (isPrevious)
-        {
-            print("next Item");
-            EquipItem(itemInventory.GetPreviousObjectWrapped(equippedItem));
-        }
+            EquipItem(itemInventory.GetPreviousObjectWrapped(equippedItem)); // previous Item
         else
-        {
-            print("previous Item");
-            EquipItem(itemInventory.GetNextObjectWrapped(equippedItem));
-        }
+            EquipItem(itemInventory.GetNextObjectWrapped(equippedItem)); // next item
+
     }
 
     /// <summary>
@@ -126,7 +104,7 @@ public class Hand : MonoBehaviour
     /// </summary>
     public void UnEquipEquippedItem()
     {
-        //_itemVisuals.HideItemRpc(_isLeft);
+        _itemVisuals.HideEquippedItemRpc(_isLeft);
         equippedItem = null;
     }
 

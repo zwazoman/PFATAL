@@ -1,13 +1,10 @@
 using _scripts.PlayerCharacter;
 using UnityEngine;
 
-public class Item : ScriptableObject
+public class Item : MonoBehaviour
 {
     [HideInInspector] protected PlayerCharacter main;
     [HideInInspector] protected Hand carryingHand;
-
-    [SerializeField] public Mesh mesh;
-    [SerializeField] public ItemType type;
 
     [SerializeField] GameObject _pickup;
 
@@ -50,10 +47,9 @@ public class Item : ScriptableObject
         carryingHand = hand;
     }
 
-    public virtual void OnEquip()
-    {
+    public virtual void OnEquip() { }
 
-    }
+    public virtual void OnUnEquip() { }
 
     async void Use()
     {
@@ -63,4 +59,10 @@ public class Item : ScriptableObject
             await Awaitable.NextFrameAsync();
         }
     }
+}
+
+public enum ItemType
+{
+    Weapon,
+    Consummable
 }

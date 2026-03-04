@@ -49,14 +49,12 @@ public class Summoner : NetworkBehaviour
         }
     }
 
-    public async Awaitable<GameObject> SpawnObject(GameObject gameObject, Vector3 spawnPos, Quaternion spawnRot, SpawnContext context = null)
+    public async Awaitable<GameObject> SpawnObject(GameObject gameObject, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null)
     {
-        print("sapwn ! ");
-
         if (context == null)
             context = new(0);
 
-        SpawnRpc(context.askerID, gameObject.name, spawnPos, spawnRot);
+        SpawnRpc(context.Value, gameObject.name, spawnPos, spawnRot);
         while (_currentObject == null)
         {
             await Awaitable.NextFrameAsync();
@@ -68,22 +66,22 @@ public class Summoner : NetworkBehaviour
         return newObject;
     }
 
-    public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, SpawnContext context = null)
+    public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null)
     {
         return await SpawnObject(spawnableObjectsDict[objectName], spawnPos, spawnRot, context);
     }
 
     [Rpc(SendTo.Server)]
-    void SpawnRpc(ulong askerID, string objectName, Vector3 spawnPos, Quaternion spawnRot)
+    void SpawnRpc(SpawnContext context, string objectName, Vector3 spawnPos, Quaternion spawnRot)
     {
         NetworkObject newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
 
-        if (newObject.TryGetComponent(out BaseProjectile projectile))
+        if (newObject.TryGetComponent(out Projectile projectile))
         {
-            projectile.spawnerID = askerID;
+            projectile.spawnContext = context;
         }
 
-        SendToAskerRpc(newObject, RpcTarget.Single(askerID, RpcTargetUse.Temp));
+        SendToAskerRpc(newObject, RpcTarget.Single(context.askerID, RpcTargetUse.Temp));
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
@@ -96,7 +94,8 @@ public class Summoner : NetworkBehaviour
     }
 }
 
-public class SpawnContext
+
+public struct SpawnContext : INetworkSerializeByMemcpy
 {
     public ulong askerID;
 

@@ -15,16 +15,13 @@ public class PlayerHands : MonoBehaviour
         hands[1] = rightHand;
     }
 
-    public bool TryEquipItem(Item item)
+    public bool TryEquipItem(ItemInfo itemInfo)
     {
-        print("équipe nan ?");
         foreach(Hand hand in hands)
         {
-            print($"try equip {item.name}");
-
-            if(hand.type == item.type)
+            if(hand.type == itemInfo.itemType)
             {
-                if (hand.TryPickupItem(item))
+                if (hand.TryPickupItem(itemInfo))
                     return true;
             }
         }
@@ -77,10 +74,4 @@ public class PlayerHands : MonoBehaviour
     }
 
     #endregion
-}
-
-public enum ItemType
-{
-    Weapon,
-    Consummable
 }

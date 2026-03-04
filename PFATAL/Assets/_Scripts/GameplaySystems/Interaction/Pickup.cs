@@ -1,22 +1,20 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Pickup : Interactable
 {
-    [SerializeField] Item _item;
+    [Header("Item Info")]
+    [SerializeField] ItemInfo _itemInfo;
 
     public override void Interact(PlayerInteraction interaction)
     {
         base.Interact(interaction);
 
-        print("pickup par pitié");
-        print(interaction);
-
-        if (interaction.main.playerHands.TryEquipItem(_item))
+        if(interaction.main.playerHands.TryEquipItem(_itemInfo))
             DespawnRpc();
         else
             print("couldn't equip item");
-
     }
 
     [Rpc(SendTo.Server)]
@@ -24,4 +22,11 @@ public class Pickup : Interactable
     {
         NetworkObject.Despawn();
     }
+}
+
+[Serializable]
+public struct ItemInfo
+{
+    public ItemType itemType;
+    public GameObject itemPrefab;
 }

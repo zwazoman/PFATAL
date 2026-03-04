@@ -8,6 +8,8 @@ public class Bomb : Projectile
 
     [Header("Settings")]
     [SerializeField] float _fuseTime = 3f;
+    [SerializeField] float _explosionRange = 3f;
+    [SerializeField] float _damages = 5;
 
     float _timer;
     
@@ -42,6 +44,27 @@ public class Bomb : Projectile
 
     void Explode()
     {
-        print("KABOOM");
+        DamageData data = new();
+        data.Amount = _damages;
+        data.SourcePlayerClientID = spawnContext.askerID;
+
+        ColliderHit hit;
+
+        foreach(Collider coll in Physics.OverlapSphere(transform.position, _explosionRange))
+        {
+            if(coll.TryGetComponent(out DamageableObject damageable))
+            {
+                print($"{damageable.gameObject.name} was hit by a bomb !");
+                data.Point = transform.position;
+                data.Radius = _explosionRange;
+
+                damageable.TakeDamage(data);
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, _explosionRange);
     }
 }

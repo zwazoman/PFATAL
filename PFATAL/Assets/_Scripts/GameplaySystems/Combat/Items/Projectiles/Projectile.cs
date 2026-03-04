@@ -3,5 +3,5 @@ using UnityEngine;
 
 public class Projectile : NetworkBehaviour
 {
-
+    public SpawnContext spawnContext;
 }

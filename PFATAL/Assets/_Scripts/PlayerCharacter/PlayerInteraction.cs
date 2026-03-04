@@ -49,10 +49,4 @@ public class PlayerInteraction : MonoBehaviour
                 _currentInteractable.Interact(this);
         }
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(main.playerCamera.transform.position, main.playerCamera.transform.position + main.playerCamera.transform.forward.normalized * _interactionRange);
-        Gizmos.DrawWireSphere(main.playerCamera.transform.position + main.playerCamera.transform.forward.normalized * _interactionRange, _interactionWidth);
-    }
 }

@@ -2,13 +2,8 @@ using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 
-public class BaseProjectile : Projectile
+public class CrossbowProjectile : Projectile
 {
-    /// <summary>
-    /// l'id du joeur ayant tiré le projectile
-    /// </summary>
-    [HideInInspector] public ulong spawnerID;
-
     [Header("settings")]
     [field : SerializeField] public float CollisionRadius { get; private set; }
     [SerializeField] float _speed = 50;
@@ -82,7 +77,7 @@ public class BaseProjectile : Projectile
                 print(_hitBuffer[i].collider.gameObject.name);
                 if(_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
                 {
-                    if (damageable.OwnerClientId == spawnerID)
+                    if (damageable.OwnerClientId == spawnContext.askerID)
                     {
                         actualHitCount--;
                         continue;
@@ -92,7 +87,7 @@ public class BaseProjectile : Projectile
                     data.Point = _hitBuffer[i].point;
                     data.Amount = _damageAmount;
                     data.Radius = 0;
-                    data.SourcePlayerClientID = spawnerID;
+                    data.SourcePlayerClientID = spawnContext.askerID;
                     damageable.TakeDamage(data);
                  
                     DespawnRpc();

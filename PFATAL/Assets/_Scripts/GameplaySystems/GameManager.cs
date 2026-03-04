@@ -52,7 +52,7 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    
+
 //sync RPCs
 
     [Rpc(SendTo.Everyone)]

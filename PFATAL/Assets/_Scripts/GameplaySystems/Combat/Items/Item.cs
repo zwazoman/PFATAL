@@ -47,10 +47,9 @@ public class Item : MonoBehaviour
         carryingHand = hand;
     }
 
-    public virtual void OnEquip()
-    {
+    public virtual void OnEquip() { }
 
-    }
+    public virtual void OnUnEquip() { }
 
     async void Use()
     {

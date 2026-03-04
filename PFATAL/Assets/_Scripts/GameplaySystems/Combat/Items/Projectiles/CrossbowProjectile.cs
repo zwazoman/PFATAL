@@ -1,10 +1,8 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class BaseProjectile : Projectile
+public class CrossbowProjectile : Projectile
 {
-    [HideInInspector] public ulong spawnerID;
-
     [SerializeField] float _speed = 50;
     [SerializeField] float _lifetime = 3;
 
@@ -36,7 +34,7 @@ public class BaseProjectile : Projectile
         {
             if(coll.gameObject.TryGetComponent(out DamageableObject damageable))
             {
-                if(damageable.OwnerClientId == spawnerID)
+                if(damageable.OwnerClientId == spawnContext.askerID)
                 {
                     continue;
                 }

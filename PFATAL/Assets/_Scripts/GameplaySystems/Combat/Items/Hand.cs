@@ -104,6 +104,7 @@ public class Hand : MonoBehaviour
     /// </summary>
     public void UnEquipEquippedItem()
     {
+        equippedItem.OnUnEquip();
         _itemVisuals.HideEquippedItemRpc(_isLeft);
         equippedItem = null;
     }

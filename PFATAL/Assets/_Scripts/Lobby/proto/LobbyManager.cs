@@ -71,6 +71,22 @@ public class LobbyManager : MonoBehaviour
             return false;
         }
     }
+    
+    public async Task<bool> JoinLobbyById(string lobbyId)
+    {
+        try
+        {
+            currentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
+            Debug.Log($"[Lobby] Lobby rejoint par ID: {currentLobby.Name}");
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Lobby] Erreur join by ID: {e.Message}");
+            return false;
+        }
+    }
+    
     public async Task<bool> UpdateLobbyRelayCode(string relayJoinCode)
     {
         try

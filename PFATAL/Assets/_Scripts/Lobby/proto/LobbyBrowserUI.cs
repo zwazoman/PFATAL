@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.UI;
@@ -67,7 +69,7 @@ public class LobbyBrowserUI : MonoBehaviour
         SetLoading(true);
         refreshButton.interactable = false;
 
-        bool success = await lobbyBrowser.JoinLobby(lobby);
+        bool success = await NetworkConnectionManager.Instance.StartClientById(lobby.Id);
 
         if (!success)
         {
@@ -79,9 +81,7 @@ public class LobbyBrowserUI : MonoBehaviour
 
     private void SetLoading(bool isLoading)
     {
+        statusText.text = isLoading ? "Chargement..." : "";
         refreshButton.interactable = !isLoading;
-
-        if (isLoading)
-            statusText.text = "Recherche en cours...";
     }
 }

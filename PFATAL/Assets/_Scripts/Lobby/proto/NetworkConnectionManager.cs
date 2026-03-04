@@ -37,7 +37,7 @@ public class NetworkConnectionManager : MonoBehaviour
             return false;
         }
 
-        Debug.Log($"[Network] Code du lobby: {lobbyCode}");
+        //Debug.Log($"[Network] Code du lobby: {lobbyCode}");
 
         string relayJoinCode = await RelayManager.Instance.CreateRelayAllocation();
         if (string.IsNullOrEmpty(relayJoinCode))
@@ -63,7 +63,7 @@ public class NetworkConnectionManager : MonoBehaviour
             return false;
         }
 
-        Debug.Log("[Network] Host d�marr� avec succ�s");
+        //Debug.Log("[Network] Host d�marr� avec succ�s");
 
         NetworkManager.Singleton.SceneManager.LoadScene(gameSceneName, LoadSceneMode.Single);
 
@@ -119,7 +119,7 @@ public class NetworkConnectionManager : MonoBehaviour
             return false;
         }
 
-        Debug.Log("[Network] Client connect� avec succ�s");
+        //Debug.Log("[Network] Client connect� avec succ�s");
         return true;
     }
 

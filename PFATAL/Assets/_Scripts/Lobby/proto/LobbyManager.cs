@@ -46,7 +46,7 @@ public class LobbyManager : MonoBehaviour
             };
 
             currentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MAX_PLAYERS, options);
-            Debug.Log($"[Lobby] Lobby cree avec le code: {currentLobby.LobbyCode}");
+            //Debug.Log($"[Lobby] Lobby cree avec le code: {currentLobby.LobbyCode}");
 
             return currentLobby.LobbyCode;
         }
@@ -62,7 +62,7 @@ public class LobbyManager : MonoBehaviour
         try
         {
             currentLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
-            Debug.Log($"[Lobby] Lobby rejoint: {currentLobby.Name} ({currentLobby.Players.Count}/{currentLobby.MaxPlayers} joueurs)");
+            //Debug.Log($"[Lobby] Lobby rejoint: {currentLobby.Name} ({currentLobby.Players.Count}/{currentLobby.MaxPlayers} joueurs)");
             return true;
         }
         catch (Exception e)
@@ -145,7 +145,7 @@ public class LobbyManager : MonoBehaviour
         try
         {
             await LobbyService.Instance.RemovePlayerAsync(currentLobby.Id, UnityServicesManager.Instance.GetPlayerId());
-            Debug.Log("[Lobby] Lobby quitt�");
+            //Debug.Log("[Lobby] Lobby quitt�");
             currentLobby = null;
         }
         catch (Exception e)
@@ -161,7 +161,7 @@ public class LobbyManager : MonoBehaviour
         try
         {
             await LobbyService.Instance.DeleteLobbyAsync(currentLobby.Id);
-            Debug.Log("[Lobby] Lobby supprim�");
+            //Debug.Log("[Lobby] Lobby supprim�");
             currentLobby = null;
         }
         catch (Exception e)

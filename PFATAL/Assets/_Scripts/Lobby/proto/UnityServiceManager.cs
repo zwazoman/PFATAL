@@ -6,6 +6,7 @@ using UnityEngine;
 public class UnityServicesManager : MonoBehaviour
 {
     public static UnityServicesManager Instance { get; private set; }
+    public bool IsInitialized { get; private set; } = false;
 
     private void Awake()
     {
@@ -18,6 +19,11 @@ public class UnityServicesManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private async void Start()
+    {
+        IsInitialized = await InitializeUnityServices();
+    }
+
     public async Task<bool> InitializeUnityServices()
     {
         try
@@ -25,14 +31,13 @@ public class UnityServicesManager : MonoBehaviour
             if (UnityServices.State == ServicesInitializationState.Uninitialized)
             {
                 await UnityServices.InitializeAsync();
-                Debug.Log("[UnityServices] Initialisé avec succès");
+                Debug.Log("[UnityServices] InitialisÃ© avec succÃ¨s");
             }
 
-            // Authentification anonyme
             if (!AuthenticationService.Instance.IsSignedIn)
             {
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                Debug.Log($"[Authentication] Connecté avec ID: {AuthenticationService.Instance.PlayerId}");
+                Debug.Log($"[Authentication] ConnectÃ© avec ID: {AuthenticationService.Instance.PlayerId}");
             }
 
             return true;

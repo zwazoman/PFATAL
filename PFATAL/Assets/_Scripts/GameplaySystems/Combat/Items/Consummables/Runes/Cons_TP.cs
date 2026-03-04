@@ -22,7 +22,7 @@ public class Cons_TP : Consummable
     {
         base.StopUsing();
 
-        main.transform.position = tpDestination;
+        main.physics.SetPosition(main.playerCamera.transform.position + main.playerCamera.transform.forward * range);
         
         HideMarker();
         BreakItem();

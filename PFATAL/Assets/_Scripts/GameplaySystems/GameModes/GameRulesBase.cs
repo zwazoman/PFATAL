@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using _Scripts.Exceptions;
 using _scripts.PlayerCharacter;
 using JetBrains.Annotations;
 using Unity.Netcode;
@@ -116,7 +117,7 @@ public abstract class GameRulesBase
     public GameRulesBase(List<ulong> clientIDs)
     {
         if(!NetworkManager.Singleton.IsServer) 
-            throw new Exception("Seul le server peut gérer les regles du jeu.");
+            throw new NetworkAuthorityException("Seul le server peut gérer les regles du jeu.");
             
         foreach (ulong clientID in clientIDs)
         {

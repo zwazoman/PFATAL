@@ -33,7 +33,7 @@ public class NetworkPool : NetworkBehaviour, INetworkPrefabInstanceHandler
 
     public void Destroy(NetworkObject networkObject)
     {
-        print("destroy via pool");
+        print($"destroy {gameObject.name} via pool");
         //networkObject.Despawn();
         networkObject.gameObject.SetActive(false);
         networkObject.transform.SetPositionAndRotation(transform.position, transform.rotation);

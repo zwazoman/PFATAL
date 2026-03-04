@@ -34,7 +34,6 @@ namespace _scripts.PlayerCharacter
             base.OnNetworkSpawn();
 
             gameObject.name = gameObject.name + NetworkBehaviourId + OwnerClientId;
-
         }
 
         public bool CheckActionmap(InputActionMap actionMap)

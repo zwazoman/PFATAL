@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Bomb", menuName = "Item/Consummables/Tools/Bomb")]
 
 public class Cons_Bomb : Consummable
 {

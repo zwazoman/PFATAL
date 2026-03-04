@@ -2,66 +2,88 @@ using UnityEngine;
 using Unity.Netcode;
 using AYellowpaper.SerializedCollections;
 using System;
+using System.Collections.Generic;
+using UnityEditor;
 
 public class ItemVisuals : NetworkBehaviour
 {
-    [Header("left Hand")]
-    [SerializeField] MeshFilter _leftFilter;
-    Vector3 _initialLeftPos;
+    [Header("References")]
+    [SerializeField] Hand _leftHand;
+    [SerializeField] Hand _rightHand;
 
-    [Header("Right Hand")]
-    [SerializeField] MeshFilter _rightFilter;
-    Vector3 _initialRightPos;
+    [Header("Settings")]
 
-    [Header("Meshes")]
+    [SerializeField] List<GameObject> _prefabs;
 
-    [SerializedDictionary("Name", "Mesh")]
-    public SerializedDictionary<string, ItemVisual> itemMeshes = new();
+    Dictionary<string, Item> _itemsDict = new();
+
+    Item _leftItem = null;
+    Item _rightItem = null;
 
     private void Start()
     {
-        _initialLeftPos = _leftFilter.transform.localPosition;
-        _initialRightPos = _rightFilter.transform.localPosition;
+        foreach (GameObject prefab in _prefabs)
+        {
+            GameObject itemObject = Instantiate(prefab, _leftHand.transform.parent);
+            itemObject.name = prefab.name;
+
+            if(itemObject.TryGetComponent(out Item item))
+            {
+                _itemsDict.Add(prefab.name, item);
+            }
+            else
+                Debug.LogError($"{prefab.name} does not contain an Item component.");
+
+            itemObject.SetActive(false);
+        }
+    }
+
+    public Item GetItem(string prefabName)
+    {
+        return _itemsDict[prefabName];
     }
 
     [Rpc(SendTo.Everyone)]
-    public void ShowItemRpc(string meshName, bool leftHand = true)
+    public void ShowItemRpc(string prefabName, bool leftHand)
     {
-        MeshFilter filter;
+        if (!_itemsDict.ContainsKey(prefabName))
+        {
+            Debug.LogError($"{prefabName} not found in ItemsDictionary");
+            return;
+        }
+
+        Hand hand = GetHand(leftHand);
+
+        Item currentItem =  GetItem(prefabName);
+        currentItem.transform.parent = hand.visualsTransform;
+        currentItem.transform.position = hand.visualsTransform.position;
+        currentItem.gameObject.SetActive(true);
 
         if (leftHand)
-            filter = _leftFilter;
+            _leftItem = currentItem;
         else
-            filter = _rightFilter;
-
-        filter.mesh = itemMeshes[meshName].mesh;
-        filter.transform.localPosition += itemMeshes[meshName].positionOffset;
-        filter.transform.localRotation = Quaternion.Euler(itemMeshes[meshName].rotation.x, itemMeshes[meshName].rotation.y, itemMeshes[meshName].rotation.z);
-        filter.transform.localScale *= itemMeshes[meshName].scaleMultiplyer;
+            _rightItem = currentItem;
     }
 
     [Rpc(SendTo.Everyone)]
-    public void HideItemRpc(bool leftHand = true)
+    public void HideEquippedItemRpc(bool leftHand)
     {
-        MeshFilter filter;
+        Item currentItem;
 
         if (leftHand)
-            filter = _leftFilter;
+            currentItem = _leftItem;
         else
-            filter = _rightFilter;
+            currentItem = _rightItem;
 
-        filter.mesh = null;
-        filter.transform.localPosition = _initialLeftPos;
-        filter.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        filter.transform.localScale = Vector3.one;
+        currentItem.gameObject.SetActive(false);
+        currentItem.transform.parent = _leftHand.transform.parent;
     }
-}
 
-[Serializable]
-public class ItemVisual
-{
-    public Mesh mesh;
-    public Vector3 positionOffset;
-    public Vector3 rotation;
-    public float scaleMultiplyer = 1;
+    Hand GetHand(bool isLeft)
+    {
+        if (isLeft)
+            return _leftHand;
+        else
+            return _rightHand;
+    }
 }

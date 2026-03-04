@@ -4,7 +4,6 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[CreateAssetMenu(fileName = "Crossbow", menuName = "Item/Weapon/Crossbow")]
 public class Crossbow : Item
 {
     [Header("References")]
@@ -85,6 +84,10 @@ public class Crossbow : Item
         }
 
         GameObject projectile = await Summoner.Instance.SpawnObject(_projectile, _shootSocket.position, _shootSocket.rotation, spawnContext);
-        Debug.Log(projectile.name);
+        
+        if(projectile.TryGetComponent(out CrossbowProjectile crossbowProjectile))
+        {
+            //faire évoluer les dgts en fonction du tmps d'appui de la crossbow
+        }
     }
 }

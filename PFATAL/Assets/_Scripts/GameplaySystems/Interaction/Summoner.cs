@@ -35,7 +35,6 @@ public class Summoner : NetworkBehaviour
     [SerializeField] NetworkPrefabsList prefabs;
 
     Dictionary<string, GameObject> spawnableObjectsDict = new();
-
     GameObject _currentObject;
 
     private void Start()

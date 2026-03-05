@@ -56,5 +56,17 @@ namespace _scripts.PlayerCharacter
 
             playerInput.SwitchCurrentActionMap("Player");
         }
+
+        [Rpc(SendTo.Everyone)]
+        public void HidePlayer()
+        {
+            //cacher les visuels
+        }
+
+        [Rpc(SendTo.Everyone)]
+        public void ShowPlayer()
+        {
+            //montrer les visuels
+        }
     }
 }

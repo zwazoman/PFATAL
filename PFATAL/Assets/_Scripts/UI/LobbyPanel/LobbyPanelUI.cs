@@ -9,7 +9,7 @@ using Image = UnityEngine.UI.Image;
 public class LobbyPanelUI : MonoBehaviour
 {
     [Header("scene references")]
-    [SerializeField] private Lobby _lobby;
+    [SerializeField] private GameLobby gameLobby;
     [SerializeField] private Transform _playerSlotsParent;
     [SerializeField] private Image _readyImage;
     [SerializeField] private TMP_Text _statusText;
@@ -23,8 +23,8 @@ public class LobbyPanelUI : MonoBehaviour
 
     void Awake()
     {
-        _lobby.EventOnLobbyUpdated += RefreshPlayerList;
-        _lobby.EventOnPlayerStatusChanged += OnPlayerStatusChanged;
+        gameLobby.EventOnLobbyUpdated += RefreshPlayerList;
+        gameLobby.EventOnPlayerStatusChanged += OnPlayerStatusChanged;
     }
     
     public void RefreshPlayerList(PlayerList newPlayerList)

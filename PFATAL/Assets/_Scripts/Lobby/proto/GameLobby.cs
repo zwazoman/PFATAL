@@ -9,7 +9,7 @@ using UnityEngine;
 /// gestion du statut des joueurs (pret/pas pret/en jeu)
 /// lancement de la partie quand tout le monde est pret avec un gamemode et une map
 /// </summary>
-public class Lobby : NetworkBehaviour
+public class GameLobby : NetworkBehaviour
 {
     [Header("SceneReferences")]
     [SerializeField] GameManager _gameManager;

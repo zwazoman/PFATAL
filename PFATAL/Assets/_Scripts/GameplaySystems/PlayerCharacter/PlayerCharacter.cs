@@ -58,13 +58,13 @@ namespace _scripts.PlayerCharacter
         }
 
         [Rpc(SendTo.Everyone)]
-        public void HidePlayer()
+        public void HidePlayerRpc()
         {
             //cacher les visuels
         }
 
         [Rpc(SendTo.Everyone)]
-        public void ShowPlayer()
+        public void ShowPlayerRpc()
         {
             //montrer les visuels
         }

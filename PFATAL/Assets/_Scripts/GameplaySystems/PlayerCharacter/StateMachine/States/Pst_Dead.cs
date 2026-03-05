@@ -9,7 +9,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             base.OnEntered(ctx);
 
             ctx.SwapActionMapToUI();
-            ctx.HidePlayer();
+            ctx.HidePlayerRpc();
         }
 
         protected override void OnExited(PlayerCharacter ctx)

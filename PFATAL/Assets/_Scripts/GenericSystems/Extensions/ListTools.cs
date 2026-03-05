@@ -3,11 +3,6 @@ using UnityEngine;
 
 public static class ListTools
 {
-    public static T PickRandom<T>(this List<T> list)
-    {
-        return list[Random.Range(0, list.Count)];
-    }
-
     public static T GetNextObjectWrapped<T>(this List<T> list, T currentObject)
     {
         int nextObjectIndex = list.IndexOf(currentObject) + 1;

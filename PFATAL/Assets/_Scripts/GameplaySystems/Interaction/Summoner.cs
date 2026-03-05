@@ -75,6 +75,8 @@ public class Summoner : NetworkBehaviour
     {
         NetworkObject newObject = null;
 
+        context.timeStamp = TimeStamp.Now;
+
         if (giveOwnershipToAsker)
             newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, context.askerID, true, true, false, spawnPos, spawnRot);
         else
@@ -102,8 +104,9 @@ public class Summoner : NetworkBehaviour
 public struct SpawnContext : INetworkSerializeByMemcpy
 {
     public ulong askerID;
+    public float timeStamp;
 
-    public SpawnContext(ulong askerID)
+    public SpawnContext(ulong askerID) : this()
     {
         this.askerID = askerID;
     }

@@ -28,13 +28,21 @@ public class PlayerSpawner : MonoBehaviour
     /// <param name="ownerClientID"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public async Awaitable<PlayerCharacter> SpawnPlayerCharacter(ulong ownerClientID)
+    public async Awaitable<PlayerCharacter> SpawnInitialPlayerCharacter(ulong ownerClientID)
     {
         Transform spawnSocket = SelectSpawnSocket();
         SpawnContext context = new(ownerClientID);
 
         GameObject player = await Summoner.Instance.SpawnObject(_playerPrefab, spawnSocket.position, spawnSocket.rotation, context, true);
         return player.GetComponent<PlayerCharacter>();
+    }
+
+    public void SpawnPlayer(PlayerCharacter player)
+    {
+        Transform spawnSocket = SelectSpawnSocket();
+
+        player.physics.SetPosition(spawnSocket.position);
+        player.transform.rotation = spawnSocket.rotation;
     }
 
     Transform SelectSpawnSocket()

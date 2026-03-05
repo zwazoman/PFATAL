@@ -16,7 +16,7 @@ public class NetworkStartUI : MonoBehaviour
         {
             foreach(ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
             {
-                await _playerSpawner.SpawnPlayerCharacter(clientId);
+                await _playerSpawner.SpawnInitialPlayerCharacter(clientId);
             }
         }
     }

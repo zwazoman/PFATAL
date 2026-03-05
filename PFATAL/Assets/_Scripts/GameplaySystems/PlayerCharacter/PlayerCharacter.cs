@@ -17,6 +17,8 @@ namespace _scripts.PlayerCharacter
         public NetworkObject networkObject;
         public DamageableObject health;
 
+        public HUDManager HUD;
+
         [field: SerializeField]
         public Camera playerCamera { get; private set; }
 

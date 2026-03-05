@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Pickup : Interactable
 {
+    [SerializeField] bool _despawnsOnPickup = true;
+
     [Header("Item Info")]
     [SerializeField] ItemInfo _itemInfo;
 
@@ -12,7 +14,8 @@ public class Pickup : Interactable
         base.Interact(interaction);
 
         if(interaction.main.playerHands.TryEquipItem(_itemInfo))
-            DespawnRpc();
+            if(_despawnsOnPickup)
+                DespawnRpc();
         else
             print("couldn't equip item");
     }

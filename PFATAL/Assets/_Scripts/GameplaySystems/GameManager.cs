@@ -8,48 +8,54 @@ public class GameManager : NetworkBehaviour
     //todo : scriptable object avec game settings ?
     private const float DEATH_MATCH_GAME_DURATION = 100;
     
+    //data
     public enum GameMode
     {
         DeathMatch,
         None
     }
-
-    private GameRulesBase serverGameRules;
+    
+    private GameRulesBase _serverGameRules;
     
     //synced events
-    public event Action OnGameStarted;
-    public event Action<GameRulesBase.GameResult> OnGameEnded;
+   
+    public event Action EventOnGameStarted;
+    public event Action<GameRulesBase.GameResult> EventOnGameEnded;
     
     //synced variables
     public bool IsPlaying { get; private set ; } = false;
-    public float TimeSinceGameStart => TimeStamp.Now - _startTime;
-    
+    public float TimeSinceGameStart => TimeStamp.Now - _gameStartTime;
     public LeaderBoardData LeaderBoard;
-
-    private float _startTime;
-
-    //todo : relier au lobby et au game rule
+    private float _gameStartTime;
     
-    public void StartGame(List<ulong> clientIDs,GameMode gameMode)
+    private void StartGame(List<ulong> clientIDs,GameMode gameMode)
     {
         if (IsServer)
         {
             switch (gameMode)
             {
                 case GameMode.DeathMatch:
-                    serverGameRules = new GameRulesDeathMatch(clientIDs,DEATH_MATCH_GAME_DURATION);
+                    _serverGameRules = new GameRulesDeathMatch(clientIDs,DEATH_MATCH_GAME_DURATION);
                     break;
                 default:
                     throw new Exception("Game Mode not set");
                     break;
             };
 
-            serverGameRules.OnGameStarted += OnServerStartGameRPC;
-            serverGameRules.OnGameEnded += OnServerEndGameRPC;
-            serverGameRules.OnScoreBoardUpdated += OnScoreBoardUpdatedRpc;
+            _serverGameRules.OnGameStarted += OnServerStartGameRPC;
+            _serverGameRules.OnGameEnded += OnGameEnded;
+            _serverGameRules.OnScoreBoardUpdated += OnScoreBoardUpdatedRpc;
             
-            serverGameRules.TriggerGameStart();
+            _serverGameRules.TriggerGameStart();
+            
+            //todo : set player status to inGame
         }
+    }
+
+    void OnGameEnded(GameRulesBase.GameResult gameResult)
+    {
+        OnServerEndGameRPC(gameResult);
+        LeaderBoard.Clear();
     }
 
 
@@ -65,8 +71,8 @@ public class GameManager : NetworkBehaviour
     void OnServerStartGameRPC(float startTime)
     {
         IsPlaying = true;
-        _startTime = startTime;
-        OnGameStarted?.Invoke();
+        _gameStartTime = startTime;
+        EventOnGameStarted?.Invoke();
     }
     
     [Rpc(SendTo.Everyone)]
@@ -74,6 +80,8 @@ public class GameManager : NetworkBehaviour
     {
         IsPlaying = false;
         print("Game ended. Result : \n" + gameResult.ToString());
-        OnGameEnded?.Invoke(gameResult);
+        EventOnGameEnded?.Invoke(gameResult);
     }
+    
+
 }

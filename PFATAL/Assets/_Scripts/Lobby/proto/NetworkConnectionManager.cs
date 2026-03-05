@@ -37,7 +37,7 @@ public class NetworkConnectionManager : MonoBehaviour
             return false;
         }
 
-        Debug.Log($"[Network] Code du lobby: {lobbyCode}");
+        //Debug.Log($"[Network] Code du lobby: {lobbyCode}");
 
         string relayJoinCode = await RelayManager.Instance.CreateRelayAllocation();
         if (string.IsNullOrEmpty(relayJoinCode))
@@ -63,7 +63,7 @@ public class NetworkConnectionManager : MonoBehaviour
             return false;
         }
 
-        Debug.Log("[Network] Host d�marr� avec succ�s");
+        //Debug.Log("[Network] Host d�marr� avec succ�s");
 
         NetworkManager.Singleton.SceneManager.LoadScene(gameSceneName, LoadSceneMode.Single);
 
@@ -119,7 +119,35 @@ public class NetworkConnectionManager : MonoBehaviour
             return false;
         }
 
-        Debug.Log("[Network] Client connect� avec succ�s");
+        //Debug.Log("[Network] Client connect� avec succ�s");
+        return true;
+    }
+    
+    public async Task<bool> StartClientById(string lobbyId)
+    {
+        while (!UnityServicesManager.Instance.IsInitialized)
+            await Task.Delay(100);
+
+        bool lobbyJoined = await LobbyManager.Instance.JoinLobbyById(lobbyId);
+        if (!lobbyJoined) { Debug.LogError("[Network] Impossible de rejoindre le lobby"); return false; }
+
+        string relayJoinCode = null;
+        int attempts = 0;
+        while (string.IsNullOrEmpty(relayJoinCode) && attempts < 10)
+        {
+            await Task.Delay(500);
+            relayJoinCode = await LobbyManager.Instance.GetRelayJoinCode();
+            attempts++;
+        }
+
+        if (string.IsNullOrEmpty(relayJoinCode)) { await LobbyManager.Instance.LeaveLobby(); return false; }
+
+        bool relayJoined = await RelayManager.Instance.JoinRelayAllocation(relayJoinCode);
+        if (!relayJoined) { await LobbyManager.Instance.LeaveLobby(); return false; }
+
+        bool clientStarted = NetworkManager.Singleton.StartClient();
+        if (!clientStarted) { await LobbyManager.Instance.LeaveLobby(); return false; }
+
         return true;
     }
 

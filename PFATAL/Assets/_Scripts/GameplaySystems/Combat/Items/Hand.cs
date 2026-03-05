@@ -21,9 +21,9 @@ public class Hand : MonoBehaviour
     [HideInInspector] List<Item> itemInventory = new();
 
     /// <summary>
-    /// essaye de ramasser un item en fonction de la place présente dans l'inventaire et l'équipe si possible. retourne le résultat.
+    /// vérifie si un item est ramassable en fonction de l'item info. si il est bien ramassable : le ramasse
     /// </summary>
-    /// <param name="item"></param>
+    /// <param name="itemInfo"></param>
     /// <returns></returns>
     public bool TryPickupItem(ItemInfo itemInfo)
     {
@@ -110,33 +110,23 @@ public class Hand : MonoBehaviour
     }
 
     /// <summary>
-    /// retire un item présent dans l'inventaire du joueur
+    /// retire "item" de l'inventaire. le déséqippe également si il est équipé.
     /// </summary>
     /// <param name="item"></param>
-    public void UnEquipItem(Item item)
-    {
-        if (!itemInventory.Contains(item))
-            return;
-
-        if (equippedItem == item)
-            UnEquipEquippedItem();
-        else
-            itemInventory.Remove(item);
-    }
-
     public void DeleteItem(Item item)
     {
         Item oldEquippedOtem = equippedItem;
 
         if (itemInventory.Count > 1)
-        {
             SwitchEquippedItem(true);
-        }
         else
-        {
             UnEquipEquippedItem();
-        }
 
         itemInventory.Remove(oldEquippedOtem);
+    }
+
+    public void DeleteEquippedItem()
+    {
+        DeleteItem(equippedItem);
     }
 }

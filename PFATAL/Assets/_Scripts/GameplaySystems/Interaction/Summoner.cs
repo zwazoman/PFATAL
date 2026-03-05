@@ -35,7 +35,6 @@ public class Summoner : NetworkBehaviour
     [SerializeField] NetworkPrefabsList prefabs;
 
     Dictionary<string, GameObject> spawnableObjectsDict = new();
-
     GameObject _currentObject;
 
     private void Start()
@@ -49,12 +48,12 @@ public class Summoner : NetworkBehaviour
         }
     }
 
-    public async Awaitable<GameObject> SpawnObject(GameObject gameObject, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null)
+    public async Awaitable<GameObject> SpawnObject(GameObject gameObject, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null, bool giveOwnershipToAsker = false)
     {
         if (context == null)
             context = new(0);
 
-        SpawnRpc(context.Value, gameObject.name, spawnPos, spawnRot);
+        SpawnRpc(context.Value, gameObject.name, spawnPos, spawnRot, giveOwnershipToAsker);
         while (_currentObject == null)
         {
             await Awaitable.NextFrameAsync();
@@ -72,9 +71,14 @@ public class Summoner : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    void SpawnRpc(SpawnContext context, string objectName, Vector3 spawnPos, Quaternion spawnRot)
+    void SpawnRpc(SpawnContext context, string objectName, Vector3 spawnPos, Quaternion spawnRot, bool giveOwnershipToAsker)
     {
-        NetworkObject newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
+        NetworkObject newObject = null;
+
+        if (giveOwnershipToAsker)
+            newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, context.askerID, true, true, false, spawnPos, spawnRot);
+        else
+            newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
 
         if (newObject.TryGetComponent(out Projectile projectile))
         {

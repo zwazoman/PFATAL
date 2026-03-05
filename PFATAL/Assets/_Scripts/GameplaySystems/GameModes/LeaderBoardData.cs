@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -7,7 +8,7 @@ public class LeaderBoardData : INetworkSerializable
 {
     public SortedSet<GameRulesBase.ScoreEntry> entries = new();
 
-    private GameRulesBase.ScoreEntry[] SerializedEntryArray;
+    private GameRulesBase.ScoreEntry[] _serializedEntryArray;
     public LeaderBoardData()
     {
         this.entries = new();
@@ -17,18 +18,24 @@ public class LeaderBoardData : INetworkSerializable
     {
         if (serializer.IsWriter)
         {
-            SerializedEntryArray = entries.ToArray();
-            serializer.SerializeValue(ref SerializedEntryArray);
+            _serializedEntryArray = entries.ToArray();
+            serializer.SerializeValue(ref _serializedEntryArray);
         }
         else
         {
-            serializer.SerializeValue(ref SerializedEntryArray);
+            serializer.SerializeValue(ref _serializedEntryArray);
             entries.Clear();
-            foreach (GameRulesBase.ScoreEntry entry in SerializedEntryArray)
+            foreach (GameRulesBase.ScoreEntry entry in _serializedEntryArray)
             {
                 entries.Add(entry);
             }
         }
         
+    }
+
+    public void Clear()
+    {
+        entries.Clear();
+        _serializedEntryArray = Array.Empty<GameRulesBase.ScoreEntry>();
     }
 }

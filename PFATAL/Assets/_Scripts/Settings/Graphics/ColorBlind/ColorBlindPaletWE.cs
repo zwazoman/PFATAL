@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Accessibility;
 
+#if UNITY_EDITOR
+
 /// <summary>
 ///  A window editor so that we can know what multiple symptoms of color blindness sees on a choosen color.
 /// </summary>
@@ -152,3 +154,4 @@ public class ColorBlindPaletWE : EditorWindow
             VisionUtility.GetColorBlindSafePalette(_palette, _desiredLuminance.x, _desiredLuminance.y);
     }
 }
+#endif

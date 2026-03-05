@@ -1185,7 +1185,7 @@ MonoBehaviour:
   _character: {fileID: 6498883890364450799}
   _cameraRoot: {fileID: 2070798881448743286}
   _rigidbody: {fileID: 8461385192548545692}
-  _sensitivity: 30000
+  _sensitivity: 10
 --- !u!135 &7639704519177886408
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1286,7 +1286,7 @@ MonoBehaviour:
   _leftHand: {fileID: 7425674613640483050}
   _rightHand: {fileID: 4688369128609190103}
   _prefabs:
-  - {fileID: 8138086813635680726, guid: a6f34e54e624d464487097aeed14c6d9, type: 3}
+  - {fileID: 8029669288018139043, guid: a6f34e54e624d464487097aeed14c6d9, type: 3}
   - {fileID: 4084173529431785421, guid: 21918f97f8b656b43b05a07e9b798d77, type: 3}
   - {fileID: 7832820956731758131, guid: 4c4e5a389303fb64e915ce4eb27e1dd2, type: 3}
 --- !u!114 &1655656451230195503
@@ -1329,11 +1329,35 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8726357715619173195}
+        m_TargetAssemblyTypeName: PlayerCharacterInputs, Assembly-CSharp
+        m_MethodName: Move
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 351f2ccd-1f9f-44bf-9bec-d62ac5c5f408
     m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8726357715619173195}
+        m_TargetAssemblyTypeName: PlayerCharacterInputs, Assembly-CSharp
+        m_MethodName: Look
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 6b444451-8a00-4d00-a97e-f47457f736a8
     m_ActionName: 'Player/Look[/Mouse/delta]'
   - m_PersistentCalls:
@@ -1373,11 +1397,35 @@ MonoBehaviour:
     m_ActionId: 2b26704d-66b6-4aa3-b4df-20a5812fc980
     m_ActionName: 'Player/Drop[/Keyboard/q]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8726357715619173195}
+        m_TargetAssemblyTypeName: PlayerCharacterInputs, Assembly-CSharp
+        m_MethodName: Jump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: f1ba0d36-48eb-4cd5-b651-1c94a6531f70
     m_ActionName: 'Player/Jump[/Keyboard/space]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8726357715619173195}
+        m_TargetAssemblyTypeName: PlayerCharacterInputs, Assembly-CSharp
+        m_MethodName: Sprint
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 641cd816-40e6-41b4-8c3d-04687c349290
     m_ActionName: 'Player/Sprint[/Keyboard/leftShift]'
   - m_PersistentCalls:

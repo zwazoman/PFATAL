@@ -1,5 +1,6 @@
 using _Scripts.StateMachine;
 using System;
+using UnityEngine;
 
 namespace _scripts.PlayerCharacter.StateMachine.States
 {
@@ -16,8 +17,9 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
             ctx.SwapActionMapToUI();
             ctx.HidePlayerRpc();
+            ctx.physics.SetVelocity(Vector3.zero);
+            ctx.inputs.Clear();
             ctx.HUD.ShowDeathUI();
-
             ctx.HUD.respawnButton.onClick.AddListener(Respawn);
         }
 
@@ -28,7 +30,6 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             ctx.SwapActionMapToPlayer();
             ctx.ShowPlayerRpc();
             ctx.HUD.HideDeathUI();
-
             ctx.health.Heal();
 
             PlayerCharacterSpawner.Instance.SpawnPlayer(ctx);

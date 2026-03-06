@@ -125,7 +125,7 @@ public abstract class GameRulesBase
         {
             _players.Add(clientID, new PlayerData() { ClientID = clientID });
             _players[clientID].Score = new ScoreEntry() { ClientID = clientID };
-        }
+        }       
     }
 
     /// <summary>

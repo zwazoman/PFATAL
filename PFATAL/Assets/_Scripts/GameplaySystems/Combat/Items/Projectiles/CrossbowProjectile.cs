@@ -43,7 +43,7 @@ public class CrossbowProjectile : Projectile
     {
         _spawnTime = timestamp;
         _spawnPosition = position;
-        transform.localScale *= (1 + chargeTime);
+        transform.localScale *= (1 + chargeTime); //todo virer et faire l'équilibrage des dgts et de la vitesse
         _initialized = true;
     }
 

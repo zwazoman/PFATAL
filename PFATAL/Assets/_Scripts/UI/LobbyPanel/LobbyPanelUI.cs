@@ -29,6 +29,8 @@ public class LobbyPanelUI : MonoBehaviour
     
     public void RefreshPlayerList(PlayerList newPlayerList)
     {
+        print("RefreshPlayerList");
+        print("Lobby Updated : \n" + newPlayerList.ToString());
         //clear existing player slots
         foreach (Transform child in _playerSlotsParent)
         {
@@ -59,7 +61,7 @@ public class LobbyPanelUI : MonoBehaviour
             PlayerStatus.Ready => Color.green * .25f,
             PlayerStatus.Waiting => Color.red * .25f,
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
-        }; 
+        };
         _statusText.text = status.ToString();
     }
 

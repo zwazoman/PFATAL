@@ -1,30 +1,52 @@
 using _Scripts.StateMachine;
+using System;
 
 namespace _scripts.PlayerCharacter.StateMachine.States
 {
+    [Serializable]
     public class Pst_Dead : PlayerState
     {
+        bool _respawn;
+
         protected override void OnEntered(PlayerCharacter ctx)
         {
             base.OnEntered(ctx);
 
+            _respawn = false;
+
             ctx.SwapActionMapToUI();
             ctx.HidePlayerRpc();
+            ctx.HUD.ShowDeathUI();
+
+            ctx.HUD.respawnButton.onClick.AddListener(Respawn);
         }
 
         protected override void OnExited(PlayerCharacter ctx)
         {
             base.OnExited(ctx);
+
+            ctx.SwapActionMapToPlayer();
+            ctx.ShowPlayerRpc();
+            ctx.HUD.HideDeathUI();
+
+            ctx.health.Heal();
+
+            PlayerCharacterSpawner.Instance.SpawnPlayer(ctx);
+
+            ctx.HUD.respawnButton.onClick.RemoveListener(Respawn);
         }
 
-        public override void Behave(PlayerCharacter ctx, UpdatePoint updatePoint)
+        void Respawn()
         {
-            base.Behave(ctx, updatePoint);
+            _respawn = true;
         }
 
         public override StateBase<PlayerCharacter> FindNextState(global::_scripts.PlayerCharacter.PlayerCharacter ctx)
         {
-            return this;
+            if (_respawn)
+                return Sm.s_Idle;
+
+            return base.FindNextState(ctx);
         }
     }
 }

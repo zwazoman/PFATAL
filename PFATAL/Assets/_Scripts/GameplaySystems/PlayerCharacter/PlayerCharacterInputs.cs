@@ -2,6 +2,7 @@ using Chat;
 using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// cette classe contient les inputs du joueur et est utilisée dans les states du personnage.
@@ -31,7 +32,42 @@ public class PlayerCharacterInputs : NetworkBehaviour
     private float _lastJumpKeyPressTime;
     private bool _jumpKeyBuffered;
     public bool IsHoldingJumpKey { get; private set; }
-    
+
+    public void Move(InputAction.CallbackContext context)
+    {
+        movementInput = context.ReadValue<Vector2>();
+    }
+
+    public void Look(InputAction.CallbackContext context)
+    {
+        aimInput = context.ReadValue<Vector2>();
+    }
+
+    public void Jump(InputAction.CallbackContext context)
+    {
+        IsHoldingJumpKey = true;
+        if (context.started)
+        {
+            _jumpKeyBuffered = true;
+            _lastJumpKeyPressTime = Time.time;
+        }
+        _jumpKeyBuffered &= Time.time - _lastJumpKeyPressTime <= _jumpBufferingDuration && IsHoldingJumpKey;
+        if (context.canceled)
+        {
+            IsHoldingJumpKey = false;
+            _jumpKeyBuffered = false;
+        }
+    }
+
+    public void Sprint(InputAction.CallbackContext context)
+    {
+        isHoldingRunKey = true;
+        if (context.canceled)
+        {
+            isHoldingRunKey = false;
+        }
+    }
+
     void Update()
     {
         if (IsSpawned && !IsOwner) return;
@@ -44,29 +80,12 @@ public class PlayerCharacterInputs : NetworkBehaviour
             _paused = true;
         }
 
-        //movement
-        movementInput = new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical")).normalized;
-        
-        //aim
+        //aim, needs fixing with diagonals
         aimInput = Vector2.SmoothDamp(
-            aimInput,
-            new Vector2(Input.mousePositionDelta.x/(float)Screen.height,-Input.mousePositionDelta.y/(float)Screen.height),
+            new Vector2(aimInput.x,-aimInput.y),
+            new Vector2(Input.mousePositionDelta.x/(float)Screen.height,Input.mousePositionDelta.y/(float)Screen.height),
             ref aimVel,
             _aimSmoothingTime);
-
-        //jump
-        IsHoldingJumpKey = Input.GetKey(KeyCode.Space);
-        
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _jumpKeyBuffered = true;
-            _lastJumpKeyPressTime = Time.time;
-        }
-        _jumpKeyBuffered &= Time.time - _lastJumpKeyPressTime <= _jumpBufferingDuration && IsHoldingJumpKey;
-        
-        //run
-        isHoldingRunKey = Input.GetKey(KeyCode.LeftShift);
-        
     }
 
     public void Clear()

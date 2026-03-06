@@ -15,16 +15,14 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     
     //events
     public event Action<DamageData> OnDamageTaken;
-    public event Action OnDead;
+    public event Action OnDie;
     public event Action<float> OnHpChanged;
-    
+
     /// <summary>
     /// Fait des dégats à l'entité. Doit être appelé sur le serveur uniquement.
     /// </summary>
     public void TakeDamage(DamageData damageData)
-    {
-        //Assert.IsTrue(IsServer,"Impossible d'appliquer les dégats depuis un client.");
-        
+    { 
         LastDamageSourceClientID = damageData.SourcePlayerClientID;
         SetHpRPC(HP - damageData.Amount);
         InvokeDamageEventRPC(damageData);
@@ -35,7 +33,6 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     /// </summary>
     public void Heal()
     {
-        //Assert.IsTrue(IsServer,"Impossible de modifier les HPs depuis un client.");
         SetHpRPC(MaxHP);
     }
     
@@ -44,12 +41,10 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     /// </summary>
     public void Heal(float amount)
     {
-        //Assert.IsTrue(IsServer,"Impossible de modifier les HPs depuis un client.");
         SetHpRPC(HP + amount);
     }
     
     //replication 
-    
     [Rpc(SendTo.Everyone)]
     private void SetHpRPC(float hp)
     {
@@ -58,7 +53,8 @@ public class DamageableObject : NetworkBehaviour, IDamageable
 
         if (HP == 0)
         {
-            OnDead?.Invoke();
+            OnDie?.Invoke();
+            print("die");
         }
     }
     

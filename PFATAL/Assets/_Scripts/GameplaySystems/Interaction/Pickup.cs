@@ -16,8 +16,6 @@ public class Pickup : Interactable
         if(interaction.main.playerHands.TryEquipItem(_itemInfo))
             if(_despawnsOnPickup)
                 DespawnRpc();
-        else
-            print("couldn't equip item");
     }
 
     [Rpc(SendTo.Server)]

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NetworkStartUI : MonoBehaviour
 {
-    [SerializeField] PlayerSpawner _playerSpawner;
+    [SerializeField] PlayerCharacterSpawner _playerSpawner ;
 
     private async void OnGUI()
     {

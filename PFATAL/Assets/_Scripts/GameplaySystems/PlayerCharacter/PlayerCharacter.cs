@@ -38,6 +38,7 @@ namespace _scripts.PlayerCharacter
             gameObject.name = gameObject.name + NetworkBehaviourId + OwnerClientId;
         }
 
+        //todo : mettre ça dans characterInputs==
         public bool CheckActionmap(InputActionMap actionMap)
         {
             if (actionMap == playerInput.currentActionMap)
@@ -58,7 +59,10 @@ namespace _scripts.PlayerCharacter
 
             playerInput.SwitchCurrentActionMap("Player");
         }
-
+        //========
+        
+        //==todo : mettre ça dans PlayerCharacterVisuals==
+        
         [Rpc(SendTo.Everyone)]
         public void HidePlayerRpc()
         {
@@ -70,5 +74,7 @@ namespace _scripts.PlayerCharacter
         {
             //montrer les visuels
         }
+        
+        //===============
     }
 }

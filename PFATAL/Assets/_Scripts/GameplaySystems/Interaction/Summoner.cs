@@ -22,14 +22,6 @@ public class Summoner : NetworkBehaviour
             return instance;
         }
     }
-
-    private void Awake()
-    {
-        if (instance == null || instance == this)
-            instance = this;
-        else
-            Destroy(this);
-    }
     #endregion
 
     [SerializeField] NetworkPrefabsList prefabs;
@@ -37,8 +29,14 @@ public class Summoner : NetworkBehaviour
     Dictionary<string, GameObject> spawnableObjectsDict = new();
     GameObject _currentObject;
 
-    private void Start()
+    private void Awake()
     {
+        if (instance == null || instance == this)
+            instance = this;
+        else
+            Destroy(this);
+
+
         foreach (NetworkPrefab spawnableObject in prefabs.PrefabList)
         {
             if (!spawnableObjectsDict.ContainsKey(spawnableObject.Prefab.name))
@@ -103,7 +101,9 @@ public struct SpawnContext : INetworkSerializeByMemcpy
 {
     public ulong askerID;
 
-    public SpawnContext(ulong askerID)
+    public float data;
+
+    public SpawnContext(ulong askerID) :this()
     {
         this.askerID = askerID;
     }

@@ -20,17 +20,17 @@ public class ScoreboardUI : MonoBehaviour
         }
     }
 
+    //todo : trouver un moyen de affichier le ping par clientID
     public void RefreshUI()
     {
+        int i = 0;
         foreach (var player in gameManager.LeaderBoard.entries)
         {
-            for (int i = 0; i < playerCards.Count; i++)
-            {   
-                if (player.ClientID.ToString() == playerCards[i].playerNameText.text)
-                {
-                    playerCards[i].UpdatePlayerInfo(player.Kills, player.Deaths, UnityEngine.Random.Range(10, 100));
-                }
-            }
+            PlayerCardUI card = playerCards[i];
+
+            card.SetPlayerInfo(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths, 99);
+            card.transform.SetSiblingIndex(i);
+            i++;
         }
     }
 

@@ -12,15 +12,38 @@ public class ScoreboardUI : MonoBehaviour
 
     private List<PlayerCardUI> playerCards = new List<PlayerCardUI>();
 
+    void OnEnable()
+    {
+        gameManager.EventOnGameEnded += OnGameEnded;
+    }
+
+    void OnDisable()
+    {
+        gameManager.EventOnGameEnded -= OnGameEnded;
+    }
+
+    private void OnGameEnded(GameRulesBase.GameResult result)
+    {
+        scoreboardPanel.SetActive(true);
+    }
+
+
     void LateUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ShowScoreboard();
+        }
+        if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            ShowScoreboard();
+        }
         if (scoreboardPanel.activeSelf)
         {
-            RefreshUI();
+            RefreshUI(); //voir ou mettre pour mettre à jour quand un resultat change
         }
     }
 
-    //todo : trouver un moyen de affichier le ping par clientID
     public void RefreshUI()
     {
         int i = 0;
@@ -42,8 +65,6 @@ public class ScoreboardUI : MonoBehaviour
         playerCards.Add(cardUI);
     }
 
-
-    // Change la visibilité du Scoreboard lorsque le joueur appuie sur la touche Tab (ptet faire que quand le joueur maintient la touche Tab)
     public void ShowScoreboard()
     {
         scoreboardPanel.SetActive(!scoreboardPanel.activeSelf);

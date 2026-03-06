@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NetworkStartUI : MonoBehaviour
 {
-    [SerializeField] PlayerCharacterSpawner playerCharacterSpawner;
+    [SerializeField] PlayerCharacterSpawner _playerSpawner ;
 
     private async void OnGUI()
     {
@@ -16,7 +16,7 @@ public class NetworkStartUI : MonoBehaviour
         {
             foreach(ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
             {
-                await playerCharacterSpawner.SpawnPlayerCharacter(clientId);
+                await _playerSpawner.SpawnInitialPlayerCharacter(clientId);
             }
         }
     }

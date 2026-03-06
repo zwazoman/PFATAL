@@ -148,7 +148,7 @@ public abstract class GameRulesBase
     {
         foreach (PlayerData playerData in _players.Values)
         {
-            playerData.Character = await PlayerCharacterSpawner.Instance.SpawnPlayerCharacter(playerData.ClientID);
+            playerData.Character = await PlayerCharacterSpawner.Instance.SpawnInitialPlayerCharacter(playerData.ClientID);
         }
     }
 

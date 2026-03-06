@@ -51,6 +51,7 @@ public class Crossbow : Item
         {
             isCharged = true;
             chargevalue = _maxCharge;
+            print("crossbow fully charged");
         }
     }
 

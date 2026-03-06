@@ -45,8 +45,17 @@ public class Summoner : NetworkBehaviour
             }
         }
     }
-
-    public async Awaitable<GameObject> SpawnObject(GameObject gameObjectToSpawn, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null, bool giveOwnershipToAsker = false)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="gameObjectToSpawn"></param>
+    /// <param name="spawnPos"></param>
+    /// <param name="spawnRot"></param>
+    /// <param name="context"></param>
+    /// <param name="giveOwnershipToAsker"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public async Awaitable<GameObject> SpawnObject(GameObject gameObjectToSpawn, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null, ulong futureOwner = 1000)
     {
         if (context == null)
             context = new(0);
@@ -54,11 +63,13 @@ public class Summoner : NetworkBehaviour
         if(gameObjectToSpawn == null)
             throw new ArgumentNullException(nameof(gameObjectToSpawn));
         
-        SpawnRpc(context.Value, gameObjectToSpawn.name, spawnPos, spawnRot, giveOwnershipToAsker);
+        SpawnRpc(context.Value, gameObjectToSpawn.name, spawnPos, spawnRot, futureOwner);
         while (_currentObject == null)
         {
             await Awaitable.NextFrameAsync();
         }
+
+        print($"{_currentObject.name} received");
 
         GameObject newObject = _currentObject;
         _currentObject = null;
@@ -72,12 +83,12 @@ public class Summoner : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    void SpawnRpc(SpawnContext context, string objectName, Vector3 spawnPos, Quaternion spawnRot, bool giveOwnershipToAsker)
+    void SpawnRpc(SpawnContext context, string objectName, Vector3 spawnPos, Quaternion spawnRot, ulong futureOwner)
     {
         NetworkObject newObject = null;
 
-        if (giveOwnershipToAsker)
-            newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, context.askerID, true, true, false, spawnPos, spawnRot);
+        if (futureOwner != 1000)
+            newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, futureOwner, true, true, false, spawnPos, spawnRot);
         else
             newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
 

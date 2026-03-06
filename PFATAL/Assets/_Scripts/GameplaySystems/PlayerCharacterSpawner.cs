@@ -34,9 +34,9 @@ public class PlayerCharacterSpawner : MonoBehaviour
     public async Awaitable<PlayerCharacter> SpawnInitialPlayerCharacter(ulong ownerClientID)
     {
         Transform spawnSocket = SelectSpawnSocket();
-        SpawnContext context = new(ownerClientID);
+        SpawnContext context = new(0);
 
-        GameObject player = await Summoner.Instance.SpawnObject(_characterPrefab, spawnSocket.position, spawnSocket.rotation, context, true);
+        GameObject player = await Summoner.Instance.SpawnObject(_characterPrefab, spawnSocket.position, spawnSocket.rotation, context, ownerClientID);
         return player.GetComponent<PlayerCharacter>();
     }
 

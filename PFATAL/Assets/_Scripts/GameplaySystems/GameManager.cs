@@ -11,10 +11,24 @@ public class GameManager : NetworkBehaviour
 
     public static GameMode gameMode = GameMode.DeathMatch;
 
+    private int _playersInScene = 0;
+    
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if(IsServer) StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(),gameMode);
+        SignalJoinRPC();
+    }
+
+    [Rpc(SendTo.Server)]
+    void SignalJoinRPC()
+    {
+        print("Player loaded the map");
+        _playersInScene++;
+        if (_playersInScene == NetworkManager.Singleton.ConnectedClientsIds.Count)
+        {
+            print("Everyone laoded the map. start game !");
+            StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(),gameMode);
+        }
     }
     
     //data

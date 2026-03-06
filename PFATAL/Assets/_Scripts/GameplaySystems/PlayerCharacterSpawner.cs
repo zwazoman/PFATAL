@@ -6,19 +6,22 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class PlayerSpawner : MonoBehaviour
+public class PlayerCharacterSpawner : MonoBehaviour
 {
-    public static PlayerSpawner Instance { get; private set; }
+    public static PlayerCharacterSpawner Instance { get; private set; }
     void Awake()
     {
         Instance = this;
     }
 
-    [SerializeField] GameObject _playerPrefab;
+    [Header("Asset references")]
+    [SerializeField] GameObject _characterPrefab;
+    
+    [Header("Scene references")]
     [SerializeField] List<Transform> _spawnSockets;
 
     [Header("SpawnPoint Settings")]
-    [SerializeField] float _playerDetectionRadius = 10f;
+    [SerializeField] float _playerDetectionRadius = 5f;
     [SerializeField] LayerMask _playerDetectionMask;
 
     /// <summary>
@@ -33,7 +36,7 @@ public class PlayerSpawner : MonoBehaviour
         Transform spawnSocket = SelectSpawnSocket();
         SpawnContext context = new(ownerClientID);
 
-        GameObject player = await Summoner.Instance.SpawnObject(_playerPrefab, spawnSocket.position, spawnSocket.rotation, context, true);
+        GameObject player = await Summoner.Instance.SpawnObject(_characterPrefab, spawnSocket.position, spawnSocket.rotation, context, true);
         return player.GetComponent<PlayerCharacter>();
     }
 

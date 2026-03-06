@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,6 +8,28 @@ public class GameManager : NetworkBehaviour
 {
     //todo : scriptable object avec game settings ?
     private const float DEATH_MATCH_GAME_DURATION = 100;
+
+    public static GameMode gameMode = GameMode.DeathMatch;
+
+    private int _playersInScene = 0;
+    
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        SignalJoinRPC();
+    }
+
+    [Rpc(SendTo.Server)]
+    void SignalJoinRPC()
+    {
+        print("Player loaded the map");
+        _playersInScene++;
+        if (_playersInScene == NetworkManager.Singleton.ConnectedClientsIds.Count)
+        {
+            print("Everyone laoded the map. start game !");
+            StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(),gameMode);
+        }
+    }
     
     //data
     public enum GameMode
@@ -32,6 +55,7 @@ public class GameManager : NetworkBehaviour
     {
         if (IsServer)
         {
+            print("server start game");
             switch (gameMode)
             {
                 case GameMode.DeathMatch:

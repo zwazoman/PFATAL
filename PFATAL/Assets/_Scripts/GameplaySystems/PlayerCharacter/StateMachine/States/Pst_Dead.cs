@@ -31,7 +31,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
             ctx.health.Heal();
 
-            PlayerSpawner.Instance.SpawnPlayer(ctx);
+            PlayerCharacterSpawner.Instance.SpawnPlayer(ctx);
 
             ctx.HUD.respawnButton.onClick.RemoveListener(Respawn);
         }

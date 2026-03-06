@@ -26,15 +26,10 @@ public class CrossbowProjectile : Projectile
         base.OnNetworkSpawn();
         //_spawnTime = TimeStamp.Now;
         //_spawnPosition = transform.position;
-        //if (NetworkManager.Singleton.IsServer)
-        //{
-        //    InitRPC(TimeStamp.Now,transform.position);
-        //}
-
-        _spawnPosition = transform.position;
-        _spawnTime = spawnContext.timeStamp;
-        _initialized = true;
-
+        if (NetworkManager.Singleton.IsServer)
+        {
+            InitRPC(TimeStamp.Now,transform.position);
+        }
     }
 
     [Rpc(SendTo.Everyone)]

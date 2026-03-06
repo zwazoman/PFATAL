@@ -8,6 +8,7 @@ using _scripts.PlayerCharacter;
 using JetBrains.Annotations;
 using Unity.Netcode;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 /// <summary>
@@ -133,24 +134,42 @@ public abstract class GameRulesBase
     /// Doit être appelé par le server après que tous
     /// les clients se soient connectés.
     /// </summary>
-    public async void TriggerGameStart()
+    public async Awaitable TriggerGameStart()
     {
         if(IsPlaying) throw new Exception("Game has started already.");
+        Debug.Log("game rule trigger game start");
 
         IsPlaying = true;
+        Debug.Log("about to spawn players");
         await SpawnPlayerCharacters();
+        Debug.Log("spawned all players.");
         _gameStartTime = TimeStamp.Now;
         StartGame();
-        OnGameStarted?.Invoke(TimeStamp.Now);
+        Debug.Log("game rule invoke OnGameStarted");
+        OnGameStarted?.Invoke(_gameStartTime);
     }
 
-    private async Task SpawnPlayerCharacters()
+    private async Awaitable SpawnPlayerCharacters()
     {
-        foreach (PlayerData playerData in _players.Values)
+        try
         {
-            Debug.Log($"Spawning player {playerData.ClientID}");
-            playerData.Character = await PlayerCharacterSpawner.Instance.SpawnInitialPlayerCharacter(playerData.ClientID);
+            Debug.Log("player character count : " + _players.Values.Count);
+            foreach (PlayerData playerData in _players.Values)
+            {
+                Debug.Log(("player data is null : " + (playerData == null).ToString()));
+                Debug.Log($"Spawning player {playerData.ClientID}");
+                playerData.Character =
+                    await PlayerCharacterSpawner.Instance.SpawnInitialPlayerCharacter(playerData.ClientID);
+                Debug.Log($"gamerule spawned {playerData.ClientID}");
+            }
+
+            Debug.Log($"gamerule finished spawning all players.");
         }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+        
     }
 
     /// <summary>

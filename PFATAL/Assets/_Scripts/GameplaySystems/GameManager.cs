@@ -7,11 +7,24 @@ using UnityEngine;
 public class GameManager : NetworkBehaviour
 {
     //todo : scriptable object avec game settings ?
-    private const float DEATH_MATCH_GAME_DURATION = 100;
+    public const float DEATH_MATCH_GAME_DURATION = 100;
 
     public static GameMode gameMode = GameMode.DeathMatch;
 
     private int _playersInScene = 0;
+    
+    public static GameManager Instance { get; private set ; }
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        Instance = null;
+    }
     
     public override void OnNetworkSpawn()
     {
@@ -49,7 +62,7 @@ public class GameManager : NetworkBehaviour
     public bool IsPlaying { get; private set ; } = false;
     public float TimeSinceGameStart => TimeStamp.Now - _gameStartTime;
     public LeaderBoardData LeaderBoard;
-    private float _gameStartTime;
+    public float _gameStartTime;
     
     private void StartGame(List<ulong> clientIDs,GameMode gameMode)
     {
@@ -66,6 +79,7 @@ public class GameManager : NetworkBehaviour
                     break;
             };
 
+            print("Link gamerules events");
             _serverGameRules.OnGameStarted += OnServerStartGameRPC;
             _serverGameRules.OnGameEnded += OnGameEnded;
             _serverGameRules.OnScoreBoardUpdated += OnScoreBoardUpdatedRpc;
@@ -96,6 +110,7 @@ public class GameManager : NetworkBehaviour
     {
         IsPlaying = true;
         _gameStartTime = startTime;
+        Debug.Log("Trigger OnGameStarted. start time : "+startTime);
         EventOnGameStarted?.Invoke();
     }
     

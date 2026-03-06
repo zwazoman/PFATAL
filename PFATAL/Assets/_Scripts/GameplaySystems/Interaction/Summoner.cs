@@ -48,12 +48,15 @@ public class Summoner : NetworkBehaviour
         }
     }
 
-    public async Awaitable<GameObject> SpawnObject(GameObject gameObject, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null, bool giveOwnershipToAsker = false)
+    public async Awaitable<GameObject> SpawnObject(GameObject gameObjectToSpawn, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null, bool giveOwnershipToAsker = false)
     {
         if (context == null)
             context = new(0);
-
-        SpawnRpc(context.Value, gameObject.name, spawnPos, spawnRot, giveOwnershipToAsker);
+        
+        if(gameObjectToSpawn == null)
+            throw new ArgumentNullException(nameof(gameObjectToSpawn));
+        
+        SpawnRpc(context.Value, gameObjectToSpawn.name, spawnPos, spawnRot, giveOwnershipToAsker);
         while (_currentObject == null)
         {
             await Awaitable.NextFrameAsync();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,6 +8,14 @@ public class GameManager : NetworkBehaviour
 {
     //todo : scriptable object avec game settings ?
     private const float DEATH_MATCH_GAME_DURATION = 100;
+
+    public static GameMode gameMode = GameMode.DeathMatch;
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if(IsServer) StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(),gameMode);
+    }
     
     //data
     public enum GameMode
@@ -32,6 +41,7 @@ public class GameManager : NetworkBehaviour
     {
         if (IsServer)
         {
+            print("server start game");
             switch (gameMode)
             {
                 case GameMode.DeathMatch:

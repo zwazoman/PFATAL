@@ -116,6 +116,8 @@ public abstract class GameRulesBase
     
     public GameRulesBase(List<ulong> clientIDs)
     {
+        Debug.Log($"instantiated game rule.");
+        
         if(!NetworkManager.Singleton.IsServer) 
             throw new NetworkAuthorityException("Seul le server peut gérer les regles du jeu.");
             
@@ -123,7 +125,7 @@ public abstract class GameRulesBase
         {
             _players.Add(clientID, new PlayerData() { ClientID = clientID });
             _players[clientID].Score = new ScoreEntry() { ClientID = clientID };
-        }       
+        }
     }
 
     /// <summary>
@@ -146,7 +148,7 @@ public abstract class GameRulesBase
     {
         foreach (PlayerData playerData in _players.Values)
         {
-            playerData.Character = await PlayerSpawner.Instance.SpawnPlayerCharacter(playerData.ClientID);
+            playerData.Character = await PlayerCharacterSpawner.Instance.SpawnPlayerCharacter(playerData.ClientID);
         }
     }
 

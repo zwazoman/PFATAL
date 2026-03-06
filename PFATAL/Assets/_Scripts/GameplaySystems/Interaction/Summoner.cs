@@ -81,6 +81,7 @@ public class Summoner : NetworkBehaviour
         if (newObject.TryGetComponent(out Projectile projectile))
         {
             projectile.spawnContext = context;
+            projectile.OnSpawn();
         }
 
         SendToAskerRpc(newObject, RpcTarget.Single(context.askerID, RpcTargetUse.Temp));
@@ -100,7 +101,6 @@ public class Summoner : NetworkBehaviour
 public struct SpawnContext : INetworkSerializeByMemcpy
 {
     public ulong askerID;
-
     public float data;
 
     public SpawnContext(ulong askerID) :this()

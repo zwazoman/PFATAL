@@ -12,10 +12,14 @@ public class Crossbow : Item
     [Header("Weapon Parameters")]
     [SerializeField] GameObject _projectile;
     [SerializeField] float tmpDelay;
-    [SerializeField] float rateOfFire;
 
-    protected bool canShoot = true;
-    protected bool isWaiting = false;
+    [SerializeField] float _maxCharge = 1;
+    [SerializeField] float _chargeMultiplyer = 1;
+
+    bool startedShooting = false;
+    bool canShoot = true;
+    bool isCharged = false;
+    float chargevalue;
 
     float _timer = 0;
 
@@ -25,26 +29,47 @@ public class Crossbow : Item
     {
         base.OnPickup(main, hand);
         canShoot = true;
-        isWaiting = false;
     }
 
     public override void StartUsing()
     {
-        base.StartUsing();
-        TryShoot();
+        if (canShoot)
+        {
+            startedShooting = true;
+            base.StartUsing();
+        }
     }
 
     public override void UseUpdate()
     {
-        TryShoot();
-    }
-
-    public async void ShootDelay()
-    {
-        if (isWaiting)
+        if (isCharged)
             return;
 
-        isWaiting = true;
+        chargevalue += Time.deltaTime * _chargeMultiplyer;
+
+        if(chargevalue >= _maxCharge)
+        {
+            isCharged = true;
+            chargevalue = _maxCharge;
+        }
+    }
+
+    public override void StopUsing()
+    {
+        base.StopUsing();
+
+        if (!canShoot || !startedShooting)
+            return;
+
+        Shoot(chargevalue);
+        chargevalue = 0;
+        isCharged = false;
+        startedShooting = false;
+    }
+
+    public async void StartShootDelay()
+    {
+        canShoot = false;
 
         while (_timer < tmpDelay)
         {
@@ -54,40 +79,19 @@ public class Crossbow : Item
         _timer = 0;
 
         canShoot = true;
-        isWaiting = false;
     }
 
-    public override void StopUsing()
-    {
-        base.StopUsing();
-    }
 
-    public virtual bool TryShoot()
-    {
-        if (canShoot)
-        {
-            Shoot();
-            canShoot = false;
-            ShootDelay();
-            return true;
-        }
-        return false;
-    }
-
-    async void Shoot()
+    void Shoot(float chargeValue)
     {
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
+        spawnContext.data = chargeValue;
 
         if (_shootSocket == null)
-        {
             _shootSocket = main.playerCamera.transform;
-        }
 
-        GameObject projectile = await Summoner.Instance.SpawnObject(_projectile, _shootSocket.position, _shootSocket.rotation, spawnContext);
-        
-        if(projectile.TryGetComponent(out CrossbowProjectile crossbowProjectile))
-        {
-            //faire évoluer les dgts en fonction du tmps d'appui de la crossbow
-        }
+        Summoner.Instance.SpawnObject(_projectile, _shootSocket.position, _shootSocket.rotation, spawnContext);
+
+        StartShootDelay();
     }
 }

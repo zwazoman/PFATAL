@@ -85,10 +85,7 @@ public class Hand : MonoBehaviour
     public void SwitchEquippedItem(bool isPrevious)
     {
         if(equippedItem == null || itemInventory.Count <= 0)
-        {
-            print("not enough items to scroll into");
             return;
-        }
 
         Item oldHeldItem = equippedItem;
 

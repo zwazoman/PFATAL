@@ -21,22 +21,29 @@ public class CrossbowProjectile : Projectile
 
     private bool _initialized = false;
 
-    public override void OnNetworkSpawn()
+    //public override void OnNetworkSpawn()
+    //{
+    //    base.OnNetworkSpawn();
+    //    //_spawnTime = TimeStamp.Now;
+    //    //_spawnPosition = transform.position;
+    //    if (NetworkManager.Singleton.IsServer)
+    //    {
+    //        InitRPC(TimeStamp.Now,transform.position);
+    //    }
+    //}
+
+    public override void OnSpawn()
     {
-        base.OnNetworkSpawn();
-        //_spawnTime = TimeStamp.Now;
-        //_spawnPosition = transform.position;
         if (NetworkManager.Singleton.IsServer)
-        {
-            InitRPC(TimeStamp.Now,transform.position);
-        }
+            InitRPC(TimeStamp.Now, transform.position, spawnContext.data);
     }
 
     [Rpc(SendTo.Everyone)]
-    void InitRPC(float timestamp, Vector3 position)
+    void InitRPC(float timestamp, Vector3 position, float chargeTime)
     {
         _spawnTime = timestamp;
         _spawnPosition = position;
+        transform.localScale *= (1 + chargeTime);
         _initialized = true;
     }
 
@@ -53,7 +60,6 @@ public class CrossbowProjectile : Projectile
             return;
         
         float timeSinceSpawn = TimeStamp.Now-_spawnTime;
-        
 
         //mouvement
         _oldPosition = transform.position;
@@ -69,12 +75,13 @@ public class CrossbowProjectile : Projectile
             
             //collisions
             Vector3 movement = transform.position - _oldPosition;
-            int hitCount = Physics.SphereCastNonAlloc(transform.position, CollisionRadius, movement, _hitBuffer, movement.magnitude,_layerMask);
+
+            int hitCount = Physics.SphereCastNonAlloc(transform.position, CollisionRadius, movement.normalized, _hitBuffer, movement.magnitude,_layerMask);
             int actualHitCount = hitCount;
-            print("HitCount : "+hitCount);
+            //print("HitCount : "+hitCount);
             for(int i =0; i < hitCount; i++)
             {
-                print(_hitBuffer[i].collider.gameObject.name);
+                //print(_hitBuffer[i].collider.gameObject.name);
                 if(_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
                 {
                     if (damageable.OwnerClientId == spawnContext.askerID)
@@ -94,7 +101,7 @@ public class CrossbowProjectile : Projectile
                     return;
                 }   
             }
-            print("ActualHitCount : "+actualHitCount);
+            //print("ActualHitCount : "+actualHitCount);
             if(actualHitCount > 0) DespawnRpc();
         }
         

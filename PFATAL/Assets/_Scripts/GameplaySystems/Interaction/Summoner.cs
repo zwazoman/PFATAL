@@ -1,8 +1,7 @@
-using AYellowpaper.SerializedCollections;
+using _scripts.PlayerCharacter;
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
-using UnityEditor;
 using UnityEngine;
 
 public class Summoner : NetworkBehaviour
@@ -111,11 +110,10 @@ public class Summoner : NetworkBehaviour
     }
 }
 
-
 public struct SpawnContext : INetworkSerializeByMemcpy
 {
     public ulong askerID;
-    public float data;
+    public float floatData;
 
     public SpawnContext(ulong askerID) :this()
     {

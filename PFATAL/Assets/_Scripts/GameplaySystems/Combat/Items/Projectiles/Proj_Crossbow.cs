@@ -12,14 +12,16 @@ public class Proj_Crossbow : Projectile
     [SerializeField] private float _damageAmount;
     [SerializeField] LayerMask _layerMask;
     
-    private float _spawnTime;
-    private Vector3 _spawnPosition;
+    float _spawnTime;
+    Vector3 _spawnPosition;
     
     Vector3 _oldPosition;
 
     static RaycastHit[] _hitBuffer = new RaycastHit[10];
 
-    private bool _initialized = false;
+    bool _initialized = false;
+
+    Vector3 _target;
 
     //public override void OnNetworkSpawn()
     //{
@@ -35,7 +37,7 @@ public class Proj_Crossbow : Projectile
     public override void OnSpawn()
     {
         if (NetworkManager.Singleton.IsServer)
-            InitRPC(TimeStamp.Now, transform.position, spawnContext.data);
+            InitRPC(TimeStamp.Now, transform.position, spawnContext.floatData);
     }
 
     [Rpc(SendTo.Everyone)]
@@ -44,6 +46,7 @@ public class Proj_Crossbow : Projectile
         _spawnTime = timestamp;
         _spawnPosition = position;
         transform.localScale *= (1 + chargeTime); //todo virer et faire l'équilibrage des dgts et de la vitesse
+
         _initialized = true;
     }
 

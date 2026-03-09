@@ -1,5 +1,7 @@
 using _scripts.PlayerCharacter;
+using Unity.Mathematics;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -15,6 +17,8 @@ public class Crossbow : Item
 
     [SerializeField] float _maxCharge = 1;
     [SerializeField] float _chargeMultiplyer = 1;
+
+    [SerializeField] LayerMask _layerMask;
 
     bool startedShooting = false;
     bool canShoot = true;
@@ -86,12 +90,26 @@ public class Crossbow : Item
     void Shoot(float chargeValue)
     {
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
-        spawnContext.data = chargeValue;
+        spawnContext.floatData = chargeValue;
 
         if (_shootSocket == null)
             _shootSocket = main.playerCamera.transform;
 
-        Summoner.Instance.SpawnObject(_projectile, _shootSocket.position, _shootSocket.rotation, spawnContext);
+        Quaternion rotation;
+
+        RaycastHit hit;
+        if(Physics.Raycast(main.playerCamera.transform.position, main.playerCamera.transform.forward, out hit, Mathf.Infinity, _layerMask))
+        {
+            print(hit.collider.gameObject.name);
+            Debug.DrawLine(main.playerCamera.transform.position, main.playerCamera.transform.position + main.playerCamera.transform.forward * 100, Color.blue, 10);
+            Debug.DrawLine(_shootSocket.position, hit.point, Color.red, 10);
+            Vector3 direction = _shootSocket.position - hit.point;
+            rotation = Quaternion.LookRotation(-direction, transform.up);
+        }
+        else
+            rotation = _shootSocket.rotation;
+
+        Summoner.Instance.SpawnObject(_projectile, _shootSocket.position, rotation, spawnContext);
 
         StartShootDelay();
     }

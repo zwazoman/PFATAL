@@ -48,8 +48,6 @@ public class Proj_Bomb : Projectile
         data.Amount = _damages;
         data.SourcePlayerClientID = spawnContext.askerID;
 
-        ColliderHit hit;
-
         foreach(Collider coll in Physics.OverlapSphere(transform.position, _explosionRange))
         {
             if(coll.TryGetComponent(out DamageableObject damageable))

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Pickup : Interactable
 {
+    public event Action OnPickup;
+
     [SerializeField] bool _despawnsOnPickup = true;
 
     [Header("Item Info")]
@@ -16,6 +18,7 @@ public class Pickup : Interactable
         if(interaction.main.playerHands.TryEquipItem(_itemInfo))
             if(_despawnsOnPickup)
                 DespawnRpc();
+        OnPickup?.Invoke();
     }
 
     [Rpc(SendTo.Server)]

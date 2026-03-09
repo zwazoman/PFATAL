@@ -43,7 +43,7 @@ public class CrossbowProjectile : Projectile
     {
         _spawnTime = timestamp;
         _spawnPosition = position;
-        transform.localScale *= (1 + chargeTime); //todo virer et faire l'équilibrage des dgts et de la vitesse
+        transform.localScale *= (1 + chargeTime); //todo virer et faire l'ï¿½quilibrage des dgts et de la vitesse
         _initialized = true;
     }
 
@@ -76,14 +76,24 @@ public class CrossbowProjectile : Projectile
             //collisions
             Vector3 movement = transform.position - _oldPosition;
 
-            int hitCount = Physics.SphereCastNonAlloc(transform.position, CollisionRadius, movement.normalized, _hitBuffer, movement.magnitude,_layerMask);
+            int hitCount = Physics.SphereCastNonAlloc(
+                transform.position, CollisionRadius,
+                movement.normalized,
+                _hitBuffer,
+                movement.magnitude,
+                _layerMask);
+            
             int actualHitCount = hitCount;
             //print("HitCount : "+hitCount);
             for(int i =0; i < hitCount; i++)
             {
+                    print("Collision !!!!!!!! - "+_hitBuffer[i].collider.gameObject);
+                
                 //print(_hitBuffer[i].collider.gameObject.name);
                 if(_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
                 {
+                    print("DamageableObject");
+                    
                     if (damageable.OwnerClientId == spawnContext.askerID)
                     {
                         actualHitCount--;

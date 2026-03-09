@@ -92,9 +92,8 @@ public class GameManager : NetworkBehaviour
 
     void OnGameEnded(GameRulesBase.GameResult gameResult)
     {
-        print("game result is null : " + (gameResult==null).ToString());
-        print("leaderboard is null : " + (LeaderBoard==null).ToString());
-        OnServerEndGameRPC(gameResult);
+
+		OnServerEndGameRPC(gameResult);
         LeaderBoard.Clear();
     }
 
@@ -120,7 +119,7 @@ public class GameManager : NetworkBehaviour
     void OnServerEndGameRPC(GameRulesBase.GameResult gameResult)
     {
         IsPlaying = false;
-        print("Game ended. Result : \n" + gameResult.ToString());
+        print("Game ended. Shared result : \n" + gameResult.ToString());
         EventOnGameEnded?.Invoke(gameResult);
     }
     

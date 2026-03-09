@@ -69,7 +69,7 @@ public class Summoner : NetworkBehaviour
             await Awaitable.NextFrameAsync();
         }
 
-        print($"{_currentObject.name} received");
+        //print($"{_currentObject.name} received");
 
         GameObject newObject = _currentObject;
         _currentObject = null;

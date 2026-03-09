@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameManager : NetworkBehaviour
 {
     //todo : scriptable object avec game settings ?
-    public const float DEATH_MATCH_GAME_DURATION = 100;
+    public const float DEATH_MATCH_GAME_DURATION = 20;
 
     public static GameMode gameMode = GameMode.DeathMatch;
 
@@ -92,6 +92,8 @@ public class GameManager : NetworkBehaviour
 
     void OnGameEnded(GameRulesBase.GameResult gameResult)
     {
+        print("game result is null : " + (gameResult==null).ToString());
+        print("leaderboard is null : " + (LeaderBoard==null).ToString());
         OnServerEndGameRPC(gameResult);
         LeaderBoard.Clear();
     }

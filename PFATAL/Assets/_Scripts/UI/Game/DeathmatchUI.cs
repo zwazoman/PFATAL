@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -14,10 +15,10 @@ public class DeathmatchUI : MonoBehaviour
             {
                 Destroy(gameObject);
                 return;
-            } 
+            }
             
             _timerText.enabled = true;
-            InvokeRepeating(nameof(UpdateTimerText), 0, 1f);
+            InvokeRepeating(nameof(UpdateTimerText), 0, .5f);
         };
 
         GameManager.Instance.EventOnGameEnded += (_) =>
@@ -29,7 +30,9 @@ public class DeathmatchUI : MonoBehaviour
 
     void UpdateTimerText()
     {
-        _timerText.text = (GameManager.DEATH_MATCH_GAME_DURATION-GameManager.Instance.TimeSinceGameStart).ToString();
+        _timerText.text = Mathf.Ceil(
+            (GameManager.DEATH_MATCH_GAME_DURATION-GameManager.Instance.TimeSinceGameStart))
+            .ToString();
     }
     
 }

@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 
 public class DamageableObject : NetworkBehaviour, IDamageable
@@ -64,3 +65,13 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         OnDamageTaken?.Invoke(damageData);
     }
 }
+
+#if UNITY_EDITOR
+public class DamageableObjectEditor : Editor
+{
+    override public void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+    }
+}
+#endif

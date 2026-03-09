@@ -65,7 +65,7 @@ public abstract class GameRulesBase
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
-            throw new NotImplementedException();
+            serializer.SerializeNetworkSerializable(ref LeaderBoard);
         }
     }
     
@@ -147,6 +147,7 @@ public abstract class GameRulesBase
         StartGame();
         Debug.Log("game rule invoke OnGameStarted");
         OnGameStarted?.Invoke(_gameStartTime);
+        UpdateScoreBoard();
     }
 
     private async Awaitable SpawnPlayerCharacters()

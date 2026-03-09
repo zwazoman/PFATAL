@@ -2,7 +2,7 @@ using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 
-public class CrossbowProjectile : Projectile
+public class Proj_Crossbow : Projectile
 {
     [Header("settings")]
     [field : SerializeField] public float CollisionRadius { get; private set; }

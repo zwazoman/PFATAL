@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Bomb : Projectile
+public class Proj_Bomb : Projectile
 {
     [Header("References")]
     [SerializeField] Rigidbody _rb;

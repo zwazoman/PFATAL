@@ -147,6 +147,7 @@ public abstract class GameRulesBase
         StartGame();
         Debug.Log("game rule invoke OnGameStarted");
         OnGameStarted?.Invoke(_gameStartTime);
+        UpdateScoreBoard();
     }
 
     private async Awaitable SpawnPlayerCharacters()

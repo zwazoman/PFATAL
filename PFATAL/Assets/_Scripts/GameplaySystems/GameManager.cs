@@ -92,6 +92,8 @@ public class GameManager : NetworkBehaviour
 
     void OnGameEnded(GameRulesBase.GameResult gameResult)
     {
+        print("game result is null : " + (gameResult==null).ToString());
+        print("leaderboard is null : " + (LeaderBoard==null).ToString());
         OnServerEndGameRPC(gameResult);
         LeaderBoard.Clear();
     }

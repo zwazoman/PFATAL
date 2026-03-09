@@ -27,12 +27,14 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         {
             base.OnExited(ctx);
 
-            ctx.SwapActionMapToPlayer();
-            ctx.ShowPlayerRpc();
-            ctx.HUD.HideDeathUI();
-            ctx.health.Heal();
-
-            PlayerCharacterSpawner.Instance.SpawnPlayer(ctx);
+            if (_respawn)
+            {
+                ctx.SwapActionMapToPlayer();
+                ctx.ShowPlayerRpc();
+                ctx.HUD.HideDeathUI();
+                ctx.health.Heal();
+                PlayerCharacterSpawner.Instance.SpawnPlayer(ctx);
+            }
 
             ctx.HUD.respawnButton.onClick.RemoveListener(Respawn);
         }
@@ -44,7 +46,9 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         public override StateBase<PlayerCharacter> FindNextState(global::_scripts.PlayerCharacter.PlayerCharacter ctx)
         {
-            if (_respawn)
+            if(GameManager.Instance.IsGameOver)
+                return Sm.s_GameOver;
+            else if (_respawn)
                 return Sm.s_Idle;
 
             return base.FindNextState(ctx);

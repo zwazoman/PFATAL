@@ -19,6 +19,12 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     public event Action OnDie;
     public event Action<float> OnHpChanged;
 
+    void Awake()
+    {
+        HP = MaxHP;
+        OnHpChanged?.Invoke(HP);
+    }
+    
     /// <summary>
     /// Fait des dégats à l'entité. Doit être appelé sur le serveur uniquement.
     /// </summary>
@@ -49,7 +55,6 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     [Rpc(SendTo.Everyone)]
     private void SetHpRPC(float hp)
     {
-        print("HP set to "+hp);
         HP = Mathf.Clamp(hp,0,MaxHP);
         OnHpChanged?.Invoke(HP);
 

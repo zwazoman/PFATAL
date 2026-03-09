@@ -59,10 +59,11 @@ public class GameManager : NetworkBehaviour
     public event Action<GameRulesBase.GameResult> EventOnGameEnded;
     
     //synced variables
-    public bool IsPlaying { get; private set ; } = false;
     public float TimeSinceGameStart => TimeStamp.Now - _gameStartTime;
     public LeaderBoardData LeaderBoard;
     public float _gameStartTime;
+    public bool IsPlaying { get; private set ; } = false;
+    public bool IsGameOver { get; private set; } = false;
     
     private void StartGame(List<ulong> clientIDs,GameMode gameMode)
     {
@@ -92,9 +93,8 @@ public class GameManager : NetworkBehaviour
 
     void OnGameEnded(GameRulesBase.GameResult gameResult)
     {
-        print("game result is null : " + (gameResult==null).ToString());
-        print("leaderboard is null : " + (LeaderBoard==null).ToString());
-        OnServerEndGameRPC(gameResult);
+
+		OnServerEndGameRPC(gameResult);
         LeaderBoard.Clear();
     }
 
@@ -110,6 +110,7 @@ public class GameManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void OnServerStartGameRPC(float startTime)
     {
+        IsGameOver = false;
         IsPlaying = true;
         _gameStartTime = startTime;
         Debug.Log("Trigger OnGameStarted. start time : "+startTime);
@@ -120,7 +121,8 @@ public class GameManager : NetworkBehaviour
     void OnServerEndGameRPC(GameRulesBase.GameResult gameResult)
     {
         IsPlaying = false;
-        print("Game ended. Result : \n" + gameResult.ToString());
+        IsGameOver = true;
+        print("Game ended. Shared result : \n" + gameResult.ToString());
         EventOnGameEnded?.Invoke(gameResult);
     }
     

@@ -37,6 +37,14 @@ public abstract class GameRulesBase
         public ulong ClientID;
         [CanBeNull] public PlayerCharacter Character;
         public ScoreEntry Score;
+
+        public override string ToString()
+        {
+            return 
+                "client id : " + ClientID
+                + ", character : "+Character
+                + ", score : "+Score;
+        }
     }
     
     public class GameResult : INetworkSerializable
@@ -48,18 +56,8 @@ public abstract class GameRulesBase
 
         public override string ToString()
         {
-            const string space = " | ";
             string s = "";
-            foreach (var entry in LeaderBoard.entries)
-            {
-                s +=
-                    "Player : " + entry.ClientID + space +
-                    "Kills : " + entry.Kills + space +
-                    "Deaths : " + entry.Deaths + space +
-                    "Points : " + entry.Points + space +
-                    "Rank : " + entry.Rank + '\n';
-            }
-
+            s += LeaderBoard.ToString();
             return s;
         }
 
@@ -69,32 +67,13 @@ public abstract class GameRulesBase
         }
     }
     
-    public struct ScoreEntry :IComparable<ScoreEntry>, INetworkSerializeByMemcpy
-    {
-        public ulong ClientID;
-        public int Rank,Kills,Deaths,Points;
-        public int CompareTo(ScoreEntry other)
-        {
-            return other.Points.CompareTo(Points);
-        }
-    }
+
     
     //score
     
     protected void UpdateScoreBoard()
     {
-        LeaderBoardData leaderBoard = new();
-        foreach (var player in _players.Values)
-        {
-            leaderBoard.entries.Add(player.Score);
-        }
-
-        int i = 0;
-        foreach (var rank in leaderBoard.entries)
-        {
-            _players[rank.ClientID].Score.Rank = i++;
-        }
-        
+        LeaderBoardData leaderBoard = GetLeaderBoard();
         OnScoreBoardUpdated?.Invoke(leaderBoard);
     }
 
@@ -104,11 +83,33 @@ public abstract class GameRulesBase
     public LeaderBoardData GetLeaderBoard()
     {
         LeaderBoardData leaderBoard = new();
-
+        string s = "";
+        s+=("= Get leader board.=");
+        s+=("   Player count : " + _players.Count.ToString());
+        
+        SortedSet<ScoreEntry> sortedEntries = new();
         foreach (PlayerData player in _players.Values)
         {
-            leaderBoard.entries.Add(player.Score);
+            bool success = sortedEntries.Add(player.Score);
+            s+=("      adding score entry into temp set from player : "+player+". Success : "+success);
         }
+        s+=("   temp set count : "+sortedEntries.Count);
+
+        int i = 0;
+        foreach (var entry in sortedEntries)
+        {
+            bool success = leaderBoard.entries.Add(new ScoreEntry(
+                entry.ClientID,
+                ++i,
+                entry.Kills,
+                entry.Deaths,
+                entry.Points));
+            
+            s+=("      adding score entry into result set : "+entry+". Success : "+success);
+        }
+        s+=("   added player scores in the result sorted set.");
+        s+=("   Set count : "+leaderBoard.entries.Count);
+        Debug.Log(s);
         
         return leaderBoard;
     }
@@ -121,7 +122,7 @@ public abstract class GameRulesBase
         
         if(!NetworkManager.Singleton.IsServer) 
             throw new NetworkAuthorityException("Seul le server peut gérer les regles du jeu.");
-            
+        
         foreach (ulong clientID in clientIDs)
         {
             _players.Add(clientID, new PlayerData() { ClientID = clientID });
@@ -140,12 +141,12 @@ public abstract class GameRulesBase
         Debug.Log("game rule trigger game start");
 
         IsPlaying = true;
-        Debug.Log("about to spawn players");
         await SpawnPlayerCharacters();
         Debug.Log("spawned all players.");
+        
         _gameStartTime = TimeStamp.Now;
+        
         StartGame();
-        Debug.Log("game rule invoke OnGameStarted");
         OnGameStarted?.Invoke(_gameStartTime);
         UpdateScoreBoard();
     }
@@ -154,17 +155,11 @@ public abstract class GameRulesBase
     {
         try
         {
-            Debug.Log("player character count : " + _players.Values.Count);
             foreach (PlayerData playerData in _players.Values)
             {
-                Debug.Log(("player data is null : " + (playerData == null).ToString()));
-                Debug.Log($"Spawning player {playerData.ClientID}");
                 playerData.Character =
                     await PlayerCharacterSpawner.Instance.SpawnInitialPlayerCharacter(playerData.ClientID);
-                Debug.Log($"gamerule spawned {playerData.ClientID}");
             }
-
-            Debug.Log($"gamerule finished spawning all players.");
         }
         catch (Exception e)
         {

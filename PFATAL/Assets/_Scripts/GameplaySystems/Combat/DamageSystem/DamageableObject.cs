@@ -49,6 +49,7 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     [Rpc(SendTo.Everyone)]
     private void SetHpRPC(float hp)
     {
+        print("HP set to "+hp);
         HP = Mathf.Clamp(hp,0,MaxHP);
         OnHpChanged?.Invoke(HP);
 
@@ -67,11 +68,14 @@ public class DamageableObject : NetworkBehaviour, IDamageable
 }
 
 #if UNITY_EDITOR
+[CustomEditor(typeof(DamageableObject))]
 public class DamageableObjectEditor : Editor
 {
     override public void OnInspectorGUI()
     {
         base.OnInspectorGUI();
+        GUILayout.Space(10);
+        GUILayout.Label("HPs : "+((DamageableObject)target).HP);
     }
 }
 #endif

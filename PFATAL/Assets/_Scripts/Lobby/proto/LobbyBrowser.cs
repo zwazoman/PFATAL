@@ -15,10 +15,16 @@ public class LobbyBrowser : MonoBehaviour
 
     private List<Lobby> availableLobbies = new List<Lobby>();
 
-    public async Task RefreshLobbies()
+
+    private void Start()
+    {
+        RefreshLobbies();
+    }
+
+    public async Awaitable RefreshLobbies()
     {
         while (!UnityServicesManager.Instance.IsInitialized)
-        await Task.Delay(100);
+            await Awaitable.NextFrameAsync();
 
         try
         {

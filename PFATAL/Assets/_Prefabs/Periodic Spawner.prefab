@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7466344496447490143}
   - component: {fileID: 3457890187755638956}
+  - component: {fileID: 3466948682556193913}
   - component: {fileID: 3941359523026184036}
   m_Layer: 0
   m_Name: Periodic Spawner
@@ -56,6 +57,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3466948682556193913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2296137547697506673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3483915271
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &3941359523026184036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,6 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48bc10412a471d9429362f303d07fe67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeriodicSpawner
+  ShowTopMostFoldoutHeaderGroup: 1
   _spawnSocket: {fileID: 3676036567246555595}
   _pickupPrefabsPool:
   - {fileID: 8566600280833463079, guid: 7bb4b9bce164bfd48a1a36e7cb13e493, type: 3}

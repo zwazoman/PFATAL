@@ -4,7 +4,7 @@ using System;
 using Unity.Netcode;
 using Unity.VisualScripting;
 
-public class PeriodicSpawner : MonoBehaviour
+public class PeriodicSpawner : NetworkBehaviour
 {
     public event Action OnSpawn;
     public event Action OnStartSpawnDelay;
@@ -19,9 +19,11 @@ public class PeriodicSpawner : MonoBehaviour
 
     Pickup _currentPickup;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
-        if(NetworkManager.Singleton.IsServer)
+        base.OnNetworkSpawn();
+
+        if (IsServer)
             StartSpawning();
     }
 
@@ -43,6 +45,8 @@ public class PeriodicSpawner : MonoBehaviour
     async void SpawnPickup(GameObject pickupPrefab)
     {
         OnSpawn?.Invoke();
+
+        print("spawn object");
 
         GameObject pickupObject = await Summoner.Instance.SpawnObject(pickupPrefab.name, _spawnSocket.position, _spawnSocket.rotation);
         if (pickupObject.TryGetComponent(out _currentPickup))

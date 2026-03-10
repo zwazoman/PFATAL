@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    [HideInInspector] protected PlayerCharacter main;
+    [HideInInspector] protected PlayerCharacter _playerCharacter;
     [HideInInspector] protected Hand carryingHand;
 
     [SerializeField] GameObject _pickup;
@@ -11,7 +11,7 @@ public class Item : MonoBehaviour
     protected bool isUsing;
 
     /// <summary>
-    /// appelé lorsque le joueur commence l'input d'action de l'item
+    /// appelï¿½ lorsque le joueur commence l'input d'action de l'item
     /// </summary>
     public virtual void StartUsing()
     {
@@ -20,12 +20,12 @@ public class Item : MonoBehaviour
     }
 
     /// <summary>
-    /// appelé toute les frames tant que le joueur garde la touche d'action de l'item enfoncée
+    /// appelï¿½ toute les frames tant que le joueur garde la touche d'action de l'item enfoncï¿½e
     /// </summary>
     public virtual void UseUpdate() { }
 
     /// <summary>
-    /// appelé lorsque le joueur relache la touche d'action de l'item
+    /// appelï¿½ lorsque le joueur relache la touche d'action de l'item
     /// </summary>
     public virtual void StopUsing()
     {
@@ -33,7 +33,7 @@ public class Item : MonoBehaviour
     }
 
     /// <summary>
-    /// spawn le pickup lié a l'item pour le jeter par terre
+    /// spawn le pickup liï¿½ a l'item pour le jeter par terre
     /// </summary>
     public void OnDrop()
     {
@@ -45,8 +45,8 @@ public class Item : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos = main.playerCamera.transform.position + main.playerCamera.transform.forward * 2;
-        Quaternion spawnRot = main.playerCamera.transform.rotation;
+        Vector3 spawnPos = _playerCharacter.playerCamera.transform.position + _playerCharacter.playerCamera.transform.forward * 2;
+        Quaternion spawnRot = _playerCharacter.playerCamera.transform.rotation;
 
         Summoner.Instance.SpawnObject(_pickup, spawnPos, spawnRot);
     }
@@ -55,7 +55,7 @@ public class Item : MonoBehaviour
     {
         Debug.Log(name + "Picked up !");
 
-        this.main = main;
+        this._playerCharacter = main;
         carryingHand = hand;
     }
 

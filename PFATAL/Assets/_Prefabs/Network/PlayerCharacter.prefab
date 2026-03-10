@@ -1354,6 +1354,7 @@ MonoBehaviour:
   _playerVelocityToFovScalingCurveExponent: 3
   _recoilMultiplier: 5
   _recoilStabilizationDuration: 0.2
+  _recoilSlerpExponent: 0.95
   _aimPunchDirectionOffset: {x: 0, y: 0.1}
   _aimPunchMultiplier: {x: 3.75, y: -2.5}
 --- !u!1 &8229283948024419731
@@ -1420,7 +1421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2439366157
+  GlobalObjectIdHash: 2244990602
   InScenePlacedSourceGlobalObjectIdHash: 3886975174
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1454,6 +1455,7 @@ MonoBehaviour:
   health: {fileID: 1655656451230195503}
   HUD: {fileID: 4526840582921747440}
   <playerCamera>k__BackingField: {fileID: 622695028666583639}
+  <cameraBehaviour>k__BackingField: {fileID: 8218923899461791015}
   <playerInput>k__BackingField: {fileID: 3052311963987476349}
   <playerInteraction>k__BackingField: {fileID: 8381638155586477791}
   <playerHands>k__BackingField: {fileID: 3154864167769977567}
@@ -1568,6 +1570,7 @@ MonoBehaviour:
   _cameraRoot: {fileID: 2070798881448743286}
   _rigidbody: {fileID: 8461385192548545692}
   _sensitivity: 10
+  _recoilCompensationMultiplier: {x: 1, y: 1}
 --- !u!135 &7639704519177886408
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1671,8 +1674,6 @@ MonoBehaviour:
   - {fileID: 8680066097836967059, guid: 744edf2f993e43a4096a142f92db9321, type: 3}
   - {fileID: 5786053781384723269, guid: a7ac3a1fb53cae04282dede56e619481, type: 3}
   - {fileID: 8453122098565441690, guid: 7547a3052856a9a44b177f04e6b65d5c, type: 3}
-  - {fileID: 8453122098565441690, guid: ea5463ea0d4b26f4384895653a492161, type: 3}
-  - {fileID: 8453122098565441690, guid: f7e10e1826158d8478c27093f476f65f, type: 3}
 --- !u!114 &1655656451230195503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1686,7 +1687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageableObject
   ShowTopMostFoldoutHeaderGroup: 1
-  <MaxHP>k__BackingField: 10000
+  <MaxHP>k__BackingField: 10
   isPlayer: 1
 --- !u!114 &3052311963987476349
 MonoBehaviour:

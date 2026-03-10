@@ -23,7 +23,7 @@ public class ProjectileWeapon : Item
     }
 
     /// <summary>
-    /// gère le delay entre 2 tirs
+    /// gï¿½re le delay entre 2 tirs
     /// </summary>
     async void StartShootDelay()
     {
@@ -40,20 +40,20 @@ public class ProjectileWeapon : Item
     }
 
     /// <summary>
-    /// prend en paramètre un context, spawn le projectile donné et le tourne vers le point d'un raycast tiré depuis la caméra
+    /// prend en paramï¿½tre un context, spawn le projectile donnï¿½ et le tourne vers le point d'un raycast tirï¿½ depuis la camï¿½ra
     /// </summary>
     /// <param name="spawnContext"> le context du spawn</param>
     protected void Shoot(SpawnContext spawnContext)
     {
         if (shootSocket == null)
-            shootSocket = main.playerCamera.transform;
+            shootSocket = _playerCharacter.playerCamera.transform;
 
         Quaternion rotation;
 
         RaycastHit hit;
-        if (Physics.Raycast(main.playerCamera.transform.position, main.playerCamera.transform.forward, out hit, Mathf.Infinity, shootRayLayerMask))
+        if (Physics.Raycast(_playerCharacter.playerCamera.transform.position, _playerCharacter.playerCamera.transform.forward, out hit, Mathf.Infinity, shootRayLayerMask))
         {
-            Debug.DrawLine(main.playerCamera.transform.position, main.playerCamera.transform.position + main.playerCamera.transform.forward * 100, Color.blue, 10);
+            Debug.DrawLine(_playerCharacter.playerCamera.transform.position, _playerCharacter.playerCamera.transform.position + _playerCharacter.playerCamera.transform.forward * 100, Color.blue, 10);
             Debug.DrawLine(shootSocket.position, hit.point, Color.red, 10);
             Vector3 direction = shootSocket.position - hit.point;
             rotation = Quaternion.LookRotation(-direction, transform.up);

@@ -8,6 +8,7 @@ public class Crossbow : ProjectileWeapon
 
     [SerializeField] float _maxChargeTime = 1.5f;
     [SerializeField] float _chargeZoomThreshold = .3f;
+    [SerializeField] Vector2 _CameraRecoilStrength;
 
     bool isCharged = false;
     float chargeValue;
@@ -27,19 +28,26 @@ public class Crossbow : ProjectileWeapon
         }
         else if(chargeValue >= _chargeZoomThreshold)
         {
-            //début zoom caméra
+            //dï¿½but zoom camï¿½ra
         }
     }
-
+    
     public override void StopUsing()
     {
         if (!canShoot || !isUsing)
             return;
 
+        //spawn projectile
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
         spawnContext.floatData = chargeValue;
-
         Shoot(spawnContext);
+        
+        //recoil
+        _playerCharacter.cameraBehaviour.AddRecoil(
+            new Vector2(Random.Range(- _CameraRecoilStrength.x, _CameraRecoilStrength.x), _CameraRecoilStrength.y)
+            );
+        
+        //reset charge
         chargeValue = 0;
         isCharged = false;
 

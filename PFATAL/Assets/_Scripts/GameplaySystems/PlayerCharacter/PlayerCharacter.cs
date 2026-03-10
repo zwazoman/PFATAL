@@ -18,9 +18,8 @@ namespace _scripts.PlayerCharacter
         public DamageableObject health;
 
         public HUDManager HUD;
-
-        [field: SerializeField]
-        public Camera playerCamera { get; private set; }
+        [field: SerializeField] public Camera playerCamera { get; private set; }
+        [field: SerializeField] public PlayerCameraBehaviour cameraBehaviour { get; private set; }
 
         [field: SerializeField]
         public PlayerInput playerInput { get; private set; }

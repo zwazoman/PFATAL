@@ -1,16 +1,18 @@
+using SimpleVFXs;
 using UnityEngine;
 
 public class ExplosionVisuals : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("scene references")]
+    private Explosion explosion;
+    private StylisedEffect effect;
+    void Awake()
     {
-        
+        explosion.EventOnExplode += OnExplode;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnExplode()
     {
-        
+        effect.TriggerMainEvent();
     }
 }

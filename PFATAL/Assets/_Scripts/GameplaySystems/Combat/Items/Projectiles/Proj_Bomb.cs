@@ -45,8 +45,5 @@ public class Proj_Bomb : Projectile
         
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position, _explosionRange);
-    }
+    
 }

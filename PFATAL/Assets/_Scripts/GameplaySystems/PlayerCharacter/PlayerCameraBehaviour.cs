@@ -20,6 +20,7 @@ public class PlayerCameraBehaviour : MonoBehaviour
     [Header("recoil")]
     [SerializeField] private float _recoilMultiplier;
     [SerializeField] private float _recoilStabilizationDuration;
+    [SerializeField] [Range(0,1)] private float _recoilSlerpExponent = .95f;
 
     [Header("recoil : aimPunch")]
     [SerializeField] private Vector2 _aimPunchDirectionOffset;
@@ -44,15 +45,28 @@ public class PlayerCameraBehaviour : MonoBehaviour
     
     public void AddRecoil(Vector2 recoil)
     {
+        //Vector2 quarterRecoil = recoil * (_recoilMultiplier * .25f);
         //_recoilVelocity += recoil; //?
-        _recoilVector += recoil * _recoilMultiplier;
+        //for(int i = 0; i < 4; i++)
+            _recoilVector += recoil * (_recoilMultiplier * 1);
     }
 
     public void CompensateRecoil(Vector2 compensation)
     {
         //_recoilVelocity += compensation; //?
-        _recoilVector += compensation
-                         * Mathf.Max(0, -Vector2.Dot(_recoilVector.normalized, compensation));
+        float recoilMagnitude = _recoilVector.magnitude;
+
+        //todo : veille destiny + demander à Anfray
+        
+        //if (recoilMagnitude == 0 || compensation.magnitude == 0) return;
+        
+        //print(recoilMagnitude);
+        //print(compensation);
+        //print(-Vector2.Dot(_recoilVector/recoilMagnitude, compensation));
+        //print(Mathf.Clamp(-Vector2.Dot(_recoilVector/recoilMagnitude, compensation),0,recoilMagnitude));
+        //print(compensation.normalized * Mathf.Clamp(-Vector2.Dot(_recoilVector/recoilMagnitude, compensation),0,recoilMagnitude));
+        //_recoilVector += compensation
+        //                 * Mathf.Clamp(-Vector2.Dot(_recoilVector/recoilMagnitude, compensation),0,recoilMagnitude);
     }
 
     // Update is called once per frame
@@ -67,6 +81,9 @@ public class PlayerCameraBehaviour : MonoBehaviour
         _recoilVector = Vector2.SmoothDamp(_recoilVector,Vector2.zero,ref _recoilVelocity,_recoilStabilizationDuration);
         
         //apply recoil
-        _recoilTarget.localRotation = Quaternion.Euler(_recoilVector.y,_recoilVector.x,0);
+        _recoilTarget.localRotation = Quaternion.Slerp(
+            _recoilTarget.localRotation,
+            Quaternion.Euler(_recoilVector.y,_recoilVector.x,0),
+            Mathf.Pow(_recoilSlerpExponent,Time.deltaTime)) ;
     }
 }

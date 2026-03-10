@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Mono.Cecil.Cil;
 using UnityEngine;
 
 public class ScoreboardUI : MonoBehaviour
@@ -6,67 +7,59 @@ public class ScoreboardUI : MonoBehaviour
     [SerializeField] private GameObject playerCardPrefab;
     [SerializeField] private Transform contentParent;
 
-    [SerializeField] private GameManager gameManager;
-
-    [SerializeField] private GameObject scoreboardPanel;
+    public bool IsScoreboardEndGamePanel = false;   
 
     private List<PlayerCardUI> playerCards = new List<PlayerCardUI>();
 
-    void OnEnable()
+    public void Awake()
     {
-        gameManager.EventOnGameEnded += OnGameEnded;
-    }
+        if (IsScoreboardEndGamePanel) return;
+        GameManager.Instance.EventOnGameStarted += InitializeScoreboard;
+        Debug.LogWarning("ScoreboardUI subscribed to GameManager's EventOnGameStarted.");
 
-    void OnDisable()
-    {
-        gameManager.EventOnGameEnded -= OnGameEnded;
-    }
-
-    private void OnGameEnded(GameRulesBase.GameResult result)
-    {
-        scoreboardPanel.SetActive(true);
+        gameObject.SetActive(false);
     }
 
 
-    void LateUpdate()
+    public void InitializeScoreboard()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (GameManager.Instance == null)
         {
-            ShowScoreboard();
+            Debug.LogError("GameManager reference is missing in ScoreboardUI.");
+            return;
         }
-        if (Input.GetKeyUp(KeyCode.Tab))
+        if (GameManager.Instance.LeaderBoard.entries == null)
         {
-            ShowScoreboard();
+            Debug.LogError("GameManager's LeaderBoard is not initialized.");
+            return;
         }
-        if (scoreboardPanel.activeSelf)
+
+        foreach (var player in GameManager.Instance.LeaderBoard.entries)
         {
-            RefreshUI(); //voir ou mettre pour mettre à jour quand un resultat change
+            AddPlayerCard(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths, 99);
+            Debug.LogWarning("Added player card for ClientID: " + player.ClientID);
         }
     }
 
-    public void RefreshUI()
+    public void RefreshUI(GameRulesBase.GameResult result)
     {
         int i = 0;
-        foreach (var player in gameManager.LeaderBoard.entries)
+
+        foreach (var player in GameManager.Instance.LeaderBoard.entries)
         {
             PlayerCardUI card = playerCards[i];
-
             card.SetPlayerInfo(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths, 99);
             card.transform.SetSiblingIndex(i);
             i++;
         }
     }
 
-    public void AddPlayerCard(string playerName = "Player", int kills = 0, int deaths = 0, int ping = 0)
+    public void AddPlayerCard(string playerName = "Player", int score = 0, int kills = 0, int deaths = 0, int ping = 0)
     {
         GameObject newCard = Instantiate(playerCardPrefab, contentParent);
         PlayerCardUI cardUI = newCard.GetComponent<PlayerCardUI>();
-        cardUI.SetPlayerInfo(playerName, kills, deaths, ping);
+        cardUI.SetPlayerInfo(playerName, score, kills, deaths, ping);
         playerCards.Add(cardUI);
     }
 
-    public void ShowScoreboard()
-    {
-        scoreboardPanel.SetActive(!scoreboardPanel.activeSelf);
-    }
 }

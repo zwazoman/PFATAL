@@ -104,7 +104,6 @@ public class Crossbow : Item
         RaycastHit hit;
         if(Physics.Raycast(main.playerCamera.transform.position, main.playerCamera.transform.forward, out hit, Mathf.Infinity, _layerMask))
         {
-            print(hit.collider.gameObject.name);
             Debug.DrawLine(main.playerCamera.transform.position, main.playerCamera.transform.position + main.playerCamera.transform.forward * 100, Color.blue, 10);
             Debug.DrawLine(_shootSocket.position, hit.point, Color.red, 10);
             Vector3 direction = _shootSocket.position - hit.point;

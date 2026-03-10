@@ -48,15 +48,19 @@ namespace _scripts.PlayerCharacter
 
         public void SwapActionMapToUI()
         {
-            Cursor.lockState = CursorLockMode.Confined;
+            if (!playerInput.enabled)
+                return;
 
+            Cursor.lockState = CursorLockMode.Confined;
             playerInput.SwitchCurrentActionMap("UI");
         }
 
         public void SwapActionMapToPlayer()
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            if (!playerInput.enabled)
+                return;
 
+            Cursor.lockState = CursorLockMode.Locked;
             playerInput.SwitchCurrentActionMap("Player");
         }
         //========

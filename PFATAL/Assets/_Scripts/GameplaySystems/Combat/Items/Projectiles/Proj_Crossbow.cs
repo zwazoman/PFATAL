@@ -75,10 +75,10 @@ public class Proj_Crossbow : Projectile
             //print("HitCount : "+hitCount);
             for(int i =0; i < hitCount; i++)
             {
-                //print(_hitBuffer[i].collider.gameObject.name);
-                if(_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
+                print(_hitBuffer[i].collider.gameObject.name);
+                if (_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
                 {
-                    if (damageable.OwnerClientId == spawnContext.askerID)
+                    if (damageable.OwnerClientId == spawnContext.askerID && damageable.isPlayer)
                     {
                         actualHitCount--;
                         continue;

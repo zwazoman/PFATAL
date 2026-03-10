@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Proj_Falling : Projectile
 {
-    [Header("settings")]
+    [Header("Global Settings")]
     [field : SerializeField] public float CollisionRadius { get; private set; }
     [SerializeField] float _speed = 50;
     [SerializeField] float _gravity = 0;
@@ -83,14 +83,14 @@ public class Proj_Falling : Projectile
                         actualHitCount--;
                         continue;
                     }
-
                     DamageData data = new();
                     data.Point = _hitBuffer[i].point;
+                    data.Direction = transform.forward;
                     data.Amount = _damageAmount;
                     data.Radius = 1;
                     data.SourcePlayerClientID = spawnContext.askerID;
-                    damageable.TakeDamage(data);
-                 
+                    HitDamageable(data, damageable);
+
                     DespawnRpc();
                     return;
                 }   
@@ -98,8 +98,11 @@ public class Proj_Falling : Projectile
             //print("ActualHitCount : "+actualHitCount);
             if(actualHitCount > 0) DespawnRpc();
         }
-        
-        
+    }
+
+    protected virtual void HitDamageable(DamageData damageData, DamageableObject damageable)
+    {
+        damageable.TakeDamage(damageData);
     }
 
     [Rpc(SendTo.Server)]

@@ -46,7 +46,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         public override StateBase<PlayerCharacter> FindNextState(global::_scripts.PlayerCharacter.PlayerCharacter ctx)
         {
-            if(GameManager.Instance.IsGameOver)
+            if(GameManager.Instance && GameManager.Instance.IsGameOver)
                 return Sm.s_GameOver;
             else if (_respawn)
                 return Sm.s_Idle;

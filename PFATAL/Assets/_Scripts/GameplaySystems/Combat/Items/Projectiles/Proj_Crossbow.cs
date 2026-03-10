@@ -9,9 +9,11 @@ public class Proj_Crossbow : Projectile
     [SerializeField] float _speed = 50;
     [SerializeField] float _gravity = 0;
     [SerializeField] float _maxLifetime = 3;
-    [SerializeField] private float _damageAmount;
+    [SerializeField] float _damageAmount;
+    [SerializeField] float _chargeDamageMultiplyer = 1;
+    [SerializeField] float _chargeSpeedMultiplyer = 1;
     [SerializeField] LayerMask _layerMask;
-    
+
     float _spawnTime;
     Vector3 _spawnPosition;
     
@@ -21,23 +23,13 @@ public class Proj_Crossbow : Projectile
 
     bool _initialized = false;
 
-    Vector3 _target;
-
-    //public override void OnNetworkSpawn()
-    //{
-    //    base.OnNetworkSpawn();
-    //    //_spawnTime = TimeStamp.Now;
-    //    //_spawnPosition = transform.position;
-    //    if (NetworkManager.Singleton.IsServer)
-    //    {
-    //        InitRPC(TimeStamp.Now,transform.position);
-    //    }
-    //}
-
     public override void OnSpawn()
     {
         if (NetworkManager.Singleton.IsServer)
+        {
             InitRPC(TimeStamp.Now, transform.position, spawnContext.floatData);
+            _damageAmount *= (1 + spawnContext.floatData) * _chargeDamageMultiplyer;
+        }
     }
 
     [Rpc(SendTo.Everyone)]
@@ -45,8 +37,7 @@ public class Proj_Crossbow : Projectile
     {
         _spawnTime = timestamp;
         _spawnPosition = position;
-        transform.localScale *= (1 + chargeTime); //todo virer et faire l'équilibrage des dgts et de la vitesse
-
+        _speed *= (1 + chargeTime) * _chargeSpeedMultiplyer;
         _initialized = true;
     }
 
@@ -84,10 +75,10 @@ public class Proj_Crossbow : Projectile
             //print("HitCount : "+hitCount);
             for(int i =0; i < hitCount; i++)
             {
-                //print(_hitBuffer[i].collider.gameObject.name);
-                if(_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
+                print(_hitBuffer[i].collider.gameObject.name);
+                if (_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
                 {
-                    if (damageable.OwnerClientId == spawnContext.askerID)
+                    if (damageable.OwnerClientId == spawnContext.askerID && damageable.isPlayer)
                     {
                         actualHitCount--;
                         continue;

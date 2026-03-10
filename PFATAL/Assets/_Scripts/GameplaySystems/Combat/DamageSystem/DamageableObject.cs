@@ -13,7 +13,8 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     public float HP {get; private set;}
     [field:SerializeField] public float MaxHP { get; private set; }
     public bool IsDead => HP == 0;
-    
+
+    [SerializeField] public bool isPlayer = true;
     //events
     public event Action<DamageData> OnDamageTaken;
     public event Action OnDie;
@@ -24,12 +25,12 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         HP = MaxHP;
         OnHpChanged?.Invoke(HP);
     }
-    
+
     /// <summary>
     /// Fait des dégats à l'entité. Doit être appelé sur le serveur uniquement.
     /// </summary>
     public void TakeDamage(DamageData damageData)
-    { 
+    {
         LastDamageSourceClientID = damageData.SourcePlayerClientID;
         SetHpRPC(HP - damageData.Amount);
         InvokeDamageEventRPC(damageData);

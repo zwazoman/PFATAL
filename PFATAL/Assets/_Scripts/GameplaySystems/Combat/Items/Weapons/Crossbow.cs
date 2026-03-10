@@ -15,8 +15,9 @@ public class Crossbow : Item
     [SerializeField] GameObject _projectile;
     [SerializeField] float tmpDelay;
 
-    [SerializeField] float _maxCharge = 1;
-    [SerializeField] float _chargeMultiplyer = 1;
+    [SerializeField] float _maxChargeTime = 1.5f;
+
+    [SerializeField] float _chargeZoomThreshold = .3f;
 
     [SerializeField] LayerMask _layerMask;
 
@@ -49,13 +50,17 @@ public class Crossbow : Item
         if (isCharged)
             return;
 
-        chargevalue += Time.deltaTime * _chargeMultiplyer;
+        chargevalue += Time.deltaTime / _maxChargeTime;
 
-        if(chargevalue >= _maxCharge)
+        if(chargevalue >= 1)
         {
             isCharged = true;
-            chargevalue = _maxCharge;
+            chargevalue = _maxChargeTime;
             print("crossbow fully charged");
+        }
+        else if(chargevalue >= _chargeZoomThreshold)
+        {
+            //début zoom caméra
         }
     }
 
@@ -86,7 +91,6 @@ public class Crossbow : Item
         canShoot = true;
     }
 
-
     void Shoot(float chargeValue)
     {
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
@@ -100,7 +104,6 @@ public class Crossbow : Item
         RaycastHit hit;
         if(Physics.Raycast(main.playerCamera.transform.position, main.playerCamera.transform.forward, out hit, Mathf.Infinity, _layerMask))
         {
-            print(hit.collider.gameObject.name);
             Debug.DrawLine(main.playerCamera.transform.position, main.playerCamera.transform.position + main.playerCamera.transform.forward * 100, Color.blue, 10);
             Debug.DrawLine(_shootSocket.position, hit.point, Color.red, 10);
             Vector3 direction = _shootSocket.position - hit.point;
@@ -112,5 +115,10 @@ public class Crossbow : Item
         Summoner.Instance.SpawnObject(_projectile, _shootSocket.position, rotation, spawnContext);
 
         StartShootDelay();
+    }
+
+    void StopCameraZoom()
+    {
+
     }
 }

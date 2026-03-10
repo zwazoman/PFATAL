@@ -2,7 +2,7 @@ using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 
-public class Proj_Crossbow : Projectile
+public class Proj_Falling : Projectile
 {
     [Header("settings")]
     [field : SerializeField] public float CollisionRadius { get; private set; }
@@ -48,7 +48,7 @@ public class Proj_Crossbow : Projectile
                              + Vector3.up * (timeSinceSpawn * timeSinceSpawn * -.5f * _gravity);
     }
     
-    private void Update()
+    protected virtual void Update()
     {
         if (!IsSpawned || !_initialized)
             return;

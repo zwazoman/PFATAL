@@ -87,7 +87,7 @@ public class Proj_Crossbow : Projectile
                     DamageData data = new();
                     data.Point = _hitBuffer[i].point;
                     data.Amount = _damageAmount;
-                    data.Radius = 0;
+                    data.Radius = 1;
                     data.SourcePlayerClientID = spawnContext.askerID;
                     damageable.TakeDamage(data);
                  

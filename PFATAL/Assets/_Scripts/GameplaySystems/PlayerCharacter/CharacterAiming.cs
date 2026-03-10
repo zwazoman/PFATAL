@@ -17,7 +17,7 @@ public class CharacterAiming : MonoBehaviour
 
     private float angle = 0;
     
-    private void Awake()
+    private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
     }

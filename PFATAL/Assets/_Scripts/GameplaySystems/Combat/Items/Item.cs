@@ -10,19 +10,31 @@ public class Item : MonoBehaviour
 
     protected bool isUsing;
 
+    /// <summary>
+    /// appelé lorsque le joueur commence l'input d'action de l'item
+    /// </summary>
     public virtual void StartUsing()
     {
         isUsing = true;
         Use();
     }
 
+    /// <summary>
+    /// appelé toute les frames tant que le joueur garde la touche d'action de l'item enfoncée
+    /// </summary>
     public virtual void UseUpdate() { }
 
+    /// <summary>
+    /// appelé lorsque le joueur relache la touche d'action de l'item
+    /// </summary>
     public virtual void StopUsing()
     {
         isUsing = false;
     }
 
+    /// <summary>
+    /// spawn le pickup lié a l'item pour le jeter par terre
+    /// </summary>
     public void OnDrop()
     {
         Debug.Log(name + "Dropped !");

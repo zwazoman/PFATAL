@@ -11,14 +11,14 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         {
             base.OnEntered(ctx);
 
-            ctx.health.OnDie += Die;
+            //ctx.health.OnDie += Die;
         }
 
         protected override void OnExited(PlayerCharacter ctx)
         {
             base.OnExited(ctx);
 
-            ctx.health.OnDie -= Die;
+            //ctx.health.OnDie -= Die;
         }
 
         void Die()
@@ -28,7 +28,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter ctx)
         {
-            if(GameManager.Instance.IsGameOver)
+            if(GameManager.Instance && GameManager.Instance.IsGameOver)
                 return Sm.s_GameOver;
             
             else if (_died)

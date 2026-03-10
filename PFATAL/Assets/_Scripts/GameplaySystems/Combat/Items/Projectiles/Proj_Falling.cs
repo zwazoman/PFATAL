@@ -78,7 +78,7 @@ public class Proj_Falling : Projectile
                 print(_hitBuffer[i].collider.gameObject.name);
                 if (_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
                 {
-                    if (damageable.OwnerClientId == spawnContext.askerID && damageable.isPlayer)
+                    if (damageable.OwnerClientId == spawnContext.spawnerClientID && damageable.isPlayer)
                     {
                         actualHitCount--;
                         continue;
@@ -88,7 +88,7 @@ public class Proj_Falling : Projectile
                     data.Direction = transform.forward;
                     data.Amount = _damageAmount;
                     data.Radius = 1;
-                    data.SourcePlayerClientID = spawnContext.askerID;
+                    data.SourcePlayerClientID = spawnContext.spawnerClientID;
                     HitDamageable(data, damageable);
 
                     DespawnRpc();

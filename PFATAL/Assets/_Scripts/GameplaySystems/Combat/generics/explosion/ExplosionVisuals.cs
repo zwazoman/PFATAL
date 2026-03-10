@@ -4,8 +4,8 @@ using UnityEngine;
 public class ExplosionVisuals : MonoBehaviour
 {
     [Header("scene references")]
-    private Explosion explosion;
-    private StylisedEffect effect;
+    [SerializeField] private Explosion explosion;
+    [SerializeField] private StylisedEffect effect;
     void Awake()
     {
         explosion.EventOnExplode += OnExplode;

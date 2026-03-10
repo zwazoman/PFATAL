@@ -97,7 +97,7 @@ public class Summoner : NetworkBehaviour
             projectile.OnSpawn();
         }
 
-        SendToAskerRpc(newObject, RpcTarget.Single(context.askerID, RpcTargetUse.Temp));
+        SendToAskerRpc(newObject, RpcTarget.Single(context.spawnerClientID, RpcTargetUse.Temp));
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
@@ -112,11 +112,11 @@ public class Summoner : NetworkBehaviour
 
 public struct SpawnContext : INetworkSerializeByMemcpy
 {
-    public ulong askerID;
+    public ulong spawnerClientID;
     public float floatData;
 
-    public SpawnContext(ulong askerID) :this()
+    public SpawnContext(ulong spawnerClientID) :this()
     {
-        this.askerID = askerID;
+        this.spawnerClientID = spawnerClientID;
     }
 }

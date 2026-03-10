@@ -1,23 +1,16 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.VFX;
 
 namespace SimpleVFXs
 {
-    
 
     public class StylisedEffect : MonoBehaviour
     {
         [SerializeField] bool TriggerMainEventOnAwake = true;
-
         [SerializeField] UnityEvent MainEvent;
-
         [SerializeField] float _playRate =1f;
 
         VisualEffect vfx;
@@ -50,9 +43,7 @@ namespace SimpleVFXs
                 for (int i = 0; i < MainEvent.GetPersistentEventCount(); i++)
                 {
                     if ((MonoBehaviour)MainEvent.GetPersistentTarget(i) == null) continue;
-
                     ((MonoBehaviour)MainEvent.GetPersistentTarget(i)).SendMessage(MainEvent.GetPersistentMethodName(i),SendMessageOptions.DontRequireReceiver);
-
                 }
             }
 #else
@@ -63,12 +54,27 @@ namespace SimpleVFXs
 
         public void playVFX()
         {
-            if (vfx == null) TryGetComponent<VisualEffect>(out VisualEffect vfx);
+            if (vfx == null) TryGetComponent(out vfx);
             vfx.playRate = _playRate;
             vfx.Play();
         }
 
+        public void DetachFromParent()
+        {
+#if UNITY_EDITOR
+            if (!Application.isPlaying) return;
+#endif
+            transform.parent = null;
+        }
+        public void PointUp()
+        {
+            transform.rotation = Quaternion.identity;
+        }
 
+        public void DestroySelf(float delay)
+        {
+            Destroy(gameObject, delay);
+        }
     }
 
 

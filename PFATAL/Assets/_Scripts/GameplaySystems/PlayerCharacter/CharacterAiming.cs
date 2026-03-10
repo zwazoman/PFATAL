@@ -32,8 +32,8 @@ public class CharacterAiming : MonoBehaviour
         _cameraRoot.transform.localEulerAngles = angle * Vector3.right;
         
         //recoil compensation
-        _character.cameraBehaviour.CompensateRecoil(
-            Vector2.Scale(_character.inputs.aimInput * (_sensitivity * Time.deltaTime),_recoilCompensationMultiplier));
+        //_character.cameraBehaviour.CompensateRecoil(
+        //    Vector2.Scale(_character.inputs.aimInput * (_sensitivity * Time.deltaTime),_recoilCompensationMultiplier));
 
     }
 

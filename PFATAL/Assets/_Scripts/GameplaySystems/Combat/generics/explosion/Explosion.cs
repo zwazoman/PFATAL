@@ -10,6 +10,7 @@ public class Explosion : NetworkBehaviour
     
     [SerializeField] public float Radius = 3f;
     [SerializeField] public float Damage = 5;
+    public float KnockBackStrength;
 
     private const float HIT_DETECTION_DURATION = .3f;
 
@@ -64,11 +65,13 @@ public class Explosion : NetworkBehaviour
                 
                 //player knockback
                 if (hitObject.TryGetComponent(out PlayerPhysics physics))
-                    physics.AddImpulse(physics.Position-damageData.Point);    
+                    physics.AddImpulse((physics.Position-damageData.Point).normalized * KnockBackStrength);    
             }
         }
     }
 
+
+    [Rpc(SendTo.Everyone)]
     void CallExplosionEventRPC()
     {
         EventOnExplode?.Invoke();

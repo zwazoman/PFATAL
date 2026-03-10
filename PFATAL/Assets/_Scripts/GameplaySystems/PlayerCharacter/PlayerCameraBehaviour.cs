@@ -22,16 +22,29 @@ public class PlayerCameraBehaviour : MonoBehaviour
     private Vector2 _recoilVector;//en degres
     private Vector2 _recoilVelocity;//en degres
 
+    void Awake()
+    {
+        _playerCharacter.health.OnDamageTaken += ApplyAimPuchRecoil;   
+    }
 
+    private void ApplyAimPuchRecoil(DamageData damageData)
+    {
+        
+        Vector3 worldDirection = (_recoilTarget.position-damageData.Point)/damageData.Radius;
+        //AddRecoil();
+    }
+    
     public void AddRecoil(Vector2 recoil)
     {
-        _recoilVelocity += recoil; //?
-        _recoilVector += recoil;
+        //_recoilVelocity += recoil; //?
+        _recoilVector += recoil * _recoilMultiplier;
     }
 
     public void CompensateRecoil(Vector2 compensation)
     {
-        
+        //_recoilVelocity += compensation; //?
+        _recoilVector += compensation
+                         * Mathf.Max(0, -Vector2.Dot(_recoilVector.normalized, compensation));
     }
 
     // Update is called once per frame

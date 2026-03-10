@@ -214,6 +214,39 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!1 &1287592161772209272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8627329681033721092}
+  m_Layer: 0
+  m_Name: RecoilTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8627329681033721092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287592161772209272}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3956201356131536794}
+  - {fileID: 3977227000568191379}
+  m_Father: {fileID: 2070798881448743286}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1345645314909071344
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +280,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 2070798881448743286}
+  m_Father: {fileID: 8627329681033721092}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &622695028666583639
 Camera:
@@ -863,14 +896,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6639770691277515346}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.42, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.41999996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 750602434352784858}
   - {fileID: 3204181091151898087}
-  m_Father: {fileID: 2070798881448743286}
+  m_Father: {fileID: 8627329681033721092}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6844144222906655959
 GameObject:
@@ -1297,8 +1330,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3977227000568191379}
-  - {fileID: 3956201356131536794}
+  - {fileID: 8627329681033721092}
   m_Father: {fileID: 2607746998044308091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8218923899461791015
@@ -1315,12 +1347,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCharacter: {fileID: 6498883890364450799}
   _cam: {fileID: 622695028666583639}
-  _recoilTarget: {fileID: 0}
+  _recoilTarget: {fileID: 8627329681033721092}
   FOVRange: {x: 70, y: 75}
   _fovSmoothTime: 0.2
   _power: 2
-  _recoilMultiplier: 0
-  _recoilStabilizationSpeed: 0
+  _recoilMultiplier: 1
+  _recoilStabilizationSpeed: 0.1
 --- !u!1 &8229283948024419731
 GameObject:
   m_ObjectHideFlags: 0

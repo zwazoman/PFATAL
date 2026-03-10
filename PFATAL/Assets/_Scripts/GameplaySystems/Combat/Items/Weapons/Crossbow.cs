@@ -1,64 +1,31 @@
 using _scripts.PlayerCharacter;
-using Unity.Mathematics;
 using Unity.Netcode;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using UnityEngine.Rendering;
 
-public class Crossbow : Item
+public class Crossbow : ProjectileWeapon
 {
-    [Header("References")]
-    [SerializeField] public Transform _shootSocket;
-
-    [Header("Weapon Parameters")]
-    [SerializeField] GameObject _projectile;
-    [SerializeField] float tmpDelay;
+    [Header("Crossbow Parameters")]
 
     [SerializeField] float _maxChargeTime = 1.5f;
-
     [SerializeField] float _chargeZoomThreshold = .3f;
 
-    [SerializeField] LayerMask _layerMask;
-
-    bool startedShooting = false;
-    bool canShoot = true;
     bool isCharged = false;
-    float chargevalue;
-
-    float _timer = 0;
-
-    //todo context dans le shoot 
-
-    public override void OnPickup(PlayerCharacter main, Hand hand)
-    {
-        base.OnPickup(main, hand);
-        canShoot = true;
-    }
-
-    public override void StartUsing()
-    {
-        if (canShoot)
-        {
-            startedShooting = true;
-            base.StartUsing();
-        }
-    }
+    float chargeValue;
 
     public override void UseUpdate()
     {
         if (isCharged)
             return;
 
-        chargevalue += Time.deltaTime / _maxChargeTime;
+        chargeValue += Time.deltaTime / _maxChargeTime;
 
-        if(chargevalue >= 1)
+        if(chargeValue >= 1)
         {
             isCharged = true;
-            chargevalue = _maxChargeTime;
+            chargeValue = _maxChargeTime;
             print("crossbow fully charged");
         }
-        else if(chargevalue >= _chargeZoomThreshold)
+        else if(chargeValue >= _chargeZoomThreshold)
         {
             //début zoom caméra
         }
@@ -66,55 +33,17 @@ public class Crossbow : Item
 
     public override void StopUsing()
     {
-        base.StopUsing();
-
-        if (!canShoot || !startedShooting)
+        if (!canShoot || !isUsing)
             return;
 
-        Shoot(chargevalue);
-        chargevalue = 0;
-        isCharged = false;
-        startedShooting = false;
-    }
-
-    public async void StartShootDelay()
-    {
-        canShoot = false;
-
-        while (_timer < tmpDelay)
-        {
-            _timer += Time.deltaTime;
-            await Awaitable.NextFrameAsync();
-        }
-        _timer = 0;
-
-        canShoot = true;
-    }
-
-    void Shoot(float chargeValue)
-    {
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
         spawnContext.floatData = chargeValue;
 
-        if (_shootSocket == null)
-            _shootSocket = main.playerCamera.transform;
+        Shoot(spawnContext);
+        chargeValue = 0;
+        isCharged = false;
 
-        Quaternion rotation;
-
-        RaycastHit hit;
-        if(Physics.Raycast(main.playerCamera.transform.position, main.playerCamera.transform.forward, out hit, Mathf.Infinity, _layerMask))
-        {
-            Debug.DrawLine(main.playerCamera.transform.position, main.playerCamera.transform.position + main.playerCamera.transform.forward * 100, Color.blue, 10);
-            Debug.DrawLine(_shootSocket.position, hit.point, Color.red, 10);
-            Vector3 direction = _shootSocket.position - hit.point;
-            rotation = Quaternion.LookRotation(-direction, transform.up);
-        }
-        else
-            rotation = _shootSocket.rotation;
-
-        Summoner.Instance.SpawnObject(_projectile, _shootSocket.position, rotation, spawnContext);
-
-        StartShootDelay();
+        base.StopUsing();
     }
 
     void StopCameraZoom()

@@ -7,20 +7,26 @@ public class PlayerCameraBehaviour : MonoBehaviour
     [SerializeField] PlayerCharacter _playerCharacter;
     [SerializeField] private Camera _cam;
     [SerializeField] private Transform _recoilTarget;
-    private Vector3 _vel;
+    [SerializeField] private Transform _aimPuchBodyCenterReference;
 
     //FOV scaling
     [Header("FOV scaling")]
     [SerializeField] private Vector2 FOVRange;
     [SerializeField] private float _fovSmoothTime;
-    [SerializeField] private float _power = 3;
+    [SerializeField] private float _playerVelocityToFovScalingCurveExponent = 3;
+    
     private float _fovVel;
 
     [Header("recoil")]
     [SerializeField] private float _recoilMultiplier;
-    [SerializeField] private float _recoilStabilizationSpeed;
+    [SerializeField] private float _recoilStabilizationDuration;
+
+    [Header("recoil : aimPunch")]
+    [SerializeField] private Vector2 _aimPunchDirectionOffset;
+    [SerializeField] private Vector2 _aimPunchMultiplier;
+    
     private Vector2 _recoilVector;//en degres
-    private Vector2 _recoilVelocity;//en degres
+    private Vector2 _recoilVelocity;
 
     void Awake()
     {
@@ -29,9 +35,11 @@ public class PlayerCameraBehaviour : MonoBehaviour
 
     private void ApplyAimPuchRecoil(DamageData damageData)
     {
-        
-        Vector3 worldDirection = (_recoilTarget.position-damageData.Point)/damageData.Radius;
-        //AddRecoil();
+        print("ahhhh j'ai maaal au secouuurs je meurs ..");
+        Vector3 worldVector = (_aimPuchBodyCenterReference.position - damageData.Point) / damageData.Radius;
+        Vector2 cameraVector = _cam.worldToCameraMatrix* worldVector
+            * damageData.Amount/_playerCharacter.health.MaxHP;
+        AddRecoil(Vector2.Scale(cameraVector+_aimPunchDirectionOffset,_aimPunchMultiplier));
     }
     
     public void AddRecoil(Vector2 recoil)
@@ -52,10 +60,13 @@ public class PlayerCameraBehaviour : MonoBehaviour
     {
         //fov
         float targetFOV = Mathf.Lerp(FOVRange.x, FOVRange.y,
-            Mathf.Pow(_playerCharacter.physics.Velocity.magnitude / _playerCharacter.stateMachine.s_Walking._walkSpeed, _power));
+            Mathf.Pow(_playerCharacter.physics.Velocity.magnitude / _playerCharacter.stateMachine.s_Walking._walkSpeed, _playerVelocityToFovScalingCurveExponent));
         _cam.fieldOfView = Mathf.SmoothDamp(_cam.fieldOfView,targetFOV,ref _fovVel,_fovSmoothTime);
         
         //recoil stabilisation
-        _recoilVector = Vector2.SmoothDamp(_recoilVector,Vector2.zero,ref _recoilVector,_recoilStabilizationSpeed);
+        _recoilVector = Vector2.SmoothDamp(_recoilVector,Vector2.zero,ref _recoilVelocity,_recoilStabilizationDuration);
+        
+        //apply recoil
+        _recoilTarget.localRotation = Quaternion.Euler(_recoilVector.y,_recoilVector.x,0);
     }
 }

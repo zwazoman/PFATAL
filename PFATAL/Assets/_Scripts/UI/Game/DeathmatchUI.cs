@@ -8,6 +8,12 @@ public class DeathmatchUI : MonoBehaviour
     [SerializeField] private TMP_Text _timerText;
     void Awake()
     {
+        if (!GameManager.Instance)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
         _timerText.enabled = false;
         GameManager.Instance.EventOnGameStarted += () =>
         {

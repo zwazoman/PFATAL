@@ -1354,6 +1354,7 @@ MonoBehaviour:
   _playerVelocityToFovScalingCurveExponent: 3
   _recoilMultiplier: 5
   _recoilStabilizationDuration: 0.2
+  _recoilSlerpExponent: 0.95
   _aimPunchDirectionOffset: {x: 0, y: 0.1}
   _aimPunchMultiplier: {x: 3.75, y: -2.5}
 --- !u!1 &8229283948024419731
@@ -1454,6 +1455,7 @@ MonoBehaviour:
   health: {fileID: 1655656451230195503}
   HUD: {fileID: 4526840582921747440}
   <playerCamera>k__BackingField: {fileID: 622695028666583639}
+  <cameraBehaviour>k__BackingField: {fileID: 0}
   <playerInput>k__BackingField: {fileID: 3052311963987476349}
   <playerInteraction>k__BackingField: {fileID: 8381638155586477791}
   <playerHands>k__BackingField: {fileID: 3154864167769977567}
@@ -1568,6 +1570,7 @@ MonoBehaviour:
   _cameraRoot: {fileID: 2070798881448743286}
   _rigidbody: {fileID: 8461385192548545692}
   _sensitivity: 10
+  _recoilCompensationMultiplier: {x: 0, y: 0}
 --- !u!135 &7639704519177886408
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2252,6 +2255,10 @@ PrefabInstance:
       propertyPath: _itemVisuals
       value: 
       objectReference: {fileID: 6020512486325100065}
+    - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+      propertyPath: _swapWhenFull
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5470100038316778371, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
       propertyPath: m_LocalScale.x
       value: 100
@@ -2383,6 +2390,10 @@ PrefabInstance:
       propertyPath: _itemVisuals
       value: 
       objectReference: {fileID: 6020512486325100065}
+    - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+      propertyPath: _swapWhenFull
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
       propertyPath: _inventorySize
       value: 1

@@ -8,7 +8,7 @@ public class Tomahawk : ProjectileWeapon
 
         if (canShoot)
         {
-            SpawnContext context = new(main.OwnerClientId);
+            SpawnContext context = new(_playerCharacter.OwnerClientId);
             Shoot(context);
         }
     }

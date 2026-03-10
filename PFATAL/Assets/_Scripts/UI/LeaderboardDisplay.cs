@@ -5,6 +5,7 @@ using UnityEngine.SocialPlatforms.Impl;
 public class LeaderboardDisplay : MonoBehaviour
 {
     [SerializeField] public ScoreboardUI ScoreboardUIEndGamePanel;
+    [SerializeField] private GameObject scoreboardPanel;
 
     void OnEnable()
     {
@@ -16,12 +17,22 @@ public class LeaderboardDisplay : MonoBehaviour
         GameManager.Instance.EventOnGameEnded -= OnGameEnded;
     }
 
+    void Start()
+    {
+        scoreboardPanel.SetActive(false);
+        ScoreboardUIEndGamePanel.gameObject.SetActive(false);
+    }
+
     private void OnGameEnded(GameRulesBase.GameResult result)
     {
+        scoreboardPanel.SetActive(true);
         ScoreboardUIEndGamePanel.gameObject.SetActive(true);
         foreach (var item in result.LeaderBoard.entries)
         {
+            Debug.Log("Adding player to end game leaderboard: " + result);
             ScoreboardUIEndGamePanel.AddPlayerCard(item.ClientID.ToString(), item.Points, item.Kills, item.Deaths, 99);
         }
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

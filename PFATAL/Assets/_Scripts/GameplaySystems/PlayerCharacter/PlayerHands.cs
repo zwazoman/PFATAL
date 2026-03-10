@@ -56,7 +56,7 @@ public class PlayerHands : MonoBehaviour
     {
         if (ctx.started)
         {
-            leftHand.DropHeldItem();
+            leftHand.DropEquippedtem();
         }
 
     }
@@ -67,9 +67,9 @@ public class PlayerHands : MonoBehaviour
         {
             Vector2 value = ctx.ReadValue<Vector2>();
             if (value.y == 1)
-                leftHand.SwitchEquippedItem(false);
+                leftHand.ScrollEquippedItem(false);
             else if (value.y == -1)
-                leftHand.SwitchEquippedItem(true);
+                leftHand.ScrollEquippedItem(true);
         }
     }
 

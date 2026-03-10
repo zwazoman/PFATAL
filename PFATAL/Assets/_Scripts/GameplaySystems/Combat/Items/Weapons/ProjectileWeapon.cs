@@ -7,7 +7,7 @@ public class ProjectileWeapon : Item
 
     [Header("Weapon Parameters")]
     [SerializeField] protected GameObject projectile;
-    [SerializeField] protected float shootDelay;
+    [SerializeField] float shootDelay;
 
     [SerializeField] protected LayerMask shootRayLayerMask;
 

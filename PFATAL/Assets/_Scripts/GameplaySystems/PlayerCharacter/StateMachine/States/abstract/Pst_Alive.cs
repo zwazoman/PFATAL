@@ -28,7 +28,10 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter ctx)
         {
-            if (_died)
+            if(GameManager.Instance.IsGameOver)
+                return Sm.s_GameOver;
+            
+            else if (_died)
             {
                 _died = false;
                 return Sm.s_dead;

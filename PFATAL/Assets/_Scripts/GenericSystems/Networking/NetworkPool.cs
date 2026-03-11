@@ -13,8 +13,8 @@ public class NetworkPool : NetworkBehaviour, INetworkPrefabInstanceHandler
     {
         base.OnNetworkSpawn();
 
-        if (!IsServer)
-            return;
+        //if (!IsServer)
+        //    return;
 
         NetworkManager.PrefabHandler.AddHandler(_prefab, this);
         InitPool();
@@ -33,8 +33,6 @@ public class NetworkPool : NetworkBehaviour, INetworkPrefabInstanceHandler
 
     public void Destroy(NetworkObject networkObject)
     {
-        //print($"destroy {gameObject.name} via pool");
-        //networkObject.Despawn();
         networkObject.gameObject.SetActive(false);
         networkObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
 

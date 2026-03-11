@@ -11,14 +11,14 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         {
             base.OnEntered(ctx);
 
-            //ctx.health.OnDie += Die;
+            ctx.health.OnDie += Die;
         }
 
         protected override void OnExited(PlayerCharacter ctx)
         {
             base.OnExited(ctx);
 
-            //ctx.health.OnDie -= Die;
+            ctx.health.OnDie -= Die;
         }
 
         void Die()

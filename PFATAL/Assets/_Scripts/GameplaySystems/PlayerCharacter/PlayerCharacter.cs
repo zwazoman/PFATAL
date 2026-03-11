@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -37,7 +38,7 @@ namespace _scripts.PlayerCharacter
             gameObject.name = gameObject.name + NetworkBehaviourId + OwnerClientId;
         }
 
-        //todo : mettre ça dans characterInputs==
+        //todo : mettre ça dans characterInputs
         public bool CheckActionmap(InputActionMap actionMap)
         {
             if (actionMap == playerInput.currentActionMap)
@@ -63,19 +64,23 @@ namespace _scripts.PlayerCharacter
             playerInput.SwitchCurrentActionMap("Player");
         }
         //========
-        
+
         //==todo : mettre ça dans PlayerCharacterVisuals==
+
+        [SerializeField] List<GameObject> _visualObjects;
         
         [Rpc(SendTo.Everyone)]
         public void HidePlayerRpc()
         {
-            //cacher les visuels
+            foreach (var obj in _visualObjects)
+                obj.SetActive(false);
         }
 
         [Rpc(SendTo.Everyone)]
         public void ShowPlayerRpc()
         {
-            //montrer les visuels
+            foreach (var obj in _visualObjects)
+                obj.SetActive(true);
         }
         
         //===============

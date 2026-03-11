@@ -61,11 +61,20 @@ public class Explosion : NetworkBehaviour
                 float normalizedDistance = Vector3.Distance(damageData.Point,hitObject.transform.position) / Radius;
                 normalizedDistance = Mathf.Clamp(normalizedDistance, 0f, 1f);
                 damageData.Amount = Damage * normalizedDistance;
+
+                //knockBack
+                damageData.KnockbackForce = (hitObject.transform.position - damageData.Point).normalized * KnockBackStrength;
+
                 hitObject.TakeDamage(damageData);
                 
-                //player knockback
-                if (hitObject.TryGetComponent(out PlayerPhysics physics))
-                    physics.AddImpulse((physics.Position-damageData.Point).normalized * KnockBackStrength);    
+                ////player knockback
+
+                //if (hitObject.TryGetComponent(out PlayerPhysics physics))
+                //{
+                //    physics.AddImpulse((physics.Position - damageData.Point).normalized * KnockBackStrength);
+                    
+
+                //}
             }
         }
     }

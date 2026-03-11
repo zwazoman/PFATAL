@@ -220,7 +220,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8635965709692271921}
   - component: {fileID: 5432440452121122712}
-  - component: {fileID: 3146337731314166222}
+  - component: {fileID: 3242803300971986713}
   m_Layer: 0
   m_Name: Proj_CrossbowProj
   m_TagString: Untagged
@@ -269,7 +269,7 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &3146337731314166222
+--- !u!114 &3242803300971986713
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -278,17 +278,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5604889624952730010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da95f53b351af45428ba7fdf24922e1d, type: 3}
+  m_Script: {fileID: 11500000, guid: aeb24eb0dc816564281fac799e1f94be, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Proj_Crossbow
   ShowTopMostFoldoutHeaderGroup: 1
   <CollisionRadius>k__BackingField: 0.1
-  _speed: 30
-  _gravity: 3
+  speed: 50
+  gravity: 5
+  damageAmount: 1
   _maxLifetime: 3
-  _damageAmount: 1
-  _chargeDamageMultiplyer: 1
-  _chargeSpeedMultiplyer: 1
   _layerMask:
     serializedVersion: 2
     m_Bits: 321
+  _chargeDamageMultiplyer: 1
+  _chargeSpeedMultiplyer: 1

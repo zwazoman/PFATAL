@@ -29,6 +29,8 @@ public class PeriodicSpawner : NetworkBehaviour
 
     async void StartSpawning()
     {
+        print("start spawning new pickup");
+
         OnStartSpawnDelay?.Invoke();
 
         if(_currentPickup != null)

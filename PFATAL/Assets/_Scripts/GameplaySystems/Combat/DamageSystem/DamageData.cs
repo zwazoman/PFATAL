@@ -27,6 +27,11 @@ public struct DamageData : INetworkSerializeByMemcpy
     /// le forward de la source des dégats
     /// </summary>
     public Vector3 Direction;
+
+    /// <summary>
+    /// la force du knockback appliqué à la cible si applicable
+    /// </summary>
+    public Vector3 KnockbackForce;
     
     //degats de zone
     
@@ -40,6 +45,7 @@ public struct DamageData : INetworkSerializeByMemcpy
         Amount = amount;
         SourcePlayerClientID = sourcePlayerClientID;
         Point = point;
+        KnockbackForce = Vector3.zero;
         Direction = direction;
         Radius = radius;
     }

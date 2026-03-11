@@ -6,12 +6,10 @@ public class Proj_Falling : Projectile
 {
     [Header("Global Settings")]
     [field : SerializeField] public float CollisionRadius { get; private set; }
-    [SerializeField] float _speed = 50;
-    [SerializeField] float _gravity = 0;
+    [SerializeField] protected float speed = 50;
+    [SerializeField] protected float gravity = 0;
+    [SerializeField] protected float damageAmount = 1f;
     [SerializeField] float _maxLifetime = 3;
-    [SerializeField] float _damageAmount;
-    [SerializeField] float _chargeDamageMultiplyer = 1;
-    [SerializeField] float _chargeSpeedMultiplyer = 1;
     [SerializeField] LayerMask _layerMask;
 
     float _spawnTime;
@@ -21,14 +19,13 @@ public class Proj_Falling : Projectile
 
     static RaycastHit[] _hitBuffer = new RaycastHit[10];
 
-    bool _initialized = false;
+    protected bool _initialized = false;
 
     public override void OnSpawn()
     {
         if (NetworkManager.Singleton.IsServer)
         {
             InitRPC(TimeStamp.Now, transform.position, spawnContext.floatData);
-            _damageAmount *= (1 + spawnContext.floatData) * _chargeDamageMultiplyer;
         }
     }
 
@@ -37,15 +34,14 @@ public class Proj_Falling : Projectile
     {
         _spawnTime = timestamp;
         _spawnPosition = position;
-        _speed *= (1 + chargeTime) * _chargeSpeedMultiplyer;
         _initialized = true;
     }
 
     protected virtual void UpdatePosition(float timeSinceSpawn)
     {
         transform.position = _spawnPosition 
-                             + transform.forward * (_speed * timeSinceSpawn)
-                             + Vector3.up * (timeSinceSpawn * timeSinceSpawn * -.5f * _gravity);
+                             + transform.forward * (speed * timeSinceSpawn)
+                             + Vector3.up * (timeSinceSpawn * timeSinceSpawn * -.5f * gravity);
     }
     
     protected virtual void Update()
@@ -63,8 +59,9 @@ public class Proj_Falling : Projectile
         {
             //lifetime
             if (timeSinceSpawn >= _maxLifetime)
-                DespawnRpc();
-            
+                Despawn();
+
+
             Debug.DrawLine(transform.position, _oldPosition, Color.white,_maxLifetime);
             
             //collisions
@@ -86,23 +83,29 @@ public class Proj_Falling : Projectile
                     DamageData data = new();
                     data.Point = _hitBuffer[i].point;
                     data.Direction = transform.forward;
-                    data.Amount = _damageAmount;
+                    data.Amount = damageAmount;
                     data.Radius = 1;
                     data.SourcePlayerClientID = spawnContext.spawnerClientID;
                     HitDamageable(data, damageable);
 
-                    DespawnRpc();
+                    Despawn();
                     return;
                 }   
             }
             //print("ActualHitCount : "+actualHitCount);
-            if(actualHitCount > 0) DespawnRpc();
+            if(actualHitCount > 0) Despawn();
         }
     }
 
     protected virtual void HitDamageable(DamageData damageData, DamageableObject damageable)
     {
         damageable.TakeDamage(damageData);
+    }
+
+    protected virtual void Despawn()
+    {
+        _initialized = false;
+        DespawnRpc();
     }
 
     [Rpc(SendTo.Server)]

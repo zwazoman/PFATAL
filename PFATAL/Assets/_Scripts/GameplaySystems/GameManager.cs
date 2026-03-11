@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameManager : NetworkBehaviour
 {
     //todo : scriptable object avec game settings ?
-    public const float DEATH_MATCH_GAME_DURATION = 1000000;
+    public const float DEATH_MATCH_GAME_DURATION = 40;
 
     public static GameMode gameMode = GameMode.DeathMatch;
 

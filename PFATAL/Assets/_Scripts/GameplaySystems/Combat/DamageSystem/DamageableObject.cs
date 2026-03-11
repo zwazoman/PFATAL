@@ -1,8 +1,10 @@
 using System;
+using _scripts.PlayerCharacter;
 using NUnit.Framework;
 using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
+using static DG.Tweening.DOTweenModuleUtils;
 
 public class DamageableObject : NetworkBehaviour, IDamageable
 {
@@ -34,6 +36,18 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         LastDamageSourceClientID = damageData.SourcePlayerClientID;
         SetHpRPC(HP - damageData.Amount);
         InvokeDamageEventRPC(damageData);
+
+        //knockback
+        if (TryGetComponent(out PlayerCharacter player) && damageData.KnockbackForce != Vector3.zero)
+            ApplyKnockbackRpc(damageData, RpcTarget.Single(player.OwnerClientId, RpcTargetUse.Temp));
+
+    }
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    public void ApplyKnockbackRpc(DamageData data, RpcParams rpcParams = default)
+    {
+        TryGetComponent(out PlayerPhysics physics);
+        physics.AddImpulse(data.KnockbackForce);
     }
 
     /// <summary>

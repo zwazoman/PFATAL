@@ -15,12 +15,14 @@ public class Crossbow : ProjectileWeapon
 
     public override void UseUpdate()
     {
-        if (isCharged)
-            return;
+        if (!isCharged)
+        {
+            chargeValue += Time.deltaTime / _maxChargeTime;
+        }
+            
 
-        chargeValue += Time.deltaTime / _maxChargeTime;
 
-        if(chargeValue >= 1)
+        if(chargeValue >= 1 && !isCharged)
         {
             isCharged = true;
             chargeValue = _maxChargeTime;
@@ -28,7 +30,8 @@ public class Crossbow : ProjectileWeapon
         }
         else if(chargeValue >= _chargeZoomThreshold)
         {
-            //d�but zoom cam�ra
+            float alpha = chargeValue / (1f - _chargeZoomThreshold);
+            _playerCharacter.cameraBehaviour.AddTemporaryFovOffset(alpha * -15);
         }
     }
     

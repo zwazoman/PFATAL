@@ -29,19 +29,35 @@ public class PlayerCameraBehaviour : MonoBehaviour
     private Vector2 _recoilVector;//en degres
     private Vector2 _recoilVelocity;
 
+    private float _fov;
+    private float _tempFovOffset = 0;
+    
+    
+
     void Awake()
     {
-        _playerCharacter.health.OnDamageTaken += ApplyAimPuchRecoil;   
+        _playerCharacter.health.OnDamageTaken += ApplyAimPuchRecoil;
+        _fov = _cam.fieldOfView;
     }
-
+    
     private void ApplyAimPuchRecoil(DamageData damageData)
     {
         print("ahhhh j'ai maaal au secouuurs je meurs ..");
         Vector3 worldVector = (_aimPuchBodyCenterReference.position - damageData.Point).normalized;
         Vector2 cameraVector = _cam.worldToCameraMatrix* worldVector
-            * damageData.Amount/_playerCharacter.health.MaxHP;
+                                                       * damageData.Amount/_playerCharacter.health.MaxHP;
         AddRecoil(Vector2.Scale(cameraVector+_aimPunchDirectionOffset,_aimPunchMultiplier));
     }
+    
+    /// <summary>
+    /// ajoute un offset à la FOV de la camera pendant une frame. Il est remis à 0 à la frame suivante.
+    /// </summary>
+    /// <param name="offset"></param>
+    public void AddTemporaryFovOffset(float offset)
+    {
+        _tempFovOffset += offset;
+    }
+    
     
     public void AddRecoil(Vector2 recoil)
     {
@@ -75,7 +91,10 @@ public class PlayerCameraBehaviour : MonoBehaviour
         //fov
         float targetFOV = Mathf.Lerp(FOVRange.x, FOVRange.y,
             Mathf.Pow(_playerCharacter.physics.Velocity.magnitude / _playerCharacter.stateMachine.s_Walking._walkSpeed, _playerVelocityToFovScalingCurveExponent));
-        _cam.fieldOfView = Mathf.SmoothDamp(_cam.fieldOfView,targetFOV,ref _fovVel,_fovSmoothTime);
+        
+        _fov = Mathf.SmoothDamp(_fov,targetFOV,ref _fovVel,_fovSmoothTime) ;
+        _cam.fieldOfView = _fov + +_tempFovOffset;
+        _tempFovOffset = 0;
         
         //recoil stabilisation
         _recoilVector = Vector2.SmoothDamp(_recoilVector,Vector2.zero,ref _recoilVelocity,_recoilStabilizationDuration);
@@ -84,6 +103,6 @@ public class PlayerCameraBehaviour : MonoBehaviour
         _recoilTarget.localRotation = Quaternion.Slerp(
             _recoilTarget.localRotation,
             Quaternion.Euler(_recoilVector.y,_recoilVector.x,0),
-            Mathf.Pow(_recoilSlerpExponent,Time.deltaTime)) ;
+            1.0f - Mathf.Pow(_recoilSlerpExponent,Time.deltaTime)) ;
     }
 }

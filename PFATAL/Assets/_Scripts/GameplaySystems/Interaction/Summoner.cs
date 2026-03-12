@@ -54,15 +54,15 @@ public class Summoner : NetworkBehaviour
     /// <param name="giveOwnershipToAsker"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public async Awaitable<GameObject> SpawnObject(GameObject gameObjectToSpawn, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null, ulong futureOwner = 1000)
+    public async Awaitable<GameObject> SpawnObject(GameObject gameObjectToSpawn, Vector3 spawnPos, Quaternion spawnRot, bool sendBack = false, SpawnContext? context = null, ulong futureOwner = 1000)
     {
         if (context == null)
             context = new(0);
-        
-        if(gameObjectToSpawn == null)
+
+        if (gameObjectToSpawn == null)
             throw new ArgumentNullException(nameof(gameObjectToSpawn));
-        
-        SpawnRpc(context.Value, gameObjectToSpawn.name, spawnPos, spawnRot, futureOwner);
+
+        SpawnRpc(context.Value, gameObjectToSpawn.name, spawnPos, spawnRot, futureOwner, sendBack);
         while (_currentObject == null)
         {
             await Awaitable.NextFrameAsync();
@@ -76,28 +76,41 @@ public class Summoner : NetworkBehaviour
         return newObject;
     }
 
-    public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null)
+    public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, bool sendBack = false, SpawnContext? context = null)
     {
-        return await SpawnObject(spawnableObjectsDict[objectName], spawnPos, spawnRot, context);
+        return await SpawnObject(spawnableObjectsDict[objectName], spawnPos, spawnRot, sendBack, context);
     }
 
     [Rpc(SendTo.Server)]
-    void SpawnRpc(SpawnContext context, string objectName, Vector3 spawnPos, Quaternion spawnRot, ulong futureOwner)
+    void SpawnRpc(SpawnContext context, string objectName, Vector3 spawnPos, Quaternion spawnRot, ulong futureOwner, bool sendBack)
     {
         NetworkObject newObject = null;
 
-        if (futureOwner != 1000)
-            newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, futureOwner, true, true, false, spawnPos, spawnRot);
-        else
-            newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
+        context.spawnPos = spawnPos;
+        context.spawnTime = TimeStamp.Now;
+
+        newObject = Instantiate(spawnableObjectsDict[objectName], spawnPos, spawnRot).GetComponent<NetworkObject>();
 
         if (newObject.TryGetComponent(out Projectile projectile))
-        {
-            projectile.spawnContext = context;
-            projectile.OnSpawn();
-        }
+            projectile.spawnContext = new(context);
 
-        SendToAskerRpc(newObject, RpcTarget.Single(context.spawnerClientID, RpcTargetUse.Temp));
+        if (futureOwner == 1000)
+            newObject.Spawn();
+        else
+            newObject.SpawnWithOwnership(futureOwner);
+
+        //if (futureOwner != 1000)
+        //    newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, futureOwner, true, true, false, spawnPos, spawnRot);
+        //else
+        //    newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
+
+        //if (newObject.TryGetComponent(out Projectile projectile))
+        //{
+        //    projectile.SetupContextRpc(context);
+        //}
+
+        if (sendBack)
+            SendToAskerRpc(newObject, RpcTarget.Single(context.spawnerClientID, RpcTargetUse.Temp));
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
@@ -114,9 +127,13 @@ public struct SpawnContext : INetworkSerializeByMemcpy
 {
     public ulong spawnerClientID;
     public float floatData;
+    public Vector3 spawnPos;
+    public float spawnTime;
 
-    public SpawnContext(ulong spawnerClientID) :this()
+    public SpawnContext(ulong spawnerClientID) : this()
     {
         this.spawnerClientID = spawnerClientID;
+        floatData = 0;
+        spawnTime = TimeStamp.Now;
     }
 }

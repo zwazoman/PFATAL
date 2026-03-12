@@ -4,10 +4,12 @@ using AYellowpaper.SerializedCollections;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
+using _scripts.PlayerCharacter;
 
 public class ItemVisuals : NetworkBehaviour
 {
     [Header("References")]
+    [SerializeField] PlayerCharacter _playerCharacter;
     [SerializeField] Hand _leftHand;
     [SerializeField] Hand _rightHand;
 
@@ -55,6 +57,7 @@ public class ItemVisuals : NetworkBehaviour
         Hand hand = GetHand(leftHand);
 
         Item currentItem =  GetItem(prefabName);
+        currentItem.enabled = _playerCharacter.IsOwner;
         currentItem.transform.parent = hand.visualsTransform;
         currentItem.transform.position = hand.visualsTransform.position;
         currentItem.gameObject.SetActive(true);

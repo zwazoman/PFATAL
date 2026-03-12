@@ -13,16 +13,12 @@ public class NetworkPool : NetworkBehaviour, INetworkPrefabInstanceHandler
     {
         base.OnNetworkSpawn();
 
-        //if (!IsServer)
-        //    return;
-
         NetworkManager.PrefabHandler.AddHandler(_prefab, this);
         InitPool();
     }
 
     public void InitPool()
     {
-        print("init pool");
         for(int i = 0; i < _poolSize; i++)
         {
             GameObject newObject = Instantiate(_prefab, transform);

@@ -61,7 +61,7 @@ public class ProjectileWeapon : Item
         else
             rotation = shootSocket.rotation;
 
-        Summoner.Instance.SpawnObject(projectile, shootSocket.position, rotation, spawnContext);
+        Summoner.Instance.SpawnObject(projectile, shootSocket.position, rotation,false, spawnContext);
 
         StartShootDelay();
     }

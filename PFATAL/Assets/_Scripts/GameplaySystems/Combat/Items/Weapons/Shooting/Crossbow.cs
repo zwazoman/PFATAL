@@ -21,6 +21,7 @@ public class Crossbow : ProjectileWeapon
 
     protected virtual void Update()
     {
+
         //update camera zoom
         const float MAX_FOV_ZOOM = 15;
         float alpha = Mathf.Max( (chargeValue - _chargeZoomThreshold) / (1f - _chargeZoomThreshold),0);

@@ -47,9 +47,7 @@ public class PeriodicSpawner : NetworkBehaviour
     async void SpawnPickup(GameObject pickupPrefab)
     {
         OnSpawn?.Invoke();
-
-        print("spawn object");
-
+        
         GameObject pickupObject = await Summoner.Instance.SpawnObject(pickupPrefab.name, _spawnSocket.position, _spawnSocket.rotation);
         if (pickupObject.TryGetComponent(out _currentPickup))
         {

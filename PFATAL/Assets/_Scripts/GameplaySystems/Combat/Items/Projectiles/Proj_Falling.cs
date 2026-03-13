@@ -1,3 +1,4 @@
+using NetworkTime;
 using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
@@ -21,8 +22,37 @@ public class Proj_Falling : Projectile
 
     protected bool _initialized = false;
 
+<<<<<<< Updated upstream
     public override void OnSpawn()
     {
+=======
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        print(spawnContext.Value.spawnPos);
+
+        _spawnTime = spawnContext.Value.spawnTime;
+
+#if !UNITY_EDITOR
+        Debug.LogError($"network time offset {TimeStamp.Now - _spawnTime}");
+#endif
+        _spawnPosition = spawnContext.Value.spawnPos;
+
+        speed *= 1 + spawnContext.Value.floatData;
+        damageAmount *= 1 + spawnContext.Value.floatData * 2;
+
+        _initialized = true;
+    }
+
+    public override void OnSpawn()
+    {
+        //_spawnTime = spawnContext.Value.spawnTime;
+        
+        _spawnTime = spawnContext.Value.spawnTime;
+        _spawnPosition = spawnContext.Value.spawnPos;
+
+>>>>>>> Stashed changes
         if (NetworkManager.Singleton.IsServer)
         {
             //todo : lag au spawn vient de là ????

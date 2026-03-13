@@ -7,7 +7,7 @@ public class NetworkConnectionManager : MonoBehaviour
 {
     public static NetworkConnectionManager Instance { get; private set; }
 
-    [Header("Sc�nes")]
+    [Header("Scenes")]
     [SerializeField] private string gameSceneName = "GameScene";
 
     private void Awake()
@@ -114,12 +114,12 @@ public class NetworkConnectionManager : MonoBehaviour
         bool clientStarted = NetworkManager.Singleton.StartClient();
         if (!clientStarted)
         {
-            Debug.LogError("[Network] Impossible de d�marrer Netcode en mode client");
+            Debug.LogError("[Network] Impossible de démarrer Netcode en mode client");
             await LobbyManager.Instance.LeaveLobby();
             return false;
         }
 
-        //Debug.Log("[Network] Client connect� avec succ�s");
+        //Debug.Log("[Network] Client connecté avec succès");
         return true;
     }
     
@@ -127,7 +127,7 @@ public class NetworkConnectionManager : MonoBehaviour
     {
         while (!UnityServicesManager.Instance.IsInitialized)
             await Task.Delay(100);
-
+        
         bool lobbyJoined = await LobbyManager.Instance.JoinLobbyById(lobbyId);
         if (!lobbyJoined) { Debug.LogError("[Network] Impossible de rejoindre le lobby"); return false; }
 

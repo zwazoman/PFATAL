@@ -26,11 +26,7 @@ public class Proj_Falling : Projectile
     {
         base.OnNetworkSpawn();
 
-        print(spawnContext.Value.spawnPos);
-
         _spawnTime = spawnContext.Value.spawnTime;
-        Debug.LogError($"network time offset {TimeStamp.Now - _spawnTime}");
-
         _spawnPosition = spawnContext.Value.spawnPos;
 
         speed *= 1 + spawnContext.Value.floatData;

@@ -21,7 +21,7 @@ public class Cons_TP : Consummable
     {
         base.StopUsing();
 
-        _playerCharacter.physics.SetPosition(tpDestination);
+        playerCharacter.physics.SetPosition(tpDestination);
         
         HideMarker();
         BreakItem();
@@ -33,12 +33,12 @@ public class Cons_TP : Consummable
 
         RaycastHit hit;
 
-        if(Physics.Raycast(_playerCharacter.playerCamera.transform.position, _playerCharacter.playerCamera.transform.forward,out hit, _range, _layermask))
+        if(Physics.Raycast(playerCharacter.playerCamera.transform.position, playerCharacter.playerCamera.transform.forward,out hit, _range, _layermask))
         {
-            tpDestination = hit.point - _playerCharacter.playerCamera.transform.forward * _wallOffsetRange;
+            tpDestination = hit.point - playerCharacter.playerCamera.transform.forward * _wallOffsetRange;
         }
         else
-            tpDestination = _playerCharacter.playerCamera.transform.position + _playerCharacter.playerCamera.transform.forward * _range;
+            tpDestination = playerCharacter.playerCamera.transform.position + playerCharacter.playerCamera.transform.forward * _range;
 
         marker.transform.position = tpDestination;
     }

@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2401402687336084998}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.294}
+  m_LocalPosition: {x: -0.534, y: 0.075, z: 0.462}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -141,6 +141,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hammer
   _pickup: {fileID: 8646866019681496794, guid: 9dbbfe26db967984788ffaac38ae8306, type: 3}
+  hitSocket: {fileID: 312709263419611719}
+  hitSphereRadius: 1
+  damageAmount: 8
+  _hitLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  _holdDuration: 0.4
+  _dashStrength: 15
 --- !u!1001 &8392829366872443326
 PrefabInstance:
   m_ObjectHideFlags: 0

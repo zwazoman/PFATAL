@@ -19,6 +19,14 @@ public class Crossbow : ProjectileWeapon
     private float _cameraFovOffset = 0;
     private float _fovOffsetVelocity = 0;
 
+    public override void StartUsing()
+    {
+        if (canShoot)
+        {
+            base.StartUsing();
+        }
+    }
+
     protected virtual void Update()
     {
 
@@ -29,7 +37,7 @@ public class Crossbow : ProjectileWeapon
             Mathf.SmoothDamp(_cameraFovOffset, - alpha * MAX_FOV_ZOOM,
                 ref _fovOffsetVelocity, .13f,Mathf.Infinity,Time.deltaTime);
         
-        _playerCharacter.cameraBehaviour.AddTemporaryFovOffset(_cameraFovOffset);
+        playerCharacter.cameraBehaviour.AddTemporaryFovOffset(_cameraFovOffset);
         
     }
 
@@ -58,7 +66,7 @@ public class Crossbow : ProjectileWeapon
         Shoot(spawnContext);
         
         //recoil
-        _playerCharacter.cameraBehaviour.AddRecoil(
+        playerCharacter.cameraBehaviour.AddRecoil(
             new Vector2(Random.Range(- _CameraRecoilStrength.x, _CameraRecoilStrength.x), _CameraRecoilStrength.y) * (1f+chargeValue));
         
         //reset charge

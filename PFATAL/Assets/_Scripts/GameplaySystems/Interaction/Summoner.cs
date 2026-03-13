@@ -84,6 +84,8 @@ public class Summoner : NetworkBehaviour
     [Rpc(SendTo.Server)]
     void SpawnRpc(SpawnContext context, string objectName, Vector3 spawnPos, Quaternion spawnRot, ulong futureOwner, bool sendBack)
     {
+        //todo => refaire avec les pools bien
+
         NetworkObject newObject = null;
 
         context.spawnPos = spawnPos;
@@ -121,7 +123,16 @@ public class Summoner : NetworkBehaviour
             _currentObject = networkObj.gameObject;
         }
     }
+
+    public void BroadcastSpawnDeSesMorts()
+    {
+
+    }
 }
+
+
+
+
 
 public struct SpawnContext : INetworkSerializeByMemcpy
 {

@@ -40,16 +40,23 @@ namespace _scripts.PlayerCharacter
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.O))
+            if (Input.GetKeyDown(KeyCode.O) && IsOwner)
             {
-                TestRpc(TimeStamp.Now);
+                ServerTestRpc(TimeStamp.Now, OwnerClientId);
+                Debug.LogError($"your ping is {NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetCurrentRtt(NetworkManager.Singleton.NetworkConfig.NetworkTransport.ServerClientId)}");
             }
         }
 
-        [Rpc(SendTo.Everyone)]
-        void TestRpc(float time)
+        [Rpc(SendTo.Server)]
+        void ServerTestRpc(float startTime, ulong askingClientID)
         {
-            Debug.LogError($" rpc took {TimeStamp.Now - time}s to be received");
+            ClientTestRpc(startTime, RpcTarget.Single(askingClientID, RpcTargetUse.Temp));
+        }
+
+        [Rpc(SendTo.SpecifiedInParams)]
+        void ClientTestRpc(float startTime, RpcParams rpcParams = default)
+        {
+            Debug.LogError($"the rpc delay is {(TimeStamp.Now - startTime) / 2}");
         }
 
         //todo : mettre ça dans characterInputs

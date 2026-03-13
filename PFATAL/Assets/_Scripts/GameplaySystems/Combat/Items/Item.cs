@@ -55,7 +55,7 @@ public class Item : MonoBehaviour
     {
         Debug.Log(name + "Picked up !");
 
-        this._playerCharacter = main;
+        _playerCharacter = main;
         carryingHand = hand;
     }
 

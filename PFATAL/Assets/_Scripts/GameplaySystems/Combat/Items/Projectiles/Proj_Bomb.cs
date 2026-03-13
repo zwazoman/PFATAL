@@ -46,7 +46,7 @@ public class Proj_Bomb : Projectile
     void Explode()
     {
         if (!IsServer) throw new NetworkAuthorityException();
-        _explosion.Explode(spawnContext.spawnerClientID);
+        _explosion.Explode(spawnContext.Value.spawnerClientID);
     }
 
     

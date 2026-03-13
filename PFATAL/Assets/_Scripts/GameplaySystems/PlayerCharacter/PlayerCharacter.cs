@@ -38,6 +38,20 @@ namespace _scripts.PlayerCharacter
             gameObject.name = gameObject.name + NetworkBehaviourId + OwnerClientId;
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                TestRpc(TimeStamp.Now);
+            }
+        }
+
+        [Rpc(SendTo.Everyone)]
+        void TestRpc(float time)
+        {
+            Debug.LogError($" rpc took {TimeStamp.Now - time}s to be received");
+        }
+
         //todo : mettre ça dans characterInputs
         public bool CheckActionmap(InputActionMap actionMap)
         {
@@ -85,4 +99,5 @@ namespace _scripts.PlayerCharacter
         
         //===============
     }
+
 }

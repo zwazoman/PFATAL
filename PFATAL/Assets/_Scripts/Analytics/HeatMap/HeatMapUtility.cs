@@ -3,11 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Class that contains some functions for the heatmapData
+/// </summary>
 public class HeatMapUtility
 {
+    /// <summary>
+    /// Combines multiple heat map data objects into a single aggregated heat map and returns its JSON representation.
+    /// </summary>
+    /// <remarks>This method aggregates visit counts for each unique point across the provided heat maps. The
+    /// combined heat map will use the grid size and game ID from the first heat map in the list. It is important to
+    /// ensure that all heat maps share the same grid size to avoid errors.</remarks>
+    /// <param name="heatMaps">A list of heat map data objects to be combined. All heat maps must have the same grid size; otherwise, the
+    /// method returns null.</param>
+    /// <returns>A JSON string representing the combined heat map data. Returns null if the input heat maps do not share the same
+    /// grid size.</returns>
     public static string CombineHeatMap(List<HeatMapData> heatMaps)
     {
-        if (!IsSameGridSize(heatMaps)) return null;
+        //check if the grid size is the same for all the heatmap
+        if (!IsSameGridSize(heatMaps))
+        {
+            Debug.LogError("All the heatmap don't have the same gridSize");
+            return null;
+        }
 
         HeatMapData combinedHeatMap = new HeatMapData(heatMaps[0].heatMapCellSize);
 
@@ -17,22 +35,42 @@ public class HeatMapUtility
             {
                 HeatPoint currentPoint = heatmap.points[i];
 
+                //checking if the point already exists in the combinedHeatmap list
                 var point = combinedHeatMap.points.FirstOrDefault(p => p.x == currentPoint.x && p.y == currentPoint.y && p.z == currentPoint.z);
                 
+                //if the point exist, we just add the corresponding value together
                 if (point != null)
-                    point.visitsGlobal += currentPoint.visitsGlobal;
-                
+                {
+                    point.visitsGlobal += currentPoint.visitsGlobal; 
+                    point.playerWithHammerVisits += currentPoint.playerWithHammerVisits; 
+                    point.playerWithCrossbowVisits += currentPoint.playerWithCrossbowVisits;
+                    point.playerWithTomahawkVisits += currentPoint.playerWithTomahawkVisits;
+                }
+
+                //if the point doesn't exist, we create it and we add it in the list
                 else
                     combinedHeatMap.points.Add(new HeatPoint(
                         currentPoint.x,
                         currentPoint.y,
                         currentPoint.z,
-                        currentPoint.visitsGlobal
+                        currentPoint.visitsGlobal,
+                        currentPoint.playerWithHammerVisits,
+                        currentPoint.playerWithCrossbowVisits,
+                        currentPoint.playerWithTomahawkVisits
                     ));
             }
         }
 
-        combinedHeatMap.heatMapGameId = heatMaps[0].heatMapGameId;
+        //set the correct game id, 0 if there's severals game heatmap used
+        if (IsSameGameId(heatMaps))
+        {
+            combinedHeatMap.heatMapGameId = heatMaps[0].heatMapGameId;
+        }
+        else
+        {
+            combinedHeatMap.heatMapGameId = 0;
+        }
+
         combinedHeatMap.heatMapPlayerNumber = heatMaps.Count;
         string combinedHeatMapJson = ConvertHeatMapDataToJson(combinedHeatMap);
 
@@ -102,5 +140,10 @@ public class HeatMapUtility
     {
         string heatMapJson = JsonUtility.ToJson(heatMapData);
         return heatMapJson;
+    }
+
+    public static int MaxVisits(HeatMapData heatMapData)
+    {
+        return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.visitsGlobal) : 0;
     }
 }

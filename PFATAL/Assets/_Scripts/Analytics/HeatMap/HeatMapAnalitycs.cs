@@ -8,12 +8,15 @@ using System;
 public class HeatMapAnalitycs : MonoBehaviour
 {
     public float UpdateInterval = 1f;
-    public float gridSize = 1f;
+    public int gridSize = 1;
+    [Range(1f, 3f)]
+    public int weaponType;
     public Transform playerTransform;
 
     private HeatMapData heatMapData;
     private float timer;
     private string filePath;
+    
 
     [Header("Debug")]
     [SerializeField] private bool show = false;
@@ -35,18 +38,50 @@ public class HeatMapAnalitycs : MonoBehaviour
             timer = 0f;
             Vector3 playerPos = playerTransform.position;
 
+            //recherche si le point existe déjà dans la liste
             var point = heatMapData.points.FirstOrDefault(p => 
                 p.x == Mathf.Round(playerPos.x / gridSize) * gridSize &&
                 p.y == Mathf.Round(playerPos.y / gridSize) * gridSize &&
                 p.z == Mathf.Round(playerPos.z / gridSize) * gridSize);
 
+            //s'il existe déjà, on incrémente le nombre de visites, sinon on ajoute un nouveau point à la liste
             if (point != null)
+            {
                 point.visitsGlobal++;
+                switch (weaponType)
+                {
+                    case 1:
+                        point.playerWithHammerVisits++;
+                        break;
+                    case 2:
+                        point.playerWithCrossbowVisits++;
+                        break;
+                    case 3:
+                        point.playerWithTomahawkVisits++;
+                        break;
+                }
+            }
             else
-                heatMapData.points.Add(new HeatPoint(
+            {
+                HeatPoint newPoint = new HeatPoint(
                     Mathf.Round(playerPos.x / gridSize) * gridSize,
                     Mathf.Round(playerPos.y / gridSize) * gridSize,
-                    Mathf.Round(playerPos.z / gridSize) * gridSize));
+                    Mathf.Round(playerPos.z / gridSize) * gridSize);
+
+                switch (weaponType)
+                {
+                    case 1:
+                        newPoint.playerWithHammerVisits++;
+                        break;
+                    case 2:
+                        newPoint.playerWithCrossbowVisits++;
+                        break;
+                    case 3:
+                        newPoint.playerWithTomahawkVisits++;
+                        break;
+                }
+                heatMapData.points.Add(newPoint);
+            }
 
             File.WriteAllText(filePath, JsonUtility.ToJson(heatMapData));
         }
@@ -100,7 +135,7 @@ public class HeatMapAnalitycs : MonoBehaviour
     }
 
     [Button("Coppy file path")]
-    public void copy()
+    public void Copy()
     {
         GUIUtility.systemCopyBuffer = Application.persistentDataPath;
     }
@@ -115,7 +150,7 @@ public class HeatMapAnalitycs : MonoBehaviour
 
         jsonData = File.ReadAllText(path);
 
-        GetComponent<SendHeatMap>().SendJsonData(jsonData + "  C'EST L'HEURE, connard.  " + System.DateTime.Now);
+        //GetComponent<SendHeatMap>().SendJsonData(jsonData + "  C'EST L'HEURE, connard.  " + System.DateTime.Now);
 
         //SendHeatMap.SendJsonData(jsonData + "  C'EST L'HEURE, connard. Inchallah ça marche zebi  " + System.DateTime.Now);
         
@@ -139,5 +174,17 @@ public class HeatMapAnalitycs : MonoBehaviour
         string finalHeatMap = HeatMapUtility.CombineHeatMap(heatMaps);
 
         File.WriteAllText(Path.Combine(Application.persistentDataPath, "heatmap_combined.json"), finalHeatMap);
+    }
+
+    public void Combine(string GameVersion, int PlayerNumber, int WeaponType)
+    {
+        listeFile = Directory.GetFiles(Application.persistentDataPath, $"heatmap_{GameVersion}_player{PlayerNumber}_weapon{WeaponType}_*.json").ToList();
+        foreach (string file in listeFile)
+            listeHeatmapJson.Add(File.ReadAllText(file));
+        Debug.Log("COMBINE");
+        List<HeatMapData> heatMaps = HeatMapUtility.ConvertJsonListToHeatMapDataList(listeHeatmapJson);
+        if (!HeatMapUtility.IsSameGridSize(heatMaps)) return;
+        string finalHeatMap = HeatMapUtility.CombineHeatMap(heatMaps);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, $"heatmap_combined_{GameVersion}_player{PlayerNumber}_weapon{WeaponType}.json"), finalHeatMap);
     }
 }

@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetworkTime;
 using Unity.Netcode;
 using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
+    [SerializeField] private NetworkTimeSyncManager _timeSyncManager;
+    
     //todo : scriptable object avec game settings ?
     public const float DEATH_MATCH_GAME_DURATION = 40;
 
@@ -32,16 +35,27 @@ public class GameManager : NetworkBehaviour
         SignalJoinRPC();
     }
 
+    /// <summary>
+    /// appelé par chaque client au début pour signaler au server qu'il a fini de charger la map.
+    /// </summary>
     [Rpc(SendTo.Server)]
     void SignalJoinRPC()
     {
         print("Player loaded the map");
         _playersInScene++;
+        
+        //quand tous les clients sont connectés
         if (_playersInScene == NetworkManager.Singleton.ConnectedClientsIds.Count)
         {
-            print("Everyone laoded the map. start game !");
-            StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(),gameMode);
+            print("Everyone laoded the map.");
+            InitializeGame();
         }
+    }
+
+    async void InitializeGame()
+    {
+        await _timeSyncManager.SyncClientTimestamps();
+        StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(),gameMode);
     }
     
     //data

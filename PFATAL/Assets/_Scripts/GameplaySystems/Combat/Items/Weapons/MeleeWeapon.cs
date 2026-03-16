@@ -39,6 +39,9 @@ public class MeleeWeapon : Item
         if (isHitting)
         {
             Collider[] _hitColliders = Physics.OverlapSphere(hitSocket.position, hitSphereRadius, _hitLayerMask);
+
+            print(_hitColliders.Length);
+
             foreach(Collider collider in _hitColliders)
             {
                 if (collider.gameObject.TryGetComponent(out DamageableObject damageable))

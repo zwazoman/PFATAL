@@ -40,7 +40,7 @@ public class PlayerCharacterSpawner : MonoBehaviour
         return player.GetComponent<PlayerCharacter>();
     }
 
-    public void SpawnPlayer(PlayerCharacter player)
+    public void ReSpawnPlayer(PlayerCharacter player)
     {
         Transform spawnSocket = SelectSpawnSocket();
 

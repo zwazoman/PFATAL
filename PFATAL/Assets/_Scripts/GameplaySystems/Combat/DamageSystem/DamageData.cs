@@ -4,7 +4,6 @@ using UnityEngine;
 /// <summary>
 /// Représente toutes les infos liées à un dégat
 /// </summary>
-/// <typeparam name="T">La source du dégat (joueur, piège, killzone...) </typeparam>
 public struct DamageData : INetworkSerializeByMemcpy
 {
     public const ulong NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID = 1000;
@@ -22,7 +21,17 @@ public struct DamageData : INetworkSerializeByMemcpy
     /// <summary>
     /// Le centre de l’explosion / l'endroit où l'ennemi a été touché
     /// </summary>
-    public Vector3 Point;  
+    public Vector3 Point;
+
+    /// <summary>
+    /// le forward de la source des dégats
+    /// </summary>
+    public Vector3 Direction;
+
+    /// <summary>
+    /// la force du knockback appliqué à la cible si applicable
+    /// </summary>
+    public Vector3 KnockbackForce;
     
     //degats de zone
     
@@ -31,11 +40,13 @@ public struct DamageData : INetworkSerializeByMemcpy
     /// </summary>
     public float Radius;
 
-    public DamageData(float amount, Vector3 point,ulong sourcePlayerClientID = NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID, float radius = 0)
+    public DamageData(float amount, Vector3 point, Vector3 direction, ulong sourcePlayerClientID = NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID, float radius = 0)
     {
         Amount = amount;
         SourcePlayerClientID = sourcePlayerClientID;
         Point = point;
+        KnockbackForce = Vector3.zero;
+        Direction = direction;
         Radius = radius;
     }
 }

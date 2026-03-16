@@ -1,7 +1,10 @@
 using System;
+using _scripts.PlayerCharacter;
 using NUnit.Framework;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
+using static DG.Tweening.DOTweenModuleUtils;
 
 public class DamageableObject : NetworkBehaviour, IDamageable
 {
@@ -12,22 +15,39 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     public float HP {get; private set;}
     [field:SerializeField] public float MaxHP { get; private set; }
     public bool IsDead => HP == 0;
-    
+
+    [SerializeField] public bool isPlayer = true;
     //events
     public event Action<DamageData> OnDamageTaken;
-    public event Action OnDead;
+    public event Action OnDie;
     public event Action<float> OnHpChanged;
-    
+
+    void Awake()
+    {
+        HP = MaxHP;
+        OnHpChanged?.Invoke(HP);
+    }
+
     /// <summary>
     /// Fait des dégats à l'entité. Doit être appelé sur le serveur uniquement.
     /// </summary>
     public void TakeDamage(DamageData damageData)
     {
-        //Assert.IsTrue(IsServer,"Impossible d'appliquer les dégats depuis un client.");
-        
         LastDamageSourceClientID = damageData.SourcePlayerClientID;
         SetHpRPC(HP - damageData.Amount);
         InvokeDamageEventRPC(damageData);
+
+        //knockback
+        if (TryGetComponent(out PlayerCharacter player) && damageData.KnockbackForce != Vector3.zero)
+            ApplyKnockbackRpc(damageData, RpcTarget.Single(player.OwnerClientId, RpcTargetUse.Temp));
+
+    }
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    public void ApplyKnockbackRpc(DamageData data, RpcParams rpcParams = default)
+    {
+        TryGetComponent(out PlayerPhysics physics);
+        physics.AddImpulse(data.KnockbackForce);
     }
 
     /// <summary>
@@ -35,7 +55,6 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     /// </summary>
     public void Heal()
     {
-        //Assert.IsTrue(IsServer,"Impossible de modifier les HPs depuis un client.");
         SetHpRPC(MaxHP);
     }
     
@@ -44,12 +63,10 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     /// </summary>
     public void Heal(float amount)
     {
-        //Assert.IsTrue(IsServer,"Impossible de modifier les HPs depuis un client.");
         SetHpRPC(HP + amount);
     }
     
     //replication 
-    
     [Rpc(SendTo.Everyone)]
     private void SetHpRPC(float hp)
     {
@@ -58,7 +75,8 @@ public class DamageableObject : NetworkBehaviour, IDamageable
 
         if (HP == 0)
         {
-            OnDead?.Invoke();
+            OnDie?.Invoke();
+            print("die");
         }
     }
     
@@ -68,3 +86,16 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         OnDamageTaken?.Invoke(damageData);
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(DamageableObject))]
+public class DamageableObjectEditor : Editor
+{
+    override public void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        GUILayout.Space(10);
+        GUILayout.Label("HPs : "+((DamageableObject)target).HP);
+    }
+}
+#endif

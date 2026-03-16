@@ -9,7 +9,7 @@ public class LobbyManager : MonoBehaviour
 {
     public static LobbyManager Instance { get; private set; }
 
-    private Lobby currentLobby;
+    private Unity.Services.Lobbies.Models.Lobby currentLobby;
     private const int MAX_PLAYERS = 8;
     private const string RELAY_JOIN_CODE_KEY = "RelayJoinCode";
 
@@ -190,7 +190,7 @@ public class LobbyManager : MonoBehaviour
         return currentLobby != null && currentLobby.HostId == UnityServicesManager.Instance.GetPlayerId();
     }
 
-    public Lobby GetCurrentLobby()
+    public Unity.Services.Lobbies.Models.Lobby GetCurrentLobby()
     {
         return currentLobby;
     }

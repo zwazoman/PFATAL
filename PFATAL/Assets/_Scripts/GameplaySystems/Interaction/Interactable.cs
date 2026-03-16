@@ -1,39 +1,35 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Interactable : NetworkBehaviour
 {
-    [HideInInspector] public bool isInteractable = true;
+    public event Action OnInteract;
+    public event Action OnStartHover;
+    public event Action OnStopHover;
 
-    [SerializeField] MeshRenderer _mR;
-    [SerializeField] Material _initialMaterial;
-    [SerializeField] Material _hoveredMaterial;
+    [HideInInspector] public bool isInteractable = true;
 
     protected virtual void Awake()
     {
-        if (_mR = GetComponent<MeshRenderer>())
-            _initialMaterial = _mR.material;
-
         if (gameObject.layer != 7)
             gameObject.layer = 7;
     }
 
-    public virtual void Interact(PlayerInteraction interaction) { }
+    public virtual void Interact(PlayerInteraction interaction)
+    {
+        OnInteract?.Invoke();
+    }
 
     public virtual void StartHover()
     {
         //feedback
-
-        if(_hoveredMaterial != null)
-            _mR.material = _hoveredMaterial;
+        OnStartHover?.Invoke();
     }
 
     public virtual void StopHover()
     {
         //feedback
-        if(_initialMaterial != null)
-            _mR.material = _initialMaterial;
+        OnStopHover?.Invoke();
     }
-
-    //gérer feedback
 }

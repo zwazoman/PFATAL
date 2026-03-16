@@ -1,8 +1,8 @@
-using AYellowpaper.SerializedCollections;
+using _scripts.PlayerCharacter;
 using System;
 using System.Collections.Generic;
+using NetworkTime;
 using Unity.Netcode;
-using UnityEditor;
 using UnityEngine;
 
 public class Summoner : NetworkBehaviour
@@ -22,6 +22,12 @@ public class Summoner : NetworkBehaviour
             return instance;
         }
     }
+    #endregion
+
+    [SerializeField] NetworkPrefabsList prefabs;
+
+    Dictionary<string, GameObject> spawnableObjectsDict = new();
+    GameObject _currentObject;
 
     private void Awake()
     {
@@ -29,17 +35,8 @@ public class Summoner : NetworkBehaviour
             instance = this;
         else
             Destroy(this);
-    }
-    #endregion
 
-    [SerializeField] NetworkPrefabsList prefabs;
 
-    Dictionary<string, GameObject> spawnableObjectsDict = new();
-
-    GameObject _currentObject;
-
-    private void Start()
-    {
         foreach (NetworkPrefab spawnableObject in prefabs.PrefabList)
         {
             if (!spawnableObjectsDict.ContainsKey(spawnableObject.Prefab.name))
@@ -48,17 +45,31 @@ public class Summoner : NetworkBehaviour
             }
         }
     }
-
-    public async Awaitable<GameObject> SpawnObject(GameObject gameObject, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="gameObjectToSpawn"></param>
+    /// <param name="spawnPos"></param>
+    /// <param name="spawnRot"></param>
+    /// <param name="context"></param>
+    /// <param name="giveOwnershipToAsker"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public async Awaitable<GameObject> SpawnObject(GameObject gameObjectToSpawn, Vector3 spawnPos, Quaternion spawnRot, bool sendBack = false, SpawnContext? context = null, ulong futureOwner = 1000)
     {
         if (context == null)
             context = new(0);
 
-        SpawnRpc(context.Value, gameObject.name, spawnPos, spawnRot);
+        if (gameObjectToSpawn == null)
+            throw new ArgumentNullException(nameof(gameObjectToSpawn));
+
+        SpawnRpc(context.Value, gameObjectToSpawn.name, spawnPos, spawnRot, futureOwner, sendBack);
         while (_currentObject == null)
         {
             await Awaitable.NextFrameAsync();
         }
+
+        //print($"{_currentObject.name} received");
 
         GameObject newObject = _currentObject;
         _currentObject = null;
@@ -66,22 +77,43 @@ public class Summoner : NetworkBehaviour
         return newObject;
     }
 
-    public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, SpawnContext? context = null)
+    public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, bool sendBack = false, SpawnContext? context = null)
     {
-        return await SpawnObject(spawnableObjectsDict[objectName], spawnPos, spawnRot, context);
+        return await SpawnObject(spawnableObjectsDict[objectName], spawnPos, spawnRot, sendBack, context);
     }
 
     [Rpc(SendTo.Server)]
-    void SpawnRpc(SpawnContext context, string objectName, Vector3 spawnPos, Quaternion spawnRot)
+    void SpawnRpc(SpawnContext context, string objectName, Vector3 spawnPos, Quaternion spawnRot, ulong futureOwner, bool sendBack)
     {
-        NetworkObject newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
+        //todo => refaire avec les pools bien
+
+        NetworkObject newObject = null;
+
+        context.spawnPos = spawnPos;
+        context.spawnTime = TimeStamp.Now;
+
+        newObject = Instantiate(spawnableObjectsDict[objectName], spawnPos, spawnRot).GetComponent<NetworkObject>();
 
         if (newObject.TryGetComponent(out Projectile projectile))
-        {
-            projectile.spawnContext = context;
-        }
+            projectile.spawnContext = new(context);
 
-        SendToAskerRpc(newObject, RpcTarget.Single(context.askerID, RpcTargetUse.Temp));
+        if (futureOwner == 1000)
+            newObject.Spawn();
+        else
+            newObject.SpawnWithOwnership(futureOwner);
+
+        //if (futureOwner != 1000)
+        //    newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, futureOwner, true, true, false, spawnPos, spawnRot);
+        //else
+        //    newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
+
+        //if (newObject.TryGetComponent(out Projectile projectile))
+        //{
+        //    projectile.SetupContextRpc(context);
+        //}
+
+        if (sendBack)
+            SendToAskerRpc(newObject, RpcTarget.Single(context.spawnerClientID, RpcTargetUse.Temp));
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
@@ -92,15 +124,28 @@ public class Summoner : NetworkBehaviour
             _currentObject = networkObj.gameObject;
         }
     }
+
+    public void BroadcastSpawnDeSesMorts()
+    {
+
+    }
 }
+
+
+
 
 
 public struct SpawnContext : INetworkSerializeByMemcpy
 {
-    public ulong askerID;
+    public ulong spawnerClientID;
+    public float floatData;
+    public Vector3 spawnPos;
+    public float spawnTime;
 
-    public SpawnContext(ulong askerID)
+    public SpawnContext(ulong spawnerClientID) : this()
     {
-        this.askerID = askerID;
+        this.spawnerClientID = spawnerClientID;
+        floatData = 0;
+        spawnTime = TimeStamp.Now;
     }
 }

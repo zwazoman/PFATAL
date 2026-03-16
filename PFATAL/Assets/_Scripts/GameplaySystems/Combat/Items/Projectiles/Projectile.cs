@@ -3,5 +3,10 @@ using UnityEngine;
 
 public class Projectile : NetworkBehaviour
 {
-    public SpawnContext spawnContext;
+    public NetworkVariable<SpawnContext> spawnContext;
+
+    /// <summary>
+    /// appelé dans le summoner - s'appelle apres le spawn de l'objet et le setup du context
+    /// </summary>
+    public virtual void OnSpawn() { }
 }

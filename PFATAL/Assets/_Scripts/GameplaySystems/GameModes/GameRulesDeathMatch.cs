@@ -15,7 +15,7 @@ public class GameRulesDeathMatch : GameRulesBase
         //setup scoring system
         foreach (PlayerData player in _players.Values)
         {
-            player.Character.health.OnDead += () =>
+            player.Character.health.OnDie += () =>
             {
                 //quand un joueur meurt, on augmente son nombre de morts et donne un kill au joueur l'ayant tué.
                 
@@ -26,7 +26,7 @@ public class GameRulesDeathMatch : GameRulesBase
                 {
                     PlayerData killer = _players[player.Character.health.LastDamageSourceClientID];
                     killer.Score.Kills++;
-                    killer.Score.Points = player.Score.Kills-player.Score.Deaths;
+                    killer.Score.Points = killer.Score.Kills-killer.Score.Deaths;
                 }
                 
                 //puis on update le score board

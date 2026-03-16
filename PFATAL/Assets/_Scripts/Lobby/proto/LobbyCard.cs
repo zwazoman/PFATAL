@@ -12,12 +12,12 @@ public class LobbyCard : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hostText;
     [SerializeField] private Button joinButton;
 
-    private Lobby lobby;
+    private Lobby _lobby;
     private Action<Lobby> onJoinCallback;
 
     public void Setup(Lobby lobby, Action<Lobby> onJoinCallback)
     {
-        this.lobby = lobby;
+        this._lobby = lobby;
         this.onJoinCallback = onJoinCallback;
 
         lobbyNameText.text  = lobby.Name;

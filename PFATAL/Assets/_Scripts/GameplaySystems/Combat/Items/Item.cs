@@ -3,26 +3,43 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    [HideInInspector] protected PlayerCharacter main;
+    [HideInInspector] protected PlayerCharacter playerCharacter;
     [HideInInspector] protected Hand carryingHand;
 
     [SerializeField] GameObject _pickup;
 
     protected bool isUsing;
+    protected float holdDuration;
 
+    /// <summary>
+    /// appel� lorsque le joueur commence l'input d'action de l'item
+    /// </summary>
     public virtual void StartUsing()
     {
         isUsing = true;
         Use();
     }
 
-    public virtual void UseUpdate() { }
+    /// <summary>
+    /// appel� toute les frames tant que le joueur garde la touche d'action de l'item enfonc�e
+    /// </summary>
+    public virtual void UseUpdate()
+    {
+        holdDuration += Time.deltaTime;
+    }
 
+    /// <summary>
+    /// appel� lorsque le joueur relache la touche d'action de l'item
+    /// </summary>
     public virtual void StopUsing()
     {
         isUsing = false;
+        holdDuration = 0;
     }
 
+    /// <summary>
+    /// spawn le pickup li� a l'item pour le jeter par terre
+    /// </summary>
     public void OnDrop()
     {
         Debug.Log(name + "Dropped !");
@@ -33,8 +50,8 @@ public class Item : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos = main.playerCamera.transform.position + main.playerCamera.transform.forward * 2;
-        Quaternion spawnRot = main.playerCamera.transform.rotation;
+        Vector3 spawnPos = playerCharacter.playerCamera.transform.position + playerCharacter.playerCamera.transform.forward * 2;
+        Quaternion spawnRot = playerCharacter.playerCamera.transform.rotation;
 
         Summoner.Instance.SpawnObject(_pickup, spawnPos, spawnRot);
     }
@@ -43,7 +60,7 @@ public class Item : MonoBehaviour
     {
         Debug.Log(name + "Picked up !");
 
-        this.main = main;
+        playerCharacter = main;
         carryingHand = hand;
     }
 

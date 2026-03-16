@@ -139,6 +139,7 @@ public struct SpawnContext : INetworkSerializeByMemcpy
 {
     public ulong spawnerClientID;
     public float floatData;
+    public float floatData2;
     public Vector3 spawnPos;
     public float spawnTime;
 
@@ -146,6 +147,7 @@ public struct SpawnContext : INetworkSerializeByMemcpy
     {
         this.spawnerClientID = spawnerClientID;
         floatData = 0;
+        floatData2 = 0;
         spawnTime = TimeStamp.Now;
     }
 }

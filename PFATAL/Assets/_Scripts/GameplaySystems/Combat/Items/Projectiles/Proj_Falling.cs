@@ -131,16 +131,10 @@ public class Proj_Falling : Projectile
         damageable.TakeDamage(damageData);
     }
 
-    protected virtual void Despawn()
+    protected override void Despawn()
     {
         _initialized = false;
-        DespawnRpc();
-    }
-
-    [Rpc(SendTo.Server)]
-    void DespawnRpc()
-    {
-        NetworkObject.Despawn();
+        base.Despawn();
     }
 
 #if UNITY_EDITOR

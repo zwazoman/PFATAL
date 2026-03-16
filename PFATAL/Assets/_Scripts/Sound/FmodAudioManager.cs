@@ -22,6 +22,8 @@ public class FmodAudioManager : NetworkBehaviour
         SceneManager.activeSceneChanged += (_,_) => CleanUp();
     }
 
+    //todo : rpc faut tout link au network. y'aura surement besoin d'fair eun dictionnaire avec des string
+
     public void PlayOneShot(EventReference sound, Vector3 pos)
     {
         RuntimeManager.PlayOneShot(sound, pos);

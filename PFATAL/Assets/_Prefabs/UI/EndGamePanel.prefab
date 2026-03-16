@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6719796165881853137}
   - component: {fileID: 7999541018376615595}
   - component: {fileID: 2828909607601958648}
+  - component: {fileID: -1500727240099661610}
   m_Layer: 5
   m_Name: EndGamePanel
   m_TagString: Untagged
@@ -91,6 +92,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35245a0902f55649b77250282587004, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneLoader
+--- !u!114 &-1500727240099661610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2403161951855885686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f1f7f22e9d7d404dad0d41f20bfa8a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LeaderboardDisplay
+  ScoreboardUIEndGamePanel: {fileID: 7311274128917666854}
+  scoreboardEndGamePanel: {fileID: 2403161951855885686}
 --- !u!1 &2470069618566508120
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +198,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17.6
+  m_fontSize: 17.15
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -320,7 +335,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16.65
+  m_fontSize: 16.25
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -488,7 +503,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2828909607601958648}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadScene
+        m_MethodName: LeaveLobby
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -641,11 +656,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1627031064583831567, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_fontSize
-      value: 23.25
+      value: 22.95
       objectReference: {fileID: 0}
     - target: {fileID: 2349272115483460472, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_fontSize
-      value: 19.4
+      value: 19.15
       objectReference: {fileID: 0}
     - target: {fileID: 3995512712433874195, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_Name
@@ -733,15 +748,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8414309471141203622, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_fontSize
-      value: 23.3
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 8904019309007672302, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_fontSize
-      value: 25.85
+      value: 25.5
       objectReference: {fileID: 0}
     - target: {fileID: 9164617143844678758, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_fontSize
-      value: 38.5
+      value: 38
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -753,3 +768,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
   m_PrefabInstance: {fileID: 7810165950222969491}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7311274128917666854 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -8568778234219448651, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
+  m_PrefabInstance: {fileID: 7810165950222969491}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5705c79245357d4468c8d43bf700317f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreboardUI

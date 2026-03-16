@@ -10,7 +10,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private NetworkTimeSyncManager _timeSyncManager;
     
     //todo : scriptable object avec game settings ?
-    public const float DEATH_MATCH_GAME_DURATION = 300f;
+    public const float DEATH_MATCH_GAME_DURATION = 60f;
 
     public static GameMode gameMode = GameMode.DeathMatch;
 

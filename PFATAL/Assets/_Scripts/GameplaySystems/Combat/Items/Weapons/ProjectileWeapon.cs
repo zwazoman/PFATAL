@@ -5,7 +5,7 @@ public class ProjectileWeapon : Item
     [Header("References")]
     [SerializeField] public Transform shootSocket;
 
-    [Header("Weapon Parameters")]
+    [Header("Weapon Settings")]
     [SerializeField] protected GameObject projectile;
     [SerializeField] float shootDelay;
 
@@ -13,14 +13,6 @@ public class ProjectileWeapon : Item
 
     protected bool canShoot = true;
     float _timer;
-
-    public override void StartUsing()
-    {
-        if (canShoot)
-        {
-            base.StartUsing();
-        }
-    }
 
     /// <summary>
     /// g�re le delay entre 2 tirs
@@ -43,17 +35,17 @@ public class ProjectileWeapon : Item
     /// prend en param�tre un context, spawn le projectile donn� et le tourne vers le point d'un raycast tir� depuis la cam�ra
     /// </summary>
     /// <param name="spawnContext"> le context du spawn</param>
-    protected void Shoot(SpawnContext spawnContext)
+    protected async Awaitable<GameObject> Shoot(SpawnContext spawnContext)
     {
         if (shootSocket == null)
-            shootSocket = _playerCharacter.playerCamera.transform;
+            shootSocket = playerCharacter.playerCamera.transform;
 
         Quaternion rotation;
 
         RaycastHit hit;
-        if (Physics.Raycast(_playerCharacter.playerCamera.transform.position, _playerCharacter.playerCamera.transform.forward, out hit, Mathf.Infinity, shootRayLayerMask))
+        if (Physics.Raycast(playerCharacter.playerCamera.transform.position, playerCharacter.playerCamera.transform.forward, out hit, Mathf.Infinity, shootRayLayerMask))
         {
-            Debug.DrawLine(_playerCharacter.playerCamera.transform.position, _playerCharacter.playerCamera.transform.position + _playerCharacter.playerCamera.transform.forward * 100, Color.blue, 10);
+            Debug.DrawLine(playerCharacter.playerCamera.transform.position, playerCharacter.playerCamera.transform.position + playerCharacter.playerCamera.transform.forward * 100, Color.blue, 10);
             Debug.DrawLine(shootSocket.position, hit.point, Color.red, 10);
             Vector3 direction = shootSocket.position - hit.point;
             rotation = Quaternion.LookRotation(-direction, transform.up);
@@ -61,8 +53,8 @@ public class ProjectileWeapon : Item
         else
             rotation = shootSocket.rotation;
 
-        Summoner.Instance.SpawnObject(projectile, shootSocket.position, rotation,false, spawnContext);
-
         StartShootDelay();
+
+        return await Summoner.Instance.SpawnObject(projectile, shootSocket.position, rotation,true, spawnContext);
     }
 }

@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    [HideInInspector] protected PlayerCharacter _playerCharacter;
+    [HideInInspector] protected PlayerCharacter playerCharacter;
     [HideInInspector] protected Hand carryingHand;
 
     [SerializeField] GameObject _pickup;
 
     protected bool isUsing;
+    protected float holdDuration;
 
     /// <summary>
     /// appel� lorsque le joueur commence l'input d'action de l'item
@@ -22,7 +23,10 @@ public class Item : MonoBehaviour
     /// <summary>
     /// appel� toute les frames tant que le joueur garde la touche d'action de l'item enfonc�e
     /// </summary>
-    public virtual void UseUpdate() { }
+    public virtual void UseUpdate()
+    {
+        holdDuration += Time.deltaTime;
+    }
 
     /// <summary>
     /// appel� lorsque le joueur relache la touche d'action de l'item
@@ -30,6 +34,7 @@ public class Item : MonoBehaviour
     public virtual void StopUsing()
     {
         isUsing = false;
+        holdDuration = 0;
     }
 
     /// <summary>
@@ -45,8 +50,8 @@ public class Item : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos = _playerCharacter.playerCamera.transform.position + _playerCharacter.playerCamera.transform.forward * 2;
-        Quaternion spawnRot = _playerCharacter.playerCamera.transform.rotation;
+        Vector3 spawnPos = playerCharacter.playerCamera.transform.position + playerCharacter.playerCamera.transform.forward * 2;
+        Quaternion spawnRot = playerCharacter.playerCamera.transform.rotation;
 
         Summoner.Instance.SpawnObject(_pickup, spawnPos, spawnRot);
     }
@@ -55,7 +60,7 @@ public class Item : MonoBehaviour
     {
         Debug.Log(name + "Picked up !");
 
-        _playerCharacter = main;
+        playerCharacter = main;
         carryingHand = hand;
     }
 

@@ -13,7 +13,7 @@ public class Proj_Tomahawk : Proj_Falling
     public override void OnSpawn()
     {
         base.OnSpawn();
-    }
+    } 
 
     protected override void Update()
     {

@@ -1,3 +1,4 @@
+using NetworkTime;
 using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
@@ -26,11 +27,7 @@ public class Proj_Falling : Projectile
     {
         base.OnNetworkSpawn();
 
-        print(spawnContext.Value.spawnPos);
-
         _spawnTime = spawnContext.Value.spawnTime;
-        Debug.LogError($"network time offset {TimeStamp.Now - _spawnTime}");
-
         _spawnPosition = spawnContext.Value.spawnPos;
 
         speed *= 1 + spawnContext.Value.floatData;
@@ -134,23 +131,17 @@ public class Proj_Falling : Projectile
         damageable.TakeDamage(damageData);
     }
 
-    protected virtual void Despawn()
+    protected override void Despawn()
     {
         _initialized = false;
-        DespawnRpc();
-    }
-
-    [Rpc(SendTo.Server)]
-    void DespawnRpc()
-    {
-        NetworkObject.Despawn();
+        base.Despawn();
     }
 
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, CollisionRadius);
+        Gizmos.DrawWireSphere(transform.position, CollisionRadius); 
     }
 #endif
 }

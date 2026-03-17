@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    private static Collider[] _colliderBuffer = new Collider[10];
+    
     [SerializeField] public PlayerCharacter main;
 
     Interactable _currentInteractable;
@@ -15,20 +17,28 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] LayerMask _interactionmask;
 
     [HideInInspector] public bool canInteract;
+    
 
     private void Update()
     {
-        RaycastHit hit;
+        var size = Physics.OverlapCapsuleNonAlloc(
+            main.playerCamera.transform.position, 
+            main.playerCamera.transform.position + main.playerCamera.transform.forward * _interactionRange,
+            _interactionWidth, _colliderBuffer, _interactionmask);
 
-        if (Physics.SphereCast(main.playerCamera.transform.position, _interactionWidth,main.playerCamera.transform.forward, out hit, _interactionRange, _interactionmask))
+        if (size > 0)
         {
-            if (hit.collider.gameObject.TryGetComponent(out Interactable interactable))
+            for(int i =0;i<size;i++)
             {
-                if(interactable != _currentInteractable &&_currentInteractable !=null)
-                    _currentInteractable.StopHover();
+                if (_colliderBuffer[i].gameObject.TryGetComponent(out Interactable interactable))
+                {
+                    if(interactable != _currentInteractable &&_currentInteractable !=null)
+                        _currentInteractable.StopHover();
 
-                _currentInteractable = interactable;
-                interactable.StartHover();
+                    _currentInteractable = interactable;
+                    interactable.StartHover();
+                    break;
+                }
             }
         }
         else

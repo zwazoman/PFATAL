@@ -18,7 +18,7 @@ public class LobbyBrowser : MonoBehaviour
 
     private void Start()
     {
-        RefreshLobbies();
+        _ = RefreshLobbies();
     }
 
     public async Awaitable RefreshLobbies()

@@ -28,11 +28,18 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         OnHpChanged?.Invoke(HP);
     }
 
+    public void SetMaxHP(float newMax)
+    {
+        SetMaxHPRpc(newMax);
+    }
+
     /// <summary>
     /// Fait des dégats à l'entité. Doit être appelé sur le serveur uniquement.
     /// </summary>
     public void TakeDamage(DamageData damageData)
     {
+        if (IsDead) return;
+        
         LastDamageSourceClientID = damageData.SourcePlayerClientID;
         SetHpRPC(HP - damageData.Amount);
         InvokeDamageEventRPC(damageData);
@@ -40,7 +47,6 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         //knockback
         if (TryGetComponent(out PlayerCharacter player) && damageData.KnockbackForce != Vector3.zero)
             ApplyKnockbackRpc(damageData, RpcTarget.Single(player.OwnerClientId, RpcTargetUse.Temp));
-
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
@@ -78,6 +84,14 @@ public class DamageableObject : NetworkBehaviour, IDamageable
             OnDie?.Invoke();
             print("die");
         }
+    }
+
+    [Rpc(SendTo.Everyone)]
+    void SetMaxHPRpc(float value)
+    {
+        MaxHP = value;
+        HP = MaxHP;
+        OnHpChanged?.Invoke(HP);
     }
     
     [Rpc(SendTo.Everyone)]

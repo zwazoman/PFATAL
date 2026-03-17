@@ -1,6 +1,7 @@
 using _scripts.PlayerCharacter;
 using System;
 using System.Collections.Generic;
+using NetworkTime;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -63,7 +64,7 @@ public class Summoner : NetworkBehaviour
             throw new ArgumentNullException(nameof(gameObjectToSpawn));
 
         SpawnRpc(context.Value, gameObjectToSpawn.name, spawnPos, spawnRot, futureOwner, sendBack);
-        while (_currentObject == null)
+        while (_currentObject == null && sendBack)
         {
             await Awaitable.NextFrameAsync();
         }
@@ -73,7 +74,7 @@ public class Summoner : NetworkBehaviour
         GameObject newObject = _currentObject;
         _currentObject = null;
 
-        return newObject;
+        return sendBack ? newObject : null;
     }
 
     public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, bool sendBack = false, SpawnContext? context = null)
@@ -84,6 +85,8 @@ public class Summoner : NetworkBehaviour
     [Rpc(SendTo.Server)]
     void SpawnRpc(SpawnContext context, string objectName, Vector3 spawnPos, Quaternion spawnRot, ulong futureOwner, bool sendBack)
     {
+        //todo => refaire avec les pools bien
+
         NetworkObject newObject = null;
 
         context.spawnPos = spawnPos;
@@ -121,12 +124,22 @@ public class Summoner : NetworkBehaviour
             _currentObject = networkObj.gameObject;
         }
     }
+
+    public void BroadcastSpawnDeSesMorts()
+    {
+
+    }
 }
+
+
+
+
 
 public struct SpawnContext : INetworkSerializeByMemcpy
 {
     public ulong spawnerClientID;
     public float floatData;
+    public float floatData2;
     public Vector3 spawnPos;
     public float spawnTime;
 
@@ -134,6 +147,7 @@ public struct SpawnContext : INetworkSerializeByMemcpy
     {
         this.spawnerClientID = spawnerClientID;
         floatData = 0;
+        floatData2 = 0;
         spawnTime = TimeStamp.Now;
     }
 }

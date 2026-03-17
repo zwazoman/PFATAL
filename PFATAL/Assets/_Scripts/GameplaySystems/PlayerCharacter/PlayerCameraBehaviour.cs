@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerCameraBehaviour : MonoBehaviour
 {
+    public static float BaseFov = 70;
     [Header("sceneReferences")]
     [SerializeField] PlayerCharacter _playerCharacter;
     [SerializeField] private Camera _cam;
@@ -11,7 +12,7 @@ public class PlayerCameraBehaviour : MonoBehaviour
 
     //FOV scaling
     [Header("FOV scaling")]
-    [SerializeField] private Vector2 FOVRange;
+    [SerializeField] private float FOVVelocityOffset = 3;
     [SerializeField] private float _fovSmoothTime;
     [SerializeField] private float _playerVelocityToFovScalingCurveExponent = 3;
     
@@ -89,7 +90,7 @@ public class PlayerCameraBehaviour : MonoBehaviour
     void LateUpdate()
     {
         //fov
-        float targetFOV = Mathf.Lerp(FOVRange.x, FOVRange.y,
+        float targetFOV = Mathf.Lerp( BaseFov, BaseFov + FOVVelocityOffset,
             Mathf.Pow(_playerCharacter.physics.Velocity.magnitude / _playerCharacter.stateMachine.s_Walking._walkSpeed, _playerVelocityToFovScalingCurveExponent));
         
         _fov = Mathf.SmoothDamp(_fov,targetFOV,ref _fovVel,_fovSmoothTime) ;

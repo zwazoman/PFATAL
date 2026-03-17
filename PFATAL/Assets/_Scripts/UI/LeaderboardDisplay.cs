@@ -5,7 +5,7 @@ using UnityEngine.SocialPlatforms.Impl;
 public class LeaderboardDisplay : MonoBehaviour
 {
     [SerializeField] public ScoreboardUI ScoreboardUIEndGamePanel;
-    [SerializeField] private GameObject scoreboardPanel;
+    [SerializeField] private GameObject scoreboardEndGamePanel;
 
     void OnEnable()
     {
@@ -19,13 +19,13 @@ public class LeaderboardDisplay : MonoBehaviour
 
     void Start()
     {
-        scoreboardPanel.SetActive(false);
+        scoreboardEndGamePanel.SetActive(false);
         ScoreboardUIEndGamePanel.gameObject.SetActive(false);
     }
 
     private void OnGameEnded(GameRulesBase.GameResult result)
     {
-        scoreboardPanel.SetActive(true);
+        scoreboardEndGamePanel.SetActive(true);
         ScoreboardUIEndGamePanel.gameObject.SetActive(true);
         foreach (var item in result.LeaderBoard.entries)
         {

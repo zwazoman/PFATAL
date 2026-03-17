@@ -16,6 +16,13 @@ public class LobbyBrowserUI : MonoBehaviour
     [SerializeField] private GameObject lobbyCardPrefab;
     [SerializeField] private Button refreshButton;
     [SerializeField] private TextMeshProUGUI statusText;
+    
+    [Header("Panel")]
+    [SerializeField] private GameObject loadingPanel;
+    [SerializeField] private TextMeshProUGUI loadingText;
+    [SerializeField] private GameObject mainPanel;
+    [SerializeField] private GameObject hostPanel;
+    [SerializeField] private GameObject joinPanel;
 
     [Header("Dépendances")]
     [SerializeField] private LobbyBrowser lobbyBrowser;
@@ -67,21 +74,22 @@ public class LobbyBrowserUI : MonoBehaviour
     private async void OnJoinLobby(Lobby lobby)
     {
         SetLoading(true);
-        refreshButton.interactable = false;
+        refreshButton.interactable = false;       
 
         bool success = await NetworkConnectionManager.Instance.StartClientById(lobby.Id);
 
         if (!success)
         {
-            statusText.text = "Impossible de rejoindre ce lobby.";
-            SetLoading(false);
+            SetLoading(false, "Impossible de rejoindre ce lobby.");
             refreshButton.interactable = true;
         }
     }
 
-    private void SetLoading(bool isLoading)
+    private void SetLoading(bool isLoading, string message = "Chargement...")
     {
-        statusText.text = isLoading ? "Chargement..." : "";
+        loadingPanel.SetActive(isLoading);
+        loadingText.text = isLoading ? message : "";
+        statusText.text = isLoading ? message : "";
         refreshButton.interactable = !isLoading;
     }
 }

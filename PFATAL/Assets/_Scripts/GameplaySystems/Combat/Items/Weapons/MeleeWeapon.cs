@@ -40,25 +40,23 @@ public class MeleeWeapon : Item
         {
             Collider[] _hitColliders = Physics.OverlapSphere(hitSocket.position, hitSphereRadius, _hitLayerMask);
 
-            print(_hitColliders.Length);
-
             foreach(Collider collider in _hitColliders)
             {
                 if (collider.gameObject.TryGetComponent(out DamageableObject damageable))
                 {
-                    if (damageable.OwnerClientId == playerCharacter.OwnerClientId || _hitDamageables.Contains(damageable) )
+                    if ((damageable.OwnerClientId == playerCharacter.OwnerClientId && damageable.isPlayer) || _hitDamageables.Contains(damageable) )
                         continue;
 
                     print(damageable.gameObject.name);
 
                     _hitDamageables.Add(damageable);
-                    ApplyHit(damageable);
+                    ApplyHitRpc(damageable);
                 }
             }
         }
     }
 
-    protected virtual void ApplyHit(DamageableObject damageable) { }
+    protected virtual void ApplyHitRpc(DamageableObject damageable) { }
 
 
     private void OnDrawGizmos()

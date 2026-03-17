@@ -2,10 +2,7 @@ using UnityEngine;
 
 public class MapBounds : MonoBehaviour
 {
-
     public Bounds m_Bounds;
-
-
 
     private void OnDrawGizmos()
     {

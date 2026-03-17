@@ -1,19 +1,9 @@
-using Codice.Client.BaseCommands;
-using NaughtyAttributes;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-
-enum WeaponType
-{
-    All = 0,
-    Sword = 1,
-    Crossbow = 2,
-    Tomahawk = 3
-}
 
 public class HeatMapWindow : EditorWindow
 {
@@ -235,6 +225,8 @@ public class HeatMapWindow : EditorWindow
 
         string textureName = null;
         Vector3 boundsSize = bounds.m_Bounds.size;
+
+        UnityEngine.Debug.Log(boundsSize);
         
         //get the heatmap
         HeatMapData baseHeatMapUseToGenerate =
@@ -244,7 +236,7 @@ public class HeatMapWindow : EditorWindow
         int size = baseHeatMapUseToGenerate.heatMapCellSize;
 
         //set up textureSize, divide it by box Size
-        Texture3D texture3D = new((int)boundsSize.x / size, (int)boundsSize.y / size, (int)boundsSize.z / size, TextureFormat.RFloat, true);
+        Texture3D texture3D = new((int)boundsSize.x /*/ size*/, (int)boundsSize.y /*/ size*/, (int)boundsSize.z /*/ size*/, TextureFormat.RFloat, true);
 
 
         //convert the targeted heatmap to a heatmap at a size of one, that avoid having texture3D with aberrant storage size
@@ -263,7 +255,12 @@ public class HeatMapWindow : EditorWindow
 
             heatMapAtCellSizeOfOne.points.Add(newPoint);
         }
-        
+
+        int maxGlobal = HeatMapUtility.MaxVisits(heatMapAtCellSizeOfOne, WeaponType.All);
+        int maxHammer = HeatMapUtility.MaxVisits(heatMapAtCellSizeOfOne, WeaponType.Hammer);
+        int maxCrossbow = HeatMapUtility.MaxVisits(heatMapAtCellSizeOfOne, WeaponType.Crossbow);
+        int maxTomahawk = HeatMapUtility.MaxVisits(heatMapAtCellSizeOfOne, WeaponType.Tomahawk);
+
         //set pixel colors for each position in the heatmap
         foreach (HeatPoint point in heatMapAtCellSizeOfOne.points)
         {
@@ -271,7 +268,7 @@ public class HeatMapWindow : EditorWindow
 
             if (!texture3DHasFilters)
             {
-                pixelColor = Color.Lerp(Color.black, Color.white, point.visitsGlobal / 1);
+                pixelColor = Color.Lerp(Color.black, Color.white, (point.visitsGlobal / maxGlobal));
                 textureName = "AllPlayerType";
             }
             else
@@ -280,29 +277,30 @@ public class HeatMapWindow : EditorWindow
                 {
                     case WeaponType.All:
                         UnityEngine.Debug.LogWarning("Tu t'es chié dessus frérot mais tkt ça marche quand même");
-                        pixelColor = Color.Lerp(Color.black, Color.white, point.visitsGlobal / 1);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (point.visitsGlobal / maxGlobal));
                         textureName = "AllPlayerType";
                         break;
-                    case WeaponType.Sword:
-                        pixelColor = Color.Lerp(Color.black, Color.white, point.playerWithHammerVisits / 1);
+                    case WeaponType.Hammer:
+                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithHammerVisits / maxHammer));
                         textureName = "HammerPlayer";
                         break;
                     case WeaponType.Crossbow:
-                        pixelColor = Color.Lerp(Color.black, Color.white, point.playerWithCrossbowVisits / 1);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithCrossbowVisits / maxCrossbow));
                         textureName = "CrossBowPLayer";
                         break;
                     case WeaponType.Tomahawk:
-                        pixelColor = Color.Lerp(Color.black, Color.white, point.playerWithTomahawkVisits / 1);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithTomahawkVisits / maxTomahawk));
                         textureName = "TomahawkPlayer";
                         break;
                 }
             }
 
-            //Adding offset base on half the bounds size, so all position modify a positive value, cause pixels texture3D only have positive value
+            //Adding offset base on half the bounds size, so all position modify a positive value, cause pixels texture3D only have positive value,
+            //plus adding an offset to have the center of the map as the center of the texture3D
             texture3D.SetPixel(
-                    (int)point.x + (int)boundsSize.x / 2,
-                    (int)point.y + (int)boundsSize.y / 2,
-                    (int)point.z + (int)boundsSize.z / 2,
+                    ((int)point.x + (int)boundsSize.x / 2) - (int)bounds.m_Bounds.center.x,
+                    ((int)point.y + (int)boundsSize.y / 2) - (int)bounds.m_Bounds.center.y,
+                    ((int)point.z + (int)boundsSize.z / 2) - (int)bounds.m_Bounds.center.z,
                     pixelColor);
         }
 

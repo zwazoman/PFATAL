@@ -77,6 +77,15 @@ public class HeatMapUtility
         return combinedHeatMapJson;
     }
 
+    /// <summary>
+    /// Determines whether all heat maps in the specified list use the same grid cell size.
+    /// </summary>
+    /// <remarks>If the grid cell sizes differ, an error message is logged and the heat maps cannot be
+    /// combined.</remarks>
+    /// <param name="heatMaps">A list of <see cref="HeatMapData"/> objects to check for consistent grid cell sizes. The list must contain at
+    /// least one element.</param>
+    /// <returns>Returns <see langword="true"/> if all heat maps have the same grid cell size; otherwise, <see
+    /// langword="false"/>.</returns>
     public static bool IsSameGridSize(List<HeatMapData> heatMaps)
     {
         float gridSize = heatMaps[0].heatMapCellSize;
@@ -93,6 +102,14 @@ public class HeatMapUtility
         return true;
     }
 
+    /// <summary>
+    /// Check if all the heatmap in the list came from the same game.
+    /// </summary>
+    /// <remarks>
+    /// If the game id are differents, an error message is logged.
+    /// </remarks>
+    /// <param name="heatMaps">A list of <see cref="HeatMapData"/> objects to check for same game id.</param>
+    /// <returns>Returns <see langword="true"/> if all the heatmap are from the same game, else returns <see langword="false">.</returns>
     public static bool IsSameGameId(List<HeatMapData> heatMaps)
     {
         int gameId = heatMaps[0].heatMapGameId;
@@ -107,6 +124,13 @@ public class HeatMapUtility
         return true;
     }
 
+    /// <summary>
+    /// Converts a list of JSON strings representing heat map data into a list of HeatMapData objects.
+    /// </summary>
+    /// <remarks>Each JSON string in the input list must be properly formatted to match the expected structure
+    /// for conversion. If any string is not valid JSON, it may result in an exception during conversion.</remarks>
+    /// <param name="heatMapJsonList">A list of JSON strings, where each string represents a heat map data entry to be converted.</param>
+    /// <returns>A list of HeatMapData objects created from the provided JSON strings.</returns>
     public static List<HeatMapData> ConvertJsonListToHeatMapDataList(List<string> heatMapJsonList)
     {
         List<HeatMapData> heatMapDataList = new List<HeatMapData>();
@@ -119,6 +143,14 @@ public class HeatMapUtility
         return heatMapDataList;
     }
 
+    /// <summary>
+    /// Converts a collection of HeatMapData objects to their JSON string representations.
+    /// </summary>
+    /// <remarks>This method iterates through the provided list and serializes each HeatMapData object using
+    /// the ConvertHeatMapDataToJson method. The order of the resulting JSON strings matches the order of the input
+    /// objects.</remarks>
+    /// <param name="heatMapDataList">A list of HeatMapData objects to be serialized. Each object must be properly initialized and not null.</param>
+    /// <returns>A list of JSON strings, where each string represents a corresponding HeatMapData object from the input list.</returns>
     public static List<string> ConvertHeatMapDataListToJsonList(List<HeatMapData> heatMapDataList)
     {
         List<string> heatMapJsonList = new List<string>();
@@ -130,20 +162,59 @@ public class HeatMapUtility
         return heatMapJsonList;
     }
 
+    /// <summary>
+    /// Converts a JSON string representation of heat map data into a HeatMapData object.
+    /// </summary>
+    /// <remarks>Ensure that the input JSON string adheres to the expected structure of HeatMapData;
+    /// otherwise, the conversion may fail.</remarks>
+    /// <param name="heatMapJson">The JSON string that contains the heat map data to be converted. It must be a valid JSON format representing the
+    /// HeatMapData structure.</param>
+    /// <returns>A HeatMapData object populated with the data parsed from the provided JSON string.</returns>
     public static HeatMapData ConvertJsonToHeatMapData(string heatMapJson)
     {
         HeatMapData data = JsonUtility.FromJson<HeatMapData>(heatMapJson);
         return data;
     }
 
+    /// <summary>
+    /// Converts the specified HeatMapData object into its JSON representation.
+    /// </summary>
+    /// <param name="heatMapData">The HeatMapData object to be converted to JSON. This object must not be null.</param>
+    /// <returns>A string containing the JSON representation of the provided HeatMapData object.</returns>
     public static string ConvertHeatMapDataToJson(HeatMapData heatMapData)
     {
         string heatMapJson = JsonUtility.ToJson(heatMapData);
         return heatMapJson;
     }
 
-    public static int MaxVisits(HeatMapData heatMapData)
+    /// <summary>
+    /// Get the max number of visits in the heatmap.
+    /// </summary>
+    /// <param name="heatMapData">The heatmap to search maximum visits.</param>
+    /// <returns>Returns the maximum visits.</returns>
+    public static int MaxVisits(HeatMapData heatMapData, WeaponType weaponType)
     {
-        return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.visitsGlobal) : 0;
+        switch (weaponType)
+        {
+            //global
+            case WeaponType.All:
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.visitsGlobal) : 0;
+            
+            //hammer
+            case WeaponType.Hammer:
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.playerWithHammerVisits) : 0;
+            
+            //crosbow
+            case WeaponType.Crossbow:
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.playerWithCrossbowVisits) : 0;
+
+            //tomahawk
+            case WeaponType.Tomahawk:
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.playerWithTomahawkVisits) : 0;
+            
+        }
+
+        Debug.LogError("Cassé");
+        return 0;
     }
 }

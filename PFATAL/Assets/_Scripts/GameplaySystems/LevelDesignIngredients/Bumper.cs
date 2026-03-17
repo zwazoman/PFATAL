@@ -7,7 +7,12 @@ public class Bumper : MonoBehaviour
     {
         if (collider.TryGetComponent(out PlayerPhysics physics))
         {
-            if(physics.enabled) physics.AddImpulse(transform.up*strength);
+            if(physics.enabled) // TODO : faire un produit scalaire
+            {
+                Vector3 newVelocity = Vector3.ProjectOnPlane(physics.Velocity, transform.up);
+                physics.SetVelocity(newVelocity + transform.up * strength);
+            }
+
         }
         // else if (collider.TryGetComponent(out Rigidbody rb))
         // {

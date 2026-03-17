@@ -12,7 +12,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         protected override void OnEntered(PlayerCharacter ctx)
         {
             base.OnEntered(ctx);
-
+            Debug.Log("entered on death");
             _respawn = false;
 
             ctx.SwapActionMapToUI();
@@ -20,7 +20,9 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             ctx.physics.SetVelocity(Vector3.zero);
             ctx.inputs.Clear();
             ctx.HUD.ShowDeathUI();
+
             ctx.HUD.respawnButton.onClick.AddListener(Respawn);
+            Debug.Log("linked button event");
         }
 
         protected override void OnExited(PlayerCharacter ctx)
@@ -29,27 +31,42 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
             if (_respawn)
             {
+                Debug.Log("exited dead player state.");
+                _respawn = false;
                 ctx.SwapActionMapToPlayer();
                 ctx.ShowPlayerRpc();
                 ctx.HUD.HideDeathUI();
                 ctx.health.Heal();
-                PlayerCharacterSpawner.Instance.SpawnPlayer(ctx);
+                PlayerCharacterSpawner.Instance.ReSpawnPlayer(ctx);
             }
 
             ctx.HUD.respawnButton.onClick.RemoveListener(Respawn);
         }
 
+        public override void Behave(PlayerCharacter ctx, UpdatePoint updatePoint)
+        {
+            base.Behave(ctx, updatePoint);
+            ctx.physics.SetVelocity(Vector3.zero);
+        }
+
         void Respawn()
         {
+            Debug.Log("clicked button");
             _respawn = true;
         }
 
-        public override StateBase<PlayerCharacter> FindNextState(global::_scripts.PlayerCharacter.PlayerCharacter ctx)
+        public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter ctx)
         {
-            if(GameManager.Instance && GameManager.Instance.IsGameOver)
+            if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+            {
+                Debug.Log("returned game over.");
                 return Sm.s_GameOver;
+            }
             else if (_respawn)
+            {
+                Debug.Log("returned idle.");
                 return Sm.s_Idle;
+            }
 
             return base.FindNextState(ctx);
         }

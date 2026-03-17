@@ -6,8 +6,7 @@ using Unity.VisualScripting;
 
 public class PeriodicSpawner : NetworkBehaviour
 {
-    public event Action OnSpawn;
-    public event Action OnStartSpawnDelay;
+    public event Action OnServerSpawn;
 
     [Header("References")]
     [SerializeField] Transform _spawnSocket;
@@ -29,13 +28,10 @@ public class PeriodicSpawner : NetworkBehaviour
 
     async void StartSpawning()
     {
-        print("start spawning new pickup");
-
-        OnStartSpawnDelay?.Invoke();
-
         if(_currentPickup != null)
         {
             _currentPickup.OnPickup -= StartSpawning;
+            //Debug.Log("unlink pickup event");
             _currentPickup = null;
         }
 
@@ -46,9 +42,9 @@ public class PeriodicSpawner : NetworkBehaviour
 
     async void SpawnPickup(GameObject pickupPrefab)
     {
-        OnSpawn?.Invoke();
+        OnServerSpawn?.Invoke();
         
-        GameObject pickupObject = await Summoner.Instance.SpawnObject(pickupPrefab.name, _spawnSocket.position, _spawnSocket.rotation);
+        GameObject pickupObject = await Summoner.Instance.SpawnObject(pickupPrefab.name, _spawnSocket.position, _spawnSocket.rotation,true);
         if (pickupObject.TryGetComponent(out _currentPickup))
         {
             _currentPickup.OnPickup += StartSpawning;

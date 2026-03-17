@@ -64,7 +64,7 @@ public class Summoner : NetworkBehaviour
             throw new ArgumentNullException(nameof(gameObjectToSpawn));
 
         SpawnRpc(context.Value, gameObjectToSpawn.name, spawnPos, spawnRot, futureOwner, sendBack);
-        while (_currentObject == null)
+        while (_currentObject == null && sendBack)
         {
             await Awaitable.NextFrameAsync();
         }
@@ -74,7 +74,7 @@ public class Summoner : NetworkBehaviour
         GameObject newObject = _currentObject;
         _currentObject = null;
 
-        return newObject;
+        return sendBack ? newObject : null;
     }
 
     public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, bool sendBack = false, SpawnContext? context = null)
@@ -139,6 +139,7 @@ public struct SpawnContext : INetworkSerializeByMemcpy
 {
     public ulong spawnerClientID;
     public float floatData;
+    public float floatData2;
     public Vector3 spawnPos;
     public float spawnTime;
 
@@ -146,6 +147,7 @@ public struct SpawnContext : INetworkSerializeByMemcpy
     {
         this.spawnerClientID = spawnerClientID;
         floatData = 0;
+        floatData2 = 0;
         spawnTime = TimeStamp.Now;
     }
 }

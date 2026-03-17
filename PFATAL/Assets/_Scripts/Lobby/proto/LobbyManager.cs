@@ -52,7 +52,7 @@ public class LobbyManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Lobby] Erreur lors de la creation du lobby: {e.Message}");
+            Debug.LogError($"[Lobby] Erreur lors de la creation du lobby: {e.Message} type: {e.GetType()}");
             return null;
         }
     }

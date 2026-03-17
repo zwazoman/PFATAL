@@ -18,6 +18,7 @@ public class SceneLoader : MonoBehaviour
     {
         try
         {
+            Debug.Log("Leaving lobby...");
             LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.GetCurrentLobby().Id, UnityServicesManager.Instance.GetPlayerId());
             _ = NetworkConnectionManager.Instance.Disconnect();
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);

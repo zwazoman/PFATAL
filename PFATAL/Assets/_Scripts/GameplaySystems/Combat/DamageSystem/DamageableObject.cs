@@ -38,6 +38,8 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     /// </summary>
     public void TakeDamage(DamageData damageData)
     {
+        if (IsDead) return;
+        
         LastDamageSourceClientID = damageData.SourcePlayerClientID;
         SetHpRPC(HP - damageData.Amount);
         InvokeDamageEventRPC(damageData);

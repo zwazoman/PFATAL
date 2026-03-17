@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -17.48, y: 1.25, z: -0.45}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -58,7 +58,7 @@ VisualEffect:
       m_Array: []
     m_Vector4f:
       m_Array:
-      - m_Value: {x: 59.71413, y: 7.6358733, z: 0, w: 1}
+      - m_Value: {x: 58.66413, y: 14.508696, z: 7.8587804, w: 1}
         m_Name: Color
         m_Overridden: 1
     m_Uint:
@@ -93,6 +93,11 @@ VFXRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_StaticBatchInfo:
@@ -112,9 +117,11 @@ VFXRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
 --- !u!114 &3292764290916916690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,6 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ac36bead2bc254dad9e8adf63bab24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TriggerMainEventOnAwake: 1
   MainEvent:
     m_PersistentCalls:
       m_Calls:
@@ -142,3 +150,4 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _playRate: 1

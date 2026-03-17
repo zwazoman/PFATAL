@@ -85,7 +85,7 @@ public class HeatMapWindow : EditorWindow
         fileNameForTexture3D = EditorGUILayout.TextField(
             new GUIContent(
                 "File Name For Texture3D",
-                "File name use to generate the texture3D"), fileNameForTexture3D);
+                "File name use to generate the texture3D, locate ine the folder HeatMapFolder in the persiistent data path"), fileNameForTexture3D);
         texture3DHasFilters = EditorGUILayout.BeginToggleGroup("Apply texture3D Filters", texture3DHasFilters);
         weaponType = (WeaponType)EditorGUILayout.EnumPopup(
             new GUIContent(

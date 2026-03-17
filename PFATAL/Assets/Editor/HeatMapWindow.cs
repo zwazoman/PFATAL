@@ -268,7 +268,7 @@ public class HeatMapWindow : EditorWindow
 
             if (!texture3DHasFilters)
             {
-                pixelColor = Color.Lerp(Color.black, Color.white, (point.visitsGlobal / maxGlobal));
+                pixelColor = Color.Lerp(Color.black, Color.white, (point.visitsGlobal / 1));
                 textureName = "AllPlayerType";
             }
             else
@@ -277,19 +277,19 @@ public class HeatMapWindow : EditorWindow
                 {
                     case WeaponType.All:
                         UnityEngine.Debug.LogWarning("Tu t'es chié dessus frérot mais tkt ça marche quand même");
-                        pixelColor = Color.Lerp(Color.black, Color.white, (point.visitsGlobal / maxGlobal));
+                        pixelColor = Color.Lerp(Color.black, Color.white, (point.visitsGlobal / 1));
                         textureName = "AllPlayerType";
                         break;
                     case WeaponType.Hammer:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithHammerVisits / maxHammer));
+                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithHammerVisits / 1));
                         textureName = "HammerPlayer";
                         break;
                     case WeaponType.Crossbow:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithCrossbowVisits / maxCrossbow));
+                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithCrossbowVisits / 1));
                         textureName = "CrossBowPLayer";
                         break;
                     case WeaponType.Tomahawk:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithTomahawkVisits / maxTomahawk));
+                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithTomahawkVisits / 1));
                         textureName = "TomahawkPlayer";
                         break;
                 }

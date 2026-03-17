@@ -13,6 +13,7 @@ public class HeatMapAnalitycs : MonoBehaviour
     [Range(1f, 3f)]
     public int weaponType;
     public Transform playerTransform;
+    public MapBounds mapBoundsObject;
 
     private HeatMapData heatMapData;
     private float timer;
@@ -39,6 +40,11 @@ public class HeatMapAnalitycs : MonoBehaviour
         {
             timer = 0f;
             Vector3 playerPos = playerTransform.position;
+
+            if (!mapBoundsObject.m_Bounds.Contains(playerPos))
+            {
+                return;
+            }
 
             //search if ppoint already exist in the list
             var point = heatMapData.points.FirstOrDefault(p => 
@@ -121,7 +127,7 @@ public class HeatMapAnalitycs : MonoBehaviour
             //Gizmos.color = Color.Lerp(Color.blue, Color.red, point.visits / MaxVisits());
             UnityEngine.Debug.Log(point.visitsGlobal / MaxVisits());
             Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.visitsGlobal / 10);
-            Gizmos.DrawCube(new Vector3(point.x, point.y, point.z), new Vector3(size, size, size));
+            Gizmos.DrawWireCube(new Vector3(point.x, point.y, point.z), new Vector3(size, size, size));
         }
     }
 

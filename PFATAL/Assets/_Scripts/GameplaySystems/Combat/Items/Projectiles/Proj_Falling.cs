@@ -109,13 +109,14 @@ public class Proj_Falling : Projectile
                         actualHitCount--;
                         continue;
                     }
+                    
                     DamageData data = new();
                     data.Point = _hitBuffer[i].point;
                     data.Direction = transform.forward;
                     data.Amount = damageAmount;
                     data.Radius = 1;
                     data.SourcePlayerClientID = spawnContext.Value.spawnerClientID;
-                    HitDamageable(data, damageable);
+                    ApplyDamageToHitObject(data, damageable);
 
                     Despawn();
                     return;
@@ -126,7 +127,7 @@ public class Proj_Falling : Projectile
         }
     }
 
-    protected virtual void HitDamageable(DamageData damageData, DamageableObject damageable)
+    protected virtual void ApplyDamageToHitObject(DamageData damageData, DamageableObject damageable)
     {
         damageable.TakeDamage(damageData);
     }
@@ -141,7 +142,7 @@ public class Proj_Falling : Projectile
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, CollisionRadius);
+        Gizmos.DrawWireSphere(transform.position, CollisionRadius); 
     }
 #endif
 }

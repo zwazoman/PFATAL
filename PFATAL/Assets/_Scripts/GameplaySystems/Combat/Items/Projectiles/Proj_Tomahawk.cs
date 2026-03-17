@@ -13,7 +13,7 @@ public class Proj_Tomahawk : Proj_Falling
     public override void OnSpawn()
     {
         base.OnSpawn();
-    }
+    } 
 
     protected override void Update()
     {
@@ -23,10 +23,10 @@ public class Proj_Tomahawk : Proj_Falling
         base.Update();
     }
 
-    protected override void HitDamageable(DamageData damageData, DamageableObject damageable)
+    protected override void ApplyDamageToHitObject(DamageData damageData, DamageableObject damageable)
     {
         damageData.KnockbackForce = transform.forward * _knockbackStrength;
 
-        base.HitDamageable(damageData, damageable);
+        base.ApplyDamageToHitObject(damageData, damageable);
     }
 }

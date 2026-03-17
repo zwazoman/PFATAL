@@ -15,7 +15,17 @@ namespace SimpleVFXs
 
         VisualEffect vfx;
 
+        void OnPulledFromPool()
+        {
+            init();
+        }
+        
         private void Awake()
+        {
+            init();
+        }
+
+        void init()
         {
             //prevents the vfx from always playing on awake
             if (TryGetComponent<VisualEffect>(out vfx))
@@ -29,8 +39,7 @@ namespace SimpleVFXs
                 TriggerMainEvent();
             }
         }
-
-
+        
         public void TriggerMainEvent()
         {
 #if UNITY_EDITOR

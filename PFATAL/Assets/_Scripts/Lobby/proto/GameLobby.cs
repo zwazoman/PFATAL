@@ -109,7 +109,9 @@ public class GameLobby : NetworkBehaviour
 
     bool CheckForGameStart()
     {
+        #if !DEBUG
         if (_allPlayersInLobby.dictionnary.Count < 2) return false;
+        #endif
         
         foreach (LobbyPlayerData player in _allPlayersInLobby.dictionnary.Values)
             if (player.status != PlayerStatus.Ready)

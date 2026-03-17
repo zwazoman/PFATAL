@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _scripts.PlayerCharacter;
 using NetworkTime;
 using Unity.Netcode;
 using UnityEngine;
@@ -110,6 +111,11 @@ public class GameManager : NetworkBehaviour
 
 		OnServerEndGameRPC(gameResult);
         LeaderBoard.Clear();
+    }
+
+    public PlayerCharacter GetPlayerCharacter(ulong playerClientID)
+    {
+        return _serverGameRules.GetPlayerCharacter(playerClientID);
     }
 
 

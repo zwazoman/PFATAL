@@ -11,7 +11,7 @@ public class GammaSetter : MonoBehaviour
     {
         if (!_volume.profile.TryGet(out _gamma)) throw new System.NullReferenceException(nameof(_gamma));
     }
-
+    
     public void SettingGamma(float gammaAlpha)
     {
         _gamma.gamma.Override(new Vector4(0, 0, 0, gammaAlpha));

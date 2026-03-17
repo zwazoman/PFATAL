@@ -1,32 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8842504206016787803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/PlayerCharacter/PlayerFootsteps
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/PlayerCharacter/PlayerFootsteps
-  Guid:
-    Data1: -2100139707
-    Data2: 1328017495
-    Data3: -2147062849
-    Data4: 91172516
-  Banks:
-  - {fileID: -6013699054869530378}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &-6013699054869530378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,7 +15,7 @@ MonoBehaviour:
   Path: ../Rock-Solid-Fmod/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639093401738936398
+  lastModified: 639093445792260526
   FileSizes:
   - Name: Desktop
     Value: 2004
@@ -105,15 +78,42 @@ MonoBehaviour:
   - {fileID: 1576866604484278638}
   - {fileID: -6013699054869530378}
   EditorEvents:
-  - {fileID: 5560558968699435444}
-  - {fileID: -8842504206016787803}
+  - {fileID: 428832414832943267}
+  - {fileID: 1159769816437627095}
   EditorParameters: []
   MasterBanks:
   - {fileID: 6264724729395202235}
   StringsBanks:
   - {fileID: 1112429778353986578}
-  cacheTime: 639093425319231902
+  cacheTime: 639093452371927612
   cacheVersion: 131635
+--- !u!114 &428832414832943267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/PlayerFootsteps
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/PlayerFootsteps
+  Guid:
+    Data1: -2100139707
+    Data2: 1328017495
+    Data3: -2147062849
+    Data4: 91172516
+  Banks:
+  - {fileID: -6013699054869530378}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &1057169750113993686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,11 +149,38 @@ MonoBehaviour:
   Path: ../Rock-Solid-Fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639093425319231902
+  lastModified: 639093445715716559
   FileSizes:
   - Name: Desktop
-    Value: 960
+    Value: 966
   Exists: 1
+--- !u!114 &1159769816437627095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/Music
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Music/Music
+  Guid:
+    Data1: -245424221
+    Data2: 1195555278
+    Data3: -476041570
+    Data4: 1857607932
+  Banks:
+  - {fileID: 1576866604484278638}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &1576866604484278638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,38 +196,11 @@ MonoBehaviour:
   Path: ../Rock-Solid-Fmod/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639093401738772415
+  lastModified: 639093452371927612
   FileSizes:
   - Name: Desktop
     Value: 2433984
   Exists: 1
---- !u!114 &5560558968699435444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Music
-  Guid:
-    Data1: -245424221
-    Data2: 1195555278
-    Data3: -476041570
-    Data4: 1857607932
-  Banks:
-  - {fileID: 1576866604484278638}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &6264724729395202235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,7 +216,7 @@ MonoBehaviour:
   Path: ../Rock-Solid-Fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639093425319120791
+  lastModified: 639093445715676344
   FileSizes:
   - Name: Desktop
     Value: 1036

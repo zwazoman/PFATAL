@@ -28,13 +28,13 @@ public class FmodAudioManager : NetworkBehaviour
         instance = this;
 
         SceneManager.activeSceneChanged += (_,_) => CleanUp();
-
-        LoadDictionary();
     }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        PlayOneShot(Sounds.Music);
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class FmodAudioManager : NetworkBehaviour
         //    UnityEngine.Debug.LogError("sound name does not exist in event references dictionnary");
     }
 
-    public void PlayOneShot(Sounds soundEvent, Vector3 pos)
+    public void PlayOneShot(Sounds soundEvent, Vector3 pos = default)
     {
         RuntimeManager.PlayOneShot(eventReferences[(int)soundEvent], pos);
     }
@@ -78,21 +78,32 @@ public class FmodAudioManager : NetworkBehaviour
     [ContextMenu("Load Sounds Enum")]
     void LoadDictionary()
     {
-        //todo génerer l'enum et ajouter tout au dico
-
         string enumString = "";
 
         foreach (EventReference reference in eventReferences)
         {
             string referenceName = reference.ToString();
 
-            int stringStart = referenceName.IndexOf("/", 0);
-            stringStart = referenceName.IndexOf('/', stringStart + 1);
-            int stringEnd = referenceName.IndexOf(")");
+            string referenceSub = referenceName;
 
-            int stringLength = stringEnd - stringStart;
+            print(referenceSub);
 
-            enumString += referenceName.Substring(stringStart + 1, stringLength - 1) + ",";
+            while (referenceSub.Contains("/"))
+            {
+                int stringStart = referenceSub.IndexOf("/") + 1;
+                int stringEnd = referenceSub.Length - 1;
+
+                int stringLength = (stringEnd - stringStart) +1;
+
+                print($"{stringStart} {stringEnd} {stringLength}");
+
+                referenceSub = referenceSub.Substring(stringStart, stringLength);
+            }
+
+            referenceSub = referenceSub.Substring(0, referenceSub.Length - 1);
+            print(referenceSub);
+
+            enumString += referenceSub + ",";
         }
 
         GenerateSoundEnum(enumString);

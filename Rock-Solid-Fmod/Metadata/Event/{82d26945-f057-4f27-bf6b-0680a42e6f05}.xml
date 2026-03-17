@@ -5,7 +5,7 @@
 			<value>PlayerFootsteps</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{0ffbc2cd-4006-49c0-807e-d14d9734e772}</destination>
@@ -31,6 +31,9 @@
 		<relationship name="parameters">
 			<destination>{0553a043-2ca8-4e09-bc0c-acd7a203e833}</destination>
 			<destination>{542c4f8e-48ca-4d53-a4cc-681eb22b0d4e}</destination>
+		</relationship>
+		<relationship name="banks">
+			<destination>{60eaee39-2e4e-4c36-bddd-96628eae5e65}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{61fefab5-4c5d-4d0c-874e-1952a4b26e8f}">
@@ -107,6 +110,7 @@
 	<object class="MixerBusEffectChain" id="{cc884799-c3b1-4501-810c-e45db3bd108a}">
 		<relationship name="effects">
 			<destination>{fcf409c9-666d-4e32-945f-1ea15e2e0cb9}</destination>
+			<destination>{68978b0c-f76c-4338-93d5-dfecba91832b}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{8a6eaeb9-922d-4e2a-b8e5-c14a4f0fd200}" />
@@ -117,6 +121,7 @@
 	</object>
 	<object class="MixerBusFader" id="{4fa5774c-f1bb-4a05-a78b-4aa3b4d40ed9}" />
 	<object class="MixerBusFader" id="{fcf409c9-666d-4e32-945f-1ea15e2e0cb9}" />
+	<object class="SpatialiserEffect" id="{68978b0c-f76c-4338-93d5-dfecba91832b}" />
 	<object class="Automator" id="{51cfb367-6e0e-4940-91c2-2b27d5b9af6a}">
 		<property name="nameOfPropertyBeingAutomated">
 			<value>volume</value>

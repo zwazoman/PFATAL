@@ -1,9 +1,13 @@
+using AYellowpaper.SerializedCollections;
 using FMOD.Studio;
 using FMODUnity;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
+using System.IO;
+using FMOD;
 
 public class FmodAudioManager : NetworkBehaviour
 {
@@ -11,24 +15,21 @@ public class FmodAudioManager : NetworkBehaviour
 
     [SerializeField] List<EventReference> eventReferences;
 
-    Dictionary<string, EventReference> eventReferencesNamesDict = new();
-
     List<EventInstance> eventInstances = new();
+
+    string _soundsEnumFilePath = "Assets/_Scripts/Sound/FmodEventsEnum.cs";
 
     private void Awake()
     {
         DontDestroyOnLoad(this);
 
         if(instance != null)
-            Debug.LogError("plusieurs audiomanagers dans la scene");
+            UnityEngine.Debug.LogError("plusieurs audiomanagers dans la scene");
         instance = this;
 
         SceneManager.activeSceneChanged += (_,_) => CleanUp();
 
-        foreach(EventReference reference in eventReferences)
-        {
-            eventReferencesNamesDict.Add(reference.ToString(), reference);
-        }
+        LoadDictionary();
     }
 
     public override void OnNetworkSpawn()
@@ -42,17 +43,17 @@ public class FmodAudioManager : NetworkBehaviour
     /// <param name="soundEventName"></param>
     /// <param name="pos"></param>
     [Rpc(SendTo.Everyone)]
-    public void PlayOneShotGlobalRpc(string soundEventName, Vector3 pos)
+    public void PlayOneShotGlobalRpc(Sounds soundEvent, Vector3 pos)
     {
-        if (eventReferencesNamesDict.ContainsKey(soundEventName))
-            PlayOneShot(eventReferencesNamesDict[soundEventName], pos);
-        else
-            Debug.LogError("sound name does not exist in event references dictionnary");
+        //if (eventReferencesNamesDict.ContainsKey(soundEvent))
+        //    PlayOneShot(soundEvent, pos);
+        //else
+        //    UnityEngine.Debug.LogError("sound name does not exist in event references dictionnary");
     }
 
-    public void PlayOneShot(EventReference sound, Vector3 pos)
+    public void PlayOneShot(Sounds soundEvent, Vector3 pos)
     {
-        RuntimeManager.PlayOneShot(sound, pos);
+        RuntimeManager.PlayOneShot(eventReferences[(int)soundEvent], pos);
     }
 
     public EventInstance CreateInstance(EventReference sound)
@@ -71,4 +72,38 @@ public class FmodAudioManager : NetworkBehaviour
             instance.release();
         }
     }
+
+#if UNITY_EDITOR
+
+    [ContextMenu("Load Sounds Enum")]
+    void LoadDictionary()
+    {
+        //todo génerer l'enum et ajouter tout au dico
+
+        string enumString = "";
+
+        foreach (EventReference reference in eventReferences)
+        {
+            string referenceName = reference.ToString();
+
+            int stringStart = referenceName.IndexOf("/", 0);
+            stringStart = referenceName.IndexOf('/', stringStart + 1);
+            int stringEnd = referenceName.IndexOf(")");
+
+            int stringLength = stringEnd - stringStart;
+
+            enumString += referenceName.Substring(stringStart + 1, stringLength - 1) + ",";
+        }
+
+        GenerateSoundEnum(enumString);
+    }
+
+    void GenerateSoundEnum(string enumContent)
+    {
+        string enumText = "public enum Sounds{" + enumContent + "}";
+        
+        File.WriteAllText(_soundsEnumFilePath, enumText);
+    }
+
+#endif
 }

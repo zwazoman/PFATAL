@@ -9,6 +9,10 @@ public class FmodAudioManager : NetworkBehaviour
 {
     public FmodAudioManager instance { get; private set; }
 
+    [SerializeField] List<EventReference> eventReferences;
+
+    Dictionary<string, EventReference> eventReferencesNamesDict = new();
+
     List<EventInstance> eventInstances = new();
 
     private void Awake()
@@ -20,9 +24,31 @@ public class FmodAudioManager : NetworkBehaviour
         instance = this;
 
         SceneManager.activeSceneChanged += (_,_) => CleanUp();
+
+        foreach(EventReference reference in eventReferences)
+        {
+            eventReferencesNamesDict.Add(reference.ToString(), reference);
+        }
     }
 
-    //todo : rpc faut tout link au network. y'aura surement besoin d'fair eun dictionnaire avec des string
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+    }
+
+    /// <summary>
+    /// joue un son sur chaque client. a utiliser avec grande parcimonie car le délai peut être assez mauvais
+    /// </summary>
+    /// <param name="soundEventName"></param>
+    /// <param name="pos"></param>
+    [Rpc(SendTo.Everyone)]
+    public void PlayOneShotGlobalRpc(string soundEventName, Vector3 pos)
+    {
+        if (eventReferencesNamesDict.ContainsKey(soundEventName))
+            PlayOneShot(eventReferencesNamesDict[soundEventName], pos);
+        else
+            Debug.LogError("sound name does not exist in event references dictionnary");
+    }
 
     public void PlayOneShot(EventReference sound, Vector3 pos)
     {

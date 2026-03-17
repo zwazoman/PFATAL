@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class Hammer : MeleeWeapon
@@ -6,9 +7,10 @@ public class Hammer : MeleeWeapon
     [SerializeField] float _holdDuration;
     [SerializeField] float _dashStrength = 15;
 
-    protected override void ApplyHit(DamageableObject damageable)
+    [Rpc(SendTo.Server)]
+    protected override void ApplyHitRpc(DamageableObject damageable)
     {
-        base.ApplyHit(damageable);
+        base.ApplyHitRpc(damageable);
 
         print("hit hammer");
 
@@ -19,6 +21,8 @@ public class Hammer : MeleeWeapon
         data.Radius = hitSphereRadius;
         data.SourcePlayerClientID = playerCharacter.OwnerClientId;
         data.KnockbackForce = playerCharacter.transform.forward * 5;
+
+        damageable.TakeDamage(data);
     }
 
     public override void StopUsing()

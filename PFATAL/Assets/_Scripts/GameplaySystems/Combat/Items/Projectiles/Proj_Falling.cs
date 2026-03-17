@@ -141,7 +141,7 @@ public class Proj_Falling : Projectile
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, CollisionRadius);
+        Gizmos.DrawWireSphere(transform.position, CollisionRadius); 
     }
 #endif
 }

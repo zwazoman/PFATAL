@@ -56,6 +56,15 @@ public class ScreenResolution : MonoBehaviour
     public void SetResolution(int resolutionIndex)
     {
         Resolution resolution = _filteredResolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, true);
+        bool isFullScreen;
+        if (Screen.fullScreen == true)
+        {
+            isFullScreen = true;
+        }
+        else
+        {
+            isFullScreen = false;
+        }
+        Screen.SetResolution(resolution.width, resolution.height, isFullScreen);
     }
 }

@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using _scripts.PlayerCharacter;
+using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class Rebinds : MonoBehaviour
 {
@@ -59,23 +62,94 @@ public class Rebinds : MonoBehaviour
     {
         InputActions.FindActionMap("Player").Disable();
         _bindingIndex = InputReference.action.bindings.IndexOf(x => x.isPartOfComposite && x.name == movementToChange);
-        _rebindingOperation = InputReference.action.PerformInteractiveRebinding().WithControlsExcluding("Mouse").WithTargetBinding(_bindingIndex).OnMatchWaitForAnother(.2f).OnComplete(operation => RebindCompleted(_moveAction)).Start();
+
+        _rebindingOperation = InputReference.action.PerformInteractiveRebinding().WithControlsExcluding("<Mouse>").WithControlsExcluding("<Gamepad>").WithTargetBinding(_bindingIndex).OnMatchWaitForAnother(.2f).OnComplete(
+            operation =>
+            {
+                if (CheckupDuplicatesBinding(_moveAction, _bindingIndex, true) == true)
+                {
+                    _moveAction.RemoveBindingOverride(_bindingIndex);
+                    _rebindLabel.text = "";
+                    _rebindingOperation.Dispose();
+                    return;
+                }
+                RebindCompleted(_moveAction);
+            }).Start();
+            //RebindCompleted(_moveAction)).Start();
     }
 
     public void RebindSingleInput(InputActionReference action)
     {
-        _action = action;
         InputActions.FindActionMap("Player").Disable();
-        _rebindingOperation = _action.PerformInteractiveRebinding().OnComplete(operation => RebindCompleted(_action)).Start();
+
+        _rebindingOperation = action.action.PerformInteractiveRebinding(0).WithControlsExcluding("<Mouse>").WithControlsExcluding("<Gamepad>").WithTargetBinding(0).OnMatchWaitForAnother(.2f).OnComplete(
+            operation =>
+            {
+                if (CheckupDuplicatesBinding(action, 0, false) == true)
+                {
+                    action.action.RemoveBindingOverride(0);
+                    _rebindLabel.text = "";
+                    _rebindingOperation.Dispose();
+                    return;
+                }
+                _bindingIndex = 0;
+                RebindCompleted(action);
+            }).Start();
+            //RebindCompleted(action)).Start();
     }
 
     private void RebindCompleted(InputAction action)
     {
         _rebindingOperation.Dispose();
-
+        Debug.Log(_bindingIndex);
+        //string newBinding = InputControlPath.ToHumanReadableString(action.bindings[_bindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
         string newBinding = action.GetBindingDisplayString(_bindingIndex).ToUpper();
         //To change later for the script in wich it will do every changes for the UI.
         _rebindLabel.text = $"{newBinding}";
-        InputActions.FindActionMap("Player").Enable();
+        //InputActions.FindActionMap("Player").Enable();
+    }
+
+    private bool CheckupDuplicatesBinding(InputAction action, int bindingIndex, bool allCompositeParts = false)
+    {
+        InputBinding newBinding = action.bindings[bindingIndex];
+
+        int currentIndex = -1;
+
+        foreach (InputBinding bindings in action.actionMap.bindings)
+        {
+            currentIndex++;
+
+            if (bindings.action == newBinding.action) 
+            {
+                if (bindings.isPartOfComposite && currentIndex != bindingIndex)
+                {
+                    if(newBinding.effectivePath == bindings.effectivePath)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            if (newBinding.effectivePath == bindings.effectivePath)
+            {
+                return true;
+            }
+        }
+
+        if (allCompositeParts == true)
+        {
+            for (int i = 0; i < bindingIndex; i++)
+            {
+                if (action.bindings[i].effectivePath == newBinding.overridePath)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

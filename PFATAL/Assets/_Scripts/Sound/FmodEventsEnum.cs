@@ -1,1 +1,1 @@
-public enum Sounds{PlayerFootsteps,}
+public enum Sounds{PlayerFootsteps,Music,}

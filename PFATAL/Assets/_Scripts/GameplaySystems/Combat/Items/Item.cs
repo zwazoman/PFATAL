@@ -53,7 +53,7 @@ public class Item : MonoBehaviour
         Vector3 spawnPos = playerCharacter.playerCamera.transform.position + playerCharacter.playerCamera.transform.forward * 2;
         Quaternion spawnRot = playerCharacter.playerCamera.transform.rotation;
 
-        Summoner.Instance.SpawnObject(_pickup, spawnPos, spawnRot);
+        Summoner.Instance.SpawnObject(_pickup, spawnPos, spawnRot, false);
     }
 
     public virtual void OnPickup(PlayerCharacter main, Hand hand)

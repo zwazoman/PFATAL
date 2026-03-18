@@ -8,8 +8,9 @@ public class LobbyPlayerSlotUI : MonoBehaviour
     [SerializeField] TMP_Text _playerNameText;
     [SerializeField] TMP_Text _statusText;
 
-    public void SetData(LobbyPlayerData newLobbyPlayerData)
+    public void SetData(LobbyPlayerData data)
     {
-        
+        _playerNameText.text = data.DisplayName;
+        _statusText.text = data.status.ToString();
     }
 }

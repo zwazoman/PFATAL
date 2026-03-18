@@ -14,6 +14,7 @@ public class Hand : MonoBehaviour
 
     [SerializeField] bool _isLeft;
     [SerializeField] public ItemType type;
+    [SerializeField] bool _swapWhenFull;
 
     [SerializeField] int _inventorySize = 1;
 
@@ -27,16 +28,23 @@ public class Hand : MonoBehaviour
     /// <returns></returns>
     public bool TryPickupItem(ItemInfo itemInfo)
     {
+        Item item = _itemVisuals.GetItem(itemInfo.itemPrefab.name);
+
         if (itemInventory.Count < _inventorySize)
         {
-            Item item = _itemVisuals.GetItem(itemInfo.itemPrefab.name);
-
             itemInventory.Add(item);
             item.OnPickup(_main, this);
             EquipItem(item);
-
             return true;
         }
+        else if (_swapWhenFull)
+        {
+            itemInventory.Add(item);
+            item.OnPickup(_main, this);
+            SwapAndDropEquippedItem(item);
+            return true;
+        }
+
         return false;
     }
 
@@ -68,13 +76,13 @@ public class Hand : MonoBehaviour
     /// <summary>
     /// appelle "OnDrop" sur l'item équipé puis, le retire de la main et définit l'item précédent de la liste comme le nouveau dans la main
     /// </summary>
-    public void DropHeldItem()
+    public void DropEquippedtem()
     {
         if (equippedItem == null)
             return;
 
         equippedItem.OnDrop();
-        DeleteItem(equippedItem);
+        DeleteEquippedItem();
     }
 
     /// <summary>
@@ -82,13 +90,10 @@ public class Hand : MonoBehaviour
     /// </summary>
     /// <param name="isPrevious"></param>
     /// <returns></returns>
-    public void SwitchEquippedItem(bool isPrevious)
+    public void ScrollEquippedItem(bool isPrevious)
     {
         if(equippedItem == null || itemInventory.Count <= 0)
-        {
-            print("not enough items to scroll into");
             return;
-        }
 
         Item oldHeldItem = equippedItem;
 
@@ -118,7 +123,7 @@ public class Hand : MonoBehaviour
         Item oldEquippedOtem = equippedItem;
 
         if (itemInventory.Count > 1)
-            SwitchEquippedItem(true);
+            ScrollEquippedItem(true);
         else
             UnEquipEquippedItem();
 
@@ -128,5 +133,21 @@ public class Hand : MonoBehaviour
     public void DeleteEquippedItem()
     {
         DeleteItem(equippedItem);
+    }
+
+    /// <summary>
+    /// drop l'item actuel et en équipe un nouveau
+    /// </summary>
+    /// <param name="item"></param>
+    public void SwapAndDropEquippedItem(Item item)
+    {
+        DropEquippedtem();
+        EquipItem(item);
+    }
+
+    public void SwapAndDeleteEquippedItem(Item item)
+    {
+        DeleteEquippedItem();
+        EquipItem(item);
     }
 }

@@ -21,7 +21,7 @@ public class PlayerHealthUI : MonoBehaviour
 
         _healthText.text = main.health.MaxHP + connard;
 
-        main.health.OnDamageTaken += (_) => SetHealthText();
+        main.health.OnHpChanged += (_) => SetHealthText();
     }
 
     void SetHealthText()

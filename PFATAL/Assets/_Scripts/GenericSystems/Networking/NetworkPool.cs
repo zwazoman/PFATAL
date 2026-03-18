@@ -13,16 +13,12 @@ public class NetworkPool : NetworkBehaviour, INetworkPrefabInstanceHandler
     {
         base.OnNetworkSpawn();
 
-        if (!IsServer)
-            return;
-
         NetworkManager.PrefabHandler.AddHandler(_prefab, this);
         InitPool();
     }
 
     public void InitPool()
     {
-        print("init pool");
         for(int i = 0; i < _poolSize; i++)
         {
             GameObject newObject = Instantiate(_prefab, transform);
@@ -33,8 +29,6 @@ public class NetworkPool : NetworkBehaviour, INetworkPrefabInstanceHandler
 
     public void Destroy(NetworkObject networkObject)
     {
-        print($"destroy {gameObject.name} via pool");
-        //networkObject.Despawn();
         networkObject.gameObject.SetActive(false);
         networkObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
 
@@ -44,7 +38,7 @@ public class NetworkPool : NetworkBehaviour, INetworkPrefabInstanceHandler
 
     public NetworkObject Instantiate(ulong ownerClientId, Vector3 position, Quaternion rotation)
     {
-        print("instantiate via pool");
+        //print("instantiate via pool");
         GameObject newObject = _pool.Dequeue();
         newObject.transform.SetPositionAndRotation(position, rotation);
         newObject.SetActive(true);

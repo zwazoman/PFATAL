@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NetworkTime;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,9 +20,8 @@ namespace _scripts.PlayerCharacter
         public DamageableObject health;
 
         public HUDManager HUD;
-
-        [field: SerializeField]
-        public Camera playerCamera { get; private set; }
+        [field: SerializeField] public Camera playerCamera { get; private set; }
+        [field: SerializeField] public PlayerCameraBehaviour cameraBehaviour { get; private set; }
 
         [field: SerializeField]
         public PlayerInput playerInput { get; private set; }
@@ -38,6 +39,28 @@ namespace _scripts.PlayerCharacter
             gameObject.name = gameObject.name + NetworkBehaviourId + OwnerClientId;
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.O) && IsOwner)
+            {
+                ServerTestRpc(TimeStamp.Now, OwnerClientId);
+                Debug.LogError($"your ping is {NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetCurrentRtt(NetworkManager.Singleton.NetworkConfig.NetworkTransport.ServerClientId)}");
+            }
+        }
+
+        [Rpc(SendTo.Server)]
+        void ServerTestRpc(float startTime, ulong askingClientID)
+        {
+            ClientTestRpc(startTime, RpcTarget.Single(askingClientID, RpcTargetUse.Temp));
+        }
+
+        [Rpc(SendTo.SpecifiedInParams)]
+        void ClientTestRpc(float startTime, RpcParams rpcParams = default)
+        {
+            Debug.LogError($"the rpc delay is {(TimeStamp.Now - startTime) / 2}");
+        }
+
+        //todo : mettre ça dans characterInputs
         public bool CheckActionmap(InputActionMap actionMap)
         {
             if (actionMap == playerInput.currentActionMap)
@@ -47,28 +70,42 @@ namespace _scripts.PlayerCharacter
 
         public void SwapActionMapToUI()
         {
-            Cursor.lockState = CursorLockMode.Confined;
+            if (!playerInput.enabled)
+                return;
 
+            Cursor.lockState = CursorLockMode.Confined;
             playerInput.SwitchCurrentActionMap("UI");
         }
 
         public void SwapActionMapToPlayer()
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            if (!playerInput.enabled)
+                return;
 
+            Cursor.lockState = CursorLockMode.Locked;
             playerInput.SwitchCurrentActionMap("Player");
         }
+        //========
 
+        //==todo : mettre ça dans PlayerCharacterVisuals==
+
+        [SerializeField] List<GameObject> _visualObjects;
+        
         [Rpc(SendTo.Everyone)]
         public void HidePlayerRpc()
         {
-            //cacher les visuels
+            foreach (var obj in _visualObjects)
+                obj.SetActive(false);
         }
 
         [Rpc(SendTo.Everyone)]
         public void ShowPlayerRpc()
         {
-            //montrer les visuels
+            foreach (var obj in _visualObjects)
+                obj.SetActive(true);
         }
+        
+        //===============
     }
+
 }

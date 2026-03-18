@@ -13,6 +13,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         {
             if (ctx.inputs.movementInput != Vector2.zero)
                 return Sm.s_Walking;
+            
             return base.FindNextState(ctx);
         }
 

@@ -68,11 +68,11 @@ public class MenuUI : MonoBehaviour
 
     private void ShowLoadingPanel(string message)
     {
+        loadingPanel.SetActive(true);
+        loadingText.text = message;
         mainPanel.SetActive(false);
         hostPanel.SetActive(false);
         joinPanel.SetActive(false);
-        loadingPanel.SetActive(true);
-        loadingText.text = message;
     }
 
     private void OnHostButtonClicked()
@@ -89,15 +89,15 @@ public class MenuUI : MonoBehaviour
     {
         string lobbyName = string.IsNullOrEmpty(lobbyNameInput.text) ? "MyGame" : lobbyNameInput.text;
 
-        ShowLoadingPanel("Création de la partie...");
+        ShowLoadingPanel("Crï¿½ation de la partie...");
 
         bool success = await NetworkConnectionManager.Instance.StartHost(lobbyName);
 
         if (!success)
         {
-            Debug.LogError("[Menu] Échec du démarrage de l'host");
+            Debug.LogError("[Menu] ï¿½chec du dï¿½marrage de l'host");
             ShowHostPanel();
-            lobbyCodeText.text = "Erreur lors de la création";
+            lobbyCodeText.text = "Erreur lors de la crï¿½ation";
             lobbyCodeText.color = Color.red;
         }
         else
@@ -109,7 +109,7 @@ public class MenuUI : MonoBehaviour
                 lobbyCodeText.color = Color.green;
             }
 
-            Debug.Log("[Menu] Host démarré avec succès");
+            Debug.Log("[Menu] Host dï¿½marrï¿½ avec succï¿½s");
         }
     }
 
@@ -128,18 +128,18 @@ public class MenuUI : MonoBehaviour
             return;
         }
 
-        ShowLoadingPanel("Connexion à la partie...");
+        ShowLoadingPanel("Connexion ï¿½ la partie...");
 
         bool success = await NetworkConnectionManager.Instance.StartClient(joinCode);
 
         if (!success)
         {
-            Debug.LogError("[Menu] Échec de la connexion");
+            Debug.LogError("[Menu] ï¿½chec de la connexion");
             ShowJoinPanel();
         }
         else
         {
-            Debug.Log("[Menu] Client connecté avec succès");
+            Debug.Log("[Menu] Client connectï¿½ avec succï¿½s");
         }
     }
 

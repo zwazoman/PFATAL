@@ -13,6 +13,7 @@ public class PlayerStateMachine : StateMachine<PlayerCharacter>
     public Pst_Falling s_Falling;
     public Pst_Jumping s_Jumping;
     public Pst_Dead s_dead;
+    public Pst_GameOver s_GameOver;
     //public Pst_Running s_running;
     
     void SetUpStates()
@@ -22,6 +23,7 @@ public class PlayerStateMachine : StateMachine<PlayerCharacter>
         s_Falling ??= new();
         s_Jumping ??= new();
         s_dead ??= new();
+        s_GameOver ??= new();
         //s_running ??= new();
 
         s_Idle.SetUp(this);
@@ -29,6 +31,7 @@ public class PlayerStateMachine : StateMachine<PlayerCharacter>
         s_Falling.SetUp(this);
         s_Jumping.SetUp(this);
         s_dead.SetUp(this);
+        s_GameOver.SetUp(this);
         //s_running.SetUp(this);
     }
 

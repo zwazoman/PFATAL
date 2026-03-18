@@ -1,4 +1,5 @@
 using NetworkTime;
+using System;
 using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
@@ -6,6 +7,10 @@ using UnityEngine.UIElements;
 
 public class Proj_Falling : Projectile
 {
+    //Events
+
+    public event Action OnContact;
+
     [Header("Global Settings")]
     [field: SerializeField] public float CollisionRadius { get; private set; }
     [SerializeField] protected float speed = 50;
@@ -84,6 +89,8 @@ public class Proj_Falling : Projectile
                     data.Radius = 1;
                     data.SourcePlayerClientID = spawnContext.Value.spawnerClientID;
                     ApplyDamageToHitObject(data, damageable);
+
+                    OnContact?.Invoke();
 
                     Despawn();
                     return;

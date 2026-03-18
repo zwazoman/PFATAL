@@ -4,16 +4,26 @@ public class Proj_Tomahawk : Proj_Falling
 {
     [Header("Tomahawk Refs")]
     [SerializeField] Transform _visuals;
+    [SerializeField] Explosion _explosion;
 
     [Header("Tomahawk Settings")]
     [SerializeField] float _spinSpeed = 200;
     [SerializeField] float _knockbackStrength = 20;
 
 
-    public override void OnSpawn()
+    public override void OnNetworkSpawn()
     {
-        base.OnSpawn();
-    } 
+        base.OnNetworkSpawn();
+
+        OnContact += Explode;
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        OnContact -= Explode;
+    }
 
     protected override void Update()
     {
@@ -28,5 +38,10 @@ public class Proj_Tomahawk : Proj_Falling
         damageData.KnockbackForce = transform.forward * _knockbackStrength;
 
         base.ApplyDamageToHitObject(damageData, damageable);
+    }
+
+    void Explode()
+    {
+        _explosion.Explode(spawnContext.Value.spawnerClientID);
     }
 }

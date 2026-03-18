@@ -4,7 +4,8 @@ using System.Collections.Generic;
 public enum HeatMapType
 {
     Player = 0,
-    Game = 1
+    Game = 1,
+    multipleGamer = 2,
 }
 
 /// <summary>
@@ -38,8 +39,9 @@ public class HeatMapData
     /// <param name="heatMapGameId">Game id of the game that created the heatmap</param>
     /// <param name="heatMapGameVersion">Game version when the heatmap was created</param>
     /// <param name="heatMapPlayerNumber">Number of players that particpate to make the heatmap</param>
-    public HeatMapData(int cellSize, int heatMapGameId, string heatMapGameVersion, int heatMapPlayerNumber) => 
-        (this.heatMapCellSize, this.heatMapGameId, this.heatMapGameVersion, this.heatMapPlayerNumber) = (cellSize, heatMapGameId, heatMapGameVersion, heatMapPlayerNumber);
+    public HeatMapData(int cellSize, int heatMapGameId, string heatMapGameVersion, int heatMapPlayerNumber, HeatMapType mapType) => 
+        (this.heatMapCellSize, this.heatMapGameId, this.heatMapGameVersion, this.heatMapPlayerNumber, this.heatMapType) = 
+        (cellSize, heatMapGameId, heatMapGameVersion, heatMapPlayerNumber, mapType);
 }
 
 /// <summary>

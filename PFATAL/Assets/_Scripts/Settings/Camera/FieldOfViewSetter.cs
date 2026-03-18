@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Settings
 {
-    public class FieldOfView : MonoBehaviour
+    public class FieldOfViewSetter : MonoBehaviour
     {
         [SerializeField] private Camera _camera;
 

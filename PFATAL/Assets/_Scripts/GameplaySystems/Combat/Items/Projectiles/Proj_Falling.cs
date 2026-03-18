@@ -26,25 +26,11 @@ public class Proj_Falling : Projectile
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-    }
 
-    public override void OnSpawn()
-    {
         _spawnTime = spawnContext.Value.spawnTime;
         _spawnPosition = spawnContext.Value.spawnPos;
 
-        speed *= 1 + spawnContext.Value.floatData;
-        damageAmount *= 1 + spawnContext.Value.floatData * 2;
-
         _initialized = true;
-
-        //_spawnTime = spawnContext.Value.spawnTime;
-        //_spawnPosition = spawnContext.Value.spawnPos;
-
-        //if (NetworkManager.Singleton.IsServer)
-        //{
-
-        //}
     }
 
     protected virtual void UpdatePosition(float timeSinceSpawn)

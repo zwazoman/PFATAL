@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
+
 public class HeatMapAnalitycs : MonoBehaviour
 {
     public float UpdateInterval = 1f;
@@ -148,41 +149,5 @@ public class HeatMapAnalitycs : MonoBehaviour
 #if UNITY_EDITOR_WIN
         Process.Start(Application.persistentDataPath);
 #endif
-    }
-
-    [Button("Send HeatMap")]
-    public void SendHeatMapFunc()
-    {
-        string path = Path.Combine(Application.persistentDataPath, "heatmap.json");
-        string jsonData;
-
-        if (!File.Exists(path)) return;
-
-        jsonData = File.ReadAllText(path);
-
-        //GetComponent<SendHeatMap>().SendJsonData(jsonData + "  C'EST L'HEURE, connard.  " + System.DateTime.Now);
-
-        //SendHeatMap.SendJsonData(jsonData + "  C'EST L'HEURE, connard. Inchallah ça marche zebi  " + System.DateTime.Now);
-        
-        UnityEngine.Debug.Log("HeatMap sent!");
-    }
-
-    [Button("Combine HeatMaps")]
-    public void Combine()
-    {
-        listeFile = Directory.GetFiles(Application.persistentDataPath, "heatmap_*.json").ToList();
-
-        foreach (string file in listeFile)
-            listeHeatmapJson.Add(File.ReadAllText(file));
-
-        UnityEngine.Debug.Log("COMBINE");
-
-        List<HeatMapData> heatMaps = HeatMapUtility.ConvertJsonListToHeatMapDataList(listeHeatmapJson);
-
-        if (!HeatMapUtility.IsSameGridSize(heatMaps)) return;
-
-        string finalHeatMap = HeatMapUtility.CombineHeatMap(heatMaps);
-
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, "heatmap_combined.json"), finalHeatMap);
     }
 }

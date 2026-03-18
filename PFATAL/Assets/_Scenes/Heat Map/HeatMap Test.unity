@@ -312,7 +312,7 @@ Transform:
   m_GameObject: {fileID: 340661823}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7346953, y: -0.6739048, z: 0.052940965, w: 0.057204824}
-  m_LocalPosition: {x: -1.18, y: 1.11, z: 9.57}
+  m_LocalPosition: {x: -11.190001, y: 1.98, z: 18.72}
   m_LocalScale: {x: 5.0305, y: 14.246376, z: 5.0305}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -424,7 +424,7 @@ Transform:
   m_GameObject: {fileID: 371541233}
   serializedVersion: 2
   m_LocalRotation: {x: -0.57069564, y: -0.523207, z: 0.42802432, w: 0.46621463}
-  m_LocalPosition: {x: -6.89, y: 1.6, z: 3.26}
+  m_LocalPosition: {x: -16.9, y: 2.47, z: 12.41}
   m_LocalScale: {x: 5.0305, y: 14.246376, z: 5.0305}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -952,94 +952,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 701665090}
-  - component: {fileID: 701665089}
-  - component: {fileID: 701665088}
-  - component: {fileID: 701665087}
+  - component: {fileID: 701665091}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: MapBounds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!65 &701665087
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701665086}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &701665088
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701665086}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &701665089
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701665086}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &701665090
 Transform:
   m_ObjectHideFlags: 0
@@ -1049,12 +969,27 @@ Transform:
   m_GameObject: {fileID: 701665086}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.5, y: -0.05, z: -2.5}
+  m_LocalPosition: {x: 75, y: 10, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &701665091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701665086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a60781dfc9508b946adb601efa932fe6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapBounds
+  m_Bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 100, y: 50, z: 100}
 --- !u!114 &722549328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1161,6 +1096,7 @@ GameObject:
   - component: {fileID: 1282517315}
   - component: {fileID: 1282517316}
   - component: {fileID: 1282517317}
+  - component: {fileID: 1282517318}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -1257,7 +1193,7 @@ Transform:
   m_GameObject: {fileID: 1282517308}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23, y: 1, z: 6.2}
+  m_LocalPosition: {x: 2.29, y: 1, z: -2.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1393,20 +1329,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b1a4c372b55034b9f9a1bd2d8d62ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeatMapAnalitycs
-  UpdateInterval: 1
-  gridSize: 5
+  UpdateInterval: 0.1
+  gridSize: 1
+  weaponType: 3
   playerTransform: {fileID: 1282517313}
   show: 1
-  listeFile:
-  - C:/Users/lucas/AppData/LocalLow/DefaultCompany/PFATAL\heatmap_1.json
-  - C:/Users/lucas/AppData/LocalLow/DefaultCompany/PFATAL\heatmap_2.json
-  - C:/Users/lucas/AppData/LocalLow/DefaultCompany/PFATAL\heatmap_3.json
-  - C:/Users/lucas/AppData/LocalLow/DefaultCompany/PFATAL\heatmap_4.json
-  listeHeatmapJson:
-  - '{"points":[{"x":10.0,"y":0.0,"z":-5.0,"visitsGlobal":8},{"x":5.0,"y":0.0,"z":-5.0,"visitsGlobal":2},{"x":0.0,"y":0.0,"z":-5.0,"visitsGlobal":1},{"x":0.0,"y":0.0,"z":-10.0,"visitsGlobal":1},{"x":0.0,"y":0.0,"z":-15.0,"visitsGlobal":1},{"x":0.0,"y":0.0,"z":-20.0,"visitsGlobal":1},{"x":5.0,"y":0.0,"z":-20.0,"visitsGlobal":1},{"x":5.0,"y":5.0,"z":-20.0,"visitsGlobal":4},{"x":5.0,"y":5.0,"z":-15.0,"visitsGlobal":3},{"x":10.0,"y":5.0,"z":-15.0,"visitsGlobal":2},{"x":10.0,"y":5.0,"z":-10.0,"visitsGlobal":1},{"x":10.0,"y":5.0,"z":-5.0,"visitsGlobal":1},{"x":15.0,"y":5.0,"z":-5.0,"visitsGlobal":1},{"x":15.0,"y":0.0,"z":-5.0,"visitsGlobal":3},{"x":20.0,"y":0.0,"z":-5.0,"visitsGlobal":1},{"x":20.0,"y":0.0,"z":-10.0,"visitsGlobal":2},{"x":5.0,"y":0.0,"z":0.0,"visitsGlobal":6},{"x":5.0,"y":0.0,"z":5.0,"visitsGlobal":4},{"x":5.0,"y":5.0,"z":5.0,"visitsGlobal":5},{"x":10.0,"y":5.0,"z":5.0,"visitsGlobal":4}]}'
-  - '{"points":[{"x":10.0,"y":0.0,"z":-5.0,"visitsGlobal":4},{"x":10.0,"y":5.0,"z":-5.0,"visitsGlobal":2},{"x":10.0,"y":10.0,"z":-5.0,"visitsGlobal":3},{"x":10.0,"y":15.0,"z":-5.0,"visitsGlobal":1},{"x":10.0,"y":20.0,"z":-5.0,"visitsGlobal":1},{"x":10.0,"y":25.0,"z":-5.0,"visitsGlobal":1},{"x":15.0,"y":25.0,"z":-5.0,"visitsGlobal":6},{"x":20.0,"y":25.0,"z":-5.0,"visitsGlobal":2},{"x":20.0,"y":15.0,"z":-5.0,"visitsGlobal":1},{"x":20.0,"y":20.0,"z":-5.0,"visitsGlobal":2},{"x":25.0,"y":20.0,"z":-5.0,"visitsGlobal":2},{"x":30.0,"y":20.0,"z":-5.0,"visitsGlobal":1},{"x":35.0,"y":20.0,"z":-5.0,"visitsGlobal":1},{"x":40.0,"y":20.0,"z":-5.0,"visitsGlobal":1},{"x":40.0,"y":25.0,"z":-5.0,"visitsGlobal":1},{"x":40.0,"y":30.0,"z":-5.0,"visitsGlobal":1},{"x":40.0,"y":35.0,"z":-5.0,"visitsGlobal":1}]}'
-  - '{"points":[{"x":15.0,"y":0.0,"z":30.0,"visitsGlobal":3},{"x":0.0,"y":0.0,"z":30.0,"visitsGlobal":1},{"x":5.0,"y":0.0,"z":55.0,"visitsGlobal":5},{"x":10.0,"y":0.0,"z":30.0,"visitsGlobal":2},{"x":30.0,"y":0.0,"z":35.0,"visitsGlobal":2},{"x":25.0,"y":0.0,"z":45.0,"visitsGlobal":1},{"x":10.0,"y":0.0,"z":25.0,"visitsGlobal":1},{"x":0.0,"y":0.0,"z":25.0,"visitsGlobal":1},{"x":0.0,"y":0.0,"z":60.0,"visitsGlobal":1},{"x":20.0,"y":0.0,"z":65.0,"visitsGlobal":1},{"x":35.0,"y":0.0,"z":60.0,"visitsGlobal":2},{"x":25.0,"y":0.0,"z":40.0,"visitsGlobal":1},{"x":25.0,"y":0.0,"z":30.0,"visitsGlobal":1},{"x":30.0,"y":0.0,"z":30.0,"visitsGlobal":1},{"x":20.0,"y":0.0,"z":30.0,"visitsGlobal":1},{"x":30.0,"y":0.0,"z":45.0,"visitsGlobal":1},{"x":30.0,"y":0.0,"z":40.0,"visitsGlobal":1},{"x":30.0,"y":0.0,"z":50.0,"visitsGlobal":1},{"x":30.0,"y":0.0,"z":55.0,"visitsGlobal":1},{"x":35.0,"y":0.0,"z":55.0,"visitsGlobal":1},{"x":30.0,"y":0.0,"z":60.0,"visitsGlobal":1},{"x":25.0,"y":0.0,"z":60.0,"visitsGlobal":1},{"x":20.0,"y":0.0,"z":60.0,"visitsGlobal":1},{"x":15.0,"y":0.0,"z":65.0,"visitsGlobal":1},{"x":10.0,"y":0.0,"z":65.0,"visitsGlobal":1},{"x":5.0,"y":0.0,"z":65.0,"visitsGlobal":1},{"x":0.0,"y":0.0,"z":65.0,"visitsGlobal":1},{"x":0.0,"y":0.0,"z":55.0,"visitsGlobal":1},{"x":5.0,"y":0.0,"z":50.0,"visitsGlobal":2},{"x":5.0,"y":0.0,"z":40.0,"visitsGlobal":5},{"x":5.0,"y":0.0,"z":45.0,"visitsGlobal":2},{"x":0.0,"y":0.0,"z":40.0,"visitsGlobal":1},{"x":-5.0,"y":0.0,"z":40.0,"visitsGlobal":1},{"x":-5.0,"y":0.0,"z":35.0,"visitsGlobal":1},{"x":0.0,"y":0.0,"z":45.0,"visitsGlobal":1},{"x":10.0,"y":0.0,"z":50.0,"visitsGlobal":4},{"x":10.0,"y":0.0,"z":45.0,"visitsGlobal":5}]}'
-  - '{"points":[{"x":25.0,"y":0.0,"z":5.0,"visitsGlobal":5},{"x":25.0,"y":0.0,"z":0.0,"visitsGlobal":1},{"x":30.0,"y":0.0,"z":0.0,"visitsGlobal":1},{"x":35.0,"y":0.0,"z":0.0,"visitsGlobal":1},{"x":35.0,"y":0.0,"z":-5.0,"visitsGlobal":1},{"x":35.0,"y":0.0,"z":-10.0,"visitsGlobal":1},{"x":35.0,"y":0.0,"z":-15.0,"visitsGlobal":1},{"x":35.0,"y":0.0,"z":-20.0,"visitsGlobal":1},{"x":40.0,"y":0.0,"z":-20.0,"visitsGlobal":1},{"x":40.0,"y":0.0,"z":-15.0,"visitsGlobal":1},{"x":45.0,"y":0.0,"z":-15.0,"visitsGlobal":1},{"x":50.0,"y":0.0,"z":-15.0,"visitsGlobal":1},{"x":60.0,"y":0.0,"z":-15.0,"visitsGlobal":1},{"x":60.0,"y":0.0,"z":-10.0,"visitsGlobal":1},{"x":60.0,"y":0.0,"z":-5.0,"visitsGlobal":1},{"x":60.0,"y":0.0,"z":0.0,"visitsGlobal":3},{"x":55.0,"y":0.0,"z":-15.0,"visitsGlobal":1},{"x":60.0,"y":0.0,"z":5.0,"visitsGlobal":1},{"x":60.0,"y":0.0,"z":10.0,"visitsGlobal":5}]}'
+  listeFile: []
+  listeHeatmapJson: []
 --- !u!114 &1282517317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1419,6 +1348,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f53cf1853daf1948ae68f139e753468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SendHeatMap
+--- !u!114 &1282517318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282517308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d2a267a25ff83049a3541dc6d2dbfbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptTestTemporaire
+  path: C:\Users\lucas\AppData\LocalLow\DefaultCompany\PFATAL\HeatMapFolder\heatMapAtCellSizeOne.json
+  show: 1
+  minMaxVisits: 14
 --- !u!1 &1335947641
 GameObject:
   m_ObjectHideFlags: 0
@@ -1495,7 +1439,7 @@ Transform:
   m_GameObject: {fileID: 1474045760}
   serializedVersion: 2
   m_LocalRotation: {x: -0.3364398, y: 0.3464823, z: -0.03985133, w: 0.87474006}
-  m_LocalPosition: {x: -5.78, y: -0.62, z: -6.31}
+  m_LocalPosition: {x: -15.79, y: 0.25, z: 2.84}
   m_LocalScale: {x: 5.0305, y: 5.0305, z: 5.0305}
   m_ConstrainProportionsScale: 0
   m_Children: []

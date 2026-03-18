@@ -1,19 +1,24 @@
-using UnityEngine;
+using NaughtyAttributes;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using NaughtyAttributes;
-using System.Collections.Generic;
-using System;
+using UnityEngine;
 
 public class HeatMapAnalitycs : MonoBehaviour
 {
     public float UpdateInterval = 1f;
-    public float gridSize = 1f;
+    public int gridSize = 1;
+    [Range(1f, 3f)]
+    public int weaponType;
     public Transform playerTransform;
+    public MapBounds mapBoundsObject;
 
     private HeatMapData heatMapData;
     private float timer;
     private string filePath;
+    
 
     [Header("Debug")]
     [SerializeField] private bool show = false;
@@ -30,28 +35,66 @@ public class HeatMapAnalitycs : MonoBehaviour
 
     private void Update()
     {
+        //Adding point each time the time interval is reach
         if ((timer += Time.deltaTime) >= UpdateInterval)
         {
             timer = 0f;
             Vector3 playerPos = playerTransform.position;
 
+            if (!mapBoundsObject.m_Bounds.Contains(playerPos))
+            {
+                return;
+            }
+
+            //search if ppoint already exist in the list
             var point = heatMapData.points.FirstOrDefault(p => 
                 p.x == Mathf.Round(playerPos.x / gridSize) * gridSize &&
                 p.y == Mathf.Round(playerPos.y / gridSize) * gridSize &&
                 p.z == Mathf.Round(playerPos.z / gridSize) * gridSize);
 
+            //if already exist, we increment the vists number, else we create a new point
             if (point != null)
+            {
                 point.visitsGlobal++;
+                switch (weaponType)
+                {
+                    case 1:
+                        point.playerWithHammerVisits++;
+                        break;
+                    case 2:
+                        point.playerWithCrossbowVisits++;
+                        break;
+                    case 3:
+                        point.playerWithTomahawkVisits++;
+                        break;
+                }
+            }
             else
-                heatMapData.points.Add(new HeatPoint(
+            {
+                HeatPoint newPoint = new HeatPoint(
                     Mathf.Round(playerPos.x / gridSize) * gridSize,
                     Mathf.Round(playerPos.y / gridSize) * gridSize,
-                    Mathf.Round(playerPos.z / gridSize) * gridSize));
+                    Mathf.Round(playerPos.z / gridSize) * gridSize);
+
+                switch (weaponType)
+                {
+                    case 1:
+                        newPoint.playerWithHammerVisits++;
+                        break;
+                    case 2:
+                        newPoint.playerWithCrossbowVisits++;
+                        break;
+                    case 3:
+                        newPoint.playerWithTomahawkVisits++;
+                        break;
+                }
+                heatMapData.points.Add(newPoint);
+            }
 
             File.WriteAllText(filePath, JsonUtility.ToJson(heatMapData));
         }
 
-        Debug.Log($"Max Visits: {MaxVisits()}");
+        //UnityEngine.Debug.Log($"Max Visits: {MaxVisits()}");
     }
 
     private HeatMapData LoadHeatMap()
@@ -60,7 +103,7 @@ public class HeatMapAnalitycs : MonoBehaviour
             ? JsonUtility.FromJson<HeatMapData>(File.ReadAllText(filePath)) 
             : new HeatMapData(gridSize);
 
-        Debug.Log(heatMapData);
+        UnityEngine.Debug.Log(heatMapData);
 
         return heatMapData;
     }
@@ -82,9 +125,9 @@ public class HeatMapAnalitycs : MonoBehaviour
         foreach (var point in heatMapData.points)
         {
             //Gizmos.color = Color.Lerp(Color.blue, Color.red, point.visits / MaxVisits());
-            Debug.Log(point.visitsGlobal / MaxVisits());
+            UnityEngine.Debug.Log(point.visitsGlobal / MaxVisits());
             Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.visitsGlobal / 10);
-            Gizmos.DrawCube(new Vector3(point.x, point.y, point.z), new Vector3(size, size, size));
+            Gizmos.DrawWireCube(new Vector3(point.x, point.y, point.z), new Vector3(size, size, size));
         }
     }
 
@@ -99,10 +142,12 @@ public class HeatMapAnalitycs : MonoBehaviour
         File.Delete(Path.Combine(Application.persistentDataPath, "heatmap.json"));
     }
 
-    [Button("Coppy file path")]
-    public void copy()
+    [Button("Oppen file")]
+    public void Copy()
     {
-        GUIUtility.systemCopyBuffer = Application.persistentDataPath;
+#if UNITY_EDITOR_WIN
+        Process.Start(Application.persistentDataPath);
+#endif
     }
 
     [Button("Send HeatMap")]
@@ -115,11 +160,11 @@ public class HeatMapAnalitycs : MonoBehaviour
 
         jsonData = File.ReadAllText(path);
 
-        GetComponent<SendHeatMap>().SendJsonData(jsonData + "  C'EST L'HEURE, connard.  " + System.DateTime.Now);
+        //GetComponent<SendHeatMap>().SendJsonData(jsonData + "  C'EST L'HEURE, connard.  " + System.DateTime.Now);
 
         //SendHeatMap.SendJsonData(jsonData + "  C'EST L'HEURE, connard. Inchallah ça marche zebi  " + System.DateTime.Now);
         
-        Debug.Log("HeatMap sent!");
+        UnityEngine.Debug.Log("HeatMap sent!");
     }
 
     [Button("Combine HeatMaps")]
@@ -130,7 +175,7 @@ public class HeatMapAnalitycs : MonoBehaviour
         foreach (string file in listeFile)
             listeHeatmapJson.Add(File.ReadAllText(file));
 
-        Debug.Log("COMBINE");
+        UnityEngine.Debug.Log("COMBINE");
 
         List<HeatMapData> heatMaps = HeatMapUtility.ConvertJsonListToHeatMapDataList(listeHeatmapJson);
 

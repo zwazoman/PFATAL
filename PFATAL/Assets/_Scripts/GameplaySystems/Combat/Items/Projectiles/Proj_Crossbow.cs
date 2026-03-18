@@ -6,7 +6,7 @@ public class Proj_Crossbow : Proj_Falling
     float _initialSpeed;
     float _initialDamage;
 
-    [SerializeField] float _chargeDamageMultiplyer = 1;
+    [SerializeField] float _chargeDamageMultiplyer = 2;
     [SerializeField] float _chargeSpeedMultiplyer = 1;
 
     public override void OnSpawn()
@@ -15,6 +15,9 @@ public class Proj_Crossbow : Proj_Falling
 
         _initialSpeed = speed;
         _initialDamage = damageAmount;
+
+        speed *= 1 + spawnContext.Value.floatData * _chargeSpeedMultiplyer;
+        damageAmount *= 1 + spawnContext.Value.floatData * _chargeDamageMultiplyer;
     }
 
     protected override void Despawn()

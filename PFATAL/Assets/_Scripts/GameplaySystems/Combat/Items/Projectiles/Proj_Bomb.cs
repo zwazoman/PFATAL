@@ -26,6 +26,7 @@ public class Proj_Bomb : Projectile
         if (!IsServer) return;
 
         _timer = 0f;
+        _rb.isKinematic = false;
         Vector3 force = transform.forward * 5 + transform.up * 3;
         _rb.AddForce(force * _throwStrength, ForceMode.Impulse);
     }
@@ -46,6 +47,8 @@ public class Proj_Bomb : Projectile
     void Explode()
     {
         if (!IsServer) throw new NetworkAuthorityException();
+        
+        _rb.isKinematic = true;
         _explosion.Explode(spawnContext.Value.spawnerClientID);
     }
 

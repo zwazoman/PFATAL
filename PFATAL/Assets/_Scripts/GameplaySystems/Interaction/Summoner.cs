@@ -55,7 +55,7 @@ public class Summoner : NetworkBehaviour
     /// <param name="giveOwnershipToAsker"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public async Awaitable<GameObject> SpawnObject(GameObject gameObjectToSpawn, Vector3 spawnPos, Quaternion spawnRot, bool sendBack = false, SpawnContext? context = null, ulong futureOwner = 1000)
+    public async Awaitable<GameObject> SpawnObject(GameObject gameObjectToSpawn, Vector3 spawnPos, Quaternion spawnRot, bool sendBack, SpawnContext? context = null, ulong futureOwner = 1000)
     {
         if (context == null)
             context = new(0);
@@ -69,17 +69,10 @@ public class Summoner : NetworkBehaviour
             await Awaitable.NextFrameAsync();
         }
 
-        //print($"{_currentObject.name} received");
-
         GameObject newObject = _currentObject;
         _currentObject = null;
 
         return sendBack ? newObject : null;
-    }
-
-    public async Awaitable<GameObject> SpawnObject(string objectName, Vector3 spawnPos, Quaternion spawnRot, bool sendBack = false, SpawnContext? context = null)
-    {
-        return await SpawnObject(spawnableObjectsDict[objectName], spawnPos, spawnRot, sendBack, context);
     }
 
     [Rpc(SendTo.Server)]
@@ -102,16 +95,6 @@ public class Summoner : NetworkBehaviour
         else
             newObject.SpawnWithOwnership(futureOwner);
 
-        //if (futureOwner != 1000)
-        //    newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, futureOwner, true, true, false, spawnPos, spawnRot);
-        //else
-        //    newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, true, true, false, spawnPos, spawnRot);
-
-        //if (newObject.TryGetComponent(out Projectile projectile))
-        //{
-        //    projectile.SetupContextRpc(context);
-        //}
-
         if (sendBack)
             SendToAskerRpc(newObject, RpcTarget.Single(context.spawnerClientID, RpcTargetUse.Temp));
     }
@@ -124,16 +107,7 @@ public class Summoner : NetworkBehaviour
             _currentObject = networkObj.gameObject;
         }
     }
-
-    public void BroadcastSpawnDeSesMorts()
-    {
-
-    }
 }
-
-
-
-
 
 public struct SpawnContext : INetworkSerializeByMemcpy
 {

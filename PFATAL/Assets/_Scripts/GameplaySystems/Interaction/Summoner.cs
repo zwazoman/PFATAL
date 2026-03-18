@@ -82,18 +82,26 @@ public class Summoner : NetworkBehaviour
 
         NetworkObject newObject = null;
 
+        if (futureOwner == 1000)
+            newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, 0, false, false, false, spawnPos, spawnRot);
+        else
+            newObject = NetworkObject.InstantiateAndSpawn(spawnableObjectsDict[objectName], NetworkManager.Singleton, futureOwner, false, false, false, spawnPos, spawnRot);
+
         context.spawnPos = spawnPos;
         context.spawnTime = TimeStamp.Now;
 
-        newObject = Instantiate(spawnableObjectsDict[objectName], spawnPos, spawnRot).GetComponent<NetworkObject>();
+        //newObject = Instantiate(spawnableObjectsDict[objectName], spawnPos, spawnRot).GetComponent<NetworkObject>();
 
         if (newObject.TryGetComponent(out Projectile projectile))
+        {
             projectile.spawnContext = new(context);
+            projectile.OnSpawn();
+        }
 
-        if (futureOwner == 1000)
-            newObject.Spawn();
-        else
-            newObject.SpawnWithOwnership(futureOwner);
+        //if (futureOwner == 1000)
+        //    newObject.Spawn();
+        //else
+        //    newObject.SpawnWithOwnership(futureOwner);
 
         if (sendBack)
             SendToAskerRpc(newObject, RpcTarget.Single(context.spawnerClientID, RpcTargetUse.Temp));

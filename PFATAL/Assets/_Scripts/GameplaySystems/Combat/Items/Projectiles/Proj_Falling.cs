@@ -26,14 +26,6 @@ public class Proj_Falling : Projectile
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-
-        _spawnTime = spawnContext.Value.spawnTime;
-        _spawnPosition = spawnContext.Value.spawnPos;
-
-        speed *= 1 + spawnContext.Value.floatData;
-        damageAmount *= 1 + spawnContext.Value.floatData * 2;
-
-        _initialized = true;
     }
 
     public override void OnSpawn()
@@ -41,29 +33,18 @@ public class Proj_Falling : Projectile
         _spawnTime = spawnContext.Value.spawnTime;
         _spawnPosition = spawnContext.Value.spawnPos;
 
-        if (NetworkManager.Singleton.IsServer)
-        {
-            //todo : lag au spawn vient de là ????
-            InitRPC(TimeStamp.Now, transform.position, spawnContext.Value.floatData);
-        }
-    }
-
-    [Rpc(SendTo.Everyone)]
-    //todo : sale de faire passer la charge de l'arbalete ici, et la RPC est sale de base en fait, faut trouver un moyen de l'enlever.
-    void InitRPC(float timestamp, Vector3 position, float normalizedChargeTime)
-    {
-        //_spawnTime = timestamp;
-        //_spawnPosition = position;
-
-        //sale de zinzin j'ai honte
-        if (this is Proj_Crossbow)
-        {
-            //les fleches chargées font 3x plus de degats et vont 2 fois plus vite
-            speed *= 1 + normalizedChargeTime;
-            damageAmount *= 1 + normalizedChargeTime * 2;
-        }
+        speed *= 1 + spawnContext.Value.floatData;
+        damageAmount *= 1 + spawnContext.Value.floatData * 2;
 
         _initialized = true;
+
+        //_spawnTime = spawnContext.Value.spawnTime;
+        //_spawnPosition = spawnContext.Value.spawnPos;
+
+        //if (NetworkManager.Singleton.IsServer)
+        //{
+
+        //}
     }
 
     protected virtual void UpdatePosition(float timeSinceSpawn)

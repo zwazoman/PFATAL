@@ -2510,8 +2510,8 @@ MonoBehaviour:
   m_ProtocolType: 0
   m_UseWebSockets: 0
   m_UseEncryption: 0
-  m_MaxPacketQueueSize: 256
-  m_MaxPayloadSize: 12288
+  m_MaxPacketQueueSize: 128
+  m_MaxPayloadSize: 6144
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
   m_MaxConnectAttempts: 60
@@ -2545,7 +2545,7 @@ MonoBehaviour:
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 302d58923129a7549803af7efe6113a5, type: 2}
-    TickRate: 60
+    TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
     ConnectionData: 

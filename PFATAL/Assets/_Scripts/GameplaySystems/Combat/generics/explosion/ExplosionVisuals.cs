@@ -1,3 +1,4 @@
+using System;
 using _Scripts.Pooling;
 using SimpleVFXs;
 using UnityEngine;
@@ -23,15 +24,23 @@ public class ExplosionVisuals : MonoBehaviour
     private void OnExplode()
     {
         //pull vfx from pool
-        PooledObject explosion = (_vfxType switch
+        try
         {
-            ExplosionVfxType.big => LocalPoolManager.Instance.Pool_VFX_Explosion_big,
-            ExplosionVfxType.small => LocalPoolManager.Instance.Pool_VFX_Explosion_small
-        }).PullObjectFromPool(transform.position, Quaternion.identity, null);
+            PooledObject explosion = (_vfxType switch
+            {
+                ExplosionVfxType.big => LocalPoolManager.Instance.Pool_VFX_Explosion_big,
+                ExplosionVfxType.small => LocalPoolManager.Instance.Pool_VFX_Explosion_small
+            }).PullObjectFromPool(transform.position, Quaternion.identity, null);
+
+            if (_vfxType is ExplosionVfxType.big)
+                explosion.transform.position += Vector3.up * -0.5f;
+
+            explosion.GoBackIntoPool_Delayed(5);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
         
-        if(_vfxType is ExplosionVfxType.big)
-            explosion.transform.position+= Vector3.up * -0.5f;
-        
-        explosion.GoBackIntoPool_Delayed(5);
     }
 }

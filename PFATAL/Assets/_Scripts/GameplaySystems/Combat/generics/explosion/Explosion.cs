@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _Scripts.Exceptions;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Explosion : NetworkBehaviour
 {
@@ -20,7 +21,7 @@ public class Explosion : NetworkBehaviour
     /// <summary>
     /// can only be called from the server
     /// </summary>
-    public async void Explode(ulong askerClientID)
+    public async Awaitable Explode(ulong askerClientID)
     {
         if(!IsServer) throw new NetworkAuthorityException();
         
@@ -37,7 +38,7 @@ public class Explosion : NetworkBehaviour
         //.2s hit detection
         float endTime = Time.time + HIT_DETECTION_DURATION;
         HashSet<DamageableObject> hitObjects = new HashSet<DamageableObject>();
-        while (Time.time < endTime)
+        while (Time.time < endTime && isActiveAndEnabled)
         {
             TryToHitObjects(damage, ref hitObjects);
             await Awaitable.NextFrameAsync();
@@ -60,7 +61,9 @@ public class Explosion : NetworkBehaviour
                 //damage
                 float normalizedDistance = Vector3.Distance(damageData.Point,hitObject.transform.position) / Radius;
                 normalizedDistance = Mathf.Clamp(normalizedDistance, 0f, 1f);
-                damageData.Amount = Damage * normalizedDistance;
+                damageData.Amount = Damage 
+                                    * (1.0f - normalizedDistance * normalizedDistance) 
+                                    * ((hitObject.OwnerClientId == damageData.SourcePlayerClientID) ? 0.5f : 1);
 
                 //knockBack
                 damageData.KnockbackForce = (hitObject.transform.position - damageData.Point).normalized * KnockBackStrength;

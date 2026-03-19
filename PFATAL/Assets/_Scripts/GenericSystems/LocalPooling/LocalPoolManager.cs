@@ -30,6 +30,8 @@ namespace _Scripts.Pooling
 
         [Header("VFXs")] 
         public Pool Pool_VFX_Hit_crit;
+        public Pool Pool_VFX_Explosion_big;
+        public Pool Pool_VFX_Explosion_small;
 
     }
 }

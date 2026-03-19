@@ -30,7 +30,6 @@ namespace Settings
                 Screen.fullScreen = false;
                 _screenToggle.isOn = false;
                 _resolutionDropdown.interactable = true;
-                Screen.SetResolution(1920, 1080, FullScreenMode.MaximizedWindow);
             }
             else
             {

@@ -28,7 +28,7 @@ public class Proj_Bomb : Projectile
         _timer = 0f;
         _rb.isKinematic = false;
         Vector3 force = transform.forward * 5 + transform.up * 3;
-        _rb.AddForce(force * _throwStrength, ForceMode.Impulse);
+        _rb.AddForce(force.normalized * _throwStrength, ForceMode.Impulse);
     }
 
     private void Update()

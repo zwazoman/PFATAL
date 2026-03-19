@@ -6,9 +6,9 @@ namespace Settings
     {
         [SerializeField] private CharacterAiming _aiming;
 
-        private void AimingSet(float sensitivity)
+        public void AimingSet(float sensitivity)
         {
-            //_aiming.Sensitivity = sensitivity;
+            _aiming.Sensitivity = sensitivity;
         }
     }
 }

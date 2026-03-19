@@ -13,7 +13,7 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] Rigidbody _rigidbody;
     
     [Header("parameters")]
-    [SerializeField] float _sensitivity;
+    public float Sensitivity;
     [SerializeField] Vector2 _recoilCompensationMultiplier;
 
     private float angle = 0;
@@ -28,7 +28,7 @@ public class CharacterAiming : MonoBehaviour
     {
         //camera rotation
         //_cameraRoot.Rotate(_sensitivity * Time.deltaTime* _character.inputs.aimInput.y * Vector3.right,Space.Self);
-        angle = Mathf.Clamp((angle + _sensitivity * Time.deltaTime * _character.inputs.aimInput.y), -90,90);
+        angle = Mathf.Clamp((angle + Sensitivity * Time.deltaTime * _character.inputs.aimInput.y), -90,90);
         _cameraRoot.transform.localEulerAngles = angle * Vector3.right;
         
         //recoil compensation
@@ -39,6 +39,6 @@ public class CharacterAiming : MonoBehaviour
 
     void FixedUpdate()
     {
-        _rigidbody.MoveRotation(_rigidbody.rotation * quaternion.RotateY( _sensitivity * Time.deltaTime * _character.inputs.aimInput.x * Mathf.Deg2Rad));
+        _rigidbody.MoveRotation(_rigidbody.rotation * quaternion.RotateY( Sensitivity * Time.deltaTime * _character.inputs.aimInput.x * Mathf.Deg2Rad));
     }
 }

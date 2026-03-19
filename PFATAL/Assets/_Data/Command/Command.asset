@@ -13,17 +13,37 @@ MonoBehaviour:
   m_Name: Command
   m_EditorClassIdentifier: Assembly-CSharp::Command
   CommandData:
-  - Name: 
+  - Name: "R\xE9cup\xE8re quel joueur  a jou\xE9 a quel partie"
     Command: 'SELECT
 
       Game.Id AS GameId,
 
       Player.Name
 
-      FROM
-      GamePlayerSet
-
-      JOIN Player ON Player.Id = GamePlayerSet.IdPlayer
+      FROM GamePlayerSet
 
       JOIN
-      Game ON Game.Id = GamePlayerSet.IdGame'
+      Player ON Player.Id = GamePlayerSet.IdPlayer
+
+      JOIN Game ON Game.Id =
+      GamePlayerSet.IdGame'
+  - Name: "R\xE9cup\xE8re les armes et le nombre de fois ou elles ont \xE9t\xE9 utilis\xE9
+      rang\xE9 par ordre croissant"
+    Command: 'SELECT
+
+      Weapon,
+
+      COUNT(*) AS UsageCount
+
+      FROM
+      Death
+
+      GROUP BY Weapon
+
+      ORDER BY UsageCount DESC'
+  - Name: Distance moyenne des kills
+    Command: 'SELECT
+
+      AVG(Distance) AS AverageKillDistance
+
+      FROM Death'

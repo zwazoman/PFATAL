@@ -1,6 +1,7 @@
 using NetworkTime;
 using System;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -73,7 +74,6 @@ public class Proj_Falling : Projectile
             //print("HitCount : "+hitCount);
             for (int i = 0; i < hitCount; i++)
             {
-                OnContact?.Invoke();
 
                 print(_hitBuffer[i].collider.gameObject.name);
                 if (_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
@@ -90,11 +90,15 @@ public class Proj_Falling : Projectile
                     data.Amount = damageAmount;
                     data.Radius = 1;
                     data.SourcePlayerClientID = spawnContext.Value.spawnerClientID;
+                    
+                    OnContact?.Invoke();
                     ApplyDamageToHitObject(data, damageable);
 
                     Despawn();
                     return;
                 }
+                OnContact?.Invoke();
+
             }
             //print("ActualHitCount : "+actualHitCount);
             if (actualHitCount > 0) Despawn();

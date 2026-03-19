@@ -73,6 +73,8 @@ public class Proj_Falling : Projectile
             //print("HitCount : "+hitCount);
             for (int i = 0; i < hitCount; i++)
             {
+                OnContact?.Invoke();
+
                 print(_hitBuffer[i].collider.gameObject.name);
                 if (_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
                 {
@@ -89,8 +91,6 @@ public class Proj_Falling : Projectile
                     data.Radius = 1;
                     data.SourcePlayerClientID = spawnContext.Value.spawnerClientID;
                     ApplyDamageToHitObject(data, damageable);
-
-                    OnContact?.Invoke();
 
                     Despawn();
                     return;

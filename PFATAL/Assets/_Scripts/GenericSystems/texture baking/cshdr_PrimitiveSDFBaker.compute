@@ -1,0 +1,24 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel Sphere
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture3D<float> Result;
+int3 Resolution;
+float3 BbWorldCenter;
+int PixelsPerUnit;
+
+float3 shapeWorldPosition;
+float shapeParam0; //sphere radius
+
+[numthreads(8,8,8)]
+void Sphere (uint3 id : SV_DispatchThreadID)
+{
+    // TODO: insert actual code here!
+ 
+    float3 worldPosition = ((float3)id.xyz/(float)PixelsPerUnit)-((float3)Resolution/(float)PixelsPerUnit)*0.5+BbWorldCenter;
+    float Radius = shapeParam0;
+    float falloff = 5;
+    float sdf =  saturate( (Radius - length(worldPosition-shapeWorldPosition) )/ falloff);
+    Result[id.xyz] = max(Result[id.xyz],saturate(sdf));
+}

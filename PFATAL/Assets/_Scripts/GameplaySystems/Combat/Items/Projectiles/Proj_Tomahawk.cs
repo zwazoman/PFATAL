@@ -42,6 +42,8 @@ public class Proj_Tomahawk : Proj_Falling
 
     void Explode()
     {
+        print("explode");
+
         _explosion.Explode(spawnContext.Value.spawnerClientID);
     }
 }

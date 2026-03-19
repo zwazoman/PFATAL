@@ -62,7 +62,7 @@ public class Explosion : NetworkBehaviour
                 float normalizedDistance = Vector3.Distance(damageData.Point,hitObject.transform.position) / Radius;
                 normalizedDistance = Mathf.Clamp(normalizedDistance, 0f, 1f);
                 damageData.Amount = Damage 
-                                    * (1.0f - normalizedDistance * normalizedDistance) 
+                                    //* (1.0f - normalizedDistance * normalizedDistance) 
                                     * ((hitObject.OwnerClientId == damageData.SourcePlayerClientID) ? 0.5f : 1);
 
                 //knockBack

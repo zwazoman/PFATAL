@@ -38,14 +38,12 @@ public class Pickup : Interactable
     [Rpc(SendTo.Everyone)]
     void PickupRpc()
     {
-        print("pickup");
         OnPickup?.Invoke();
     }
 
     [Rpc(SendTo.Server)]
     void DespawnRpc()
     {
-        print("despawn");
         NetworkObject.Despawn();
     }
 }

@@ -1,3 +1,5 @@
+using System;
+using _Scripts.Pooling;
 using SimpleVFXs;
 using UnityEngine;
 
@@ -5,7 +7,15 @@ public class ExplosionVisuals : MonoBehaviour
 {
     [Header("scene references")]
     [SerializeField] private Explosion explosion;
-    [SerializeField] private StylisedEffect effect;
+
+    [Header("Parameters")] [SerializeField]
+    private ExplosionVfxType _vfxType;
+    enum ExplosionVfxType
+    {
+        big,
+        small
+    }
+    
     void Awake()
     {
         explosion.EventOnExplode += OnExplode;
@@ -13,6 +23,24 @@ public class ExplosionVisuals : MonoBehaviour
 
     private void OnExplode()
     {
-        effect.TriggerMainEvent();
+        //pull vfx from pool
+        try
+        {
+            PooledObject explosion = (_vfxType switch
+            {
+                ExplosionVfxType.big => LocalPoolManager.Instance.Pool_VFX_Explosion_big,
+                ExplosionVfxType.small => LocalPoolManager.Instance.Pool_VFX_Explosion_small
+            }).PullObjectFromPool(transform.position, Quaternion.identity, null);
+
+            if (_vfxType is ExplosionVfxType.big)
+                explosion.transform.position += Vector3.up * -0.5f;
+
+            explosion.GoBackIntoPool_Delayed(5);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
+        
     }
 }

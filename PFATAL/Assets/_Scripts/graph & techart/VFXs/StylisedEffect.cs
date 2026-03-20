@@ -15,7 +15,17 @@ namespace SimpleVFXs
 
         VisualEffect vfx;
 
+        void OnPulledFromPool()
+        {
+            init();
+        }
+        
         private void Awake()
+        {
+            init();
+        }
+
+        void init()
         {
             //prevents the vfx from always playing on awake
             if (TryGetComponent<VisualEffect>(out vfx))
@@ -29,14 +39,13 @@ namespace SimpleVFXs
                 TriggerMainEvent();
             }
         }
-
-
+        
         public void TriggerMainEvent()
         {
 #if UNITY_EDITOR
             if (Application.isPlaying)
             {
-                MainEvent.Invoke();
+                MainEvent.Invoke(); 
             }
             else //In edit mode, tries to play every monobehaviour method listening for the event anyways
             {

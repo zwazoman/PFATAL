@@ -171,6 +171,41 @@ public class DatabaseRequest : MonoBehaviour
         else
             Debug.Log("Player sent : " + request.downloadHandler.text);
     }
+
+    [Button]
+    public void GetLastGameId()
+    {
+        StartCoroutine(LastGameIdCoroutine((id) =>
+        {
+            Debug.Log("ID récupéré : " + id);
+        }));
+    }
+
+    public IEnumerator LastGameIdCoroutine(Action<int> onResult)
+    {
+        string url = baseURL + "/game/lastid";
+
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string text = request.downloadHandler.text.Replace("}", "");
+            string[] content = text.Split(":");
+            int id = int.Parse(content[1]);
+
+            Debug.Log("SQL RESULT : " + id);
+
+            onResult?.Invoke(id);
+        }
+        else
+        {
+            Debug.LogError("SQL ERROR : " + request.error);
+
+            onResult?.Invoke(-1);
+        }
+    }
 }
 
 [Serializable]

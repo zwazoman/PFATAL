@@ -169,6 +169,14 @@ public abstract class GameRulesBase
         
     }
 
+    public PlayerCharacter GetPlayerCharacter(ulong playerClientId)
+    {
+        if (!_players.ContainsKey(playerClientId))
+            Debug.LogError("wrong player client ID");
+
+        return _players[playerClientId].Character;
+    }
+
     /// <summary>
     /// doit être appelé par le GameMode quand
     /// il veut que la partie se termine.

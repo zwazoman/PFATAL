@@ -1,16 +1,28 @@
-using UnityEngine;
+using Unity.Netcode;
 
 public class DamageableWall : DamageableObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void OnNetworkSpawn()
     {
-        
+        base.OnNetworkSpawn();
+        OnDie += OnWallDestroyed;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnNetworkDespawn()
     {
-        
+        base.OnNetworkDespawn();
+        OnDie -= OnWallDestroyed;
+    }
+
+    private void OnWallDestroyed()
+    {
+        if (!IsServer) return;
+        DisableWallRpc();
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void DisableWallRpc()
+    {
+        gameObject.SetActive(false);
     }
 }

@@ -13,7 +13,8 @@ public class Proj_Bomb : Projectile
 
     [SerializeField] private float _throwStrength = 25;
     float _timer;
-    
+    private bool _isExploding = false;
+
 
     private void Awake()
     {
@@ -25,10 +26,11 @@ public class Proj_Bomb : Projectile
         base.OnNetworkSpawn();
         if (!IsServer) return;
 
+        _isExploding = false;
         _timer = 0f;
         _rb.isKinematic = false;
         Vector3 force = transform.forward * 5 + transform.up * 3;
-        _rb.AddForce(force * _throwStrength, ForceMode.Impulse);
+        _rb.AddForce(force.normalized * _throwStrength, ForceMode.Impulse);
     }
 
     private void Update()
@@ -37,19 +39,21 @@ public class Proj_Bomb : Projectile
         if (!IsServer) return;
         
         _timer += Time.deltaTime;
-        if(_timer >= _fuseTime)
+        if(_timer >= _fuseTime&& !_isExploding)
         {
-            Explode();
-            NetworkObject.Despawn();
+            ExplodeAndDespawn();
         }
     }
 
-    void Explode()
+    async Awaitable ExplodeAndDespawn()
     {
         if (!IsServer) throw new NetworkAuthorityException();
-        
+        _isExploding = true;
         _rb.isKinematic = true;
-        _explosion.Explode(spawnContext.Value.spawnerClientID);
+
+        await _explosion.Explode(spawnContext.Value.spawnerClientID);
+        
+        NetworkObject.Despawn();
     }
 
     

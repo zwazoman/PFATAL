@@ -1,11 +1,17 @@
 using NetworkTime;
+using System;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class Proj_Falling : Projectile
 {
+    //Events
+
+    public event Action OnContact;
+
     [Header("Global Settings")]
     [field: SerializeField] public float CollisionRadius { get; private set; }
     [SerializeField] protected float speed = 50;
@@ -26,25 +32,11 @@ public class Proj_Falling : Projectile
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-    }
 
-    public override void OnSpawn()
-    {
         _spawnTime = spawnContext.Value.spawnTime;
         _spawnPosition = spawnContext.Value.spawnPos;
 
-        speed *= 1 + spawnContext.Value.floatData;
-        damageAmount *= 1 + spawnContext.Value.floatData * 2;
-
         _initialized = true;
-
-        //_spawnTime = spawnContext.Value.spawnTime;
-        //_spawnPosition = spawnContext.Value.spawnPos;
-
-        //if (NetworkManager.Singleton.IsServer)
-        //{
-
-        //}
     }
 
     protected virtual void UpdatePosition(float timeSinceSpawn)
@@ -82,6 +74,7 @@ public class Proj_Falling : Projectile
             //print("HitCount : "+hitCount);
             for (int i = 0; i < hitCount; i++)
             {
+
                 print(_hitBuffer[i].collider.gameObject.name);
                 if (_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
                 {
@@ -97,11 +90,15 @@ public class Proj_Falling : Projectile
                     data.Amount = damageAmount;
                     data.Radius = 1;
                     data.SourcePlayerClientID = spawnContext.Value.spawnerClientID;
+                    
+                    OnContact?.Invoke();
                     ApplyDamageToHitObject(data, damageable);
 
                     Despawn();
                     return;
                 }
+                OnContact?.Invoke();
+
             }
             //print("ActualHitCount : "+actualHitCount);
             if (actualHitCount > 0) Despawn();

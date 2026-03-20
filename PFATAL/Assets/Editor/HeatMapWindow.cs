@@ -236,7 +236,9 @@ public class HeatMapWindow : EditorWindow
         int size = baseHeatMapUseToGenerate.heatMapCellSize;
 
         //set up textureSize, divide it by box Size
-        Texture3D texture3D = new((int)boundsSize.x /*/ size*/, (int)boundsSize.y /*/ size*/, (int)boundsSize.z /*/ size*/, TextureFormat.RFloat, true);
+        Texture3D texture3D = new((int)boundsSize.x, (int)boundsSize.y, (int)boundsSize.z, TextureFormat.RFloat, false);
+        
+        Texture3D texture3D2 = new((int)boundsSize.x, (int)boundsSize.y, (int)boundsSize.z, TextureFormat.RFloat, false);
 
 
         //convert the targeted heatmap to a heatmap at a size of one, that avoid having texture3D with aberrant storage size
@@ -264,11 +266,11 @@ public class HeatMapWindow : EditorWindow
         //set pixel colors for each position in the heatmap
         foreach (HeatPoint point in heatMapAtCellSizeOfOne.points)
         {
-            Color pixelColor = Color.black;
+            Color pixelColor = new(0, 0, 0, 0);
 
             if (!texture3DHasFilters)
             {
-                pixelColor = Color.Lerp(Color.black, Color.white, (point.visitsGlobal / 1));
+                pixelColor = Color.Lerp(Color.black, Color.white, (float)point.visitsGlobal / 6);
                 textureName = "AllPlayerType";
             }
             else
@@ -295,13 +297,31 @@ public class HeatMapWindow : EditorWindow
                 }
             }
 
+            UnityEngine.Debug.Log($"{Color.Lerp(Color.black, Color.white, (float)point.visitsGlobal / 6)}, {(float)point.visitsGlobal / 6}");
+
             //Adding offset base on half the bounds size, so all position modify a positive value, cause pixels texture3D only have positive value,
             //plus adding an offset to have the center of the map as the center of the texture3D
+
             texture3D.SetPixel(
-                    ((int)point.x + (int)boundsSize.x / 2) - (int)bounds.m_Bounds.center.x,
+                    ((int)point.x + (int)boundsSize.x / 2) - (int)bounds.m_Bounds.center.x -1,
                     ((int)point.y + (int)boundsSize.y / 2) - (int)bounds.m_Bounds.center.y,
-                    ((int)point.z + (int)boundsSize.z / 2) - (int)bounds.m_Bounds.center.z,
+                    ((int)point.z + (int)boundsSize.z / 2) - (int)bounds.m_Bounds.center.z -1,
                     pixelColor);
+
+
+            Vector3 boxMin = bounds.m_Bounds.center - boundsSize / 2f;
+            Vector3 size2 = boundsSize;
+
+            int x = Mathf.FloorToInt((point.x - boxMin.x) / size2.x * texture3D.width);
+            int y = Mathf.FloorToInt((point.y - boxMin.y) / size2.y * texture3D.height);
+            int z = Mathf.FloorToInt((point.z - boxMin.z) / size2.z * texture3D.depth);
+
+            x = Mathf.Clamp(x, 0, texture3D.width - 1);
+            y = Mathf.Clamp(y, 0, texture3D.height - 1);
+            z = Mathf.Clamp(z, 0, texture3D.depth - 1);
+
+            texture3D2.SetPixel(x, y, z, pixelColor);
+
         }
 
         //save json file of the heatmap size one, used to debug
@@ -312,8 +332,13 @@ public class HeatMapWindow : EditorWindow
         {
             UnityEngine.Debug.LogError("The textureName is null, which means the texture 3D has not been updated.");
         }
-        
+
+        texture3D.Apply(false);
+        texture3D2.Apply(false);
         AssetDatabase.CreateAsset(texture3D, "Assets/Texture3D/Texture3D_" + textureName + ".asset");
+        AssetDatabase.CreateAsset(texture3D2, "Assets/Texture3D/Texture3D_" + textureName + "2" + ".asset");
+        texture3D.Apply(false);
+        texture3D2.Apply(false);
 
         //Le destroy fait des trucs bizarre
         //DestroyImmediate(texture3D, true);

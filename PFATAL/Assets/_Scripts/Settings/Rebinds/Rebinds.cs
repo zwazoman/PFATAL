@@ -41,6 +41,7 @@ namespace Settings
             {
                 _menu.SetActive(true);
                 _playerCharacter.SwapActionMapToUI();
+                Cursor.lockState = CursorLockMode.None;
             }
         }
 
@@ -48,6 +49,7 @@ namespace Settings
         {
             _menu.SetActive(false);
             _playerCharacter.SwapActionMapToPlayer();
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         //To change later for the script in wich it will do every changes for the UI.

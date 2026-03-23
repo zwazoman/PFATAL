@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7214205587860227118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 283317362920712791}
+  - component: {fileID: 7139038248539955278}
+  - component: {fileID: 964490752935987347}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &283317362920712791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7214205587860227118}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.38275, y: -1, z: -5.97735}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7139038248539955278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7214205587860227118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 54711705
+  InScenePlacedSourceGlobalObjectIdHash: 1146667581
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &964490752935987347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7214205587860227118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f466da968d2fb248b3796305a0c2e50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FmodAudioManager
+  ShowTopMostFoldoutHeaderGroup: 1
+  eventReferences:
+  - Guid:
+      Data1: -2100139707
+      Data2: 1328017495
+      Data3: -2147062849
+      Data4: 91172516
+    Path: event:/SFX/Player/PlayerFootsteps
+  - Guid:
+      Data1: -245424221
+      Data2: 1195555278
+      Data3: -476041570
+      Data4: 1857607932
+    Path: event:/Music/Music
+  - Guid:
+      Data1: -333072643
+      Data2: 1281393178
+      Data3: 33842816
+      Data4: -2106105845
+    Path: event:/SFX/Items/Crossbow/CrossbowShoot 2D
+  - Guid:
+      Data1: -1390598975
+      Data2: 1104878368
+      Data3: 1467700872
+      Data4: 755852985
+    Path: event:/SFX/Items/Crossbow/CrossbowShoot 3D
+  - Guid:
+      Data1: 2012345640
+      Data2: 1250923619
+      Data3: 1596525697
+      Data4: -1933309065
+    Path: event:/SFX/Items/Crossbow/CrossbowCharge
+  - Guid:
+      Data1: 428849161
+      Data2: 1265651301
+      Data3: -1996428159
+      Data4: 1571315472
+    Path: event:/SFX/Items/Tomahawk/TomahawkSpin

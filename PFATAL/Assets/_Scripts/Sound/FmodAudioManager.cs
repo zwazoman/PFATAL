@@ -1,34 +1,46 @@
-using AYellowpaper.SerializedCollections;
 using FMOD.Studio;
 using FMODUnity;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
 using System.IO;
-using FMOD;
+using System;
 
 public class FmodAudioManager : NetworkBehaviour
 {
-    public FmodAudioManager instance { get; private set; }
+    #region Singleton
+    private static FmodAudioManager instance;
+
+    public static FmodAudioManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                Debug.LogError("no instance of audiomanager");
+            }
+            return instance;
+        }
+    }
+
+    private void Awake()
+    {
+        if (instance == null || instance == this)
+            instance = this;
+        else
+            Destroy(this);
+
+        DontDestroyOnLoad(this);
+        SceneManager.activeSceneChanged += (_, _) => CleanUp();
+    }
+    #endregion
 
     [SerializeField] List<EventReference> eventReferences;
 
     List<EventInstance> eventInstances = new();
 
     string _soundsEnumFilePath = "Assets/_Scripts/Sound/FmodEventsEnum.cs";
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(this);
-
-        if(instance != null)
-            UnityEngine.Debug.LogError("plusieurs audiomanagers dans la scene");
-        instance = this;
-
-        SceneManager.activeSceneChanged += (_,_) => CleanUp();
-    }
 
     public override void OnNetworkSpawn()
     {
@@ -37,28 +49,27 @@ public class FmodAudioManager : NetworkBehaviour
         PlayOneShot(Sounds.Music);
     }
 
-    /// <summary>
-    /// joue un son sur chaque client. a utiliser avec grande parcimonie car le délai peut être assez mauvais
-    /// </summary>
-    /// <param name="soundEventName"></param>
-    /// <param name="pos"></param>
-    [Rpc(SendTo.Everyone)]
-    public void PlayOneShotGlobalRpc(Sounds soundEvent, Vector3 pos)
+    public void PlayOneShot(Sounds sound, Vector3 pos = default)
     {
-        //if (eventReferencesNamesDict.ContainsKey(soundEvent))
-        //    PlayOneShot(soundEvent, pos);
-        //else
-        //    UnityEngine.Debug.LogError("sound name does not exist in event references dictionnary");
+        try
+        {
+            RuntimeManager.PlayOneShot(GetReference(sound), pos);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
     }
 
-    public void PlayOneShot(Sounds soundEvent, Vector3 pos = default)
+    [Rpc(SendTo.NotMe)]
+    public void PlayOneShotForOthersRPC(Sounds sound, Vector3 pos = default)
     {
-        RuntimeManager.PlayOneShot(eventReferences[(int)soundEvent], pos);
+        PlayOneShot(sound, pos);
     }
 
-    public EventInstance CreateInstance(EventReference sound)
+    public EventInstance CreateInstance(Sounds sound)
     {
-        EventInstance instance = RuntimeManager.CreateInstance(sound);
+        EventInstance instance = RuntimeManager.CreateInstance(GetReference(sound));
         eventInstances.Add(instance);
 
         return instance;
@@ -66,11 +77,19 @@ public class FmodAudioManager : NetworkBehaviour
 
     public void CleanUp()
     {
-        foreach(EventInstance instance in eventInstances)
+        foreach (EventInstance instance in eventInstances)
         {
             instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             instance.release();
         }
+    }
+
+    EventReference GetReference(Sounds sound)
+    {
+        if (eventReferences[(int)sound].IsNull)
+            Debug.LogError($"sound {sound.ToString()} does not exist");
+
+        return eventReferences[(int)sound];
     }
 
 #if UNITY_EDITOR
@@ -93,7 +112,7 @@ public class FmodAudioManager : NetworkBehaviour
                 int stringStart = referenceSub.IndexOf("/") + 1;
                 int stringEnd = referenceSub.Length - 1;
 
-                int stringLength = (stringEnd - stringStart) +1;
+                int stringLength = (stringEnd - stringStart) + 1;
 
                 print($"{stringStart} {stringEnd} {stringLength}");
 
@@ -112,7 +131,7 @@ public class FmodAudioManager : NetworkBehaviour
     void GenerateSoundEnum(string enumContent)
     {
         string enumText = "public enum Sounds{" + enumContent + "}";
-        
+
         File.WriteAllText(_soundsEnumFilePath, enumText);
     }
 

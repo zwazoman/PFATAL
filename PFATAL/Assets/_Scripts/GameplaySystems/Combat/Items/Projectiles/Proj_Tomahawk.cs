@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using UnityEngine;
 
 public class Proj_Tomahawk : Proj_Falling
@@ -10,10 +11,14 @@ public class Proj_Tomahawk : Proj_Falling
     [SerializeField] float _spinSpeed = 200;
     [SerializeField] float _knockbackStrength = 20;
 
+    EventInstance _spinInstance;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        _spinInstance = FmodAudioManager.Instance.CreateInstance(Sounds.TomahawkSpin);
+        _spinInstance.start();
 
         OnContact += Explode;
     }
@@ -43,6 +48,9 @@ public class Proj_Tomahawk : Proj_Falling
     void Explode()
     {
         print("explode");
+
+        _spinInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        _spinInstance.release();
 
         _explosion.Explode(spawnContext.Value.spawnerClientID);
     }

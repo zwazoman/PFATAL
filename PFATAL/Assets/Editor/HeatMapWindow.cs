@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -240,6 +241,14 @@ public class HeatMapWindow : EditorWindow
         
         Texture3D texture3D2 = new((int)boundsSize.x, (int)boundsSize.y, (int)boundsSize.z, TextureFormat.RFloat, false);
 
+        Color[] colors = new Color[(int)boundsSize.x * (int)boundsSize.y * (int)boundsSize.z];
+
+        for (int i = 0; i < colors.Length; i++)
+        {
+            colors[i] = Color.black;
+        }
+        texture3D.SetPixels(colors);
+
 
         //convert the targeted heatmap to a heatmap at a size of one, that avoid having texture3D with aberrant storage size
         HeatMapData heatMapAtCellSizeOfOne = new(1);
@@ -320,7 +329,7 @@ public class HeatMapWindow : EditorWindow
             y = Mathf.Clamp(y, 0, texture3D.height - 1);
             z = Mathf.Clamp(z, 0, texture3D.depth - 1);
 
-            texture3D2.SetPixel(x, y, z, pixelColor);
+            texture3D2.SetPixel(x, y, z, Color.red);
 
         }
 

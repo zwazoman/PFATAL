@@ -33,14 +33,14 @@ public class Hand : MonoBehaviour
         if (itemInventory.Count < _inventorySize)
         {
             itemInventory.Add(item);
-            item.OnPickup(_main, this);
+            item.Pickup(_main, this);
             EquipItem(item);
             return true;
         }
         else if (_swapWhenFull)
         {
             itemInventory.Add(item);
-            item.OnPickup(_main, this);
+            item.Pickup(_main, this);
             SwapAndDropEquippedItem(item);
             return true;
         }
@@ -70,7 +70,7 @@ public class Hand : MonoBehaviour
         equippedItem = item;
         _itemVisuals.ShowItemRpc(item.gameObject.name, _isLeft);
 
-        equippedItem.OnEquip();
+        equippedItem.Equip();
     }
 
     /// <summary>
@@ -81,7 +81,7 @@ public class Hand : MonoBehaviour
         if (equippedItem == null)
             return;
 
-        equippedItem.OnDrop();
+        equippedItem.Drop();
         DeleteEquippedItem();
     }
 
@@ -109,7 +109,7 @@ public class Hand : MonoBehaviour
     /// </summary>
     public void UnEquipEquippedItem()
     {
-        equippedItem.OnUnEquip();
+        equippedItem.UnEquip();
         _itemVisuals.HideEquippedItemRpc(_isLeft);
         equippedItem = null;
     }

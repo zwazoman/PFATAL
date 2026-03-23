@@ -43,9 +43,9 @@ public class Cons_TP : Consummable
         marker.transform.position = tpDestination;
     }
 
-    public override void OnUnEquip()
+    public override void UnEquip()
     {
-        base.OnUnEquip();
+        base.UnEquip();
 
         HideMarker();
     }

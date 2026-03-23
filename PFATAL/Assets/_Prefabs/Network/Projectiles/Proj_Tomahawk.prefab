@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 8635965709692271921}
   - component: {fileID: 5432440452121122712}
   - component: {fileID: 8539075883555402368}
+  - component: {fileID: 5124697488060253362}
   m_Layer: 0
   m_Name: Proj_Tomahawk
   m_TagString: Untagged
@@ -80,7 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4162987277
+  GlobalObjectIdHash: 3468575854
   InScenePlacedSourceGlobalObjectIdHash: 2110065422
   DeferredDespawnTick: 0
   Ownership: 1
@@ -118,6 +119,37 @@ MonoBehaviour:
   _explosion: {fileID: 1428870429196694970}
   _spinSpeed: 750
   _knockbackStrength: 10
+--- !u!114 &5124697488060253362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5604889624952730010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 428849161
+      Data2: 1265651301
+      Data3: -1996428159
+      Data4: 1571315472
+    Path: event:/SFX/Items/Tomahawk/TomahawkSpin
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &6419779473358383348
 GameObject:
   m_ObjectHideFlags: 0

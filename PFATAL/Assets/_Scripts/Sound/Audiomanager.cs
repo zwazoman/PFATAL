@@ -1,3 +1,4 @@
+using FMOD;
 using FMOD.Studio;
 using FMODUnity;
 using System;
@@ -6,12 +7,10 @@ using System.IO;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Debug = UnityEngine.Debug;
 
 public class Audiomanager : NetworkBehaviour
 {
-    public event Action<Vector3> OnOneShotSoundPlayed;
-    public event Action<Vector3, EventInstance> OnInstanceSoundPlayed;
-
     #region Singleton
     private static Audiomanager instance;
 
@@ -39,9 +38,12 @@ public class Audiomanager : NetworkBehaviour
     }
     #endregion
 
+    public event Action<EventInstance> OnInstanceSoundPlayed;
+
     [SerializeField] List<EventReference> _eventReferences;
 
     List<EventInstance> _eventInstances = new();
+    List<EventInstance> _3dEventInstances = new();
 
     string _soundsEnumFilePath = "Assets/_Scripts/Sound/FmodEventsEnum.cs";
 
@@ -60,36 +62,52 @@ public class Audiomanager : NetworkBehaviour
 
     public void PlayOneShot(Sounds sound, Vector3 pos = default, GameObject attachedObject = null)
     {
-        OnOneShotSoundPlayed?.Invoke(pos);
+        //try
+        //{
+        //    if (attachedObject != null)
+        //        RuntimeManager.PlayOneShotAttached(GetEventReference(sound), attachedObject);
+        //    else
+        //        RuntimeManager.PlayOneShot(GetEventReference(sound), pos);
+        //}
+        //catch (Exception e)
+        //{
+        //    Debug.LogException(e);
+        //}
+        if(pos == default)
+        {
+            print("play 2D sound");
+            RuntimeManager.PlayOneShot(GetEventReference(sound));
+            return;
+        }
 
-        try
-        {
-            if (attachedObject != null)
-                RuntimeManager.PlayOneShotAttached(GetEventReference(sound), attachedObject);
-            else
-                RuntimeManager.PlayOneShot(GetEventReference(sound), pos);
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-        }
+        print("play 3D sound");
+        EventInstance newInstance = CreateInstance(sound, true);
+
+        ATTRIBUTES_3D attribute = new();
+        attribute.position.x = pos.x;
+        attribute.position.y = pos.y;
+        attribute.position.z = pos.z;
+
+        newInstance.set3DAttributes(attribute);
+
+        if (attachedObject != null)
+            RuntimeManager.AttachInstanceToGameObject(newInstance, attachedObject);
+
+        OnInstanceSoundPlayed?.Invoke(newInstance);
+
+        newInstance.start();
+        newInstance.release();
     }
 
-    public EventInstance CreateInstance(Sounds sound)
+    public EventInstance CreateInstance(Sounds sound, bool is3D = false)
     {
         EventInstance instance = RuntimeManager.CreateInstance(GetEventReference(sound));
         _eventInstances.Add(instance);
 
-        return instance;
-    }
+        if (is3D)
+            _3dEventInstances.Add(instance);
 
-    public void CleanUp()
-    {
-        foreach (EventInstance instance in _eventInstances)
-        {
-            instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            instance.release();
-        }
+        return instance;
     }
 
     EventReference GetEventReference(Sounds sound)
@@ -100,9 +118,13 @@ public class Audiomanager : NetworkBehaviour
         return _eventReferences[(int)sound];
     }
 
-    void ApplyOcclusion()
+    public void CleanUp()
     {
-
+        foreach (EventInstance instance in _eventInstances)
+        {
+            instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            instance.release();
+        }
     }
 
     //RPCS
@@ -128,7 +150,8 @@ public class Audiomanager : NetworkBehaviour
     [ContextMenu("Load Event References")]
     void LoadEventReferences()
     {
-        _eventReferences.Clear();
+        if(_eventReferences.Count != 0)
+            _eventReferences.Clear();
 
         foreach (EditorEventRef reference in EventManager.Events)
         {
@@ -151,8 +174,6 @@ public class Audiomanager : NetworkBehaviour
 
             string referenceSub = referenceName;
 
-            print(referenceSub);
-
             while (referenceSub.Contains("/"))
             {
                 int stringStart = referenceSub.IndexOf("/") + 1;
@@ -160,13 +181,10 @@ public class Audiomanager : NetworkBehaviour
 
                 int stringLength = (stringEnd - stringStart) + 1;
 
-                print($"{stringStart} {stringEnd} {stringLength}");
-
                 referenceSub = referenceSub.Substring(stringStart, stringLength);
             }
 
             referenceSub = referenceSub.Substring(0, referenceSub.Length - 1);
-            print(referenceSub);
 
             enumString += referenceSub + ",";
         }

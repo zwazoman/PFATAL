@@ -14,7 +14,7 @@ public class Item : MonoBehaviour
     public event Action OnDrop;
     public event Action OnPickup;
 
-    [HideInInspector] protected PlayerCharacter playerCharacter;
+    [HideInInspector] public PlayerCharacter playerCharacter;
     [HideInInspector] protected Hand carryingHand;
 
     [SerializeField] GameObject _pickup;

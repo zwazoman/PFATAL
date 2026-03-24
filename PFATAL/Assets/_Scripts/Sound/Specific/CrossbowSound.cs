@@ -2,7 +2,7 @@ using FMOD.Studio;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CrossbowSound : NetworkBehaviour
+public class CrossbowSound : MonoBehaviour
 {
     [SerializeField] Crossbow _crossbow;
 
@@ -35,7 +35,6 @@ public class CrossbowSound : NetworkBehaviour
 
     void Shoot_Callback()
     {
-        FmodAudioManager.Instance.PlayOneShot(Sounds.CrossbowShoot2D);
-        FmodAudioManager.Instance.PlayOneShotForOthersRPC(Sounds.CrossbowShoot3D, transform.position);
+        FmodAudioManager.Instance.PlayOnlineOneShots(Sounds.CrossbowShoot2D, Sounds.CrossbowShoot3D, transform.position, _crossbow.playerCharacter.OwnerClientId);
     }
 }

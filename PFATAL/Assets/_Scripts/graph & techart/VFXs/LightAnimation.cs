@@ -8,7 +8,7 @@ namespace SimpleVFXs
     public class LightAnimation : MonoBehaviour
     {
         [SerializeField] Light _Light;
-
+ 
 
         [Tooltip("Wether the gameObject should Destroy itself after the animation is complete")]
         [SerializeField] bool _AutoDestroy = true;

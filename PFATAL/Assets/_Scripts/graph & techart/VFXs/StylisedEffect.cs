@@ -45,7 +45,7 @@ namespace SimpleVFXs
 #if UNITY_EDITOR
             if (Application.isPlaying)
             {
-                MainEvent.Invoke();
+                MainEvent.Invoke(); 
             }
             else //In edit mode, tries to play every monobehaviour method listening for the event anyways
             {

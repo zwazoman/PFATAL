@@ -11,8 +11,8 @@ public class HeatMapAnalitycs : MonoBehaviour
 {
     public float UpdateInterval = 1f;
     public int gridSize = 1;
-    [Range(1f, 3f)]
-    public int weaponType;
+    [Range(1f, 4f)]
+    public WeaponType weaponType;
     public Transform playerTransform;
     public MapBounds mapBoundsObject;
 
@@ -32,6 +32,8 @@ public class HeatMapAnalitycs : MonoBehaviour
         LoadHeatMap();
 
         GUIUtility.systemCopyBuffer = Application.persistentDataPath;
+
+        
     }
 
     private void Update()
@@ -59,13 +61,17 @@ public class HeatMapAnalitycs : MonoBehaviour
                 point.visitsGlobal++;
                 switch (weaponType)
                 {
-                    case 1:
+                    case WeaponType.Without:
+                        point.playerWithoutWeaponVisits++;
+                        break;
+
+                    case WeaponType.Hammer:
                         point.playerWithHammerVisits++;
                         break;
-                    case 2:
+                    case WeaponType.Crossbow:
                         point.playerWithCrossbowVisits++;
                         break;
-                    case 3:
+                    case WeaponType.Tomahawk:
                         point.playerWithTomahawkVisits++;
                         break;
                 }
@@ -79,14 +85,18 @@ public class HeatMapAnalitycs : MonoBehaviour
 
                 switch (weaponType)
                 {
-                    case 1:
-                        newPoint.playerWithHammerVisits++;
+                    case WeaponType.Without:
+                        point.playerWithoutWeaponVisits++;
                         break;
-                    case 2:
-                        newPoint.playerWithCrossbowVisits++;
+
+                    case WeaponType.Hammer:
+                        point.playerWithHammerVisits++;
                         break;
-                    case 3:
-                        newPoint.playerWithTomahawkVisits++;
+                    case WeaponType.Crossbow:
+                        point.playerWithCrossbowVisits++;
+                        break;
+                    case WeaponType.Tomahawk:
+                        point.playerWithTomahawkVisits++;
                         break;
                 }
                 heatMapData.points.Add(newPoint);
@@ -98,6 +108,7 @@ public class HeatMapAnalitycs : MonoBehaviour
         //UnityEngine.Debug.Log($"Max Visits: {MaxVisits()}");
     }
 
+    //to do, no need that later
     private HeatMapData LoadHeatMap()
     {
         heatMapData = File.Exists(filePath) 
@@ -112,6 +123,8 @@ public class HeatMapAnalitycs : MonoBehaviour
     private void OnApplicationQuit()
     {
         File.WriteAllText(filePath, JsonUtility.ToJson(heatMapData));
+
+        //to do : no save the file but send it to the DB
     }
 
     public void OnDrawGizmos()

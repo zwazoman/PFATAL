@@ -11,11 +11,13 @@ public class ScriptTestTemporaire : MonoBehaviour
 
     public Texture3D texture;
     public Vector3Int pixelPos;
-
+    
+    
     public void OnDrawGizmos()
     {
         if (!File.Exists(path)) return;
         if (!show) return;
+
 
         HeatMapData heatMapData = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(path));
 

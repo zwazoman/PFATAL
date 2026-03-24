@@ -61,6 +61,11 @@ public class HeatPoint
     public int visitsGlobal;
 
     /// <summary>
+    /// Vists of player without weapons
+    /// </summary>
+    public int playerWithoutWeaponVisits;
+
+    /// <summary>
     /// Visits of player with hammer
     /// </summary>
     public int playerWithHammerVisits;
@@ -93,7 +98,7 @@ public class HeatPoint
     /// <param name="hammerVisit">Visits of player with hammer</param>
     /// <param name="crossbowVisit">Visits of player with crossbow</param>
     /// <param name="tomahawkVisits">Visits of player with tomahawk</param>
-    public HeatPoint(float x, float y, float z, int visitsGlobal, int hammerVisit, int crossbowVisit, int tomahawkVisits) => 
-        (this.x, this.y, this.z, this.visitsGlobal, this.playerWithHammerVisits, this.playerWithCrossbowVisits, this.playerWithTomahawkVisits) = 
-        (x, y, z, visitsGlobal, hammerVisit, crossbowVisit, tomahawkVisits);
+    public HeatPoint(float x, float y, float z, int visitsGlobal, int noWeaponsVisits, int hammerVisit, int crossbowVisit, int tomahawkVisits) => 
+        (this.x, this.y, this.z, this.visitsGlobal, this.playerWithoutWeaponVisits, this.playerWithHammerVisits, this.playerWithCrossbowVisits, this.playerWithTomahawkVisits) = 
+        (x, y, z, visitsGlobal, noWeaponsVisits, hammerVisit, crossbowVisit, tomahawkVisits);
 }

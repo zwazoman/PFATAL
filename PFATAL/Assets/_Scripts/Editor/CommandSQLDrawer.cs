@@ -21,7 +21,7 @@ public class CommandSQLDrawer : PropertyDrawer
 
         float y = position.y;
 
-        // Name
+        // Nom
         Rect r0 = new Rect(position.x, y, position.width, 18);
         y += 20;
 
@@ -58,7 +58,7 @@ public class CommandSQLDrawer : PropertyDrawer
 
         if (GUI.Button(r2, "Execute"))
         {
-            SQLQuerryWindow.Instance.RunQuery(command.stringValue);
+            SQLQuerryWindow.Instance.RunQuery(command.stringValue, name.stringValue);
         }
     }
 }

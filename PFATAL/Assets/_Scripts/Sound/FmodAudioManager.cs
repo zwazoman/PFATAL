@@ -1,14 +1,17 @@
 using FMOD.Studio;
 using FMODUnity;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.IO;
-using System;
 
 public class FmodAudioManager : NetworkBehaviour
 {
+    public event Action<Vector3> OnOneShotSoundPlayed;
+    public event Action<Vector3, EventInstance> OnInstanceSoundPlayed;
+
     #region Singleton
     private static FmodAudioManager instance;
 
@@ -36,9 +39,9 @@ public class FmodAudioManager : NetworkBehaviour
     }
     #endregion
 
-    [SerializeField] List<EventReference> eventReferences;
+    [SerializeField] List<EventReference> _eventReferences;
 
-    List<EventInstance> eventInstances = new();
+    List<EventInstance> _eventInstances = new();
 
     string _soundsEnumFilePath = "Assets/_Scripts/Sound/FmodEventsEnum.cs";
 
@@ -49,11 +52,22 @@ public class FmodAudioManager : NetworkBehaviour
         PlayOneShot(Sounds.Music);
     }
 
-    public void PlayOneShot(Sounds sound, Vector3 pos = default)
+    public void PlayOnlineOneShots(Sounds sound2D, Sounds sound3D, Vector3 pos = default, ulong playerClientID = 1000)
     {
+        PlayOneShot(sound2D);
+        PlayOneShotForOthersRPC(sound3D, pos, playerClientID);
+    }
+
+    public void PlayOneShot(Sounds sound, Vector3 pos = default, GameObject attachedObject = null)
+    {
+        OnOneShotSoundPlayed?.Invoke(pos);
+
         try
         {
-            RuntimeManager.PlayOneShot(GetReference(sound), pos);
+            if (attachedObject != null)
+                RuntimeManager.PlayOneShotAttached(GetEventReference(sound), attachedObject);
+            else
+                RuntimeManager.PlayOneShot(GetEventReference(sound), pos);
         }
         catch (Exception e)
         {
@@ -61,45 +75,77 @@ public class FmodAudioManager : NetworkBehaviour
         }
     }
 
-    [Rpc(SendTo.NotMe)]
-    public void PlayOneShotForOthersRPC(Sounds sound, Vector3 pos = default)
-    {
-        PlayOneShot(sound, pos);
-    }
-
     public EventInstance CreateInstance(Sounds sound)
     {
-        EventInstance instance = RuntimeManager.CreateInstance(GetReference(sound));
-        eventInstances.Add(instance);
+        EventInstance instance = RuntimeManager.CreateInstance(GetEventReference(sound));
+        _eventInstances.Add(instance);
 
         return instance;
     }
 
     public void CleanUp()
     {
-        foreach (EventInstance instance in eventInstances)
+        foreach (EventInstance instance in _eventInstances)
         {
             instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             instance.release();
         }
     }
 
-    EventReference GetReference(Sounds sound)
+    EventReference GetEventReference(Sounds sound)
     {
-        if (eventReferences[(int)sound].IsNull)
+        if (_eventReferences[(int)sound].IsNull)
             Debug.LogError($"sound {sound.ToString()} does not exist");
 
-        return eventReferences[(int)sound];
+        return _eventReferences[(int)sound];
     }
 
+    void ApplyOcclusion()
+    {
+
+    }
+
+    //RPCS
+
+    [Rpc(SendTo.Server)]
+    public void PlayOneShotForEveryoneRPC(Sounds sound, Vector3 pos = default)
+    {
+        PlayOneShot(sound, pos);
+    }
+
+    [Rpc(SendTo.NotMe)]
+    public void PlayOneShotForOthersRPC(Sounds sound, Vector3 pos = default, ulong followPlayerId = 1000)
+    {
+        if (followPlayerId != 1000)
+            PlayOneShot(sound, pos, GameManager.Instance.GetPlayerCharacter(followPlayerId).gameObject);
+        else
+            PlayOneShot(sound, pos);
+    }
+
+
 #if UNITY_EDITOR
+
+    [ContextMenu("Load Event References")]
+    void LoadEventReferences()
+    {
+        _eventReferences.Clear();
+
+        foreach (EditorEventRef reference in EventManager.Events)
+        {
+            EventReference newReference = new();
+            newReference.Guid = reference.Guid;
+            newReference.Path = reference.Path;
+
+            _eventReferences.Add(newReference);
+        }
+    }
 
     [ContextMenu("Load Sounds Enum")]
     void LoadDictionary()
     {
         string enumString = "";
 
-        foreach (EventReference reference in eventReferences)
+        foreach (EventReference reference in _eventReferences)
         {
             string referenceName = reference.ToString();
 

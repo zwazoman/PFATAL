@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class OcclusionManager : NetworkBehaviour
 {
-    [SerializeField] FmodAudioManager _audiomanager;
+    [SerializeField] Audiomanager _audiomanager;
     StudioListener _listener;
+    StudioEventEmitter _emitter;
 
     private void Start()
     {

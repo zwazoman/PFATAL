@@ -16,6 +16,6 @@ public class TomahawkSound : MonoBehaviour
 
     void Shoot_Callback()
     {
-        FmodAudioManager.Instance.PlayOnlineOneShots(Sounds.TomahawkShoot2D, Sounds.TomahawkShoot3D, transform.position, _tomahawk.playerCharacter.OwnerClientId);
+        Audiomanager.Instance.PlayOnlineOneShots(Sounds.TomahawkShoot2D, Sounds.TomahawkShoot3D, transform.position, _tomahawk.playerCharacter.OwnerClientId);
     }
 }

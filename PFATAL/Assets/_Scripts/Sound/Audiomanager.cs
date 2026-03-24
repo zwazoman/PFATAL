@@ -7,15 +7,15 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class FmodAudioManager : NetworkBehaviour
+public class Audiomanager : NetworkBehaviour
 {
     public event Action<Vector3> OnOneShotSoundPlayed;
     public event Action<Vector3, EventInstance> OnInstanceSoundPlayed;
 
     #region Singleton
-    private static FmodAudioManager instance;
+    private static Audiomanager instance;
 
-    public static FmodAudioManager Instance
+    public static Audiomanager Instance
     {
         get
         {

@@ -27,7 +27,7 @@ public class Explosion : NetworkBehaviour
         
         CallExplosionEventRPC();
 
-        FmodAudioManager.Instance.PlayOneShotForEveryoneRPC(Sounds.Explosion, transform.position);
+        Audiomanager.Instance.PlayOneShotForEveryoneRPC(Sounds.Explosion, transform.position);
         
         //damage setup
         DamageData damage = new();

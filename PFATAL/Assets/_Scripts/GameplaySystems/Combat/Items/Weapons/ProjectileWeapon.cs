@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class ProjectileWeapon : Item
 {
+    public event Action OnShoot;
+
     [Header("References")]
     [SerializeField] public Transform shootSocket;
 
@@ -35,7 +38,7 @@ public class ProjectileWeapon : Item
     /// prend en param�tre un context, spawn le projectile donn� et le tourne vers le point d'un raycast tir� depuis la cam�ra
     /// </summary>
     /// <param name="spawnContext"> le context du spawn</param>
-    protected async Awaitable<GameObject> Shoot(SpawnContext spawnContext)
+    protected virtual async Awaitable<GameObject> Shoot(SpawnContext spawnContext)
     {
         if (shootSocket == null)
             shootSocket = playerCharacter.playerCamera.transform;
@@ -52,6 +55,8 @@ public class ProjectileWeapon : Item
         }
         else
             rotation = shootSocket.rotation;
+
+        OnShoot?.Invoke();
 
         StartShootDelay();
 

@@ -1,19 +1,25 @@
 using System;
-using _scripts.PlayerCharacter;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Crossbow : ProjectileWeapon
 {
+    public event Action OnCharged;
+    public event Action OnStartCharging;
+
+    public event Action<float> OnCrossbowShoot;
+
     [Header("Crossbow Parameters")]
 
     [SerializeField] float _maxChargeTime = 1.5f;
     [SerializeField] float _chargeZoomThreshold = .3f;
+    [SerializeField] float _chargeStartThreshold = .1f;
     [SerializeField] Vector2 _CameraRecoilStrength;
 
-    bool isCharged = false;
-    float chargeValue;
+    bool _startedCharging = false;
+    bool _isCharged = false;
+    float _chargeValue;
 
     //zoom
     private float _cameraFovOffset = 0;
@@ -32,7 +38,7 @@ public class Crossbow : ProjectileWeapon
 
         //update camera zoom
         const float MAX_FOV_ZOOM = 15;
-        float alpha = Mathf.Max( (chargeValue - _chargeZoomThreshold) / (1f - _chargeZoomThreshold),0);
+        float alpha = Mathf.Max( (_chargeValue - _chargeZoomThreshold) / (1f - _chargeZoomThreshold),0);
         _cameraFovOffset = 
             Mathf.SmoothDamp(_cameraFovOffset, - alpha * MAX_FOV_ZOOM,
                 ref _fovOffsetVelocity, .13f,Mathf.Infinity,Time.deltaTime);
@@ -43,41 +49,53 @@ public class Crossbow : ProjectileWeapon
 
     public override void UseUpdate()
     {
-        if (isCharged) return;
+        if (_isCharged) return;
         
         //charge shot when holding the click
-        chargeValue += Time.deltaTime / _maxChargeTime;
-        if(chargeValue >= 1 )
+        _chargeValue += Time.deltaTime / _maxChargeTime;
+
+        if(_chargeValue >= _chargeStartThreshold && ! _startedCharging)
         {
-            isCharged = true;
-            chargeValue = 1f;
-            print("crossbow fully charged");
+            OnStartCharging?.Invoke();
+            _startedCharging = true;
+        }
+        
+        if(_chargeValue >= 1 )
+        {
+            OnCharged?.Invoke();
+
+            _isCharged = true;
+            _chargeValue = 1f;
         }
     }
     
-    public override void StopUsing()
+    public override async void StopUsing()
     {
         if (!canShoot || !isUsing)
             return;
 
+
         //spawn projectile
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
-        spawnContext.floatData = chargeValue;
+        spawnContext.floatData = _chargeValue;
         Shoot(spawnContext);
-        
+
         //recoil
         playerCharacter.cameraBehaviour.AddRecoil(
-            new Vector2(Random.Range(- _CameraRecoilStrength.x, _CameraRecoilStrength.x), _CameraRecoilStrength.y) * (1f+chargeValue));
+            new Vector2(Random.Range(- _CameraRecoilStrength.x, _CameraRecoilStrength.x), _CameraRecoilStrength.y) * (1f+_chargeValue));
         
         //reset charge
-        chargeValue = 0;
-        isCharged = false;
+        _chargeValue = 0;
+        _isCharged = false;
+        _startedCharging = false;
 
         base.StopUsing();
     }
 
-    void StopCameraZoom()
+    protected override Awaitable<GameObject> Shoot(SpawnContext spawnContext)
     {
+        OnCrossbowShoot?.Invoke(_chargeValue);
 
+        return base.Shoot(spawnContext);
     }
 }

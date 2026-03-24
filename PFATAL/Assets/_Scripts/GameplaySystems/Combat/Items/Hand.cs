@@ -107,7 +107,7 @@ public class Hand : MonoBehaviour
         if(equippedItem == null || itemInventory.Count <= 0)
             return;
 
-        OnItemPickedUp?.Invoke();
+        OnItemSwapped?.Invoke();
 
         Item oldHeldItem = equippedItem;
 

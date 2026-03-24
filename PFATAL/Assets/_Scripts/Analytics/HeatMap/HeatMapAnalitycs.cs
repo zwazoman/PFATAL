@@ -6,12 +6,13 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
+
 public class HeatMapAnalitycs : MonoBehaviour
 {
     public float UpdateInterval = 1f;
     public int gridSize = 1;
-    [Range(1f, 3f)]
-    public int weaponType;
+    [Range(1f, 4f)]
+    public WeaponType weaponType;
     public Transform playerTransform;
     public MapBounds mapBoundsObject;
 
@@ -31,6 +32,8 @@ public class HeatMapAnalitycs : MonoBehaviour
         LoadHeatMap();
 
         GUIUtility.systemCopyBuffer = Application.persistentDataPath;
+
+        
     }
 
     private void Update()
@@ -58,13 +61,17 @@ public class HeatMapAnalitycs : MonoBehaviour
                 point.visitsGlobal++;
                 switch (weaponType)
                 {
-                    case 1:
+                    case WeaponType.Without:
+                        point.playerWithoutWeaponVisits++;
+                        break;
+
+                    case WeaponType.Hammer:
                         point.playerWithHammerVisits++;
                         break;
-                    case 2:
+                    case WeaponType.Crossbow:
                         point.playerWithCrossbowVisits++;
                         break;
-                    case 3:
+                    case WeaponType.Tomahawk:
                         point.playerWithTomahawkVisits++;
                         break;
                 }
@@ -78,14 +85,18 @@ public class HeatMapAnalitycs : MonoBehaviour
 
                 switch (weaponType)
                 {
-                    case 1:
-                        newPoint.playerWithHammerVisits++;
+                    case WeaponType.Without:
+                        point.playerWithoutWeaponVisits++;
                         break;
-                    case 2:
-                        newPoint.playerWithCrossbowVisits++;
+
+                    case WeaponType.Hammer:
+                        point.playerWithHammerVisits++;
                         break;
-                    case 3:
-                        newPoint.playerWithTomahawkVisits++;
+                    case WeaponType.Crossbow:
+                        point.playerWithCrossbowVisits++;
+                        break;
+                    case WeaponType.Tomahawk:
+                        point.playerWithTomahawkVisits++;
                         break;
                 }
                 heatMapData.points.Add(newPoint);
@@ -97,6 +108,7 @@ public class HeatMapAnalitycs : MonoBehaviour
         //UnityEngine.Debug.Log($"Max Visits: {MaxVisits()}");
     }
 
+    //to do, no need that later
     private HeatMapData LoadHeatMap()
     {
         heatMapData = File.Exists(filePath) 
@@ -111,6 +123,8 @@ public class HeatMapAnalitycs : MonoBehaviour
     private void OnApplicationQuit()
     {
         File.WriteAllText(filePath, JsonUtility.ToJson(heatMapData));
+
+        //to do : no save the file but send it to the DB
     }
 
     public void OnDrawGizmos()
@@ -136,53 +150,17 @@ public class HeatMapAnalitycs : MonoBehaviour
         return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.visitsGlobal) : 0;
     }
 
-    [Button("DEGAGE LE JSON")]
+    [Button("Delete Current json file")]
     public void DeleteHeatMap()
     {
         File.Delete(Path.Combine(Application.persistentDataPath, "heatmap.json"));
     }
 
-    [Button("Oppen file")]
+    [Button("Oppen folder")]
     public void Copy()
     {
 #if UNITY_EDITOR_WIN
         Process.Start(Application.persistentDataPath);
 #endif
-    }
-
-    [Button("Send HeatMap")]
-    public void SendHeatMapFunc()
-    {
-        string path = Path.Combine(Application.persistentDataPath, "heatmap.json");
-        string jsonData;
-
-        if (!File.Exists(path)) return;
-
-        jsonData = File.ReadAllText(path);
-
-        //GetComponent<SendHeatMap>().SendJsonData(jsonData + "  C'EST L'HEURE, connard.  " + System.DateTime.Now);
-
-        //SendHeatMap.SendJsonData(jsonData + "  C'EST L'HEURE, connard. Inchallah ça marche zebi  " + System.DateTime.Now);
-        
-        UnityEngine.Debug.Log("HeatMap sent!");
-    }
-
-    [Button("Combine HeatMaps")]
-    public void Combine()
-    {
-        listeFile = Directory.GetFiles(Application.persistentDataPath, "heatmap_*.json").ToList();
-
-        foreach (string file in listeFile)
-            listeHeatmapJson.Add(File.ReadAllText(file));
-
-        UnityEngine.Debug.Log("COMBINE");
-
-        List<HeatMapData> heatMaps = HeatMapUtility.ConvertJsonListToHeatMapDataList(listeHeatmapJson);
-
-        if (!HeatMapUtility.IsSameGridSize(heatMaps)) return;
-
-        string finalHeatMap = HeatMapUtility.CombineHeatMap(heatMaps);
-
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, "heatmap_combined.json"), finalHeatMap);
     }
 }

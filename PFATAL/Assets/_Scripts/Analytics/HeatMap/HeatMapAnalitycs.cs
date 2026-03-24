@@ -150,13 +150,13 @@ public class HeatMapAnalitycs : MonoBehaviour
         return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.visitsGlobal) : 0;
     }
 
-    [Button("DEGAGE LE JSON")]
+    [Button("Delete Current json file")]
     public void DeleteHeatMap()
     {
         File.Delete(Path.Combine(Application.persistentDataPath, "heatmap.json"));
     }
 
-    [Button("Oppen file")]
+    [Button("Oppen folder")]
     public void Copy()
     {
 #if UNITY_EDITOR_WIN

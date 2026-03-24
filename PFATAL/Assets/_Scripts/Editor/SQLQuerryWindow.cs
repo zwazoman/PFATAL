@@ -20,6 +20,7 @@ public class SQLQuerryWindow : EditorWindow
     public static void ShowWindow()
     {
         GetWindow<SQLQuerryWindow>("SQL Querry Window");
+        ViewRequestWindow.ShowWindow();
     }
 
     private void OnEnable()
@@ -116,7 +117,11 @@ public class SQLQuerryWindow : EditorWindow
         EditorGUILayout.EndHorizontal();
     }
 
-    public async void RunQuery(string command)
+    /// <summary>
+    /// Fonction pour exécuter une requête SQL en envoyant une requête HTTP à un serveur.
+    /// </summary>
+    /// <param name="command"></param>
+    public async void RunQuery(string command, string name)
     {
         string encoded = UnityWebRequest.EscapeURL(command);
         string url = baseURL + "/query?cmd=" + encoded;
@@ -130,7 +135,11 @@ public class SQLQuerryWindow : EditorWindow
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            Debug.Log("SQL RESULT : " + request.downloadHandler.text);
+            string json = request.downloadHandler.text;
+
+            Debug.Log("SQL RESULT : " + json);
+
+            ViewRequestWindow.AddData(json, name);
         }
         else
         {

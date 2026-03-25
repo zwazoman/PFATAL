@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 using TMPro;
 using _scripts.PlayerCharacter;
 using UnityEngine.UI;
+using System.Net;
+using Unity.VisualScripting;
 
 namespace Settings
 {
@@ -22,6 +24,7 @@ namespace Settings
         [SerializeField] private GameObject _menu;
         [SerializeField] private Button _returnButton;
         [SerializeField] private GameObject _errorMessage;
+        [SerializeField] private InputHandler _inputHandler;
 
         private void Awake()
         {
@@ -32,6 +35,12 @@ namespace Settings
         //needs to be somewhere else.
         public void OpenClose(InputAction.CallbackContext context)
         {
+            Debug.Log(context.action.activeControl.device.name);
+            _inputHandler.GetControllerType();
+            if (context.action.activeControl.device.name == "Gamepad")
+            {
+                _inputHandler.GetControllerType();
+            }
             //Why does it not work?
             if (context.performed && _menu.activeInHierarchy == true)
             {

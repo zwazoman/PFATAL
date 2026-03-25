@@ -15,7 +15,7 @@ Shader "Example/shdr_RaymarchedCloud"
         _densityMultiplier ("Density Multiplier", Float) = 1.0
         _scatteringCoef ("Scattering Coefficient", Float) = .5
         _absorbtionCoef ("Absorbtion Coefficient", Float) = .5
-        _stepOffset ("Truc à ajouter", Float) = .2
+        _stepOffset ("Truc Ã  ajouter", Float) = .2
         
         
     }
@@ -297,7 +297,7 @@ Shader "Example/shdr_RaymarchedCloud"
                     float3 uvw = get_texture_coordinates_at_world_pos(samplePoint,boxMin,bbInvWorldSize);
                     float density = get_density_at_point(samplePoint,uvw);
                     
-                    if (density>0) // on skip les calculs quand la densité est egale a 0
+                    if (density>0) // on skip les calculs quand la densitÃ© est egale a 0
                     {
                         //compute base transmittance
                         totalDensity += density * _stepSize ;
@@ -324,9 +324,8 @@ Shader "Example/shdr_RaymarchedCloud"
 
                         //outputColor += lightColor * baseTransmittance * _stepSize;
 
-                        float3 viewColor = float3(.4, 0, 0);
                         
-                        outputColor +=  totalDensity * viewColor;
+                        //outputColor +=  totalDensity;
 
                         //outputColor +=  _stepSize;
                     }
@@ -338,7 +337,12 @@ Shader "Example/shdr_RaymarchedCloud"
 
                 float transmittance = exp(-totalDensity*totalRayLength);
                 transmittance -= transmittance%.4-.2;
-                float alpha = 1.0-transmittance;//( totalDensity);
+                 float alpha = 1.0-transmittance;//( totalDensity);
+
+                float3 viewColor = float3(.4, 0, 0);
+                outputColor = viewColor * alpha;
+                
+               
                 
                 //outputColor = aces(outputColor);
                 //return half4(1,1,1,0);

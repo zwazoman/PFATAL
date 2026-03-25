@@ -16,6 +16,7 @@ public class HeatMapWindow : EditorWindow
     string fileNameToSave;
     string fileNameForTexture3D;
     GameObject mapBound;
+    Material rayMarchingMat = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Graph/Surfaces/Materials/Raymarching/Mat_Texture3DVisualiizer.mat");
 
     //heatMap generaton pparameters
     string gameVersion;
@@ -24,11 +25,7 @@ public class HeatMapWindow : EditorWindow
 
     //Texture3D generation parameters
     WeaponType weaponType;
-
-    //test
-    Vector3Int pixel;
-    Vector3Int setPixel;
-    Texture3D supertexture;
+    string attenuation;
 
     [MenuItem("Window/HeatMap")]
     public static void ShowWindow()
@@ -42,6 +39,7 @@ public class HeatMapWindow : EditorWindow
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
 
         mapBound = (GameObject)EditorGUILayout.ObjectField("Map bounds", mapBound, typeof(GameObject), true);
+        rayMarchingMat = (Material)EditorGUILayout.ObjectField("Ray Marching Material", rayMarchingMat, typeof(Material), true);
 
         if (mapBound != null)
         {
@@ -86,12 +84,23 @@ public class HeatMapWindow : EditorWindow
         fileNameForTexture3D = EditorGUILayout.TextField(
             new GUIContent(
                 "File Name For Texture3D",
-                "File name use to generate the texture3D, locate ine the folder HeatMapFolder in the persiistent data path"), fileNameForTexture3D);
+                "File name use to generate the texture3D, locate ine the folder HeatMapFolder in the persiistent data path"), 
+            fileNameForTexture3D);
+
+        attenuation = EditorGUILayout.TextField(
+            new GUIContent(
+                "Visits attenuation",
+                "Value that describe what's the max visits number. Write 'max' for the visits max of the heatmap."
+                ),
+            attenuation);
+
         texture3DHasFilters = EditorGUILayout.BeginToggleGroup("Apply texture3D Filters", texture3DHasFilters);
+
         weaponType = (WeaponType)EditorGUILayout.EnumPopup(
             new GUIContent(
                 "Weapon Type",
                 "Weapon use by players"), weaponType);
+        
         EditorGUILayout.EndToggleGroup();
 
         EditorGUILayout.Space(10);
@@ -201,6 +210,12 @@ public class HeatMapWindow : EditorWindow
     {
         //UnityEngine.Debug.Log(File.Exists(Path.Combine(Application.persistentDataPath + "/HeatMapFolder/" + fileNameForTexture3D)));
 
+        //check if mapbounds is not null
+        if (!mapBound.TryGetComponent(out MapBounds bounds))
+        {
+            UnityEngine.Debug.LogError("mapBounds object has no MapBounds on it");
+            return;
+        }
         //check for existing heatmap files, auto generate one with the actual parameters if no files exist
         if (fileNameForTexture3D == null || fileNameForTexture3D == "")
         {
@@ -218,11 +233,7 @@ public class HeatMapWindow : EditorWindow
         {
             UnityEngine.Debug.LogError("Y a un truc qui s'est chié dessus très très fort");
             return;
-        }
-
-        //check if mapbounds is not null
-        if (!mapBound.TryGetComponent(out MapBounds bounds))
-            UnityEngine.Debug.LogError("mapBounds object has no MapBounds on it");
+        }   
 
         string textureName = null;
         Vector3 boundsSize = bounds.m_Bounds.size;
@@ -265,6 +276,21 @@ public class HeatMapWindow : EditorWindow
                     point.playerWithTomahawkVisits
             );
 
+            /*UnityEngine.Debug.Log($"Point X : {point.x}, Y : {point.y}, Z : {point.z}," +
+                $" Global : {point.visitsGlobal}, " +
+                $"Without : {point.playerWithoutWeaponVisits}, " +
+                $"Hammer : {point.playerWithHammerVisits}, " +
+                $"Crossbow : {point.playerWithCrossbowVisits}, " +
+                $"Tomahawk : {point.playerWithTomahawkVisits}");
+
+            UnityEngine.Debug.Log($"New Point X : {newPoint.x}, Y : {newPoint.y}, Z : {newPoint.z}, " +
+                $"Global : {newPoint.visitsGlobal}, " +
+                $"Without : {newPoint.playerWithoutWeaponVisits}, " +
+                $"Hammer : {newPoint.playerWithHammerVisits}, " +
+                $"Crossbow : {newPoint.playerWithCrossbowVisits}, " +
+                $"Tomahawk : {newPoint.playerWithTomahawkVisits}");*/
+
+
             heatMapAtCellSizeOfOne.points.Add(newPoint);
         }
 
@@ -279,9 +305,18 @@ public class HeatMapWindow : EditorWindow
         {
             Color pixelColor = new(0, 0, 0, 0);
 
+            int attenuationInt = 1;
+
+            attenuation = attenuation.ToLower();
+            if (attenuation == "max")
+                attenuationInt = HeatMapUtility.MaxVisits(heatMapAtCellSizeOfOne, texture3DHasFilters ? weaponType : WeaponType.All);
+            else
+                int.TryParse(attenuation, out attenuationInt);
+
+
             if (!texture3DHasFilters)
             {
-                pixelColor = Color.Lerp(Color.black, Color.white, (float)point.visitsGlobal / 6);
+                pixelColor = Color.Lerp(Color.black, Color.white, (float)point.visitsGlobal / attenuationInt);
                 textureName = "AllPlayerType";
             }
             else
@@ -290,19 +325,23 @@ public class HeatMapWindow : EditorWindow
                 {
                     case WeaponType.All:
                         UnityEngine.Debug.LogWarning("Tu t'es chié dessus frérot mais tkt ça marche quand même");
-                        pixelColor = Color.Lerp(Color.black, Color.white, (point.visitsGlobal / 1));
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.visitsGlobal / attenuationInt);
                         textureName = "AllPlayerType";
                         break;
+                    case WeaponType.Without:
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithoutWeaponVisits / attenuationInt);
+                        textureName = "NoWeapons";
+                        break;
                     case WeaponType.Hammer:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithHammerVisits / 1));
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithHammerVisits / attenuationInt);
                         textureName = "HammerPlayer";
                         break;
                     case WeaponType.Crossbow:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithCrossbowVisits / 1));
-                        textureName = "CrossBowPLayer";
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithCrossbowVisits / attenuationInt);
+                        textureName = "CrossbowPlayer";
                         break;
                     case WeaponType.Tomahawk:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (point.playerWithTomahawkVisits / 1));
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithTomahawkVisits / attenuationInt);
                         textureName = "TomahawkPlayer";
                         break;
                 }
@@ -340,6 +379,8 @@ public class HeatMapWindow : EditorWindow
 
         }
 
+        texture3D.Apply(false);
+
         //save json file of the heatmap size one, used to debug
         File.WriteAllText(Path.Combine(Application.persistentDataPath + "/HeatMapFolder/heatMapAtCellSizeOne.json"), HeatMapUtility.ConvertHeatMapDataToJson(heatMapAtCellSizeOfOne));
 
@@ -347,13 +388,31 @@ public class HeatMapWindow : EditorWindow
         if (textureName == null)
         {
             UnityEngine.Debug.LogError("The textureName is null, which means the texture 3D has not been updated.");
+            return;
         }
 
-        texture3D.Apply(false);
-        AssetDatabase.CreateAsset(texture3D, "Assets/Texture3D/Texture3D_" + textureName + ".asset");
-        texture3D.Apply(false);
 
-        //Le destroy fait des trucs bizarre
-        //DestroyImmediate(texture3D, true);
+
+        string path = "Assets/Texture3D/Texture3D_" + textureName + ".asset";
+
+        Texture3D existing = AssetDatabase.LoadAssetAtPath<Texture3D>(path);
+
+        if (existing == null)
+        {
+            AssetDatabase.CreateAsset(texture3D, path);
+            existing.name = "Texture3D_" + textureName;
+            existing = AssetDatabase.LoadAssetAtPath<Texture3D>(path);
+        }
+        else
+        {
+            EditorUtility.CopySerialized(texture3D, existing);
+            existing.name = "Texture3D_" + textureName;
+            Object.DestroyImmediate(texture3D);
+        }
+
+        rayMarchingMat.SetTexture("_densityField", existing);
+
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 }

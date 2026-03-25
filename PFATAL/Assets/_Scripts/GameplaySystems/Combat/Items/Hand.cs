@@ -38,20 +38,20 @@ public class Hand : MonoBehaviour
 
         if (itemInventory.Count < _inventorySize)
         {
-            OnItemPickedUp?.Invoke(item);
-
             itemInventory.Add(item);
             item.Pickup(_main, this);
             EquipItem(item);
+
+            OnItemPickedUp?.Invoke(item);
             return true;
         }
         else if (_swapWhenFull)
         {
-            OnItemPickedUp?.Invoke(item);
-
             itemInventory.Add(item);
             item.Pickup(_main, this);
             SwapAndDropEquippedItem(item);
+
+            OnItemPickedUp?.Invoke(item);
             return true;
         }
 

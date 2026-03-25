@@ -128,6 +128,9 @@
         },
         {
             "m_Id": "3641ce87fb2c47dc91c5768a95eadaf5"
+        },
+        {
+            "m_Id": "4010e9bf26f047bd86534ddd93e7fb28"
         }
     ],
     "m_GroupDatas": [
@@ -233,6 +236,20 @@
                     "m_Id": "4c301da983ec46e4af599f8a05de7939"
                 },
                 "m_SlotId": 2
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "4010e9bf26f047bd86534ddd93e7fb28"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "c690824d2ee54c7c8f61f62c3789f0be"
+                },
+                "m_SlotId": 3
             }
         },
         {
@@ -1767,6 +1784,42 @@
         "z": 0.0
     },
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.SamplerStateNode",
+    "m_ObjectId": "4010e9bf26f047bd86534ddd93e7fb28",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Sampler State",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1346.54931640625,
+            "y": 162.4507598876953,
+            "width": 145.0,
+            "height": 136.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "cf1b6ae15e0d4e0782e9eac40a258f6c"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_filter": 2,
+    "m_wrap": 0,
+    "m_aniso": 0
 }
 
 {
@@ -3553,7 +3606,7 @@
     "m_Title": "random hue variation",
     "m_Position": {
         "x": -1724.0,
-        "y": 517.9999389648438
+        "y": 518.0
     }
 }
 
@@ -3779,7 +3832,7 @@
         "tex2d"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": false,
+    "m_PreviewExpanded": true,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -3903,6 +3956,19 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.SamplerStateMaterialSlot",
+    "m_ObjectId": "cf1b6ae15e0d4e0782e9eac40a258f6c",
+    "m_Id": 0,
+    "m_DisplayName": "Out",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_BareResource": false
 }
 
 {

@@ -4,7 +4,8 @@ using System.Collections.Generic;
 public enum HeatMapType
 {
     Player = 0,
-    Game = 1
+    Game = 1,
+    multipleGamer = 2,
 }
 
 /// <summary>
@@ -38,8 +39,9 @@ public class HeatMapData
     /// <param name="heatMapGameId">Game id of the game that created the heatmap</param>
     /// <param name="heatMapGameVersion">Game version when the heatmap was created</param>
     /// <param name="heatMapPlayerNumber">Number of players that particpate to make the heatmap</param>
-    public HeatMapData(int cellSize, int heatMapGameId, string heatMapGameVersion, int heatMapPlayerNumber) => 
-        (this.heatMapCellSize, this.heatMapGameId, this.heatMapGameVersion, this.heatMapPlayerNumber) = (cellSize, heatMapGameId, heatMapGameVersion, heatMapPlayerNumber);
+    public HeatMapData(int cellSize, int heatMapGameId, string heatMapGameVersion, int heatMapPlayerNumber, HeatMapType mapType) => 
+        (this.heatMapCellSize, this.heatMapGameId, this.heatMapGameVersion, this.heatMapPlayerNumber, this.heatMapType) = 
+        (cellSize, heatMapGameId, heatMapGameVersion, heatMapPlayerNumber, mapType);
 }
 
 /// <summary>
@@ -57,6 +59,11 @@ public class HeatPoint
     /// point total visit number
     /// </summary>
     public int visitsGlobal;
+
+    /// <summary>
+    /// Vists of player without weapons
+    /// </summary>
+    public int playerWithoutWeaponVisits;
 
     /// <summary>
     /// Visits of player with hammer
@@ -91,7 +98,7 @@ public class HeatPoint
     /// <param name="hammerVisit">Visits of player with hammer</param>
     /// <param name="crossbowVisit">Visits of player with crossbow</param>
     /// <param name="tomahawkVisits">Visits of player with tomahawk</param>
-    public HeatPoint(float x, float y, float z, int visitsGlobal, int hammerVisit, int crossbowVisit, int tomahawkVisits) => 
-        (this.x, this.y, this.z, this.visitsGlobal, this.playerWithHammerVisits, this.playerWithCrossbowVisits, this.playerWithTomahawkVisits) = 
-        (x, y, z, visitsGlobal, hammerVisit, crossbowVisit, tomahawkVisits);
+    public HeatPoint(float x, float y, float z, int visitsGlobal, int noWeaponsVisits, int hammerVisit, int crossbowVisit, int tomahawkVisits) => 
+        (this.x, this.y, this.z, this.visitsGlobal, this.playerWithoutWeaponVisits, this.playerWithHammerVisits, this.playerWithCrossbowVisits, this.playerWithTomahawkVisits) = 
+        (x, y, z, visitsGlobal, noWeaponsVisits, hammerVisit, crossbowVisit, tomahawkVisits);
 }

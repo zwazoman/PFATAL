@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -26,6 +27,7 @@ public class RaymarchRenderer : MonoBehaviour
         UpdateMaterialValues();
     }
 
+    [Button("Update Material Value")]
     void UpdateMaterialValues()
     {
         //_MeshRenderer.sharedMaterial.SetTexture("_densityField", _densityField); // pas propre si plusieurs renderers avec des textures / materials differents dans la scene

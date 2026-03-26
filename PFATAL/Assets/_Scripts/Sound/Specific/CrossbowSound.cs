@@ -23,7 +23,7 @@ public class CrossbowSound : MonoBehaviour
 
     void StartCharging_Callback()
     {
-        _chargedCrossbowCharged = FmodAudioManager.Instance.CreateInstance(Sounds.CrossbowCharge);
+        _chargedCrossbowCharged = AudioManager.Instance.CreateInstance(Sounds.CrossbowCharge);
         _chargedCrossbowCharged.start();
     }
 
@@ -35,6 +35,6 @@ public class CrossbowSound : MonoBehaviour
 
     void Shoot_Callback()
     {
-        FmodAudioManager.Instance.PlayOnlineOneShots(Sounds.CrossbowShoot2D, Sounds.CrossbowShoot3D, transform.position, _crossbow.playerCharacter.OwnerClientId);
+        AudioManager.Instance.PlayOnlineOneShots(Sounds.CrossbowShoot2D, Sounds.CrossbowShoot3D, transform.position, _crossbow.playerCharacter.OwnerClientId);
     }
 }

@@ -15,7 +15,7 @@ public class ReverbManager : MonoBehaviour
 
     private void Start()
     {
-        _audioManager.On3DSoundPlayeD += ApplyReverb;
+        _audioManager.On3DSoundPlayed += ApplyReverb;
     }
 
     void ApplyReverb(EventInstance instance)
@@ -26,11 +26,12 @@ public class ReverbManager : MonoBehaviour
 
         if (colliders[0] != null)
         {
-            print("sound played inside a reverb Zone");
-
             //todo => récupérer le tag pour pouvoir set des reverbs différentes
+
             //gérer la reverb avec une snapshot sur fmod
             //gérer pour les sons 2D aussi (quand le player entre dans une reverb zone -> les sons du bus player se voient appliquer une reverb
+
+            instance.setParameterByName("ReverbAmount", 1);
         }
 
     }

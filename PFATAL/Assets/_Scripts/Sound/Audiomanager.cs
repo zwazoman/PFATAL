@@ -19,7 +19,7 @@ public class AudioManager : NetworkBehaviour
         {
             if (instance == null)
             {
-                Debug.LogError("no instance of audiomanager");
+                Debug.LogError("no audiomanager in the scene");
             }
             return instance;
         }
@@ -37,7 +37,9 @@ public class AudioManager : NetworkBehaviour
     }
     #endregion
 
-    public event Action<EventInstance> On3DSoundPlayeD;
+    public event Action<EventInstance> On3DSoundPlayed;
+
+    public bool playSounds = false;
 
     public List<EventInstance> EventInstances3D = new();
 
@@ -61,22 +63,36 @@ public class AudioManager : NetworkBehaviour
 
     public void PlayOneShot(Sounds sound)
     {
-        RuntimeManager.PlayOneShot(GetEventReference(sound));
+        try
+        {
+            RuntimeManager.PlayOneShot(GetEventReference(sound));
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
     }
 
     public EventInstance PlayOneShot(Sounds sound, Vector3 pos, GameObject attachedObject = null)
     {
         EventInstance newInstance = CreateInstance(sound, true);
 
-        newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(pos));
+        try
+        {
+            newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(pos));
 
-        if (attachedObject != null)
-            RuntimeManager.AttachInstanceToGameObject(newInstance, attachedObject);
+            if (attachedObject != null)
+                RuntimeManager.AttachInstanceToGameObject(newInstance, attachedObject);
 
-        On3DSoundPlayeD?.Invoke(newInstance);
+            On3DSoundPlayed?.Invoke(newInstance);
 
-        newInstance.start();
-        newInstance.release();
+            newInstance.start();
+            newInstance.release();
+        }
+        catch(Exception e)
+        {
+            Debug.LogException(e);
+        }
 
         return newInstance;
     }
@@ -111,7 +127,7 @@ public class AudioManager : NetworkBehaviour
 
     //RPCS
 
-    [Rpc(SendTo.Server)]
+    [Rpc(SendTo.Everyone)]
     public void PlayOneShotForEveryoneRPC(Sounds sound, Vector3 pos = default)
     {
         PlayOneShot(sound, pos);

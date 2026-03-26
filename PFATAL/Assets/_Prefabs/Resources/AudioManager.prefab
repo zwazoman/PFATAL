@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 283317362920712791}
-  - component: {fileID: 7139038248539955278}
+  - component: {fileID: 4850595235145736011}
   - component: {fileID: 7858065211963215684}
   - component: {fileID: 3020583874071806366}
   - component: {fileID: 5618638444868702506}
@@ -35,7 +35,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7139038248539955278
+--- !u!114 &4850595235145736011
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,14 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 54711705
-  InScenePlacedSourceGlobalObjectIdHash: 1146667581
+  GlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
+  SceneMigrationSynchronization: 1
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Audiomanager
   ShowTopMostFoldoutHeaderGroup: 1
+  playSounds: 0
   _eventReferences:
   - Guid:
       Data1: -245424221
@@ -87,35 +88,11 @@ MonoBehaviour:
       Data4: -1933309065
     Path: event:/SFX/Items/Crossbow/CrossbowCharge
   - Guid:
-      Data1: 428849161
-      Data2: 1265651301
-      Data3: -1996428159
-      Data4: 1571315472
-    Path: event:/SFX/Items/Tomahawk/TomahawkSpin
-  - Guid:
       Data1: -1390598975
       Data2: 1104878368
       Data3: 1467700872
       Data4: 755852985
     Path: event:/SFX/Items/Crossbow/CrossbowShoot3D
-  - Guid:
-      Data1: -333072643
-      Data2: 1281393178
-      Data3: 33842816
-      Data4: -2106105845
-    Path: event:/SFX/Items/Crossbow/CrossbowShoot2D
-  - Guid:
-      Data1: 2070050389
-      Data2: 1117604690
-      Data3: 1116950205
-      Data4: 806435617
-    Path: event:/SFX/Items/Generic/Explosion
-  - Guid:
-      Data1: 380890553
-      Data2: 1231195395
-      Data3: -472662131
-      Data4: -1858451438
-    Path: event:/SFX/Items/Tomahawk/TomahawkShoot2D
   - Guid:
       Data1: 91041725
       Data2: 1230242763
@@ -128,6 +105,48 @@ MonoBehaviour:
       Data3: -2147062849
       Data4: 91172516
     Path: event:/SFX/Player/Footsteps
+  - Guid:
+      Data1: 428849161
+      Data2: 1265651301
+      Data3: -1996428159
+      Data4: 1571315472
+    Path: event:/SFX/Items/Tomahawk/TomahawkSpin3D
+  - Guid:
+      Data1: 2070050389
+      Data2: 1117604690
+      Data3: 1116950205
+      Data4: 806435617
+    Path: event:/SFX/Items/Generic/Explosion3D
+  - Guid:
+      Data1: 380890553
+      Data2: 1231195395
+      Data3: -472662131
+      Data4: -1858451438
+    Path: event:/SFX/Items/Tomahawk/TomahawkShoot
+  - Guid:
+      Data1: -333072643
+      Data2: 1281393178
+      Data3: 33842816
+      Data4: -2106105845
+    Path: event:/SFX/Items/Crossbow/CrossbowShoot
+  - Guid:
+      Data1: -1952953294
+      Data2: 1277575503
+      Data3: -414676339
+      Data4: 274329345
+    Path: snapshot:/PlayerReverb
+  - Guid:
+      Data1: 799927165
+      Data2: 1188903995
+      Data3: -716495692
+      Data4: 1872094383
+    Path: snapshot:/Indoor
+  - Guid:
+      Data1: -356097144
+      Data2: 1209397015
+      Data3: 1633673088
+      Data4: 383375739
+    Path: snapshot:/Menu
 --- !u!114 &3020583874071806366
 MonoBehaviour:
   m_ObjectHideFlags: 0

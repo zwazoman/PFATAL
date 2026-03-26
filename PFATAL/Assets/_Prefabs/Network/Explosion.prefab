@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4854459385647544291}
   - component: {fileID: 8915308293344303569}
   - component: {fileID: 8647191673091745231}
+  - component: {fileID: -4984085516141903780}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -46,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2998600136
+  GlobalObjectIdHash: 251606131
   InScenePlacedSourceGlobalObjectIdHash: 251606131
   DeferredDespawnTick: 0
   Ownership: 1
@@ -88,5 +89,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExplosionVisuals
   explosion: {fileID: 8915308293344303569}
-  effect: {fileID: 0}
   _vfxType: 0
+--- !u!114 &-4984085516141903780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472210993572836467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3de4b9c8bbdadc4a89f1b47bcc4f843, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExplosionSound
+  _explosion: {fileID: 8915308293344303569}

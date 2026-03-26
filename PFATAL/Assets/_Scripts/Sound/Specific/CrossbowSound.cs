@@ -2,23 +2,16 @@ using FMOD.Studio;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CrossbowSound : MonoBehaviour
+public class CrossbowSound : SoundComponent<Crossbow>
 {
-    [SerializeField] Crossbow _crossbow;
-
     EventInstance _chargedCrossbowCharged;
 
-    private void Awake()
+    override protected void LinkEvents()
     {
-        TryGetComponent(out _crossbow);
-    }
-
-    private void Start()
-    {
-        _crossbow.OnStartCharging += StartCharging_Callback;
-        _crossbow.OnCharged += Charged_Callback;
-        _crossbow.OnStopUsing += Charged_Callback;
-        _crossbow.OnShoot += Shoot_Callback;
+        main.OnStartCharging += StartCharging_Callback;
+        main.OnCharged += Charged_Callback;
+        main.OnStopUsing += Charged_Callback;
+        main.OnShoot += Shoot_Callback;
     }
 
     void StartCharging_Callback()
@@ -35,6 +28,6 @@ public class CrossbowSound : MonoBehaviour
 
     void Shoot_Callback()
     {
-        AudioManager.Instance.PlayOnlineOneShots(Sounds.CrossbowShoot2D, Sounds.CrossbowShoot3D, transform.position, _crossbow.playerCharacter.OwnerClientId);
+        AudioManager.Instance.PlayOnlineOneShots(Sounds.CrossbowShoot, Sounds.CrossbowShoot3D, transform.position/*, main.playerCharacter.OwnerClientId*/);
     }
 }

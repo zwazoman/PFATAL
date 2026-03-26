@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
 
@@ -45,6 +46,10 @@ public class HeatMapAnalitycs : MonoBehaviour
 
     private void Update()
     {
+        if (!TryGetComponent(out NetworkObject netObject)) return;
+
+        if (netObject.IsOwner) UnityEngine.Debug.Log("JSUIS OWNER");
+
         //Adding point each time the time interval is reach
         if ((timer += Time.deltaTime) >= UpdateInterval)
         {

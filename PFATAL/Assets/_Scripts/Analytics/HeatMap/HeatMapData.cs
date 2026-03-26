@@ -5,7 +5,16 @@ public enum HeatMapType
 {
     Player = 0,
     Game = 1,
-    multipleGamer = 2,
+    multipleGame = 2,
+}
+
+public enum WeaponType
+{
+    All = 0,
+    Without = 1,
+    Hammer = 2,
+    Crossbow = 3,
+    Tomahawk = 4
 }
 
 /// <summary>
@@ -50,6 +59,11 @@ public class HeatMapData
 [Serializable]
 public class HeatPoint
 {
+    /// <summary>
+    /// id of the heatmap where the point came from
+    /// </summary>
+    public int parentHeatMapId;
+
     /// <summary>
     /// point coordinates
     /// </summary>

@@ -35,11 +35,17 @@ public class HeatMapWindow : EditorWindow
 
     private void OnGUI()
     {
-
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
 
         mapBound = (GameObject)EditorGUILayout.ObjectField("Map bounds", mapBound, typeof(GameObject), true);
-        rayMarchingMat = (Material)EditorGUILayout.ObjectField("Ray Marching Material", rayMarchingMat, typeof(Material), true);
+        rayMarchingMat = (Material)EditorGUILayout.ObjectField("Ray Marching Material", rayMarchingMat, typeof(Material), false);
+
+
+        // AJOUTE ÇA JUSTE APRÈS
+        if (rayMarchingMat != null)
+        {
+            EditorGUILayout.LabelField("Shader:", rayMarchingMat.shader.name);
+        }
 
         if (mapBound != null)
         {
@@ -251,6 +257,7 @@ public class HeatMapWindow : EditorWindow
         Texture3D texture3D = new((int)boundsSize.x, (int)boundsSize.y, (int)boundsSize.z, TextureFormat.RFloat, false);
         texture3D.wrapMode = TextureWrapMode.Clamp;
         texture3D.filterMode = FilterMode.Point;
+        texture3D.anisoLevel = 1;
         
         Color[] colors = new Color[(int)boundsSize.x * (int)boundsSize.y * (int)boundsSize.z];
 
@@ -402,11 +409,13 @@ public class HeatMapWindow : EditorWindow
             AssetDatabase.CreateAsset(texture3D, path);
             existing.name = "Texture3D_" + textureName;
             existing = AssetDatabase.LoadAssetAtPath<Texture3D>(path);
+            existing.anisoLevel = 1;
         }
         else
         {
             EditorUtility.CopySerialized(texture3D, existing);
             existing.name = "Texture3D_" + textureName;
+            existing.anisoLevel = 1;
             Object.DestroyImmediate(texture3D);
         }
 

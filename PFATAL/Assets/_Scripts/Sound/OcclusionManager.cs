@@ -33,7 +33,7 @@ public class OcclusionManager : NetworkBehaviour
         if(GameManager.Instance != null)
             GameManager.Instance.EventOnGameStarted += GameStarted_Callback;
 
-        _audiomanager.On3DSoundPlayeD += ApplyOcclusion;
+        _audiomanager.On3DSoundPlayed += ApplyOcclusion;
     }
 
     void GameStarted_Callback()
@@ -88,21 +88,12 @@ public class OcclusionManager : NetworkBehaviour
             foreach (RaycastHit hit in hits)
             {
                 if (hit.collider.CompareTag("ThinWall"))
-                {
                     occlusionValue += _thinWallOcclusionValue;
-                }
                 else if (hit.collider.CompareTag("MediumWall"))
-                {
                     occlusionValue += _mediumWallOcclusionValue;
-                }
                 else if (hit.collider.CompareTag("ThickWall"))
-                {
                     occlusionValue += _ThickWallOcclusionValue;
-                }
-
-                print($"there were {hits.Length} walls between the source and the listener");
             }
-        else
 
         occlusionValue = Mathf.Clamp01(occlusionValue);
 

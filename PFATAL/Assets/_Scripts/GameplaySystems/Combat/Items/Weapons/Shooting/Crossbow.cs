@@ -69,11 +69,10 @@ public class Crossbow : ProjectileWeapon
         }
     }
     
-    public override async void StopUsing()
+    public override void StopUsing()
     {
         if (!canShoot || !isUsing)
             return;
-
 
         //spawn projectile
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);

@@ -3,7 +3,7 @@ using UnityEngine;
 public class Tomahawk : ProjectileWeapon
 {
 
-    public override void StopUsing()
+    public override void StartUsing()
     {
         if (canShoot)
         {
@@ -11,6 +11,6 @@ public class Tomahawk : ProjectileWeapon
             Shoot(context);
         }
 
-        base.StopUsing();
+        base.StartUsing();
     }
 }

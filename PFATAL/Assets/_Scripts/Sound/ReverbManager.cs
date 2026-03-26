@@ -1,0 +1,50 @@
+using FMOD;
+using FMOD.Studio;
+using UnityEngine;
+
+public class ReverbManager : MonoBehaviour
+{
+    [Header("References")]
+    [SerializeField] AudioManager _audioManager;
+
+    [Header("Settings")]
+    [SerializeField] LayerMask _reverbZoneLayerMask;
+
+    [Header("Reverb Detection Stetings")]
+    [SerializeField] float _sphereRadius = .1f;
+
+    private void Start()
+    {
+        _audioManager.On3DSoundPlayeD += ApplyReverb;
+    }
+
+    void ApplyReverb(EventInstance instance)
+    {
+        Collider[] colliders = new Collider[1];
+
+        Physics.OverlapSphereNonAlloc(GetInstancePos(instance), _sphereRadius, colliders, _reverbZoneLayerMask);
+
+        if (colliders[0] != null)
+        {
+            print("sound played inside a reverb Zone");
+
+            //todo => récupérer le tag pour pouvoir set des reverbs différentes
+            //gérer la reverb avec une snapshot sur fmod
+            //gérer pour les sons 2D aussi (quand le player entre dans une reverb zone -> les sons du bus player se voient appliquer une reverb
+        }
+
+    }
+
+    Vector3 GetInstancePos(EventInstance instance)
+    {
+        instance.get3DAttributes(out ATTRIBUTES_3D attributes);
+
+        Vector3 instancePos = new Vector3(
+            attributes.position.x,
+            attributes.position.y,
+            attributes.position.z
+            );
+
+        return instancePos;
+    }
+}

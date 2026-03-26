@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FMODUnity;
 using NetworkTime;
 using Unity.Netcode;
 using UnityEngine;
@@ -21,16 +22,11 @@ namespace _scripts.PlayerCharacter
 
         public HUDManager HUD;
         [field: SerializeField] public Camera playerCamera { get; private set; }
+        [field:SerializeField] public StudioListener listener { get; private set; }
         [field: SerializeField] public PlayerCameraBehaviour cameraBehaviour { get; private set; }
-
-        [field: SerializeField]
-        public PlayerInput playerInput { get; private set; }
-
-        [field: SerializeField]
-        public PlayerInteraction playerInteraction { get; private set; }
-
-        [field: SerializeField]
-        public PlayerHands playerHands { get; private set; }
+        [field: SerializeField] public PlayerInput playerInput { get; private set; }
+        [field: SerializeField] public PlayerInteraction playerInteraction { get; private set; }
+        [field: SerializeField] public PlayerHands playerHands { get; private set; }
 
         public override void OnNetworkSpawn()
         {

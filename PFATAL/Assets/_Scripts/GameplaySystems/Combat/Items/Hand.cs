@@ -1,10 +1,16 @@
 using _scripts.PlayerCharacter;
+using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
+    public event Action<Item> OnItemPickedUp;
+    public event Action OnItemDropped;
+
+    public event Action OnItemSwapped;
+
     [Header("References")]
     [SerializeField] PlayerCharacter _main;
     [SerializeField] ItemVisuals _itemVisuals;
@@ -35,6 +41,8 @@ public class Hand : MonoBehaviour
             itemInventory.Add(item);
             item.Pickup(_main, this);
             EquipItem(item);
+
+            OnItemPickedUp?.Invoke(item);
             return true;
         }
         else if (_swapWhenFull)
@@ -42,6 +50,8 @@ public class Hand : MonoBehaviour
             itemInventory.Add(item);
             item.Pickup(_main, this);
             SwapAndDropEquippedItem(item);
+
+            OnItemPickedUp?.Invoke(item);
             return true;
         }
 
@@ -81,6 +91,8 @@ public class Hand : MonoBehaviour
         if (equippedItem == null)
             return;
 
+        OnItemDropped?.Invoke();
+
         equippedItem.Drop();
         DeleteEquippedItem();
     }
@@ -94,6 +106,8 @@ public class Hand : MonoBehaviour
     {
         if(equippedItem == null || itemInventory.Count <= 0)
             return;
+
+        OnItemSwapped?.Invoke();
 
         Item oldHeldItem = equippedItem;
 

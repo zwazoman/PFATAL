@@ -17,9 +17,6 @@ public class Proj_Tomahawk : Proj_Falling
     {
         base.OnNetworkSpawn();
 
-        _spinInstance = FmodAudioManager.Instance.CreateInstance(Sounds.TomahawkSpin);
-        _spinInstance.start();
-
         OnContact += Explode;
     }
 
@@ -47,11 +44,6 @@ public class Proj_Tomahawk : Proj_Falling
 
     void Explode()
     {
-        print("explode");
-
-        _spinInstance.stop(STOP_MODE.ALLOWFADEOUT);
-        _spinInstance.release();
-
         _explosion.Explode(spawnContext.Value.spawnerClientID);
     }
 }

@@ -75,7 +75,6 @@ public class Proj_Falling : Projectile
             for (int i = 0; i < hitCount; i++)
             {
 
-                print(_hitBuffer[i].collider.gameObject.name);
                 if (_hitBuffer[i].collider.gameObject.TryGetComponent(out DamageableObject damageable))
                 {
                     if (damageable.OwnerClientId == spawnContext.Value.spawnerClientID && damageable.isPlayer)

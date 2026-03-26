@@ -11,18 +11,18 @@ public class DatabaseRequest : MonoBehaviour
 {
     private string baseURL = "http://localhost:5000";
 
-    public Player playerTest;
-    public Game gameTest;
-    public List<GamePlayerSet> gamePlayerSetTest;
-    public List<Score> scoreTest;
-    public List<Death> deathTest;
+    //public Player playerTest;
+    //public Game gameTest;
+    //public List<GamePlayerSet> gamePlayerSetTest;
+    //public List<Score> scoreTest;
+    //public List<Death> deathTest;
 
 
-    [Button]
+    /*[Button]
     public void AddPlayer()
     {
         StartCoroutine(SendPlayer(playerTest));
-    }
+    }*/
 
     /// <summary>
     /// Fonction qui envoie un joueur à la base de données via une requete POST
@@ -51,14 +51,14 @@ public class DatabaseRequest : MonoBehaviour
             Debug.Log("Player sent : " + request.downloadHandler.text);
     }
 
-    [Button]
+    /*[Button]
     public void AddGame()
     {
         StartCoroutine(SendGame(gameTest,(result) =>
         { 
             Debug.Log("ID de la partie ajoutée : " + result);
         }));
-    }
+    }*/
 
     /// <summary>
     /// Fonction qui envoie une partie à la base de données via une requete POST
@@ -95,11 +95,11 @@ public class DatabaseRequest : MonoBehaviour
         }
     }
 
-    [Button]
+    /*[Button]
     public void AddGamePlayerSet()
     {
         StartCoroutine(SendGamePlayerSet(gamePlayerSetTest));
-    }
+    }*/
 
     /// <summary>
     /// Fonction qui envoie une liste de GamePlayerSet à la base de données via une requete POST
@@ -131,11 +131,11 @@ public class DatabaseRequest : MonoBehaviour
             Debug.Log("Player sent : " + request.downloadHandler.text);
     }
 
-    [Button]
+    /*[Button]
     public void AddScore()
     {
         StartCoroutine(SendScore(scoreTest));
-    }
+    }*/
 
     /// <summary>
     /// Fonction qui envoie une liste de Score à la base de données via une requete POST
@@ -167,11 +167,11 @@ public class DatabaseRequest : MonoBehaviour
             Debug.Log("Player sent : " + request.downloadHandler.text);
     }
 
-    [Button]
+    /*[Button]
     public void AddDeath()
     {
         StartCoroutine(SendDeath(deathTest));
-    }
+    }*/
 
     /// <summary>
     /// Fonction qui envoie une liste de Death à la base de données via une requete POST
@@ -203,14 +203,14 @@ public class DatabaseRequest : MonoBehaviour
             Debug.Log("Player sent : " + request.downloadHandler.text);
     }
 
-    [Button]
+    /*[Button]
     public void GetLastGameId()
     {
         StartCoroutine(LastGameIdCoroutine((id) =>
         {
             Debug.Log("ID récupéré : " + id);
         }));
-    }
+    }*/
 
     /// <summary>
     /// Fonction qui récupère le dernier ID de partie enregistré dans la base de données via une requete GET.
@@ -264,7 +264,7 @@ public class DeathBatch
 [Serializable]
 public class Player
 {
-    //public int Id;
+    public int Id;
     public string Name;
 }
 

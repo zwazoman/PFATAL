@@ -6,16 +6,14 @@ using System.IO;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Debug = UnityEngine.Debug;
 
-public class FmodAudioManager : NetworkBehaviour
+public class AudioManager : NetworkBehaviour
 {
-    public event Action<Vector3> OnOneShotSoundPlayed;
-    public event Action<Vector3, EventInstance> OnInstanceSoundPlayed;
-
     #region Singleton
-    private static FmodAudioManager instance;
+    private static AudioManager instance;
 
-    public static FmodAudioManager Instance
+    public static AudioManager Instance
     {
         get
         {
@@ -39,8 +37,11 @@ public class FmodAudioManager : NetworkBehaviour
     }
     #endregion
 
-    [SerializeField] List<EventReference> _eventReferences;
+    public event Action<EventInstance> On3DSoundPlayeD;
 
+    public List<EventInstance> EventInstances3D = new();
+
+    [SerializeField] List<EventReference> _eventReferences;
     List<EventInstance> _eventInstances = new();
 
     string _soundsEnumFilePath = "Assets/_Scripts/Sound/FmodEventsEnum.cs";
@@ -49,7 +50,7 @@ public class FmodAudioManager : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
-        PlayOneShot(Sounds.Music);
+        //PlayOneShot(Sounds.Music);
     }
 
     public void PlayOnlineOneShots(Sounds sound2D, Sounds sound3D, Vector3 pos = default, ulong playerClientID = 1000)
@@ -58,29 +59,45 @@ public class FmodAudioManager : NetworkBehaviour
         PlayOneShotForOthersRPC(sound3D, pos, playerClientID);
     }
 
-    public void PlayOneShot(Sounds sound, Vector3 pos = default, GameObject attachedObject = null)
+    public void PlayOneShot(Sounds sound)
     {
-        OnOneShotSoundPlayed?.Invoke(pos);
-
-        try
-        {
-            if (attachedObject != null)
-                RuntimeManager.PlayOneShotAttached(GetEventReference(sound), attachedObject);
-            else
-                RuntimeManager.PlayOneShot(GetEventReference(sound), pos);
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-        }
+        RuntimeManager.PlayOneShot(GetEventReference(sound));
     }
 
-    public EventInstance CreateInstance(Sounds sound)
+    public EventInstance PlayOneShot(Sounds sound, Vector3 pos, GameObject attachedObject = null)
+    {
+        EventInstance newInstance = CreateInstance(sound, true);
+
+        newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(pos));
+
+        if (attachedObject != null)
+            RuntimeManager.AttachInstanceToGameObject(newInstance, attachedObject);
+
+        On3DSoundPlayeD?.Invoke(newInstance);
+
+        newInstance.start();
+        newInstance.release();
+
+        return newInstance;
+    }
+
+    public EventInstance CreateInstance(Sounds sound, bool is3D = false)
     {
         EventInstance instance = RuntimeManager.CreateInstance(GetEventReference(sound));
         _eventInstances.Add(instance);
 
+        if (is3D)
+            EventInstances3D.Add(instance);
+
         return instance;
+    }
+
+    EventReference GetEventReference(Sounds sound)
+    {
+        if (_eventReferences[(int)sound].IsNull)
+            Debug.LogError($"sound {sound.ToString()} does not exist");
+
+        return _eventReferences[(int)sound];
     }
 
     public void CleanUp()
@@ -92,19 +109,6 @@ public class FmodAudioManager : NetworkBehaviour
         }
     }
 
-    EventReference GetEventReference(Sounds sound)
-    {
-        if (_eventReferences[(int)sound].IsNull)
-            Debug.LogError($"sound {sound.ToString()} does not exist");
-
-        return _eventReferences[(int)sound];
-    }
-
-    void ApplyOcclusion()
-    {
-
-    }
-
     //RPCS
 
     [Rpc(SendTo.Server)]
@@ -114,7 +118,7 @@ public class FmodAudioManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.NotMe)]
-    public void PlayOneShotForOthersRPC(Sounds sound, Vector3 pos = default, ulong followPlayerId = 1000)
+    void PlayOneShotForOthersRPC(Sounds sound, Vector3 pos = default, ulong followPlayerId = 1000)
     {
         if (followPlayerId != 1000)
             PlayOneShot(sound, pos, GameManager.Instance.GetPlayerCharacter(followPlayerId).gameObject);
@@ -128,7 +132,8 @@ public class FmodAudioManager : NetworkBehaviour
     [ContextMenu("Load Event References")]
     void LoadEventReferences()
     {
-        _eventReferences.Clear();
+        if (_eventReferences.Count != 0)
+            _eventReferences.Clear();
 
         foreach (EditorEventRef reference in EventManager.Events)
         {
@@ -151,8 +156,6 @@ public class FmodAudioManager : NetworkBehaviour
 
             string referenceSub = referenceName;
 
-            print(referenceSub);
-
             while (referenceSub.Contains("/"))
             {
                 int stringStart = referenceSub.IndexOf("/") + 1;
@@ -160,18 +163,22 @@ public class FmodAudioManager : NetworkBehaviour
 
                 int stringLength = (stringEnd - stringStart) + 1;
 
-                print($"{stringStart} {stringEnd} {stringLength}");
-
                 referenceSub = referenceSub.Substring(stringStart, stringLength);
             }
 
             referenceSub = referenceSub.Substring(0, referenceSub.Length - 1);
-            print(referenceSub);
 
             enumString += referenceSub + ",";
         }
 
         GenerateSoundEnum(enumString);
+    }
+
+    [ContextMenu("Both")]
+    void Both()
+    {
+        LoadEventReferences();
+        LoadDictionary();
     }
 
     void GenerateSoundEnum(string enumContent)

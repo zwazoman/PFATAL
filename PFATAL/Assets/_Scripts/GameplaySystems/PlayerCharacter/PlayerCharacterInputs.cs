@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// cette classe contient les inputs du joueur et est utilisée dans les states du personnage.
 /// </summary>
-//todo : new input system
 public class PlayerCharacterInputs : NetworkBehaviour
 {
     [HideInInspector] public Vector2 movementInput = Vector2.zero;
@@ -21,7 +20,10 @@ public class PlayerCharacterInputs : NetworkBehaviour
     private Vector2 aimVel;
 
     private bool _paused = false;
-    
+
+    private Gamepad _gamepad;
+    private bool _usingGamePad = false;
+
     public bool TryConsumeJumpKeyPress()
     {
         bool wasBuffered = _jumpKeyBuffered;
@@ -35,12 +37,31 @@ public class PlayerCharacterInputs : NetworkBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
+        _gamepad = Gamepad.current;
         movementInput = context.ReadValue<Vector2>();
     }
 
     public void Look(InputAction.CallbackContext context)
     {
-        aimInput = context.ReadValue<Vector2>();
+        _gamepad = Gamepad.current;
+        if (_gamepad != null)
+        {
+            if (context.action.activeControl.device.name == _gamepad.name)
+            {
+                aimInput = context.ReadValue<Vector2>() * 6.5f;
+                _usingGamePad = true;
+            }
+            else
+            {
+                _usingGamePad = false;
+                aimInput = context.ReadValue<Vector2>();
+            }
+        }
+        else
+        {
+            _usingGamePad = false;
+            aimInput = context.ReadValue<Vector2>();
+        }
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -81,11 +102,29 @@ public class PlayerCharacterInputs : NetworkBehaviour
         }
 
         //aim, needs fixing with diagonals
-        aimInput = Vector2.SmoothDamp(
-            new Vector2(aimInput.x,-aimInput.y),
-            new Vector2(Input.mousePositionDelta.x/(float)Screen.height,Input.mousePositionDelta.y/(float)Screen.height),
+        if (_usingGamePad == false)
+        {
+            aimInput = Vector2.SmoothDamp(
+            new Vector2(aimInput.x, -aimInput.y),
+            new Vector2(Input.mousePositionDelta.x / (float)Screen.height, Input.mousePositionDelta.y / (float)Screen.height),
             ref aimVel,
             _aimSmoothingTime);
+        }
+        else
+        {
+            aimInput = Vector2.SmoothDamp(
+            new Vector2(aimInput.x, aimInput.y),
+            new Vector2(Input.mousePositionDelta.x / (float)Screen.height, Input.mousePositionDelta.y / (float)Screen.height),
+            ref aimVel,
+            _aimSmoothingTime);
+        }
+        
+        /*
+        aimInput = Vector2.SmoothDamp(
+            new Vector2(aimInput.x, -aimInput.y),
+            new Vector2(aimInput.x, -aimInput.y),
+            ref aimVel,
+            _aimSmoothingTime);*/
     }
 
     public void Clear()

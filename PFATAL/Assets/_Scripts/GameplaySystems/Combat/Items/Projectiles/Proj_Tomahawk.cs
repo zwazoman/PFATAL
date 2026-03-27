@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using UnityEngine;
 
 public class Proj_Tomahawk : Proj_Falling
@@ -10,6 +11,7 @@ public class Proj_Tomahawk : Proj_Falling
     [SerializeField] float _spinSpeed = 200;
     [SerializeField] float _knockbackStrength = 20;
 
+    EventInstance _spinInstance;
 
     public override void OnNetworkSpawn()
     {
@@ -42,8 +44,6 @@ public class Proj_Tomahawk : Proj_Falling
 
     void Explode()
     {
-        print("explode");
-
         _explosion.Explode(spawnContext.Value.spawnerClientID);
     }
 }

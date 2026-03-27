@@ -1,13 +1,19 @@
 using _scripts.PlayerCharacter;
+using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
+    public event Action<Item> OnItemPickedUp;
+    public event Action OnItemDropped;
+
+    public event Action OnItemSwapped;
+
     [Header("References")]
     [SerializeField] PlayerCharacter _main;
-    [SerializeField] ItemVisuals _itemVisuals;
+    [SerializeField] ItemHolder _itemVisuals;
     [SerializeField] public Transform visualsTransform;
 
     [Header("Parameters")]
@@ -33,15 +39,19 @@ public class Hand : MonoBehaviour
         if (itemInventory.Count < _inventorySize)
         {
             itemInventory.Add(item);
-            item.OnPickup(_main, this);
+            item.Pickup(_main, this);
             EquipItem(item);
+
+            OnItemPickedUp?.Invoke(item);
             return true;
         }
         else if (_swapWhenFull)
         {
             itemInventory.Add(item);
-            item.OnPickup(_main, this);
+            item.Pickup(_main, this);
             SwapAndDropEquippedItem(item);
+
+            OnItemPickedUp?.Invoke(item);
             return true;
         }
 
@@ -70,7 +80,7 @@ public class Hand : MonoBehaviour
         equippedItem = item;
         _itemVisuals.ShowItemRpc(item.gameObject.name, _isLeft);
 
-        equippedItem.OnEquip();
+        equippedItem.Equip();
     }
 
     /// <summary>
@@ -81,7 +91,9 @@ public class Hand : MonoBehaviour
         if (equippedItem == null)
             return;
 
-        equippedItem.OnDrop();
+        OnItemDropped?.Invoke();
+
+        equippedItem.Drop();
         DeleteEquippedItem();
     }
 
@@ -94,6 +106,8 @@ public class Hand : MonoBehaviour
     {
         if(equippedItem == null || itemInventory.Count <= 0)
             return;
+
+        OnItemSwapped?.Invoke();
 
         Item oldHeldItem = equippedItem;
 
@@ -109,7 +123,7 @@ public class Hand : MonoBehaviour
     /// </summary>
     public void UnEquipEquippedItem()
     {
-        equippedItem.OnUnEquip();
+        equippedItem.UnEquip();
         _itemVisuals.HideEquippedItemRpc(_isLeft);
         equippedItem = null;
     }

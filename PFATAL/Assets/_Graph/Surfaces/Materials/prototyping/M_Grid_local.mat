@@ -24,7 +24,8 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: de18b4291736d7c4b9b2c0b3fb903da6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _HASSMOOTHNESS
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -113,6 +114,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _COLORBLENDUVSONLY: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -125,6 +127,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _HASSMOOTHNESS: 1
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -146,7 +149,7 @@ Material:
     - _BaseColor: {r: 0.14150941, g: 0.13016196, b: 0.13016196, a: 1}
     - _Color: {r: 0.4392157, g: 0.4745098, b: 0.50980395, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SmoothnessMinMax: {r: 0.4, g: 0.6, b: 0, a: 0}
+    - _SmoothnessMinMax: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

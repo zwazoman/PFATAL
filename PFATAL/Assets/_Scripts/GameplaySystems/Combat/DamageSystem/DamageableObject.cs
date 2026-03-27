@@ -82,7 +82,6 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         if (HP == 0)
         {
             OnDie?.Invoke();
-            print("die");
         }
     }
 

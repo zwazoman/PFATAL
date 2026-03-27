@@ -1,9 +1,20 @@
 using _scripts.PlayerCharacter;
+using System;
 using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    [HideInInspector] protected PlayerCharacter playerCharacter;
+    public event Action OnStartUsing;
+    public event Action OnUseUpdate;
+    public event Action OnStopUsing;
+
+    public event Action OnEquip;
+    public event Action OnUnEquip;
+
+    public event Action OnDrop;
+    public event Action OnPickup;
+
+    [HideInInspector] public PlayerCharacter playerCharacter;
     [HideInInspector] protected Hand carryingHand;
 
     [SerializeField] GameObject _pickup;
@@ -16,6 +27,8 @@ public class Item : MonoBehaviour
     /// </summary>
     public virtual void StartUsing()
     {
+        OnStartUsing?.Invoke();
+
         isUsing = true;
         Use();
     }
@@ -25,6 +38,8 @@ public class Item : MonoBehaviour
     /// </summary>
     public virtual void UseUpdate()
     {
+        OnUseUpdate?.Invoke();
+
         holdDuration += Time.deltaTime;
     }
 
@@ -33,6 +48,8 @@ public class Item : MonoBehaviour
     /// </summary>
     public virtual void StopUsing()
     {
+        OnStopUsing?.Invoke();
+
         isUsing = false;
         holdDuration = 0;
     }
@@ -40,9 +57,9 @@ public class Item : MonoBehaviour
     /// <summary>
     /// spawn le pickup li� a l'item pour le jeter par terre
     /// </summary>
-    public void OnDrop()
+    public void Drop()
     {
-        Debug.Log(name + "Dropped !");
+        OnDrop?.Invoke();
 
         if(_pickup == null)
         {
@@ -56,17 +73,17 @@ public class Item : MonoBehaviour
         Summoner.Instance.SpawnObject(_pickup, spawnPos, spawnRot, false);
     }
 
-    public virtual void OnPickup(PlayerCharacter main, Hand hand)
+    public virtual void Pickup(PlayerCharacter main, Hand hand)
     {
-        Debug.Log(name + "Picked up !");
+        OnPickup?.Invoke();
 
         playerCharacter = main;
         carryingHand = hand;
     }
 
-    public virtual void OnEquip() { }
+    public virtual void Equip() { OnEquip?.Invoke(); }
 
-    public virtual void OnUnEquip() { }
+    public virtual void UnEquip() { OnUnEquip?.Invoke(); }
 
     async void Use()
     {

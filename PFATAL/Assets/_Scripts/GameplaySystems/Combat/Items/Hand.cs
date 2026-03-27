@@ -13,7 +13,7 @@ public class Hand : MonoBehaviour
 
     [Header("References")]
     [SerializeField] PlayerCharacter _main;
-    [SerializeField] ItemVisuals _itemVisuals;
+    [SerializeField] ItemHolder _itemVisuals;
     [SerializeField] public Transform visualsTransform;
 
     [Header("Parameters")]

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using _scripts.PlayerCharacter;
 
-public class ItemVisuals : NetworkBehaviour
+public class ItemHolder : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] PlayerCharacter _playerCharacter;

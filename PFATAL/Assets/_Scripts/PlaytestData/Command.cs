@@ -11,6 +11,7 @@ public class Command : ScriptableObject
 [Serializable]
 public class CommandSQL
 {
+    public bool isOpen;
     public string Name;
 
     [TextArea(2, 10)]

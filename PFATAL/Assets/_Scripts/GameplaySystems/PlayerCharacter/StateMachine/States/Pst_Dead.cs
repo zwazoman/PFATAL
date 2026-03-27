@@ -12,7 +12,6 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         protected override void OnEntered(PlayerCharacter ctx)
         {
             base.OnEntered(ctx);
-            Debug.Log("entered on death");
             _respawn = false;
 
             ctx.SwapActionMapToUI();
@@ -21,8 +20,10 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             ctx.inputs.Clear();
             ctx.HUD.ShowDeathUI();
 
+            ctx.playerHands.leftHand.DropEquippedtem();
+            ctx.playerHands.leftHand.ClearInventory();
+
             ctx.HUD.respawnButton.onClick.AddListener(Respawn);
-            Debug.Log("linked button event");
         }
 
         protected override void OnExited(PlayerCharacter ctx)

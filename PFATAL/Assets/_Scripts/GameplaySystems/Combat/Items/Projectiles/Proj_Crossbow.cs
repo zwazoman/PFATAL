@@ -20,7 +20,7 @@ public class Proj_Crossbow : Proj_Falling
         damageAmount *= 1 + spawnContext.Value.floatData * _chargeDamageMultiplyer;
     }
 
-    protected override void Despawn()
+    public override void Despawn()
     {
         speed = _initialSpeed;
         damageAmount = _initialDamage;

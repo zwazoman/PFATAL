@@ -58,7 +58,6 @@ public class PlayerHands : MonoBehaviour
         {
             leftHand.DropEquippedtem();
         }
-
     }
 
     public void SwitchEquip(InputAction.CallbackContext ctx)

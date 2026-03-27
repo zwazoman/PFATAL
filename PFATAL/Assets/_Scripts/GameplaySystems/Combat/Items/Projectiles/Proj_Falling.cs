@@ -109,7 +109,7 @@ public class Proj_Falling : Projectile
         damageable.TakeDamage(damageData);
     }
 
-    protected override void Despawn()
+    public override void Despawn()
     {
         _initialized = false;
         base.Despawn();

@@ -164,4 +164,13 @@ public class Hand : MonoBehaviour
         DeleteEquippedItem();
         EquipItem(item);
     }
+
+    public void ClearInventory()
+    {
+        List<Item> tmpItems = new();
+        tmpItems.AddRange(itemInventory);
+
+        foreach (Item item in tmpItems)
+            DeleteItem(item);
+    }
 }

@@ -18,22 +18,6 @@ public class MeleeWeapon : Item
 
     List<DamageableObject> _hitDamageables = new();
 
-    protected virtual async void Hit()
-    {
-        //todo vraie animation
-
-        canHit = false;
-
-        await Awaitable.WaitForSecondsAsync(.3f);
-        isHitting = true;
-        await Awaitable.WaitForSecondsAsync(2f);
-        isHitting = false;
-
-        _hitDamageables.Clear();
-
-        canHit = true;
-    }
-
     protected virtual void Update()
     {
         if (isHitting)
@@ -47,13 +31,13 @@ public class MeleeWeapon : Item
                     if ((damageable.OwnerClientId == playerCharacter.OwnerClientId && damageable.isPlayer) || _hitDamageables.Contains(damageable) )
                         continue;
 
-                    print(damageable.gameObject.name);
-
                     _hitDamageables.Add(damageable);
                     ApplyHitRpc(damageable);
                 }
             }
         }
+        else if(_hitDamageables.Count > 0) 
+            _hitDamageables.Clear();
     }
 
     protected virtual void ApplyHitRpc(DamageableObject damageable) { }

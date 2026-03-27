@@ -4,6 +4,7 @@ using UnityEngine;
 public class ProjectileWeapon : Item
 {
     public event Action OnShoot;
+    public event Action OnShootDelayEnd;
 
     [Header("References")]
     [SerializeField] public Transform shootSocket;
@@ -20,7 +21,7 @@ public class ProjectileWeapon : Item
     /// <summary>
     /// g�re le delay entre 2 tirs
     /// </summary>
-    async void StartShootDelay()
+    protected async void StartShootDelay()
     {
         canShoot = false;
 
@@ -31,6 +32,8 @@ public class ProjectileWeapon : Item
         }
         _timer = 0;
 
+        OnShootDelayEnd?.Invoke();
+
         canShoot = true;
     }
 
@@ -38,28 +41,27 @@ public class ProjectileWeapon : Item
     /// prend en param�tre un context, spawn le projectile donn� et le tourne vers le point d'un raycast tir� depuis la cam�ra
     /// </summary>
     /// <param name="spawnContext"> le context du spawn</param>
-    protected virtual async Awaitable<GameObject> Shoot(SpawnContext spawnContext)
+    protected virtual async Awaitable<GameObject> Shoot(SpawnContext spawnContext, Quaternion rotation)
     {
-        if (shootSocket == null)
-            shootSocket = playerCharacter.playerCamera.transform;
+        OnShoot?.Invoke();
+        StartShootDelay();
 
+        return await Summoner.Instance.SpawnObject(projectile, shootSocket.position, rotation,true, spawnContext);
+    }
+
+    protected Quaternion ComputeProjectileRotation()
+    {
         Quaternion rotation;
 
         RaycastHit hit;
         if (Physics.Raycast(playerCharacter.playerCamera.transform.position, playerCharacter.playerCamera.transform.forward, out hit, Mathf.Infinity, shootRayLayerMask))
         {
-            Debug.DrawLine(playerCharacter.playerCamera.transform.position, playerCharacter.playerCamera.transform.position + playerCharacter.playerCamera.transform.forward * 100, Color.blue, 10);
-            Debug.DrawLine(shootSocket.position, hit.point, Color.red, 10);
             Vector3 direction = shootSocket.position - hit.point;
             rotation = Quaternion.LookRotation(-direction, transform.up);
         }
         else
             rotation = shootSocket.rotation;
 
-        OnShoot?.Invoke();
-
-        StartShootDelay();
-
-        return await Summoner.Instance.SpawnObject(projectile, shootSocket.position, rotation,true, spawnContext);
+        return rotation;
     }
 }

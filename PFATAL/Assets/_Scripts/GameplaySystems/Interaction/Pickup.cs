@@ -1,3 +1,4 @@
+using _scripts.PlayerCharacter;
 using DG.Tweening;
 using System;
 using Unity.Netcode;
@@ -16,9 +17,10 @@ public class Pickup : Interactable
     [SerializeField] float _pickupTweenScale  = 1.2f;
     [SerializeField] float _pickupTweenDuration = .5f;
 
-    public override void OnNetworkSpawn()
+    private void OnCollisionEnter(Collision collision)
     {
-        base.OnNetworkSpawn();
+        if(collision.gameObject.TryGetComponent(out PlayerCharacter _playerCharacter))
+            Interact(_playerCharacter.playerInteraction);
     }
 
     public override async void Interact(PlayerInteraction interaction)

@@ -45,11 +45,6 @@ namespace Settings
                     _inputHandler.GetControllerType();
                 }
             }
-            /*
-            if (context.action.activeControl.device.name == "Gamepad")
-            {
-                _inputHandler.GetControllerType();
-            }*/
             //Why does it not work?
             if (context.performed && _menu.activeInHierarchy == true)
             {

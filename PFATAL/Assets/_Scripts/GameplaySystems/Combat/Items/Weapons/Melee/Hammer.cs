@@ -23,6 +23,13 @@ public class Hammer : MeleeWeapon
     {
         base.Equip();
 
+        _animator.SetTrigger("Idle");
+
+        _charged = false;
+        _dashed = false;
+        _isAttacking = false;
+        isHitting = false;
+
         _eventReceiver.OnHitStart += StartHitting;
         _eventReceiver.OnHitEnd += StopHitting;
     }
@@ -30,11 +37,6 @@ public class Hammer : MeleeWeapon
     public override void UnEquip()
     {
         base.UnEquip();
-
-        _animator.SetTrigger("Idle");
-
-        _charged = true;
-        _dashed = false;
 
         _eventReceiver.OnHitStart -= StartHitting;
         _eventReceiver.OnHitEnd -= StopHitting;

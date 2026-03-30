@@ -1,4 +1,5 @@
 using _Scripts.StateMachine;
+using System.Collections.Generic;
 using System;
 using UnityEngine;
 
@@ -20,8 +21,9 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             ctx.inputs.Clear();
             ctx.HUD.ShowDeathUI();
 
+            //nettoie les mains et drop le consommable actuel
             ctx.playerHands.leftHand.DropEquippedtem();
-            ctx.playerHands.leftHand.ClearInventory();
+            ctx.playerHands.ClearHands();
 
             ctx.HUD.respawnButton.onClick.AddListener(Respawn);
         }
@@ -38,6 +40,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 ctx.ShowPlayerRpc();
                 ctx.HUD.HideDeathUI();
                 ctx.health.Heal();
+                ctx.playerHands.TryEquipRandomWeapon();
                 PlayerCharacterSpawner.Instance.ReSpawnPlayer(ctx);
             }
 

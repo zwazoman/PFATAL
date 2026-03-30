@@ -1614,11 +1614,12 @@ MonoBehaviour:
   health: {fileID: 1655656451230195503}
   HUD: {fileID: 4526840582921747440}
   <playerCamera>k__BackingField: {fileID: 622695028666583639}
-  <listener>k__BackingField: {fileID: 0}
+  <listener>k__BackingField: {fileID: 2999517275710409169}
   <cameraBehaviour>k__BackingField: {fileID: 8218923899461791015}
   <playerInput>k__BackingField: {fileID: 3052311963987476349}
   <playerInteraction>k__BackingField: {fileID: 8381638155586477791}
   <playerHands>k__BackingField: {fileID: 3154864167769977567}
+  <itemHolder>k__BackingField: {fileID: 6020512486325100065}
   _visualObjects:
   - {fileID: 6449991026818304305}
 --- !u!114 &1845953556628065240
@@ -1812,6 +1813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c90146d20b726846903305229e30c37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHands
+  _playerCharacter: {fileID: 6498883890364450799}
   leftHand: {fileID: 7425674613640483050}
   rightHand: {fileID: 4688369128609190103}
   hands:
@@ -1833,12 +1835,13 @@ MonoBehaviour:
   _playerCharacter: {fileID: 6498883890364450799}
   _leftHand: {fileID: 7425674613640483050}
   _rightHand: {fileID: 4688369128609190103}
-  _prefabs:
+  itemPrefabs:
+  - {fileID: 8729240049276550097, guid: b08bd5420e57a8c4988823efc7a75fde, type: 3}
   - {fileID: 8680066097836967059, guid: 744edf2f993e43a4096a142f92db9321, type: 3}
   - {fileID: 5786053781384723269, guid: a7ac3a1fb53cae04282dede56e619481, type: 3}
   - {fileID: 8453122098565441690, guid: 7547a3052856a9a44b177f04e6b65d5c, type: 3}
-  - {fileID: 8453122098565441690, guid: f7e10e1826158d8478c27093f476f65f, type: 3}
   - {fileID: 8453122098565441690, guid: ea5463ea0d4b26f4384895653a492161, type: 3}
+  - {fileID: 8453122098565441690, guid: f7e10e1826158d8478c27093f476f65f, type: 3}
 --- !u!114 &1655656451230195503
 MonoBehaviour:
   m_ObjectHideFlags: 0

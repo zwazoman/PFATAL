@@ -1,9 +1,13 @@
+using _scripts.PlayerCharacter;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerHands : MonoBehaviour
 {
+    [SerializeField] PlayerCharacter _playerCharacter;
+
     public Hand leftHand;
     public Hand rightHand;
 
@@ -26,6 +30,37 @@ public class PlayerHands : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public bool TryEquipRandomCons()
+    {
+        return TryEquipRandomItem("Cons");
+    }
+
+    public bool TryEquipRandomWeapon()
+    {
+        return TryEquipRandomItem("WP");
+    }
+
+    bool TryEquipRandomItem(string condition = "")
+    {
+        List<GameObject> prefabs = new();
+        foreach (GameObject prefab in _playerCharacter.itemHolder.itemPrefabs)
+        {
+            if (prefab.name.Contains(condition))
+                prefabs.Add(prefab);
+        }
+
+        ItemInfo info = new(ItemType.Weapon, prefabs.PickRandom());
+        return TryEquipItem(info);
+    }
+
+    public void ClearHands()
+    {
+        foreach (Hand hand in hands)
+        {
+            hand.ClearInventory();
+        }
     }
 
     #region Inputs

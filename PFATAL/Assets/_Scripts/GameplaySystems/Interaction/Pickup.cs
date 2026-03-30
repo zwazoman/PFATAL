@@ -55,4 +55,10 @@ public struct ItemInfo
 {
     public ItemType itemType;
     public GameObject itemPrefab;
+
+    public ItemInfo(ItemType itemType, GameObject itemPrefab)
+    {
+        this.itemType = itemType;
+        this.itemPrefab = itemPrefab;
+    }
 }

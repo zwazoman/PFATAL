@@ -11,10 +11,12 @@ public class Tomahawk : ProjectileWeapon
     [Header("Tomahawk Dash Settings")]
     [SerializeField] float _dashHoldDuration = .3f;
     [SerializeField] float _dashStrength = 10;
+    [SerializeField] float _dashCooldown = 3;
 
     GameObject _tomahawkProj;
 
     bool _dashed = false;
+    bool _canDash = true;
 
     public override void UseUpdate()
     {
@@ -43,6 +45,9 @@ public class Tomahawk : ProjectileWeapon
 
     void DashTowardsProj()
     {
+        if (!_canDash)
+            return;
+
         _dashed = true;
 
         Vector3 dashDirection = (_tomahawkProj.transform.position - playerCharacter.transform.position).normalized;
@@ -51,5 +56,16 @@ public class Tomahawk : ProjectileWeapon
 
         _tomahawkProj.TryGetComponent(out Proj_Tomahawk proj);
         proj.Despawn();
+
+        HandleDashDelay();
+    }
+
+    async void HandleDashDelay()
+    {
+        //todo UI 
+
+        _canDash = false;
+        await Awaitable.WaitForSecondsAsync(_dashCooldown);
+        _canDash = true;
     }
 }

@@ -4,6 +4,7 @@ public class WaterFlow : MonoBehaviour
 {
     [Range(0, 360)]
     public float directionalWaterLevel = 5f;
+    
     public float minSpeedMultiplier = 0.75f;
     public float maxSpeedMultiplier = 1.1f;
     public float flowSpeed = 20f;

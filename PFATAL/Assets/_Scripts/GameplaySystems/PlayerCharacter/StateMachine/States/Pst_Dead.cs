@@ -34,7 +34,6 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
             if (_respawn)
             {
-                Debug.Log("exited dead player state.");
                 _respawn = false;
                 ctx.SwapActionMapToPlayer();
                 ctx.ShowPlayerRpc();
@@ -55,7 +54,6 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         void Respawn()
         {
-            Debug.Log("clicked button");
             _respawn = true;
         }
 

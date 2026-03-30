@@ -57,7 +57,7 @@ public class Crossbow : ProjectileWeapon
 
     public override void UseUpdate()
     {
-        if (_isCharged || !canShoot) return;
+        if (_isCharged || ! canShoot) return;
         
         //charge shot when holding the click
         _chargeValue += Time.deltaTime / _maxChargeTime;

@@ -17,6 +17,25 @@ public class Pickup : Interactable
     [SerializeField] float _pickupTweenScale  = 1.2f;
     [SerializeField] float _pickupTweenDuration = .5f;
 
+    [Header("Settings")]
+    [SerializeField] float _lifeTime = 5f;
+
+    float _timer;
+
+    private void Update()
+    {
+        if (!IsServer)
+            return;
+
+        _timer += Time.deltaTime;
+
+        if(_timer > _lifeTime)
+        {
+            _timer = 0;
+            DespawnRpc();
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.TryGetComponent(out PlayerCharacter _playerCharacter))

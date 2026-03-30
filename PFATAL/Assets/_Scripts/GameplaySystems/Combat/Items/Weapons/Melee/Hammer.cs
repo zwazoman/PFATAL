@@ -1,6 +1,7 @@
 using _scripts.PlayerCharacter;
 using TMPro.EditorUtilities;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Hammer : MeleeWeapon
@@ -16,7 +17,7 @@ public class Hammer : MeleeWeapon
 
     bool _dashed;
     bool _charged;
-    float _initialDamages;
+    bool _isAttacking;
 
     public override void Equip()
     {
@@ -30,10 +31,13 @@ public class Hammer : MeleeWeapon
     {
         base.UnEquip();
 
+        _animator.SetTrigger("Idle");
+
+        _charged = true;
+        _dashed = false;
+
         _eventReceiver.OnHitStart -= StartHitting;
         _eventReceiver.OnHitEnd -= StopHitting;
-
-
     }
 
     [Rpc(SendTo.Server)]
@@ -57,13 +61,14 @@ public class Hammer : MeleeWeapon
         data.KnockbackForce = playerCharacter.transform.forward * 5;
 
         damageable.TakeDamage(data);
+
     }
 
     public override void UseUpdate()
     {
         base.UseUpdate();
 
-        if(holdDuration >= _dashChargedDuration && !_charged)
+        if(holdDuration >= _dashChargedDuration && !_charged && !_isAttacking)
         {
             _animator.SetTrigger("Charged");
             _charged = true;
@@ -72,6 +77,11 @@ public class Hammer : MeleeWeapon
 
     public override void StopUsing()
     {
+        base.StopUsing();
+
+        if (_isAttacking)
+            return;
+
         if(_charged)
         {
             _animator.SetTrigger("Dash");
@@ -81,7 +91,7 @@ public class Hammer : MeleeWeapon
         else
             _animator.SetTrigger("Hit");
 
-        base.StopUsing();
+        _isAttacking = true;
     }
 
     /// <summary>
@@ -98,5 +108,9 @@ public class Hammer : MeleeWeapon
     /// <summary>
     /// callback d'animation
     /// </summary>
-    public void StopHitting() { isHitting = false; print("stop"); }
+    public void StopHitting() 
+    {
+        isHitting = false; print("stop");
+        _isAttacking = false;
+    }
 }

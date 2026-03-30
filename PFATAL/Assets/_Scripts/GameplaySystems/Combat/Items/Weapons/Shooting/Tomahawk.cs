@@ -62,7 +62,7 @@ public class Tomahawk : ProjectileWeapon
 
     async void HandleDashDelay()
     {
-        //todo UI ?
+        //todo UI 
 
         _canDash = false;
         await Awaitable.WaitForSecondsAsync(_dashCooldown);

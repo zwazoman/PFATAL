@@ -15,6 +15,7 @@ public class Hand : MonoBehaviour
     [SerializeField] PlayerCharacter _main;
     [SerializeField] ItemHolder _itemVisuals;
     [SerializeField] public Transform visualsTransform;
+    [SerializeField] Animator _animator;
 
     [Header("Parameters")]
 
@@ -66,6 +67,8 @@ public class Hand : MonoBehaviour
     {
         //animation
 
+        _animator.SetTrigger("Equip");
+
         if (!itemInventory.Contains(item))
         {
             print("item not pickedUp");
@@ -104,7 +107,7 @@ public class Hand : MonoBehaviour
     /// <returns></returns>
     public void ScrollEquippedItem(bool isPrevious)
     {
-        if(equippedItem == null || itemInventory.Count <= 0)
+        if(equippedItem == null || itemInventory.Count <= 1)
             return;
 
         OnItemSwapped?.Invoke();

@@ -15,6 +15,7 @@ public class Crossbow : ProjectileWeapon
     [SerializeField] float _maxChargeTime = 1.5f;
     [SerializeField] float _chargeZoomThreshold = .3f;
     [SerializeField] float _chargeStartThreshold = .1f;
+    [SerializeField] float _chargeSpeedMultiplyer = .3f;
     [SerializeField] Vector2 _CameraRecoilStrength;
 
     bool _startedCharging = false;
@@ -25,12 +26,19 @@ public class Crossbow : ProjectileWeapon
     private float _cameraFovOffset = 0;
     private float _fovOffsetVelocity = 0;
 
-    public override void StartUsing()
+    //public override void StartUsing()
+    //{
+    //    if (canShoot)
+    //    {
+    //        base.StartUsing();
+    //    }
+    //}
+
+    public override void UnEquip()
     {
-        if (canShoot)
-        {
-            base.StartUsing();
-        }
+        base.UnEquip();
+
+        //todo => reset la speed du joueur
     }
 
     protected virtual void Update()
@@ -49,7 +57,7 @@ public class Crossbow : ProjectileWeapon
 
     public override void UseUpdate()
     {
-        if (_isCharged) return;
+        if (_isCharged || !canShoot) return;
         
         //charge shot when holding the click
         _chargeValue += Time.deltaTime / _maxChargeTime;
@@ -58,6 +66,9 @@ public class Crossbow : ProjectileWeapon
         {
             OnStartCharging?.Invoke();
             _startedCharging = true;
+
+            //todo => slow le joueur
+            //playerCharacter.stateMachine.s_Walking._walkSpeed *= _chargeSpeedMultiplyer;
         }
         
         if(_chargeValue >= 1 )
@@ -87,9 +98,12 @@ public class Crossbow : ProjectileWeapon
         _chargeValue = 0;
         _isCharged = false;
         _startedCharging = false;
+        //todo => reset la speed du joueur
 
         base.StopUsing();
     }
+
+    
 
     protected override Awaitable<GameObject> Shoot(SpawnContext spawnContext,Quaternion rotation)
     {

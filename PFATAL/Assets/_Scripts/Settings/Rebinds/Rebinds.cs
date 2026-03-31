@@ -25,6 +25,7 @@ namespace Settings
         [SerializeField] private Button _returnButton;
         [SerializeField] private GameObject _errorMessage;
         [SerializeField] private InputHandler _inputHandler;
+        private Gamepad _gamepad;
 
         private void Awake()
         {
@@ -35,11 +36,14 @@ namespace Settings
         //needs to be somewhere else.
         public void OpenClose(InputAction.CallbackContext context)
         {
-            Debug.Log(context.action.activeControl.device.name);
-            _inputHandler.GetControllerType();
-            if (context.action.activeControl.device.name == "Gamepad")
+            if (Input.GetJoystickNames().Length > 0)
             {
-                _inputHandler.GetControllerType();
+                _gamepad = Gamepad.current;
+                //For testing and to know what type of controller we have.
+                if (context.action.activeControl.device.name == _gamepad.name)
+                {
+                    _inputHandler.GetControllerType();
+                }
             }
             //Why does it not work?
             if (context.performed && _menu.activeInHierarchy == true)

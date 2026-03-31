@@ -10,7 +10,7 @@ public class Projectile : NetworkBehaviour
     /// </summary>
     public virtual void OnSpawn() { }
 
-    protected virtual void Despawn()
+    public virtual void Despawn()
     {
         DespawnRpc();
     }

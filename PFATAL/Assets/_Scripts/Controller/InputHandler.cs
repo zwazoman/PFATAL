@@ -20,6 +20,7 @@ public class InputHandler : MonoBehaviour
     {
         if (_isUsingController != true && _changedControls == false)
         {
+
             _changedControls = true;
         }
     }

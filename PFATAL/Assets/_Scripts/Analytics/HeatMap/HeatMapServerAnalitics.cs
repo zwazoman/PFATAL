@@ -114,17 +114,6 @@ public class HeatMapServerAnalitics : MonoBehaviour
                     _theRealHeatMap.points.Add(newPoint);
                 }
             }
-
-            string test = "";
-
-            foreach (GameObject player in Players)
-            {
-                player.TryGetComponent(out PlayerCharacter playerCharacter);
-
-                test += "Weapon : " + GetPlayerWeaponType(playerCharacter) + "\n";
-            }
-
-            ScriptTestShowWeapon.instance.text.text = test;
         }
     }
 

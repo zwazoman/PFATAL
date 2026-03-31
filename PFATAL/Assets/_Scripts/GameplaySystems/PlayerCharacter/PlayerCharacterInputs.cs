@@ -1,4 +1,5 @@
 using Chat;
+using System;
 using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
@@ -9,6 +10,8 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class PlayerCharacterInputs : NetworkBehaviour
 {
+    public event Action OnRespawnInput;
+
     [HideInInspector] public Vector2 movementInput = Vector2.zero;
     [HideInInspector] public Vector2 aimInput = Vector2.zero;
     [HideInInspector] public bool isHoldingRunKey { get; private set; } = false;
@@ -88,6 +91,14 @@ public class PlayerCharacterInputs : NetworkBehaviour
             isHoldingRunKey = false;
         }
     }
+
+    public void Respawn(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            Respawn();
+    }
+
+    public void Respawn() { OnRespawnInput?.Invoke(); }
 
     void Update()
     {

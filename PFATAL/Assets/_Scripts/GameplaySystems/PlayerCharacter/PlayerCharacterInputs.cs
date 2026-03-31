@@ -22,7 +22,7 @@ public class PlayerCharacterInputs : NetworkBehaviour
     private bool _paused = false;
 
     private Gamepad _gamepad;
-    private bool _usingGamePad = false;
+    [HideInInspector] public bool UsingGamePad = false;
 
     public bool TryConsumeJumpKeyPress()
     {
@@ -49,17 +49,17 @@ public class PlayerCharacterInputs : NetworkBehaviour
             if (context.action.activeControl.device.name == _gamepad.name)
             {
                 aimInput = context.ReadValue<Vector2>() * 6.5f;
-                _usingGamePad = true;
+                UsingGamePad = true;
             }
             else
             {
-                _usingGamePad = false;
+                UsingGamePad = false;
                 aimInput = context.ReadValue<Vector2>();
             }
         }
         else
         {
-            _usingGamePad = false;
+            UsingGamePad = false;
             aimInput = context.ReadValue<Vector2>();
         }
     }
@@ -102,7 +102,7 @@ public class PlayerCharacterInputs : NetworkBehaviour
         }
 
         //aim, needs fixing with diagonals
-        if (_usingGamePad == false)
+        if (UsingGamePad == false)
         {
             aimInput = Vector2.SmoothDamp(
             new Vector2(aimInput.x, -aimInput.y),

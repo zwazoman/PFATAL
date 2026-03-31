@@ -1,5 +1,3 @@
-using _scripts.PlayerCharacter;
-using TMPro.EditorUtilities;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;

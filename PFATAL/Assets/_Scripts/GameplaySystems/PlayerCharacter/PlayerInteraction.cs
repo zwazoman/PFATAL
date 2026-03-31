@@ -6,7 +6,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     private static Collider[] _colliderBuffer = new Collider[10];
     
-    [SerializeField] public PlayerCharacter main;
+    [SerializeField] public PlayerCharacter _playerCharacter;
 
     Interactable _currentInteractable;
 
@@ -22,8 +22,8 @@ public class PlayerInteraction : MonoBehaviour
     private void Update()
     {
         var size = Physics.OverlapCapsuleNonAlloc(
-            main.playerCamera.transform.position, 
-            main.playerCamera.transform.position + main.playerCamera.transform.forward * _interactionRange,
+            _playerCharacter.playerCamera.transform.position, 
+            _playerCharacter.playerCamera.transform.position + _playerCharacter.playerCamera.transform.forward * _interactionRange,
             _interactionWidth, _colliderBuffer, _interactionmask);
 
         if (size > 0)
@@ -49,6 +49,17 @@ public class PlayerInteraction : MonoBehaviour
                 _currentInteractable = null;
             }
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!_playerCharacter.IsOwner)
+            return;
+
+        print(collision.gameObject.name);
+
+        if (collision.gameObject.TryGetComponent(out Pickup _pickup))
+            _pickup.Interact(this);
     }
 
     public void Interact(InputAction.CallbackContext ctx)

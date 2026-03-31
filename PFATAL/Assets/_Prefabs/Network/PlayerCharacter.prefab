@@ -2423,6 +2423,7 @@ MonoBehaviour:
   aimInput: {x: 0, y: 0}
   _aimSmoothingTime: 0.05
   _jumpBufferingDuration: 0.35
+  UsingGamePad: 0
 --- !u!114 &2012281267629077613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2500,7 +2501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0708131fd7ec0347aaed26b65a9d194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
-  main: {fileID: 6498883890364450799}
+  _playerCharacter: {fileID: 6498883890364450799}
   _interactionWidth: 0.7
   _interactionRange: 2
   _interactionmask:
@@ -2872,6 +2873,10 @@ MonoBehaviour:
   - {fileID: 1845953556628065240}
   - {fileID: 8381638155586477791}
   - {fileID: 3154864167769977567}
+  - {fileID: 6218487293373354008}
+  - {fileID: 7547910697821973814}
+  - {fileID: 9191839044717828431}
+  - {fileID: 4526840582921747440}
 --- !u!114 &845404014533269378
 MonoBehaviour:
   m_ObjectHideFlags: 0

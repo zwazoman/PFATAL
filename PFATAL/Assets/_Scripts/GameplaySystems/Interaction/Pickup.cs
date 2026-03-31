@@ -36,17 +36,11 @@ public class Pickup : Interactable
         //}
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.TryGetComponent(out PlayerCharacter _playerCharacter))
-            Interact(_playerCharacter.playerInteraction);
-    }
-
-    public override async void Interact(PlayerInteraction interaction)
+    public override void Interact(PlayerInteraction interaction)
     {
         base.Interact(interaction);
 
-        if (interaction.main.playerHands.TryEquipItem(_itemInfo))
+        if (interaction._playerCharacter.playerHands.TryEquipItem(_itemInfo))
         {
             transform.DOPunchScale(transform.localScale * _pickupTweenScale, _pickupTweenDuration,0,0);
             PickupRpc();

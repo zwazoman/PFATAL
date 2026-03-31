@@ -25,7 +25,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             ctx.playerHands.leftHand.DropEquippedtem();
             ctx.playerHands.ClearHands();
 
-            ctx.HUD.respawnButton.onClick.AddListener(Respawn);
+            ctx.inputs.OnRespawnInput += Respawn;
         }
 
         protected override void OnExited(PlayerCharacter ctx)
@@ -43,7 +43,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 PlayerCharacterSpawner.Instance.ReSpawnPlayer(ctx);
             }
 
-            ctx.HUD.respawnButton.onClick.RemoveListener(Respawn);
+            ctx.inputs.OnRespawnInput -= Respawn;
         }
 
         public override void Behave(PlayerCharacter ctx, UpdatePoint updatePoint)

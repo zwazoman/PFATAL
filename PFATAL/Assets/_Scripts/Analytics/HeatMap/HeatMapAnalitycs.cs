@@ -36,9 +36,9 @@ public class HeatMapAnalitycs : MonoBehaviour
 
         if (character == null) return;
 
-        character.playerHands.rightHand.OnItemDropped += ChangeWeaponType;
-        character.playerHands.rightHand.OnItemSwapped += ChangeWeaponType;
-        character.playerHands.rightHand.OnItemPickedUp += ChangeWeaponType;
+        character.playerHands.rightHand.OnDropItem += ChangeWeaponType;
+        character.playerHands.rightHand.OnSwapItem += ChangeWeaponType;
+        character.playerHands.rightHand.OnPickUpItem += ChangeWeaponType;
 
         ChangeWeaponType();
     }

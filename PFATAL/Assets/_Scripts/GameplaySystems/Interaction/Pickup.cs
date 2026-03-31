@@ -24,16 +24,16 @@ public class Pickup : Interactable
 
     private void Update()
     {
-        if (!IsServer)
-            return;
+        //if (!IsServer)
+        //    return;
 
-        _timer += Time.deltaTime;
+        //_timer += Time.deltaTime;
 
-        if(_timer > _lifeTime)
-        {
-            _timer = 0;
-            DespawnRpc();
-        }
+        //if(_timer > _lifeTime)
+        //{
+        //    _timer = 0;
+        //    DespawnRpc();
+        //}
     }
 
     private void OnCollisionEnter(Collision collision)

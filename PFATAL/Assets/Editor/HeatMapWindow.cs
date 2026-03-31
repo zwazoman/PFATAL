@@ -15,7 +15,7 @@ public class HeatMapWindow : EditorWindow
     string fileNameToSave;
     string fileNameForTexture3D;
     GameObject mapBound;
-    Material rayMarchingMat = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Graph/Surfaces/Materials/Raymarching/Mat_Texture3DVisualiizer.mat");
+    Material rayMarchingMat;
 
     //heatMap generaton pparameters
     string gameVersion;

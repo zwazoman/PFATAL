@@ -17,6 +17,8 @@ public class HeatMapAnalitycs : MonoBehaviour
 
     [SerializeField] private PlayerCharacter character;
 
+    public GameObject playerWeaponSocket;
+
     public float UpdateInterval = 1f;
     public int gridSize = 1;
     public WeaponType weaponType;
@@ -30,25 +32,29 @@ public class HeatMapAnalitycs : MonoBehaviour
 
     private void Start()
     {
-        filePath = Path.Combine(Application.persistentDataPath, "heatmap.json");
-        LoadHeatMap();
+        //if (!character.IsServer) return;
 
-        //GUIUtility.systemCopyBuffer = Application.persistentDataPath;
-
-        if (character == null) return;
-
-        character.playerHands.rightHand.OnItemDropped += ChangeWeaponType;
-        character.playerHands.rightHand.OnItemSwapped += ChangeWeaponType;
-        character.playerHands.rightHand.OnItemPickedUp += ChangeWeaponType;
-
-        ChangeWeaponType();
+        HeatMapServerAnalitics.instance.Players.Add(gameObject);
     }
+
+    
 
     private void Update()
     {
-        if (!TryGetComponent(out NetworkObject netObject)) return;
 
-        if (netObject.IsOwner) UnityEngine.Debug.Log("JSUIS OWNER");
+        /*if (character == null) return;
+
+        if (character.IsOwner)
+        {
+            UnityEngine.Debug.LogWarning($"Weapon: {GetPlayerWeaponType(character)}");
+            ScriptTestShowWeapon.instance.text.text = $"Weapon: {GetPlayerWeaponType(character)}";
+        }*/
+
+        return;
+
+        //if (!TryGetComponent(out NetworkObject netObject)) return;
+
+
 
         //Adding point each time the time interval is reach
         if ((timer += Time.deltaTime) >= UpdateInterval)
@@ -58,6 +64,7 @@ public class HeatMapAnalitycs : MonoBehaviour
 
             if (!mapBoundsObject.m_Bounds.Contains(playerPos))
             {
+                UnityEngine.Debug.Log("y a pas de bounds connard");
                 return;
             }
 
@@ -120,47 +127,6 @@ public class HeatMapAnalitycs : MonoBehaviour
         //UnityEngine.Debug.Log($"Max Visits: {MaxVisits()}");
     }
 
-    private void ChangeWeaponType(Item item)
-    {
-        ChangeWeaponType();
-    }
-
-    private void ChangeWeaponType()
-    {
-        UnityEngine.Debug.Log("Start changing type");
-
-        if (character == null)
-        {
-            UnityEngine.Debug.LogError("ta race il est ou le player character");
-        }
-
-        if (character.playerHands.rightHand.equippedItem == null)
-        {
-            UnityEngine.Debug.Log("No weapon, return");
-            weaponType = WeaponType.Without;
-            return;
-        }
-
-        string itemName = character.playerHands.rightHand.equippedItem.name;
-
-        itemName = itemName.ToLower();
-
-        UnityEngine.Debug.Log(itemName);
-
-        if (itemName.Contains("hammer"))
-        {
-            weaponType = WeaponType.Hammer;
-        }
-        else if (itemName.Contains("crossbow"))
-        {
-            weaponType = WeaponType.Crossbow;
-        }
-        else if (itemName.Contains("tomahawk"))
-        {
-            weaponType = WeaponType.Tomahawk;
-        }
-    }
-
     //to do, no need that later
     private HeatMapData LoadHeatMap()
     {
@@ -177,9 +143,10 @@ public class HeatMapAnalitycs : MonoBehaviour
     {
         File.WriteAllText(filePath, JsonUtility.ToJson(heatMapData));
 
-        //to do : no save the file but send it to the DB
+        //to do : no save the file but send it to the DB, then destroy the file
     }
 
+    #region Debug
     public void OnDrawGizmos()
     {
 
@@ -192,15 +159,10 @@ public class HeatMapAnalitycs : MonoBehaviour
         foreach (var point in heatMapData.points)
         {
             //Gizmos.color = Color.Lerp(Color.blue, Color.red, point.visits / MaxVisits());
-            UnityEngine.Debug.Log(point.visitsGlobal / MaxVisits());
+            UnityEngine.Debug.Log(point.visitsGlobal / HeatMapUtility.MaxVisits(heatMapData, WeaponType.All));
             Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.visitsGlobal / 10);
             Gizmos.DrawWireCube(new Vector3(point.x, point.y, point.z), new Vector3(size, size, size));
         }
-    }
-
-    public int MaxVisits()
-    {
-        return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.visitsGlobal) : 0;
     }
 
     [Button("Delete Current json file")]
@@ -216,4 +178,5 @@ public class HeatMapAnalitycs : MonoBehaviour
         Process.Start(Application.persistentDataPath);
 #endif
     }
+    #endregion
 }

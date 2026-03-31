@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 public enum HeatMapType
 {
-    Player = 0,
-    Game = 1,
-    multipleGame = 2,
+    Game = 0,
+    multipleGame = 1,
 }
 
 public enum WeaponType
@@ -36,7 +35,7 @@ public class HeatMapData
     public List<HeatPoint> points = new List<HeatPoint>();
 
     /// <summary>
-    /// Create an empty heatMapData object with a defined size
+    /// Create an empty heatMapData object with a defined size, for test mostly
     /// </summary>
     /// <param name="cellSize">Size of the heatmap</param>
     public HeatMapData(int cellSize) => (this.heatMapCellSize) = (cellSize);

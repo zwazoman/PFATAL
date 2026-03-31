@@ -83,7 +83,13 @@ public class Item : MonoBehaviour
 
     public virtual void Equip() { OnEquip?.Invoke(); }
 
-    public virtual void UnEquip() { OnUnEquip?.Invoke(); }
+    public virtual void UnEquip()
+    {
+        OnUnEquip?.Invoke();
+
+        isUsing = false;
+        holdDuration = 0;
+    }
 
     async void Use()
     {

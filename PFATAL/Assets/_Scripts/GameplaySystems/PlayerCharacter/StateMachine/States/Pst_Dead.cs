@@ -1,4 +1,5 @@
 using _Scripts.StateMachine;
+using System.Collections.Generic;
 using System;
 using UnityEngine;
 
@@ -12,7 +13,6 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         protected override void OnEntered(PlayerCharacter ctx)
         {
             base.OnEntered(ctx);
-            Debug.Log("entered on death");
             _respawn = false;
 
             ctx.SwapActionMapToUI();
@@ -21,8 +21,11 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             ctx.inputs.Clear();
             ctx.HUD.ShowDeathUI();
 
+            //nettoie les mains et drop le consommable actuel
+            ctx.playerHands.leftHand.DropEquippedtem();
+            ctx.playerHands.ClearHands();
+
             ctx.HUD.respawnButton.onClick.AddListener(Respawn);
-            Debug.Log("linked button event");
         }
 
         protected override void OnExited(PlayerCharacter ctx)
@@ -31,12 +34,12 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
             if (_respawn)
             {
-                Debug.Log("exited dead player state.");
                 _respawn = false;
                 ctx.SwapActionMapToPlayer();
                 ctx.ShowPlayerRpc();
                 ctx.HUD.HideDeathUI();
                 ctx.health.Heal();
+                ctx.playerHands.TryEquipRandomWeapon();
                 PlayerCharacterSpawner.Instance.ReSpawnPlayer(ctx);
             }
 
@@ -51,7 +54,6 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         void Respawn()
         {
-            Debug.Log("clicked button");
             _respawn = true;
         }
 

@@ -15,7 +15,7 @@ public class ItemHolder : NetworkBehaviour
 
     [Header("Settings")]
 
-    [SerializeField] List<GameObject> _prefabs;
+    [SerializeField] public List<GameObject> itemPrefabs;
 
     Dictionary<string, Item> _itemsDict = new();
 
@@ -24,7 +24,7 @@ public class ItemHolder : NetworkBehaviour
 
     private void Start()
     {
-        foreach (GameObject prefab in _prefabs)
+        foreach (GameObject prefab in itemPrefabs)
         {
             GameObject itemObject = Instantiate(prefab, _leftHand.transform.parent);
             itemObject.name = prefab.name;

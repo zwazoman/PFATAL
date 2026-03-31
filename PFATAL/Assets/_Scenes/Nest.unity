@@ -585,15 +585,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6313051233538994936, guid: 9dbbfe26db967984788ffaac38ae8306, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.61
+      value: -2.386
       objectReference: {fileID: 0}
     - target: {fileID: 6313051233538994936, guid: 9dbbfe26db967984788ffaac38ae8306, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.228
+      value: -0.353
       objectReference: {fileID: 0}
     - target: {fileID: 6313051233538994936, guid: 9dbbfe26db967984788ffaac38ae8306, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.66
+      value: -6.805
       objectReference: {fileID: 0}
     - target: {fileID: 6313051233538994936, guid: 9dbbfe26db967984788ffaac38ae8306, type: 3}
       propertyPath: m_LocalRotation.w
@@ -622,6 +622,10 @@ PrefabInstance:
     - target: {fileID: 6313051233538994936, guid: 9dbbfe26db967984788ffaac38ae8306, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8457383006280778941, guid: 9dbbfe26db967984788ffaac38ae8306, type: 3}
+      propertyPath: AuthorityMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8646866019681496794, guid: 9dbbfe26db967984788ffaac38ae8306, type: 3}
       propertyPath: m_Name
@@ -1123,6 +1127,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 681444989827213778, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 681444989827213778, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2607746998044308091, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.11792
@@ -1506,6 +1518,7 @@ GameObject:
   - component: {fileID: 1589611358}
   - component: {fileID: 1589611357}
   - component: {fileID: 1589611359}
+  - component: {fileID: 1589611360}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1622,6 +1635,28 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!95 &1589611360
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589611356}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a60571e9d6a207f44a3472cdea548729, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1592017393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1788,7 +1823,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8818363198337337637, guid: 0949875ff0622694d928ce1d88325104, type: 3}
       propertyPath: playSounds
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

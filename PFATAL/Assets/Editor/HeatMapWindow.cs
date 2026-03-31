@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,7 +15,7 @@ public class HeatMapWindow : EditorWindow
     string fileNameToSave;
     string fileNameForTexture3D;
     GameObject mapBound;
-    Material rayMarchingMat = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Graph/Surfaces/Materials/Raymarching/Mat_Texture3DVisualiizer.mat");
+    Material rayMarchingMat;
 
     //heatMap generaton pparameters
     string gameVersion;
@@ -35,11 +34,17 @@ public class HeatMapWindow : EditorWindow
 
     private void OnGUI()
     {
-
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
 
         mapBound = (GameObject)EditorGUILayout.ObjectField("Map bounds", mapBound, typeof(GameObject), true);
-        rayMarchingMat = (Material)EditorGUILayout.ObjectField("Ray Marching Material", rayMarchingMat, typeof(Material), true);
+        rayMarchingMat = (Material)EditorGUILayout.ObjectField("Ray Marching Material", rayMarchingMat, typeof(Material), false);
+
+
+        // AJOUTE ÇA JUSTE APRÈS
+        if (rayMarchingMat != null)
+        {
+            EditorGUILayout.LabelField("Shader:", rayMarchingMat.shader.name);
+        }
 
         if (mapBound != null)
         {
@@ -251,6 +256,7 @@ public class HeatMapWindow : EditorWindow
         Texture3D texture3D = new((int)boundsSize.x, (int)boundsSize.y, (int)boundsSize.z, TextureFormat.RFloat, false);
         texture3D.wrapMode = TextureWrapMode.Clamp;
         texture3D.filterMode = FilterMode.Point;
+        texture3D.anisoLevel = 1;
         
         Color[] colors = new Color[(int)boundsSize.x * (int)boundsSize.y * (int)boundsSize.z];
 
@@ -402,11 +408,13 @@ public class HeatMapWindow : EditorWindow
             AssetDatabase.CreateAsset(texture3D, path);
             existing.name = "Texture3D_" + textureName;
             existing = AssetDatabase.LoadAssetAtPath<Texture3D>(path);
+            existing.anisoLevel = 1;
         }
         else
         {
             EditorUtility.CopySerialized(texture3D, existing);
             existing.name = "Texture3D_" + textureName;
+            existing.anisoLevel = 1;
             Object.DestroyImmediate(texture3D);
         }
 

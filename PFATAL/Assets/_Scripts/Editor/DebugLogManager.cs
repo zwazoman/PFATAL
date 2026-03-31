@@ -14,7 +14,7 @@ public class DebugLogManager : EditorWindow
     private FilterMode filterMode = FilterMode.All;
     private Filter filter = Filter.All;
     private string scriptNameFilter = "";
-
+    
     private enum ActionMode { Comment, Uncomment, Delete }
     private enum FilterMode { All, Log, Warning, Error, Assertion, Exception, Print }
     private enum Filter { All, Uncommented, Commented }

@@ -3,9 +3,17 @@ using System.Collections.Generic;
 
 public enum HeatMapType
 {
-    Player = 0,
-    Game = 1,
-    multipleGamer = 2,
+    Game = 0,
+    multipleGame = 1,
+}
+
+public enum WeaponType
+{
+    All = 0,
+    Without = 1,
+    Hammer = 2,
+    Crossbow = 3,
+    Tomahawk = 4
 }
 
 /// <summary>
@@ -27,7 +35,7 @@ public class HeatMapData
     public List<HeatPoint> points = new List<HeatPoint>();
 
     /// <summary>
-    /// Create an empty heatMapData object with a defined size
+    /// Create an empty heatMapData object with a defined size, for test mostly
     /// </summary>
     /// <param name="cellSize">Size of the heatmap</param>
     public HeatMapData(int cellSize) => (this.heatMapCellSize) = (cellSize);
@@ -50,6 +58,11 @@ public class HeatMapData
 [Serializable]
 public class HeatPoint
 {
+    /// <summary>
+    /// id of the heatmap where the point came from
+    /// </summary>
+    public int parentHeatMapId;
+
     /// <summary>
     /// point coordinates
     /// </summary>

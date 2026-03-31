@@ -6,10 +6,15 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    public event Action<Item> OnItemPickedUp;
-    public event Action OnItemDropped;
+    public event Action<Item> OnPickUpItem;
+    public event Action<Item> OnDropItem;
+    public event Action OnDeleteItem;
 
-    public event Action OnItemSwapped;
+
+    public event Action<Item> OnEquipItem;
+    public event Action<Item> OnUnequipItem;
+
+    public event Action OnSwapItem;
 
     [Header("References")]
     [SerializeField] PlayerCharacter _main;
@@ -26,7 +31,7 @@ public class Hand : MonoBehaviour
     [SerializeField] int _inventorySize = 1;
 
     [HideInInspector] public Item equippedItem;
-    [HideInInspector] List<Item> itemInventory = new();
+    [HideInInspector] public List<Item> itemInventory = new();
 
     /// <summary>
     /// vérifie si un item est ramassable en fonction de l'item info. si il est bien ramassable : le ramasse
@@ -43,7 +48,7 @@ public class Hand : MonoBehaviour
             item.Pickup(_main, this);
             EquipItem(item);
 
-            OnItemPickedUp?.Invoke(item);
+            OnPickUpItem?.Invoke(item);
             return true;
         }
         else if (_swapWhenFull)
@@ -52,7 +57,7 @@ public class Hand : MonoBehaviour
             item.Pickup(_main, this);
             SwapAndDropEquippedItem(item);
 
-            OnItemPickedUp?.Invoke(item);
+            OnPickUpItem?.Invoke(item);
             return true;
         }
 
@@ -65,19 +70,20 @@ public class Hand : MonoBehaviour
     /// <param name="item"></param>
     void EquipItem(Item item)
     {
-        //animation
-
-        _animator.SetTrigger("Equip");
-
         if (!itemInventory.Contains(item))
         {
             print("item not pickedUp");
             return;
         }
 
+        OnEquipItem?.Invoke(item);
+
+        _animator.SetTrigger("Equip");
+
+
         if (equippedItem != null)
         {
-            UnEquipEquippedItem();
+            UnEquipItem();
         }
 
         equippedItem = item;
@@ -94,7 +100,7 @@ public class Hand : MonoBehaviour
         if (equippedItem == null)
             return;
 
-        OnItemDropped?.Invoke();
+        OnDropItem?.Invoke(equippedItem);
 
         equippedItem.Drop();
         DeleteEquippedItem();
@@ -110,7 +116,7 @@ public class Hand : MonoBehaviour
         if(equippedItem == null || itemInventory.Count <= 1)
             return;
 
-        OnItemSwapped?.Invoke();
+        OnSwapItem?.Invoke();
 
         Item oldHeldItem = equippedItem;
 
@@ -124,8 +130,10 @@ public class Hand : MonoBehaviour
     /// <summary>
     /// retire l'item actuellement porté de la main et update le visuel pour les autres joueurs
     /// </summary>
-    public void UnEquipEquippedItem()
+    public void UnEquipItem()
     {
+        OnUnequipItem?.Invoke(equippedItem);
+
         equippedItem.UnEquip();
         _itemVisuals.HideEquippedItemRpc(_isLeft);
         equippedItem = null;
@@ -142,7 +150,9 @@ public class Hand : MonoBehaviour
         if (itemInventory.Count > 1)
             ScrollEquippedItem(true);
         else
-            UnEquipEquippedItem();
+            UnEquipItem();
+
+        OnDeleteItem?.Invoke();
 
         itemInventory.Remove(oldEquippedOtem);
     }

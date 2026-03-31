@@ -120,15 +120,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Crouch"",
-                    ""type"": ""Button"",
-                    ""id"": ""27c5f898-bc57-4ee1-8800-db469aca5fe3"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Drop"",
                     ""type"": ""Button"",
                     ""id"": ""2b26704d-66b6-4aa3-b4df-20a5812fc980"",
@@ -518,28 +509,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4f4649ac-64a8-4a73-af11-b3faef356a4d"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Crouch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""36e52cba-0905-478e-a818-f4bfcb9f3b9a"",
-                    ""path"": ""<Keyboard>/c"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1194,7 +1163,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_Drop = m_Player.FindAction("Drop", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
@@ -1300,7 +1268,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_Drop;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Sprint;
@@ -1332,10 +1299,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Interact".
         /// </summary>
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/Crouch".
-        /// </summary>
-        public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         /// <summary>
         /// Provides access to the underlying input action "Player/Drop".
         /// </summary>
@@ -1403,9 +1366,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
-            @Crouch.started += instance.OnCrouch;
-            @Crouch.performed += instance.OnCrouch;
-            @Crouch.canceled += instance.OnCrouch;
             @Drop.started += instance.OnDrop;
             @Drop.performed += instance.OnDrop;
             @Drop.canceled += instance.OnDrop;
@@ -1450,9 +1410,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
-            @Crouch.started -= instance.OnCrouch;
-            @Crouch.performed -= instance.OnCrouch;
-            @Crouch.canceled -= instance.OnCrouch;
             @Drop.started -= instance.OnDrop;
             @Drop.performed -= instance.OnDrop;
             @Drop.canceled -= instance.OnDrop;
@@ -1809,13 +1766,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteract(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Crouch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnCrouch(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Drop" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

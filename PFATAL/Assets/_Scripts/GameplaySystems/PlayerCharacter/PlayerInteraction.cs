@@ -4,7 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    private static Collider[] _colliderBuffer = new Collider[10];
+    private static Collider[] _interactionColliderBuffer = new Collider[10];
+    private static Collider[] _contactColliderBuffer = new Collider[10];
     
     [SerializeField] public PlayerCharacter _playerCharacter;
 
@@ -21,16 +22,17 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
-        var size = Physics.OverlapCapsuleNonAlloc(
+        //interaction detection
+        var interactionSize = Physics.OverlapCapsuleNonAlloc(
             _playerCharacter.playerCamera.transform.position, 
             _playerCharacter.playerCamera.transform.position + _playerCharacter.playerCamera.transform.forward * _interactionRange,
-            _interactionWidth, _colliderBuffer, _interactionmask);
+            _interactionWidth, _interactionColliderBuffer, _interactionmask);
 
-        if (size > 0)
+        if (interactionSize > 0)
         {
-            for(int i =0;i<size;i++)
+            for(int i =0;i<interactionSize;i++)
             {
-                if (_colliderBuffer[i].gameObject.TryGetComponent(out Interactable interactable))
+                if (_interactionColliderBuffer[i].gameObject.TryGetComponent(out Interactable interactable))
                 {
                     if(interactable != _currentInteractable &&_currentInteractable !=null)
                         _currentInteractable.StopHover();
@@ -49,18 +51,21 @@ public class PlayerInteraction : MonoBehaviour
                 _currentInteractable = null;
             }
         }
+
+        //Contact detection
+        int contactSize = Physics.OverlapSphereNonAlloc(transform.position, 1,_contactColliderBuffer, _interactionmask);
+
+
+        if(contactSize > 0)
+        {
+            for (int i = 0; i < contactSize; i++)
+            {
+                if (_contactColliderBuffer[i].gameObject.TryGetComponent(out Pickup pickup))
+                    pickup.Interact(this);
+            }
+        }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!_playerCharacter.IsOwner)
-            return;
-
-        print(collision.gameObject.name);
-
-        if (collision.gameObject.TryGetComponent(out Pickup _pickup))
-            _pickup.Interact(this);
-    }
 
     public void Interact(InputAction.CallbackContext ctx)
     {

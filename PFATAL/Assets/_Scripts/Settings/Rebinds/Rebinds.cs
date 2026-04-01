@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 using TMPro;
 using _scripts.PlayerCharacter;
 using UnityEngine.UI;
+using System.Net;
+using Unity.VisualScripting;
 
 namespace Settings
 {
@@ -22,6 +24,8 @@ namespace Settings
         [SerializeField] private GameObject _menu;
         [SerializeField] private Button _returnButton;
         [SerializeField] private GameObject _errorMessage;
+        [SerializeField] private InputHandler _inputHandler;
+        private Gamepad _gamepad;
 
         private void Awake()
         {
@@ -32,6 +36,15 @@ namespace Settings
         //needs to be somewhere else.
         public void OpenClose(InputAction.CallbackContext context)
         {
+            if (Input.GetJoystickNames().Length > 0)
+            {
+                _gamepad = Gamepad.current;
+                //For testing and to know what type of controller we have.
+                if (context.action.activeControl.device.name == _gamepad.name)
+                {
+                    _inputHandler.GetControllerType();
+                }
+            }
             //Why does it not work?
             if (context.performed && _menu.activeInHierarchy == true)
             {

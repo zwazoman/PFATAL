@@ -15,6 +15,7 @@ Shader "Example/shdr_RaymarchedCloud"
         _densityMultiplier ("Density Multiplier", Float) = 1.0
         _scatteringCoef ("Scattering Coefficient", Float) = .5
         _absorbtionCoef ("Absorbtion Coefficient", Float) = .5
+        _stepOffset ("Truc Ã  ajouter", Float) = .2
         
         
     }
@@ -63,6 +64,8 @@ Shader "Example/shdr_RaymarchedCloud"
             Texture3D _densityField;
             float _stepSize;
             float _SunRayStepSize;
+
+            float _stepOffset;
             
             float _densityMultiplier;
             float _scatteringCoef;
@@ -279,36 +282,52 @@ Shader "Example/shdr_RaymarchedCloud"
                 float3 outputColor = 0;
                 for (float rayLength = 0;rayLength< totalRayLength;rayLength += _stepSize)
                 {
+                    float tkt = _stepOffset;
+
+                    if (tkt <=0)
+                    {
+                        tkt = 0;
+                        _stepOffset = 0;
+                    }
+
+                    _stepSize += tkt;
+
                     //main sample
                     float3 samplePoint = rayOrigin+rayDirection*rayLength;
                     float3 uvw = get_texture_coordinates_at_world_pos(samplePoint,boxMin,bbInvWorldSize);
                     float density = get_density_at_point(samplePoint,uvw);
                     
-                    if (density>0) // on skip les calculs quand la densité est egale a 0
+                    if (density>0) // on skip les calculs quand la densitÃ© est egale a 0
                     {
                         //compute base transmittance
-                        totalDensity += density *_stepSize ;
-                        float baseTransmittance = exp(-totalDensity*rayLength);
+                        totalDensity += density * _stepSize ;
+
+                        //float baseTransmittance = exp(-totalDensity*rayLength);
                         
                         //compute sun transmittance
-                        const float SunTotalRayLength = compute_ray_length(samplePoint,_MainLightPosition,boxMin ,boxMax);
-                        float totalDensityTowardSun = 0;
-                        for (float secondRayLength = 0;secondRayLength< SunTotalRayLength;secondRayLength += _SunRayStepSize)
-                        {
-                            const float3 SunSamplePoint = samplePoint+_MainLightPosition*secondRayLength;
-                            const float3 SunUvw = get_texture_coordinates_at_world_pos(SunSamplePoint,boxMin,bbInvWorldSize);
-                            const float Sundensity = get_density_at_point(SunSamplePoint,SunUvw);
-                            totalDensityTowardSun += Sundensity;
-                        }
-                        totalDensityTowardSun *= _SunRayStepSize;
-                        float SunTransmittance = exp(-SunTotalRayLength*totalDensityTowardSun);
+                        // const float SunTotalRayLength = compute_ray_length(samplePoint,_MainLightPosition,boxMin ,boxMax);
+                        // float totalDensityTowardSun = 0;
+                        // for (float secondRayLength = 0;secondRayLength< SunTotalRayLength;secondRayLength += _SunRayStepSize)
+                        // {
+                        //     const float3 SunSamplePoint = samplePoint+_MainLightPosition*secondRayLength;
+                        //     const float3 SunUvw = get_texture_coordinates_at_world_pos(SunSamplePoint,boxMin,bbInvWorldSize);
+                        //     const float Sundensity = get_density_at_point(SunSamplePoint,SunUvw);
+                        //     totalDensityTowardSun += Sundensity;
+                        // }
+                        // totalDensityTowardSun *= _SunRayStepSize;
+                        // float SunTransmittance = exp(-SunTotalRayLength*totalDensityTowardSun);
 
-                        //float3 skyColor = float3(.5,.8,1)*.5;
-                        float3 skyColor = float3(.8,.3,.7)*.3;
-                        float3 lightColor = (_MainLightColor * SunTransmittance + skyColor );
+                        // //float3 skyColor = float3(.5,.8,1)*.5;
+                        // float3 skyColor = float3(.8,.3,.7)*.3;
+                        // float3 lightColor = (_MainLightColor * SunTransmittance + skyColor );
                         //baseTransmittance-=baseTransmittance%.3f;
-                        outputColor += lightColor * baseTransmittance * _stepSize;
+
+                        //outputColor += lightColor * baseTransmittance * _stepSize;
+
                         
+                        //outputColor +=  totalDensity;
+
+                        //outputColor +=  _stepSize;
                     }
                 }
   
@@ -318,7 +337,12 @@ Shader "Example/shdr_RaymarchedCloud"
 
                 float transmittance = exp(-totalDensity*totalRayLength);
                 transmittance -= transmittance%.4-.2;
-                float alpha = 1.0-transmittance;//( totalDensity);
+                 float alpha = 1.0-transmittance;//( totalDensity);
+
+                float3 viewColor = float3(.4, 0, 0);
+                outputColor = viewColor * alpha;
+                
+               
                 
                 //outputColor = aces(outputColor);
                 //return half4(1,1,1,0);

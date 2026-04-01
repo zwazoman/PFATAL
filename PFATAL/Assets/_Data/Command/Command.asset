@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Command
   m_EditorClassIdentifier: Assembly-CSharp::Command
   CommandData:
-  - Name: "R\xE9cup\xE8re quel joueur  a jou\xE9 a quel partie"
+  - isOpen: 0
+    Name: "Quel joueur  a jou\xE9 a quel partie"
     Command: 'SELECT
 
       Game.Id AS GameId,
@@ -27,23 +28,59 @@ MonoBehaviour:
 
       JOIN Game ON Game.Id =
       GamePlayerSet.IdGame'
-  - Name: "R\xE9cup\xE8re les armes et le nombre de fois ou elles ont \xE9t\xE9 utilis\xE9
-      rang\xE9 par ordre croissant"
+  - isOpen: 0
+    Name: Armes et nombre d'utilisation
     Command: 'SELECT
 
       Weapon,
 
       COUNT(*) AS UsageCount
 
-      FROM
-      Death
+      FROM Death
 
-      GROUP BY Weapon
+      GROUP
+      BY Weapon
 
       ORDER BY UsageCount DESC'
-  - Name: Distance moyenne des kills
+  - isOpen: 0
+    Name: Distance moyenne des kills
     Command: 'SELECT
 
       AVG(Distance) AS AverageKillDistance
 
       FROM Death'
+  - isOpen: 0
+    Name: "Joueurs avec plus de X kills sur une partie donn\xE9e"
+    Command: 'SELECT Player.Id, Player.Name,
+
+      COUNT(Death.Id) AS Kills
+
+      FROM
+      Death
+
+      JOIN Player ON Player.Id = Death.KillerId
+
+      WHERE Death.IdGame
+      = 1
+
+      GROUP BY Player.Id
+
+      HAVING Kills > 1'
+  - isOpen: 0
+    Name: "Top 3 des kills les plus \xE9loign\xE9s"
+    Command: "SELECT \r\n    d.Id AS DeathId,\r\n    killer.Name AS KillerName,\r\n   
+      victim.Name AS VictimName,\r\n    d.Distance,\r\n    d.Weapon,\r\n    d.Time,\r\n   
+      g.Id AS GameId,\r\n    g.MapName,\r\n    g.Gamemode,\r\n    g.Duration\r\nFROM
+      Death d\r\nLEFT JOIN Player killer ON d.KillerId = killer.Id\r\nLEFT JOIN Player
+      victim ON d.VictimId = victim.Id\r\nLEFT JOIN Game g ON d.IdGame = g.Id\r\nORDER
+      BY d.Distance DESC\r\nLIMIT 3;"
+  - isOpen: 1
+    Name: Avoir toute les heatmap d'une verion du jeu
+    Command: 'SELECT
+
+      HeatMap
+
+      FROM Game
+
+      WHERE Game.Version
+      = 10'

@@ -1,14 +1,26 @@
 using _scripts.PlayerCharacter;
+using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
+    public event Action<Item> OnPickUpItem;
+    public event Action<Item> OnDropItem;
+    public event Action OnDeleteItem;
+
+
+    public event Action<Item> OnEquipItem;
+    public event Action<Item> OnUnequipItem;
+
+    public event Action OnSwapItem;
+
     [Header("References")]
     [SerializeField] PlayerCharacter _main;
-    [SerializeField] ItemVisuals _itemVisuals;
+    [SerializeField] ItemHolder _itemVisuals;
     [SerializeField] public Transform visualsTransform;
+    [SerializeField] Animator _animator;
 
     [Header("Parameters")]
 
@@ -19,7 +31,7 @@ public class Hand : MonoBehaviour
     [SerializeField] int _inventorySize = 1;
 
     [HideInInspector] public Item equippedItem;
-    [HideInInspector] List<Item> itemInventory = new();
+    [HideInInspector] public List<Item> itemInventory = new();
 
     /// <summary>
     /// vérifie si un item est ramassable en fonction de l'item info. si il est bien ramassable : le ramasse
@@ -33,15 +45,20 @@ public class Hand : MonoBehaviour
         if (itemInventory.Count < _inventorySize)
         {
             itemInventory.Add(item);
-            item.OnPickup(_main, this);
+            item.Pickup(_main, this);
             EquipItem(item);
+
+            OnPickUpItem?.Invoke(item);
             return true;
         }
         else if (_swapWhenFull)
         {
             itemInventory.Add(item);
-            item.OnPickup(_main, this);
-            SwapAndDropEquippedItem(item);
+            item.Pickup(_main, this);
+            //SwapAndDropEquippedItem(item);
+            SwapAndDeleteEquippedItem(item);
+
+            OnPickUpItem?.Invoke(item);
             return true;
         }
 
@@ -54,23 +71,26 @@ public class Hand : MonoBehaviour
     /// <param name="item"></param>
     void EquipItem(Item item)
     {
-        //animation
-
         if (!itemInventory.Contains(item))
         {
             print("item not pickedUp");
             return;
         }
 
+        OnEquipItem?.Invoke(item);
+
+        _animator.SetTrigger("Equip");
+
+
         if (equippedItem != null)
         {
-            UnEquipEquippedItem();
+            UnEquipItem();
         }
 
         equippedItem = item;
         _itemVisuals.ShowItemRpc(item.gameObject.name, _isLeft);
 
-        equippedItem.OnEquip();
+        equippedItem.Equip();
     }
 
     /// <summary>
@@ -81,7 +101,9 @@ public class Hand : MonoBehaviour
         if (equippedItem == null)
             return;
 
-        equippedItem.OnDrop();
+        OnDropItem?.Invoke(equippedItem);
+
+        equippedItem.Drop();
         DeleteEquippedItem();
     }
 
@@ -92,8 +114,10 @@ public class Hand : MonoBehaviour
     /// <returns></returns>
     public void ScrollEquippedItem(bool isPrevious)
     {
-        if(equippedItem == null || itemInventory.Count <= 0)
+        if(equippedItem == null || itemInventory.Count <= 1)
             return;
+
+        OnSwapItem?.Invoke();
 
         Item oldHeldItem = equippedItem;
 
@@ -107,9 +131,11 @@ public class Hand : MonoBehaviour
     /// <summary>
     /// retire l'item actuellement porté de la main et update le visuel pour les autres joueurs
     /// </summary>
-    public void UnEquipEquippedItem()
+    public void UnEquipItem()
     {
-        equippedItem.OnUnEquip();
+        OnUnequipItem?.Invoke(equippedItem);
+
+        equippedItem.UnEquip();
         _itemVisuals.HideEquippedItemRpc(_isLeft);
         equippedItem = null;
     }
@@ -125,7 +151,9 @@ public class Hand : MonoBehaviour
         if (itemInventory.Count > 1)
             ScrollEquippedItem(true);
         else
-            UnEquipEquippedItem();
+            UnEquipItem();
+
+        OnDeleteItem?.Invoke();
 
         itemInventory.Remove(oldEquippedOtem);
     }
@@ -149,5 +177,14 @@ public class Hand : MonoBehaviour
     {
         DeleteEquippedItem();
         EquipItem(item);
+    }
+
+    public void ClearInventory()
+    {
+        List<Item> tmpItems = new();
+        tmpItems.AddRange(itemInventory);
+
+        foreach (Item item in tmpItems)
+            DeleteItem(item);
     }
 }

@@ -1,4 +1,5 @@
 using Chat;
+using System;
 using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
@@ -7,9 +8,10 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// cette classe contient les inputs du joueur et est utilisée dans les states du personnage.
 /// </summary>
-//todo : new input system
 public class PlayerCharacterInputs : NetworkBehaviour
 {
+    public event Action OnRespawnInput;
+
     [HideInInspector] public Vector2 movementInput = Vector2.zero;
     [HideInInspector] public Vector2 aimInput = Vector2.zero;
     [HideInInspector] public bool isHoldingRunKey { get; private set; } = false;
@@ -21,7 +23,10 @@ public class PlayerCharacterInputs : NetworkBehaviour
     private Vector2 aimVel;
 
     private bool _paused = false;
-    
+
+    private Gamepad _gamepad;
+    [HideInInspector] public bool UsingGamePad = false;
+
     public bool TryConsumeJumpKeyPress()
     {
         bool wasBuffered = _jumpKeyBuffered;
@@ -35,12 +40,31 @@ public class PlayerCharacterInputs : NetworkBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
+        _gamepad = Gamepad.current;
         movementInput = context.ReadValue<Vector2>();
     }
 
     public void Look(InputAction.CallbackContext context)
     {
-        aimInput = context.ReadValue<Vector2>();
+        _gamepad = Gamepad.current;
+        if (_gamepad != null)
+        {
+            if (context.action.activeControl.device.name == _gamepad.name)
+            {
+                aimInput = context.ReadValue<Vector2>() * 6.5f;
+                UsingGamePad = true;
+            }
+            else
+            {
+                UsingGamePad = false;
+                aimInput = context.ReadValue<Vector2>();
+            }
+        }
+        else
+        {
+            UsingGamePad = false;
+            aimInput = context.ReadValue<Vector2>();
+        }
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -68,6 +92,14 @@ public class PlayerCharacterInputs : NetworkBehaviour
         }
     }
 
+    public void Respawn(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            Respawn();
+    }
+
+    public void Respawn() { OnRespawnInput?.Invoke(); }
+
     void Update()
     {
         if (IsSpawned && !IsOwner) return;
@@ -81,11 +113,29 @@ public class PlayerCharacterInputs : NetworkBehaviour
         }
 
         //aim, needs fixing with diagonals
-        aimInput = Vector2.SmoothDamp(
-            new Vector2(aimInput.x,-aimInput.y),
-            new Vector2(Input.mousePositionDelta.x/(float)Screen.height,Input.mousePositionDelta.y/(float)Screen.height),
+        if (UsingGamePad == false)
+        {
+            aimInput = Vector2.SmoothDamp(
+            new Vector2(aimInput.x, -aimInput.y),
+            new Vector2(Input.mousePositionDelta.x / (float)Screen.height, Input.mousePositionDelta.y / (float)Screen.height),
             ref aimVel,
             _aimSmoothingTime);
+        }
+        else
+        {
+            aimInput = Vector2.SmoothDamp(
+            new Vector2(aimInput.x, aimInput.y),
+            new Vector2(Input.mousePositionDelta.x / (float)Screen.height, Input.mousePositionDelta.y / (float)Screen.height),
+            ref aimVel,
+            _aimSmoothingTime);
+        }
+        
+        /*
+        aimInput = Vector2.SmoothDamp(
+            new Vector2(aimInput.x, -aimInput.y),
+            new Vector2(aimInput.x, -aimInput.y),
+            ref aimVel,
+            _aimSmoothingTime);*/
     }
 
     public void Clear()

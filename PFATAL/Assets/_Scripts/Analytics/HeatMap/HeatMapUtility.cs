@@ -54,6 +54,7 @@ public class HeatMapUtility
                         currentPoint.y,
                         currentPoint.z,
                         currentPoint.visitsGlobal,
+                        point.playerWithoutWeaponVisits,
                         currentPoint.playerWithHammerVisits,
                         currentPoint.playerWithCrossbowVisits,
                         currentPoint.playerWithTomahawkVisits
@@ -199,7 +200,10 @@ public class HeatMapUtility
             //global
             case WeaponType.All:
                 return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.visitsGlobal) : 0;
-            
+
+            case WeaponType.Without:
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.playerWithoutWeaponVisits) : 0;
+
             //hammer
             case WeaponType.Hammer:
                 return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.playerWithHammerVisits) : 0;

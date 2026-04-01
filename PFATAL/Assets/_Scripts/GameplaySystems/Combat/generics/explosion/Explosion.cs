@@ -26,7 +26,7 @@ public class Explosion : NetworkBehaviour
         if(!IsServer) throw new NetworkAuthorityException();
         
         CallExplosionEventRPC();
-        
+
         //damage setup
         DamageData damage = new();
         damage.Amount = Damage;

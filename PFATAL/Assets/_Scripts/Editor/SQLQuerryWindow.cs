@@ -20,6 +20,7 @@ public class SQLQuerryWindow : EditorWindow
     public static void ShowWindow()
     {
         GetWindow<SQLQuerryWindow>("SQL Querry Window");
+        ViewRequestWindow.ShowWindow();
     }
 
     private void OnEnable()
@@ -61,10 +62,14 @@ public class SQLQuerryWindow : EditorWindow
             SerializedProperty name = element.FindPropertyRelative("Name");
             SerializedProperty command = element.FindPropertyRelative("Command");
 
-            string text = (name.stringValue + command.stringValue).ToLower();
+            string lowerSearch = search.ToLower();
 
-            if (!string.IsNullOrEmpty(search) && !text.Contains(search.ToLower()))
+            if (!string.IsNullOrEmpty(search) &&
+               !name.stringValue.ToLower().Contains(lowerSearch) &&
+               !command.stringValue.ToLower().Contains(lowerSearch))
+            {
                 continue;
+            }
 
             EditorGUILayout.PropertyField(element, true);
         }
@@ -81,6 +86,8 @@ public class SQLQuerryWindow : EditorWindow
         if (GUILayout.Button("Save Commands"))
         {
             commandData.CommandData = CommandList;
+            EditorUtility.SetDirty(commandData);
+            AssetDatabase.SaveAssets();
         }
 
         so.ApplyModifiedProperties();
@@ -116,7 +123,11 @@ public class SQLQuerryWindow : EditorWindow
         EditorGUILayout.EndHorizontal();
     }
 
-    public async void RunQuery(string command)
+    /// <summary>
+    /// Fonction pour exécuter une requête SQL en envoyant une requête HTTP à un serveur.
+    /// </summary>
+    /// <param name="command"></param>
+    public async void RunQuery(string command, string name)
     {
         string encoded = UnityWebRequest.EscapeURL(command);
         string url = baseURL + "/query?cmd=" + encoded;
@@ -130,7 +141,11 @@ public class SQLQuerryWindow : EditorWindow
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            Debug.Log("SQL RESULT : " + request.downloadHandler.text);
+            string json = request.downloadHandler.text;
+
+            Debug.Log("SQL RESULT : " + json);
+
+            ViewRequestWindow.AddData(json, name);
         }
         else
         {

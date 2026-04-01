@@ -1,3 +1,4 @@
+using _scripts.PlayerCharacter;
 using DG.Tweening;
 using System;
 using Unity.Netcode;
@@ -16,16 +17,30 @@ public class Pickup : Interactable
     [SerializeField] float _pickupTweenScale  = 1.2f;
     [SerializeField] float _pickupTweenDuration = .5f;
 
-    public override void OnNetworkSpawn()
+    [Header("Settings")]
+    [SerializeField] float _lifeTime = 5f;
+
+    float _timer;
+
+    private void Update()
     {
-        base.OnNetworkSpawn();
+        //if (!IsServer)
+        //    return;
+
+        //_timer += Time.deltaTime;
+
+        //if(_timer > _lifeTime)
+        //{
+        //    _timer = 0;
+        //    DespawnRpc();
+        //}
     }
 
-    public override async void Interact(PlayerInteraction interaction)
+    public override void Interact(PlayerInteraction interaction)
     {
         base.Interact(interaction);
 
-        if (interaction.main.playerHands.TryEquipItem(_itemInfo))
+        if (interaction._playerCharacter.playerHands.TryEquipItem(_itemInfo))
         {
             transform.DOPunchScale(transform.localScale * _pickupTweenScale, _pickupTweenDuration,0,0);
             PickupRpc();
@@ -53,4 +68,10 @@ public struct ItemInfo
 {
     public ItemType itemType;
     public GameObject itemPrefab;
+
+    public ItemInfo(ItemType itemType, GameObject itemPrefab)
+    {
+        this.itemType = itemType;
+        this.itemPrefab = itemPrefab;
+    }
 }

@@ -1,81 +1,150 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public class DataCollector : MonoBehaviour
 {
+    public static DataCollector Instance;
     private Game game;
     private List<GamePlayerSet> gamePlayerSets = new();
     private List<Score> scores = new();
     private List<Death> deaths = new();
-
-    private int gameId = 0; 
+    private int gameId = 0;
     [SerializeField] private DatabaseRequest _databaseRequest;
 
-    private void GetLastGameId()
+    private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
+    void Start()
+    {
+        GameManager.Instance.EventOnGameStarted += RecordPlayers;
+        GameManager.Instance.EventOnGameEnded += OnGameEnded;
+    }
+
+    void OnDestroy()
+    {
+        if (GameManager.Instance != null) GameManager.Instance.EventOnGameStarted -= RecordPlayers;
+
+        if (GameManager.Instance != null) GameManager.Instance.EventOnGameEnded -= OnGameEnded;
+    }
+
+    private void OnGameEnded(GameRulesBase.GameResult result)
+    {
+        if (!NetworkManager.Singleton.IsServer) return;
+        RecordGame(result.LeaderBoard);
+    }
+
+
+    public void RecordPlayers()
+    {
+        if (!NetworkManager.Singleton.IsServer) return;
+
+        foreach (ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            Player player = new Player
+            {
+                Id = (int)clientID,
+                Name = "Player_" + clientID
+            };
+
+            StartCoroutine(_databaseRequest.SendPlayer(player));
+        }
+    }
+
+    /// <summary>
+    /// Fonction pour enregistrer les donn√©es d'une partie.
+    /// </summary>
+    public void RecordGame(LeaderBoardData leaderBoard)
+    {
+        gamePlayerSets.Clear();
+        scores.Clear();
+
         StartCoroutine(_databaseRequest.LastGameIdCoroutine((id) =>
         {
             gameId = id + 1;
-            Debug.Log("ID rÈcupÈrÈ : " + id);
+            game = new Game
+            {
+                Version = int.Parse(Application.version.Replace(".", "")),
+                IdPlayerSet = gameId,
+                HeatMap = "heatmap_data",
+                GameMode = (int)GameManager.gameMode,
+                MapName = SceneManager.GetActiveScene().name,
+                Duration = GameManager.DEATH_MATCH_GAME_DURATION
+            };
+
+            StartCoroutine(_databaseRequest.SendGame(game, (result) =>
+            {
+                RecordPlayerSet(leaderBoard);
+                RecordScore(leaderBoard);
+                RecordDeath();
+            }));
         }));
     }
 
-    public void RecordGame()
+    /// <summary>
+    /// Fonction pour enregistrer les donn√©es des joueurs dans une partie.
+    /// </summary>
+    public void RecordPlayerSet(LeaderBoardData leaderBoard)
     {
-        GetLastGameId();
-
-        game = new Game
-        {
-            Version = int.Parse(Application.version.Replace(".", "")),
-            IdPlayerSet = gameId,
-            HeatMap = "heatmap_data",
-            //GameMode = GameManager.GameMode.DeathMatch.ToString,
-            MapName = SceneManager.GetActiveScene().name,
-            Duration = 300f
-        };
-    }
-
-    public void RecordPlayerSet()
-    {
-        for (int i = 0; i < 4; i++)
+        foreach (var entry in leaderBoard.entries)
         {
             gamePlayerSets.Add(new GamePlayerSet
             {
                 Id = gameId,
                 IdGame = gameId,
-                IdPlayer = 1,
+                IdPlayer = (int)entry.ClientID,
             });
         }
+
+        StartCoroutine(_databaseRequest.SendGamePlayerSet(gamePlayerSets));
     }
 
-    public void RecordScore()
+    /// <summary>
+    /// Fonction pour enregistrer les donn√©es de score d'une partie.
+    /// </summary>
+    public void RecordScore(LeaderBoardData leaderBoard)
     {
-        for (int i = 0; i < 4; i++)
+        foreach (var entry in leaderBoard.entries)
         {
             scores.Add(new Score
             {
                 IdGame = gameId,
-                IdPlayer = 1,
-                Points = 1
+                IdPlayer = (int)entry.ClientID,
+                Points = entry.Points
             });
         }
+
+        StartCoroutine(_databaseRequest.SendScore(scores));
     }
 
+    /// <summary>
+    /// Fonction pour enregistrer les donn√©es de mort d'une partie.
+    /// </summary>
     public void RecordDeath()
     {
-        for (int i = 0; i < 4; i++)
-        {
-            deaths.Add(new Death
-            {
-                VictimId = 1,
-                KillerId = 1,
-                Weapon = 1,
-                Distance = 10f,
-                IdGame = gameId,
-                Time = 60f
-            });
-        }
+        StartCoroutine(_databaseRequest.SendDeath(deaths));
     }
 
+    public void RegisterDeath(ulong victim, ulong killer, float time)
+    {
+        deaths.Add(new Death
+        {
+            VictimId = (int)victim,
+            KillerId = (int)killer,
+            Weapon = 0,
+            Distance = 0f,
+            IdGame = gameId,
+            Time = time
+        });
+    }
 }

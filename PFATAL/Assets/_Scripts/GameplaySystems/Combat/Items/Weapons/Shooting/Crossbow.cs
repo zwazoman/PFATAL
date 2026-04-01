@@ -26,17 +26,16 @@ public class Crossbow : ProjectileWeapon
     private float _cameraFovOffset = 0;
     private float _fovOffsetVelocity = 0;
 
-    //public override void StartUsing()
-    //{
-    //    if (canShoot)
-    //    {
-    //        base.StartUsing();
-    //    }
-    //}
-
     public override void UnEquip()
     {
         base.UnEquip();
+
+        _chargeValue = 0;
+        _isCharged = false;
+        _startedCharging = false;
+
+        _cameraFovOffset = 0;
+        _fovOffsetVelocity = 0;
 
         //todo => reset la speed du joueur
     }
@@ -52,7 +51,6 @@ public class Crossbow : ProjectileWeapon
                 ref _fovOffsetVelocity, .13f,Mathf.Infinity,Time.deltaTime);
         
         playerCharacter.cameraBehaviour.AddTemporaryFovOffset(_cameraFovOffset);
-        
     }
 
     public override void UseUpdate()
@@ -102,8 +100,6 @@ public class Crossbow : ProjectileWeapon
 
         base.StopUsing();
     }
-
-    
 
     protected override Awaitable<GameObject> Shoot(SpawnContext spawnContext,Quaternion rotation)
     {

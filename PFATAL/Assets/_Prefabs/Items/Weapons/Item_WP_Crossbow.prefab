@@ -131,13 +131,14 @@ MonoBehaviour:
   _pickup: {fileID: 8646866019681496794, guid: af39c84c55295ac43ace5d12e42504f4, type: 3}
   shootSocket: {fileID: 312709263419611719}
   projectile: {fileID: 5604889624952730010, guid: 46a4c616ba28e7141bf4a2fc99c67c09, type: 3}
-  shootDelay: 0.3
+  shootDelay: 0.45
   shootRayLayerMask:
     serializedVersion: 2
     m_Bits: 320
   _maxChargeTime: 0.6
   _chargeZoomThreshold: 0.1
   _chargeStartThreshold: 0.1
+  _chargeSpeedMultiplyer: 0.3
   _CameraRecoilStrength: {x: 0.5, y: -1}
 --- !u!114 &6743783055721965156
 MonoBehaviour:
@@ -151,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7114f14bce8aa614c9c41852c981017a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CrossbowSound
-  _crossbow: {fileID: 4830982409033502835}
+  main: {fileID: 0}
 --- !u!1001 &5505270234417508128
 PrefabInstance:
   m_ObjectHideFlags: 0

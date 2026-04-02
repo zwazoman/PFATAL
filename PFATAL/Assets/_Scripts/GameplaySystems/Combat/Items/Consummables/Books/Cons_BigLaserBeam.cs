@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Cons_BigLaserBeam : Consummable
@@ -12,8 +13,7 @@ public class Cons_BigLaserBeam : Consummable
     {
         if (!playerCharacter.IsOwner) return;
 
-        playerCharacter.stateMachine.TransitionTo(playerCharacter.stateMachine.s_Frozen);
-        Debug.Log("Je Change de State Pour S_FROZEN");
+        playerCharacter.stateMachine.s_Frozen.Freeze(1f);
         base.StartUsing();
     }
 
@@ -27,7 +27,7 @@ public class Cons_BigLaserBeam : Consummable
         SpawnContext context = new SpawnContext(playerCharacter.OwnerClientId)
         {
             floatData = chargeRatio,
-            floatData2 = playerCharacter.OwnerClientId // sourceId
+            floatData2 = playerCharacter.OwnerClientId
         };
 
         Summoner.Instance.SpawnObject(
@@ -41,4 +41,6 @@ public class Cons_BigLaserBeam : Consummable
         base.StopUsing();
         BreakItem();
     }
+    
+
 }

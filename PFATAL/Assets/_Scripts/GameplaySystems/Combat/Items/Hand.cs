@@ -55,7 +55,6 @@ public class Hand : MonoBehaviour
         {
             itemInventory.Add(item);
             item.Pickup(_main, this);
-            //SwapAndDropEquippedItem(item);
             SwapAndDeleteEquippedItem(item);
 
             OnPickUpItem?.Invoke(item);

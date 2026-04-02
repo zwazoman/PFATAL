@@ -20,7 +20,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             Vector3 targetVelocity = 
                 ctx.inputs.movementInput.x*transform.right 
                 + ctx.inputs.movementInput.y * transform.forward; 
-            targetVelocity *= _airSpeed;
+            targetVelocity *= _airSpeed * ctx.movement.globalMovespeedMultiplyer;
             
             //apply movement
             ctx.movement.Move(targetVelocity,_acceleration * Time.deltaTime,true);

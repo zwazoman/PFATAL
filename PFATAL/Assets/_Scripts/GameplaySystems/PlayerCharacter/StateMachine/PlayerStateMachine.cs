@@ -15,6 +15,7 @@ public class PlayerStateMachine : StateMachine<PlayerCharacter>
     public Pst_Dead s_dead;
     public Pst_GameOver s_GameOver;
     //public Pst_Running s_running;
+    public Pst_Frozen s_Frozen;
     
     void SetUpStates()
     {
@@ -25,6 +26,7 @@ public class PlayerStateMachine : StateMachine<PlayerCharacter>
         s_dead ??= new();
         s_GameOver ??= new();
         //s_running ??= new();
+        s_Frozen ??= new();
 
         s_Idle.SetUp(this);
         s_Walking.SetUp(this);
@@ -33,6 +35,7 @@ public class PlayerStateMachine : StateMachine<PlayerCharacter>
         s_dead.SetUp(this);
         s_GameOver.SetUp(this);
         //s_running.SetUp(this);
+        s_Frozen.SetUp(this);
     }
 
     private void Awake()

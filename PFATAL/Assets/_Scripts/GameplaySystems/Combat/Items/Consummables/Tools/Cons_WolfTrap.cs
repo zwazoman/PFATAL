@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.Timeline;
-
 
 public class Cons_WolfTrap : Consummable
 {
@@ -15,7 +13,7 @@ public class Cons_WolfTrap : Consummable
     {
         base.StopUsing();
 
-        Summoner.Instance.SpawnObject(_wolfTrapPrefab, carryingHand.visualsTransform.position, carryingHand.visualsTransform.rotation, false);
+        Summoner.Instance.SpawnObject(_wolfTrapPrefab, carryingHand.visualsTransform.position, playerCharacter.transform.rotation, false);
         BreakItem();
     }
 }

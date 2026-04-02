@@ -8,7 +8,6 @@ public class Cons_GroundSlam : Consummable
     {
         base.StartUsing();
 
-        // boost vers le bas
         if (playerCharacter.TryGetComponent(out PlayerPhysics physics))
         {
             physics.AddImpulse(Vector3.down * _downForce);

@@ -4,11 +4,13 @@ public class Proj_WolfTrap : Projectile
 {
     [SerializeField] Rigidbody _rb;
     [SerializeField] float _duringTime = 25f;
+    [SerializeField] float _freezeDuration = 5f;
     [SerializeField] float _throwStrength = 25f;
-    [SerializeField] float _activationDelay = 0.5f;
+    [SerializeField] float _activationDelay = 0.25f;
 
-    float _timer;
-    bool _isArmed = false;
+    float timer;
+    bool isArmed = false;
+    bool hasActivated = false;
 
     private void Awake()
     {
@@ -20,38 +22,42 @@ public class Proj_WolfTrap : Projectile
         base.OnNetworkSpawn();
         if (!IsServer) return;
 
-        _timer = 0f;
+        timer = 0f;
         _rb.isKinematic = false;
 
         Vector3 force = transform.forward * 5 + transform.up * 3;
         _rb.AddForce(force.normalized * _throwStrength, ForceMode.Impulse);
-
-        Invoke(nameof(ArmTrap), _activationDelay);
-    }
-
-    void ArmTrap()
-    {
-        _isArmed = true;
-        _rb.linearVelocity = Vector3.zero;
-        _rb.angularVelocity = Vector3.zero;
-        _rb.isKinematic = true;
     }
 
     private void Update()
     {
         if (!IsSpawned || !IsServer) return;
 
-        _timer += Time.deltaTime;
 
-        if (_timer >= _duringTime)
+        timer += Time.deltaTime;
+
+        if (IsGrounded() && timer >= _freezeDuration && !isArmed)
+        {
+            isArmed = true;
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            _rb.isKinematic = true;
+        }
+
+        if (timer >= _duringTime)
         {
             Despawn();
         }
     }
 
+    bool IsGrounded()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, 0.35f);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (!_isArmed || !IsServer) return;
+        if (!isArmed || !IsServer || hasActivated) return;
 
         if (other.TryGetComponent(out DamageableObject hit))
         {
@@ -59,7 +65,8 @@ public class Proj_WolfTrap : Projectile
 
             // futur state (freeze)
 
-            Despawn();
+            timer = _duringTime - _freezeDuration;
+            hasActivated = true;
         }
     }
 }

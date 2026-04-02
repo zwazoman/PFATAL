@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ScriptTestTemporaire : MonoBehaviour
@@ -15,6 +16,10 @@ public class ScriptTestTemporaire : MonoBehaviour
 
     public List<float> colorRed = new();
 
+
+    public string heatMapPath;
+    public WeaponType weaponType;
+
     public void OnDrawGizmos()
     {
         if (!File.Exists(path)) return;
@@ -23,13 +28,13 @@ public class ScriptTestTemporaire : MonoBehaviour
 
         HeatMapData heatMapData = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(path));
 
-        float size = heatMapData.heatMapCellSize;
+        float size = heatMapData.cellSize;
         foreach (var point in heatMapData.points)
         {
             //Gizmos.color = Color.Lerp(Color.blue, Color.red, point.visits / MaxVisits());
-            Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.visitsGlobal / minMaxVisits);
-            Gizmos.DrawWireCube(new Vector3(point.x, point.y, point.z), new Vector3(size, size, size));
-            
+            Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.GetGlobalVisits() / minMaxVisits);
+            Gizmos.DrawWireCube(new Vector3(point.P[0], point.P[1], point.P[2]), new Vector3(size, size, size));
+
         }
     }
 
@@ -38,13 +43,21 @@ public class ScriptTestTemporaire : MonoBehaviour
     {
         HeatMapData heatMapData = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(path));
 
-        float size = heatMapData.heatMapCellSize;
+        float size = heatMapData.cellSize;
         foreach (var point in heatMapData.points)
         {
-            if (point.y == 17 & point.z == 23)
+            if (point.P[1] == 17 & point.P[2] == 23)
             {
-                Debug.Log($"Color : {Color.Lerp(Color.blue, Color.red, (float)point.visitsGlobal / minMaxVisits)}, T : {(float)point.visitsGlobal / minMaxVisits}");
+                Debug.Log($"Color : {Color.Lerp(Color.blue, Color.red, (float)point.GetGlobalVisits() / minMaxVisits)}, T : {(float)point.GetGlobalVisits() / minMaxVisits}");
             }
         }
+    }
+
+    [Button("Test GetMaxVisits")]
+    public void GetMaxTest()
+    {
+        HeatMapData heatMap = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(Path.Combine(Application.persistentDataPath, path)));
+
+        HeatMapUtility.MaxVisits(heatMap, weaponType);
     }
 }

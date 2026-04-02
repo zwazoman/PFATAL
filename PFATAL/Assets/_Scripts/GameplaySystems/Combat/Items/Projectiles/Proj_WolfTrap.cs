@@ -1,4 +1,5 @@
 using UnityEngine;
+using _scripts.PlayerCharacter;
 
 public class Proj_WolfTrap : Projectile
 {
@@ -59,11 +60,11 @@ public class Proj_WolfTrap : Projectile
     {
         if (!isArmed || !IsServer || hasActivated) return;
 
-        if (other.TryGetComponent(out DamageableObject hit))
+        if (other.TryGetComponent(out PlayerCharacter hit))
         {
             Debug.Log("WolfTrap triggered");
 
-            // futur state (freeze)
+            hit.stateMachine.s_Frozen.Freeze(_freezeDuration);
 
             timer = _duringTime - _freezeDuration;
             hasActivated = true;

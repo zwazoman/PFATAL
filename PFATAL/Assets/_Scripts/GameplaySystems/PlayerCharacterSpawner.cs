@@ -36,8 +36,15 @@ public class PlayerCharacterSpawner : MonoBehaviour
         Transform spawnSocket = SelectSpawnSocket();
         SpawnContext context = new(0);
 
+        while (!Summoner.Instance.IsSpawned)
+            await Awaitable.NextFrameAsync();
+
         GameObject player = await Summoner.Instance.SpawnObject(_characterPrefab, spawnSocket.position, spawnSocket.rotation,true, context, ownerClientID);
-        return player.GetComponent<PlayerCharacter>();
+        PlayerCharacter playerchara = player.GetComponent<PlayerCharacter>();
+
+        GameManager.Instance.SetLocalPlayer(playerchara, ownerClientID);
+
+        return playerchara;
     }
 
     public void ReSpawnPlayer(PlayerCharacter player)

@@ -13,7 +13,6 @@ public class Hammer : MeleeWeapon
     [SerializeField] float _dashStrength = 7;
     [SerializeField] float _dashDmgMult = .8f;
     [SerializeField] float _knockbackStrength = 10;
-    [SerializeField] float _chargeSpeedMultiplyer = .7f;
 
     bool _dashed;
     bool _charged;
@@ -70,7 +69,7 @@ public class Hammer : MeleeWeapon
     {
         base.UseUpdate();
 
-        if (holdDuration >= _dashChargedDuration && !_charged && !_isAttacking)
+        if(holdDuration >= _dashChargedDuration && !_charged && !_isAttacking)
         {
             _animator.SetTrigger("Charged");
             _charged = true;
@@ -110,6 +109,7 @@ public class Hammer : MeleeWeapon
     /// </summary>
     public void StopHitting() 
     {
+        isHitting = false;
         _isAttacking = false;
     }
 }

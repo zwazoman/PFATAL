@@ -44,6 +44,10 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         SetHpRPC(HP - damageData.Amount);
         InvokeDamageEventRPC(damageData);
 
+        //hit feedback
+        if (damageData.SourcePlayerClientID != DamageData.NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID)
+            ApplyDamageInflictedFeedbacksRpc(RpcTarget.Single(damageData.SourcePlayerClientID, RpcTargetUse.Temp));
+
         //knockback
         if (TryGetComponent(out PlayerCharacter player) && damageData.KnockbackForce != Vector3.zero)
             ApplyKnockbackRpc(damageData, RpcTarget.Single(player.OwnerClientId, RpcTargetUse.Temp));
@@ -91,6 +95,12 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         MaxHP = value;
         HP = MaxHP;
         OnHpChanged?.Invoke(HP);
+    }
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    void ApplyDamageInflictedFeedbacksRpc(RpcParams rpcParams = default)
+    {
+        GameManager.Instance.localPlayerCharacter.HUD.TriggerHitFeedback();
     }
     
     [Rpc(SendTo.Everyone)]

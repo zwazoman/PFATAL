@@ -9,9 +9,12 @@ public class Proj_BigLaserBeam : Projectile
     [SerializeField] private float _maxDamage = 100f;
     [SerializeField] private LayerMask _hitLayer;
 
-    public void Fire(Vector3 origin, Vector3 direction, float chargeRatio, ulong sourceId)
+    public override void OnSpawn()
     {
-        if (Physics.SphereCast(origin, _sphereRadius, direction, out RaycastHit hit, _maxRange, _hitLayer))
+        float chargeRatio = spawnContext.Value.floatData;
+        ulong sourceId = (ulong)spawnContext.Value.floatData2;
+
+        if (Physics.SphereCast(transform.position, _sphereRadius, transform.forward, out RaycastHit hit, _maxRange, _hitLayer))
         {
             Debug.Log($"[Proj_BigLaserBeam] Touché : {hit.collider.name}");
 
@@ -20,7 +23,7 @@ public class Proj_BigLaserBeam : Projectile
                 DamageData damage = new DamageData(
                     amount:               _maxDamage * chargeRatio,
                     point:                hit.point,
-                    direction:            direction,
+                    direction:            transform.forward,
                     sourcePlayerClientID: sourceId
                 );
 
@@ -32,6 +35,12 @@ public class Proj_BigLaserBeam : Projectile
             Debug.Log("[Proj_BigLaserBeam] Aucun hit.");
         }
 
+        DespawnNextFrame();
+    }
+
+    private async void DespawnNextFrame()
+    {
+        await Awaitable.WaitForSecondsAsync(1f);
         Despawn();
     }
 }

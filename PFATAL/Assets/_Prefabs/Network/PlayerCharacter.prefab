@@ -1229,7 +1229,7 @@ GameObject:
   - component: {fileID: 1563383684063958684}
   - component: {fileID: 7065158096620135633}
   m_Layer: 0
-  m_Name: DeathmatchPanel
+  m_Name: Deathmatch Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1841,9 +1841,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5098448c5b8754fb198dd6af31bc9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDManager
-  _main: {fileID: 6498883890364450799}
+  playerCharacter: {fileID: 6498883890364450799}
   deathUi: {fileID: 6199443368395529961}
   respawnButton: {fileID: 3140509798548844766}
+  hitMarkerUI: {fileID: 0}
 --- !u!1 &7798022288429652312
 GameObject:
   m_ObjectHideFlags: 0
@@ -1877,6 +1878,7 @@ RectTransform:
   - {fileID: 4815410191841464360}
   - {fileID: 6290598699255725293}
   - {fileID: 1387012775926588507}
+  - {fileID: 4170981633564224637}
   m_Father: {fileID: 2580294364278702281}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2071,7 +2073,7 @@ GameObject:
   - component: {fileID: 1542760484541053766}
   - component: {fileID: 6218487293373354008}
   m_Layer: 0
-  m_Name: HealthBar
+  m_Name: Health Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2286,7 +2288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3886975174
+  GlobalObjectIdHash: 2439366157
   InScenePlacedSourceGlobalObjectIdHash: 3886975174
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2409,6 +2411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d58d8fe8d176b547b03b14e9d0c693d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  globalMovespeedMultiplyer: 1
   _playerCharacter: {fileID: 6498883890364450799}
 --- !u!114 &8726357715619173195
 MonoBehaviour:
@@ -3129,6 +3132,56 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8889999598123433112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4170981633564224637}
+  - component: {fileID: 7954022157017668522}
+  m_Layer: 0
+  m_Name: Damage Indicators
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4170981633564224637
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8889999598123433112}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 482785043551170812}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7954022157017668522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8889999598123433112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf304f393d3e244f80dad25fe82a20d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageIndicatorManager
+  hud: {fileID: 4526840582921747440}
+  _prefab: {fileID: 1425785110876254368, guid: 46ea7ea2d006eb841802a7d485244c99, type: 3}
 --- !u!1001 &4989060095297001106
 PrefabInstance:
   m_ObjectHideFlags: 0

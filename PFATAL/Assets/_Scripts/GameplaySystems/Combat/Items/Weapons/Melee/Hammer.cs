@@ -42,17 +42,18 @@ public class Hammer : MeleeWeapon
     }
 
     [Rpc(SendTo.Server)]
-    protected override void ApplyHitRpc(DamageableObject damageable)
+    protected override void ApplyHitRpc(DamageableObject damageable, ulong attackerId)
     {
-        base.ApplyHitRpc(damageable);
+        base.ApplyHitRpc(damageable, attackerId);
 
         print("hit hammer");
 
         DamageData data = new();
         data.Point = hitSocket.position;
         data.Direction = transform.forward;
+        data.SourcePos = GameManager.Instance.GetPlayerCharacter(attackerId).transform.position;
 
-        if(_dashed)
+        if (_dashed)
             data.Amount = damageAmount * _dashDmgMult;
         else
             data.Amount = damageAmount;

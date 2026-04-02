@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
-    [SerializeField] PlayerCharacter _main;
+    [SerializeField] public PlayerCharacter playerCharacter;
 
     [Header("References")]
     [SerializeField] public GameObject deathUi;
@@ -15,7 +15,7 @@ public class HUDManager : MonoBehaviour
     {
         AudioManager.Instance.PlayOneShot(Sounds.HitMarker);
 
-        hitMarkerUI.ShowHitMarker();
+        //hitMarkerUI.ShowHitMarker();
     }
 
     public void ShowDeathUI()

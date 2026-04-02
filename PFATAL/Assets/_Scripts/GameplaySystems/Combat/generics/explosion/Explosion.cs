@@ -31,6 +31,7 @@ public class Explosion : NetworkBehaviour
         DamageData damage = new();
         damage.Amount = Damage;
         damage.Point = transform.position;
+        damage.SourcePos = transform.position;
         damage.SourcePlayerClientID = askerClientID;
         damage.Point = transform.position;
         damage.Radius = Radius;

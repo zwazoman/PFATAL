@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ScriptTestTemporaire : MonoBehaviour
@@ -17,8 +18,7 @@ public class ScriptTestTemporaire : MonoBehaviour
 
 
     public string heatMapPath;
-
-
+    public WeaponType weaponType;
 
     public void OnDrawGizmos()
     {
@@ -32,9 +32,9 @@ public class ScriptTestTemporaire : MonoBehaviour
         foreach (var point in heatMapData.points)
         {
             //Gizmos.color = Color.Lerp(Color.blue, Color.red, point.visits / MaxVisits());
-            Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.vG / minMaxVisits);
-            Gizmos.DrawWireCube(new Vector3(point.x, point.y, point.z), new Vector3(size, size, size));
-            
+            Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.GetGlobalVisits() / minMaxVisits);
+            Gizmos.DrawWireCube(new Vector3(point.P[0], point.P[1], point.P[2]), new Vector3(size, size, size));
+
         }
     }
 
@@ -46,22 +46,18 @@ public class ScriptTestTemporaire : MonoBehaviour
         float size = heatMapData.cellSize;
         foreach (var point in heatMapData.points)
         {
-            if (point.y == 17 & point.z == 23)
+            if (point.P[1] == 17 & point.P[2] == 23)
             {
-                Debug.Log($"Color : {Color.Lerp(Color.blue, Color.red, (float)point.vG / minMaxVisits)}, T : {(float)point.vG / minMaxVisits}");
+                Debug.Log($"Color : {Color.Lerp(Color.blue, Color.red, (float)point.GetGlobalVisits() / minMaxVisits)}, T : {(float)point.GetGlobalVisits() / minMaxVisits}");
             }
         }
     }
 
-    [Button("CovertToReallySmallHeatMap")]
-    public void ConvertToReallySmallHeatMap()
+    [Button("Test GetMaxVisits")]
+    public void GetMaxTest()
     {
-        string newPath = Path.Combine(Application.persistentDataPath + "/" + heatMapPath);
+        HeatMapData heatMap = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(Path.Combine(Application.persistentDataPath, path)));
 
-        GUIUtility.systemCopyBuffer = newPath;
-
-        HeatMapData heatMapData = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(newPath));
-
-        HeatMapUtility.SaveToSmallJson(heatMapData);
+        HeatMapUtility.MaxVisits(heatMap, weaponType);
     }
 }

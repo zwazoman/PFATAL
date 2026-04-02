@@ -38,28 +38,26 @@ public class HeatMapUtility
                 HeatPoint currentPoint = heatmap.points[i];
 
                 //checking if the point already exists in the combinedHeatmap list
-                var point = combinedHeatMap.points.FirstOrDefault(p => p.x == currentPoint.x && p.y == currentPoint.y && p.z == currentPoint.z);
+                var point = combinedHeatMap.points.FirstOrDefault(p => p.P == currentPoint.P);
                 
                 //if the point exist, we just add the corresponding value together
                 if (point != null)
                 {
-                    point.vG += currentPoint.vG; 
-                    point.pWHV += currentPoint.pWHV; 
-                    point.pWCV += currentPoint.pWCV;
-                    point.pWTV += currentPoint.pWTV;
+                    //point.G += currentPoint.G; 
+                    point.H += currentPoint.H; 
+                    point.C += currentPoint.C;
+                    point.T += currentPoint.T;
                 }
 
                 //if the point doesn't exist, we create it and we add it in the list
                 else
                     combinedHeatMap.points.Add(new HeatPoint(
-                        currentPoint.x,
-                        currentPoint.y,
-                        currentPoint.z,
-                        currentPoint.vG,
-                        point.pWWV,
-                        currentPoint.pWHV,
-                        currentPoint.pWCV,
-                        currentPoint.pWTV
+                        currentPoint.P,
+                        //currentPoint.G,
+                        point.W,
+                        currentPoint.H,
+                        currentPoint.C,
+                        currentPoint.T
                     ));
             }
         }
@@ -201,50 +199,26 @@ public class HeatMapUtility
         {
             //global
             case WeaponType.All:
-                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.vG) : 0;
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.W + p.H + p.C + p.T) : 0;
 
             case WeaponType.Without:
-                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.pWWV) : 0;
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.W) : 0;
 
             //hammer
             case WeaponType.Hammer:
-                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.pWHV) : 0;
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.H) : 0;
             
             //crosbow
             case WeaponType.Crossbow:
-                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.pWCV) : 0;
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.C) : 0;
 
             //tomahawk
             case WeaponType.Tomahawk:
-                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.pWTV) : 0;
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.T) : 0;
             
         }
 
         Debug.LogError("Cassé");
         return 0;
-    }
-
-    public static void SaveToSmallJson(HeatMapData heatMapData)
-    {
-        List<Tuple<Tuple<float, float, float>, int, int, int, int, int>> points = new List<Tuple<Tuple<float, float, float>, int, int, int, int, int>>();
-        
-        for (int i = 0; i < heatMapData.points.Count; i++)
-        {
-            points.Add(new Tuple<Tuple<float, float, float>, int, int, int, int, int>(
-                new Tuple<float, float, float>(heatMapData.points[i].x, heatMapData.points[i].y, heatMapData.points[i].z),
-                heatMapData.points[i].vG,
-                heatMapData.points[i].pWWV,
-                heatMapData.points[i].pWHV,
-                heatMapData.points[i].pWCV,
-                heatMapData.points[i].pWTV
-            ));
-        }
-
-        Tuple<int, int, string, int, HeatMapType, List<Tuple<Tuple<float, float, float>, int, int, int, int, int>>> info = 
-            new Tuple<int, int, string, int, HeatMapType, List<Tuple<Tuple<float, float, float>, int, int, int, int, int>>>
-            (heatMapData.cellSize, heatMapData.gameId, heatMapData.gameVersion, heatMapData.playerCount, heatMapData.type, points);
-
-
-        File.WriteAllText(Application.persistentDataPath + "/heatmap - really small.json", JsonUtility.ToJson(info));
     }
 }

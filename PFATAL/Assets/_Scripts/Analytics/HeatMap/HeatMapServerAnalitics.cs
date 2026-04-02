@@ -70,21 +70,21 @@ public class HeatMapServerAnalitics : MonoBehaviour
                 //if already exist, we increment the vists number, else we create a new point
                 if (point != null)
                 {
-                    point.visitsGlobal++;
+                    point.vG++;
                     switch (GetPlayerWeaponType(playerCharacter))
                     {
                         case WeaponType.Without:
-                            point.playerWithoutWeaponVisits++;
+                            point.pWWV++;
                             break;
 
                         case WeaponType.Hammer:
-                            point.playerWithHammerVisits++;
+                            point.pWHV++;
                             break;
                         case WeaponType.Crossbow:
-                            point.playerWithCrossbowVisits++;
+                            point.pWCV++;
                             break;
                         case WeaponType.Tomahawk:
-                            point.playerWithTomahawkVisits++;
+                            point.pWTV++;
                             break;
                     }
                 }
@@ -98,17 +98,17 @@ public class HeatMapServerAnalitics : MonoBehaviour
                     switch (GetPlayerWeaponType(playerCharacter))
                     {
                         case WeaponType.Without:
-                            newPoint.playerWithoutWeaponVisits++;
+                            newPoint.pWWV++;
                             break;
 
                         case WeaponType.Hammer:
-                            newPoint.playerWithHammerVisits++;
+                            newPoint.pWHV++;
                             break;
                         case WeaponType.Crossbow:
-                            newPoint.playerWithCrossbowVisits++;
+                            newPoint.pWCV++;
                             break;
                         case WeaponType.Tomahawk:
-                            newPoint.playerWithTomahawkVisits++;
+                            newPoint.pWTV++;
                             break;
                     }
                     _theRealHeatMap.points.Add(newPoint);
@@ -179,12 +179,12 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
         if (!show) return;
 
-        float size = _theRealHeatMap.heatMapCellSize;
+        float size = _theRealHeatMap.cellSize;
         foreach (var point in _theRealHeatMap.points)
         {
             //Gizmos.color = Color.Lerp(Color.blue, Color.red, point.visits / MaxVisits());
-            UnityEngine.Debug.Log(point.visitsGlobal / HeatMapUtility.MaxVisits(_theRealHeatMap, WeaponType.All));
-            Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.visitsGlobal / 10);
+            UnityEngine.Debug.Log(point.vG / HeatMapUtility.MaxVisits(_theRealHeatMap, WeaponType.All));
+            Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.vG / 10);
             Gizmos.DrawWireCube(new Vector3(point.x, point.y, point.z), new Vector3(size, size, size));
         }
     }

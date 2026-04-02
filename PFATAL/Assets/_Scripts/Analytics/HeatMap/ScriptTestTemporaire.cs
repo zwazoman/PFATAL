@@ -15,6 +15,11 @@ public class ScriptTestTemporaire : MonoBehaviour
 
     public List<float> colorRed = new();
 
+
+    public string heatMapPath;
+
+
+
     public void OnDrawGizmos()
     {
         if (!File.Exists(path)) return;
@@ -23,11 +28,11 @@ public class ScriptTestTemporaire : MonoBehaviour
 
         HeatMapData heatMapData = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(path));
 
-        float size = heatMapData.heatMapCellSize;
+        float size = heatMapData.cellSize;
         foreach (var point in heatMapData.points)
         {
             //Gizmos.color = Color.Lerp(Color.blue, Color.red, point.visits / MaxVisits());
-            Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.visitsGlobal / minMaxVisits);
+            Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.vG / minMaxVisits);
             Gizmos.DrawWireCube(new Vector3(point.x, point.y, point.z), new Vector3(size, size, size));
             
         }
@@ -38,13 +43,25 @@ public class ScriptTestTemporaire : MonoBehaviour
     {
         HeatMapData heatMapData = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(path));
 
-        float size = heatMapData.heatMapCellSize;
+        float size = heatMapData.cellSize;
         foreach (var point in heatMapData.points)
         {
             if (point.y == 17 & point.z == 23)
             {
-                Debug.Log($"Color : {Color.Lerp(Color.blue, Color.red, (float)point.visitsGlobal / minMaxVisits)}, T : {(float)point.visitsGlobal / minMaxVisits}");
+                Debug.Log($"Color : {Color.Lerp(Color.blue, Color.red, (float)point.vG / minMaxVisits)}, T : {(float)point.vG / minMaxVisits}");
             }
         }
+    }
+
+    [Button("CovertToReallySmallHeatMap")]
+    public void ConvertToReallySmallHeatMap()
+    {
+        string newPath = Path.Combine(Application.persistentDataPath + "/" + heatMapPath);
+
+        GUIUtility.systemCopyBuffer = newPath;
+
+        HeatMapData heatMapData = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(newPath));
+
+        HeatMapUtility.SaveToSmallJson(heatMapData);
     }
 }

@@ -1,5 +1,7 @@
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -27,7 +29,7 @@ public class HeatMapUtility
             return null;
         }
 
-        HeatMapData combinedHeatMap = new HeatMapData(heatMaps[0].heatMapCellSize);
+        HeatMapData combinedHeatMap = new HeatMapData(heatMaps[0].cellSize);
 
         foreach (HeatMapData heatmap in heatMaps)
         {
@@ -41,10 +43,10 @@ public class HeatMapUtility
                 //if the point exist, we just add the corresponding value together
                 if (point != null)
                 {
-                    point.visitsGlobal += currentPoint.visitsGlobal; 
-                    point.playerWithHammerVisits += currentPoint.playerWithHammerVisits; 
-                    point.playerWithCrossbowVisits += currentPoint.playerWithCrossbowVisits;
-                    point.playerWithTomahawkVisits += currentPoint.playerWithTomahawkVisits;
+                    point.vG += currentPoint.vG; 
+                    point.pWHV += currentPoint.pWHV; 
+                    point.pWCV += currentPoint.pWCV;
+                    point.pWTV += currentPoint.pWTV;
                 }
 
                 //if the point doesn't exist, we create it and we add it in the list
@@ -53,11 +55,11 @@ public class HeatMapUtility
                         currentPoint.x,
                         currentPoint.y,
                         currentPoint.z,
-                        currentPoint.visitsGlobal,
-                        point.playerWithoutWeaponVisits,
-                        currentPoint.playerWithHammerVisits,
-                        currentPoint.playerWithCrossbowVisits,
-                        currentPoint.playerWithTomahawkVisits
+                        currentPoint.vG,
+                        point.pWWV,
+                        currentPoint.pWHV,
+                        currentPoint.pWCV,
+                        currentPoint.pWTV
                     ));
             }
         }
@@ -65,14 +67,14 @@ public class HeatMapUtility
         //set the correct game id, 0 if there's severals game heatmap used
         if (IsSameGameId(heatMaps))
         {
-            combinedHeatMap.heatMapGameId = heatMaps[0].heatMapGameId;
+            combinedHeatMap.gameId = heatMaps[0].gameId;
         }
         else
         {
-            combinedHeatMap.heatMapGameId = 0;
+            combinedHeatMap.gameId = 0;
         }
 
-        combinedHeatMap.heatMapPlayerNumber = heatMaps.Count;
+        combinedHeatMap.playerCount = heatMaps.Count;
         string combinedHeatMapJson = ConvertHeatMapDataToJson(combinedHeatMap);
 
         return combinedHeatMapJson;
@@ -89,11 +91,11 @@ public class HeatMapUtility
     /// langword="false"/>.</returns>
     public static bool IsSameGridSize(List<HeatMapData> heatMaps)
     {
-        float gridSize = heatMaps[0].heatMapCellSize;
+        float gridSize = heatMaps[0].cellSize;
 
         for (int i = 1; i < heatMaps.Count; i++)
         {
-            if (heatMaps[i].heatMapCellSize != gridSize)
+            if (heatMaps[i].cellSize != gridSize)
             {
                 Debug.LogError("Heat maps have different grid sizes. Cannot combine.");
                 return false;
@@ -113,10 +115,10 @@ public class HeatMapUtility
     /// <returns>Returns <see langword="true"/> if all the heatmap are from the same game, else returns <see langword="false">.</returns>
     public static bool IsSameGameId(List<HeatMapData> heatMaps)
     {
-        int gameId = heatMaps[0].heatMapGameId;
+        int gameId = heatMaps[0].gameId;
         for (int i = 1; i < heatMaps.Count; i++)
         {
-            if (heatMaps[i].heatMapGameId != gameId)
+            if (heatMaps[i].gameId != gameId)
             {
                 Debug.LogError("Heat maps have different game IDs. Cannot combine.");
                 return false;
@@ -199,26 +201,50 @@ public class HeatMapUtility
         {
             //global
             case WeaponType.All:
-                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.visitsGlobal) : 0;
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.vG) : 0;
 
             case WeaponType.Without:
-                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.playerWithoutWeaponVisits) : 0;
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.pWWV) : 0;
 
             //hammer
             case WeaponType.Hammer:
-                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.playerWithHammerVisits) : 0;
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.pWHV) : 0;
             
             //crosbow
             case WeaponType.Crossbow:
-                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.playerWithCrossbowVisits) : 0;
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.pWCV) : 0;
 
             //tomahawk
             case WeaponType.Tomahawk:
-                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.playerWithTomahawkVisits) : 0;
+                return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.pWTV) : 0;
             
         }
 
         Debug.LogError("Cassé");
         return 0;
+    }
+
+    public static void SaveToSmallJson(HeatMapData heatMapData)
+    {
+        List<Tuple<Tuple<float, float, float>, int, int, int, int, int>> points = new List<Tuple<Tuple<float, float, float>, int, int, int, int, int>>();
+        
+        for (int i = 0; i < heatMapData.points.Count; i++)
+        {
+            points.Add(new Tuple<Tuple<float, float, float>, int, int, int, int, int>(
+                new Tuple<float, float, float>(heatMapData.points[i].x, heatMapData.points[i].y, heatMapData.points[i].z),
+                heatMapData.points[i].vG,
+                heatMapData.points[i].pWWV,
+                heatMapData.points[i].pWHV,
+                heatMapData.points[i].pWCV,
+                heatMapData.points[i].pWTV
+            ));
+        }
+
+        Tuple<int, int, string, int, HeatMapType, List<Tuple<Tuple<float, float, float>, int, int, int, int, int>>> info = 
+            new Tuple<int, int, string, int, HeatMapType, List<Tuple<Tuple<float, float, float>, int, int, int, int, int>>>
+            (heatMapData.cellSize, heatMapData.gameId, heatMapData.gameVersion, heatMapData.playerCount, heatMapData.type, points);
+
+
+        File.WriteAllText(Application.persistentDataPath + "/heatmap - really small.json", JsonUtility.ToJson(info));
     }
 }

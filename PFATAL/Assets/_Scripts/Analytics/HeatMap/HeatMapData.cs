@@ -26,11 +26,11 @@ public enum WeaponType
 [Serializable]
 public class HeatMapData
 {
-    public int heatMapCellSize;
-    public int heatMapGameId;
-    public string heatMapGameVersion;
-    public int heatMapPlayerNumber;
-    public HeatMapType heatMapType;
+    public int cellSize;
+    public int gameId;
+    public string gameVersion;
+    public int playerCount;
+    public HeatMapType type;
 
     public List<HeatPoint> points = new List<HeatPoint>();
 
@@ -38,7 +38,7 @@ public class HeatMapData
     /// Create an empty heatMapData object with a defined size, for test mostly
     /// </summary>
     /// <param name="cellSize">Size of the heatmap</param>
-    public HeatMapData(int cellSize) => (this.heatMapCellSize) = (cellSize);
+    public HeatMapData(int cellSize) => (this.cellSize) = (cellSize);
 
     /// <summary>
     /// Create an empty heatMapData object with some basics informations about the heatMap
@@ -48,7 +48,7 @@ public class HeatMapData
     /// <param name="heatMapGameVersion">Game version when the heatmap was created</param>
     /// <param name="heatMapPlayerNumber">Number of players that particpate to make the heatmap</param>
     public HeatMapData(int cellSize, int heatMapGameId, string heatMapGameVersion, int heatMapPlayerNumber, HeatMapType mapType) => 
-        (this.heatMapCellSize, this.heatMapGameId, this.heatMapGameVersion, this.heatMapPlayerNumber, this.heatMapType) = 
+        (this.cellSize, this.gameId, this.gameVersion, this.playerCount, this.type) = 
         (cellSize, heatMapGameId, heatMapGameVersion, heatMapPlayerNumber, mapType);
 }
 
@@ -61,7 +61,7 @@ public class HeatPoint
     /// <summary>
     /// id of the heatmap where the point came from
     /// </summary>
-    public int parentHeatMapId;
+    public int pHMid;
 
     /// <summary>
     /// point coordinates
@@ -71,27 +71,27 @@ public class HeatPoint
     /// <summary>
     /// point total visit number
     /// </summary>
-    public int visitsGlobal;
+    public int vG;
 
     /// <summary>
     /// Vists of player without weapons
     /// </summary>
-    public int playerWithoutWeaponVisits;
+    public int pWWV;
 
     /// <summary>
     /// Visits of player with hammer
     /// </summary>
-    public int playerWithHammerVisits;
+    public int pWHV;
 
     /// <summary>
     /// Visits of player with crossbow
     /// </summary>
-    public int playerWithCrossbowVisits;
+    public int pWCV;
 
     /// <summary>
     /// Visits of player with tomahawk
     /// </summary>
-    public int playerWithTomahawkVisits;
+    public int pWTV;
 
     /// <summary>
     /// Create a new point with x, y and z coordinates, initialize the total visits number to 1
@@ -99,7 +99,7 @@ public class HeatPoint
     /// <param name="x">X coordinate of the point</param>
     /// <param name="y">Y coordinate of the point</param>
     /// <param name="z">Z coordinate of the point</param>
-    public HeatPoint(float x, float y, float z) => (this.x, this.y, this.z, this.visitsGlobal) = (x, y, z, 1);
+    public HeatPoint(float x, float y, float z) => (this.x, this.y, this.z, this.vG) = (x, y, z, 1);
 
     /// <summary>
     /// Create a new points with x, y and z cordinates, and informations about players that visits it
@@ -112,6 +112,6 @@ public class HeatPoint
     /// <param name="crossbowVisit">Visits of player with crossbow</param>
     /// <param name="tomahawkVisits">Visits of player with tomahawk</param>
     public HeatPoint(float x, float y, float z, int visitsGlobal, int noWeaponsVisits, int hammerVisit, int crossbowVisit, int tomahawkVisits) => 
-        (this.x, this.y, this.z, this.visitsGlobal, this.playerWithoutWeaponVisits, this.playerWithHammerVisits, this.playerWithCrossbowVisits, this.playerWithTomahawkVisits) = 
+        (this.x, this.y, this.z, this.vG, this.pWWV, this.pWHV, this.pWCV, this.pWTV) = 
         (x, y, z, visitsGlobal, noWeaponsVisits, hammerVisit, crossbowVisit, tomahawkVisits);
 }

@@ -162,17 +162,17 @@ public class HeatMapWindow : EditorWindow
                     //UnityEngine.Debug.Log(
                     //    $"Iterating HeatMapData list, list number : {i}, GameVersion : {map.heatMapGameVersion} {gameVersion == "0" || gameVersion == map.heatMapGameVersion}" +
                     //    $", Player Number : {map.heatMapPlayerNumber} {playerNumber == 0 || playerNumber == map.heatMapPlayerNumber}.");
-                    if (!(gameVersion == "0" || gameVersion == map.heatMapGameVersion))
+                    if (!(gameVersion == "0" || gameVersion == map.gameVersion))
                     {
                         //UnityEngine.Debug.Log($"Condition gameVersion : {gameVersion == "0" || gameVersion == map.heatMapGameVersion}");
                         continue;
                     }
-                    if (!(playerNumber == 0 || playerNumber == map.heatMapPlayerNumber))
+                    if (!(playerNumber == 0 || playerNumber == map.playerCount))
                     {
                         //UnityEngine.Debug.Log($"Condition playerNumber : {playerNumber == 0 || playerNumber == map.heatMapPlayerNumber}");
                         continue;
                     }
-                    if (!(gameId == 0 || gameId == map.heatMapGameId))
+                    if (!(gameId == 0 || gameId == map.gameId))
                     {
                         //UnityEngine.Debug.Log($"Condition game id : {gameId == 0 || gameId == map.heatMapGameId}");
                         continue;
@@ -250,7 +250,7 @@ public class HeatMapWindow : EditorWindow
             HeatMapUtility.ConvertJsonToHeatMapData(File.ReadAllText(Path.Combine(Application.persistentDataPath + "/HeatMapFolder/" + fileNameForTexture3D)));
 
         //get the size of the heatMap
-        int size = baseHeatMapUseToGenerate.heatMapCellSize;
+        int size = baseHeatMapUseToGenerate.cellSize;
 
         //set up textureSize, divide it by box Size
         Texture3D texture3D = new((int)boundsSize.x, (int)boundsSize.y, (int)boundsSize.z, TextureFormat.RFloat, false);
@@ -275,11 +275,11 @@ public class HeatMapWindow : EditorWindow
                     (point.x != 0 ? point.x / size : 0),
                     (point.y != 0 ? point.y / size : 0),
                     (point.z != 0 ? point.z / size : 0),
-                    point.visitsGlobal,
-                    point.playerWithoutWeaponVisits,
-                    point.playerWithHammerVisits,
-                    point.playerWithCrossbowVisits,
-                    point.playerWithTomahawkVisits
+                    point.vG,
+                    point.pWWV,
+                    point.pWHV,
+                    point.pWCV,
+                    point.pWTV
             );
 
             /*UnityEngine.Debug.Log($"Point X : {point.x}, Y : {point.y}, Z : {point.z}," +
@@ -322,7 +322,7 @@ public class HeatMapWindow : EditorWindow
 
             if (!texture3DHasFilters)
             {
-                pixelColor = Color.Lerp(Color.black, Color.white, (float)point.visitsGlobal / attenuationInt);
+                pixelColor = Color.Lerp(Color.black, Color.white, (float)point.vG / attenuationInt);
                 textureName = "AllPlayerType";
             }
             else
@@ -331,23 +331,23 @@ public class HeatMapWindow : EditorWindow
                 {
                     case WeaponType.All:
                         UnityEngine.Debug.LogWarning("Tu t'es chié dessus frérot mais tkt ça marche quand même");
-                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.visitsGlobal / attenuationInt);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.vG / attenuationInt);
                         textureName = "AllPlayerType";
                         break;
                     case WeaponType.Without:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithoutWeaponVisits / attenuationInt);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.pWWV / attenuationInt);
                         textureName = "NoWeapons";
                         break;
                     case WeaponType.Hammer:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithHammerVisits / attenuationInt);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.pWHV / attenuationInt);
                         textureName = "HammerPlayer";
                         break;
                     case WeaponType.Crossbow:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithCrossbowVisits / attenuationInt);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.pWCV / attenuationInt);
                         textureName = "CrossbowPlayer";
                         break;
                     case WeaponType.Tomahawk:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithTomahawkVisits / attenuationInt);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.pWTV / attenuationInt);
                         textureName = "TomahawkPlayer";
                         break;
                 }

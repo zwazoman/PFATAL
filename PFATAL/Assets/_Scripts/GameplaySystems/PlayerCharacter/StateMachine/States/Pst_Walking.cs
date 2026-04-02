@@ -23,7 +23,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             Vector3 targetVelocity = 
                 ctx.inputs.movementInput.x*transform.right 
                 + ctx.inputs.movementInput.y * transform.forward; 
-            targetVelocity *= _walkSpeed;
+            targetVelocity *= _walkSpeed * ctx.movement.globalMovespeedMultiplyer;
             
             //compute acceleration
             float accelerationScale = Vector3.Dot(ctx.physics.Velocity.normalized, targetVelocity.normalized);

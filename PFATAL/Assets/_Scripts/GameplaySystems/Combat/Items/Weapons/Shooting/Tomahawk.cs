@@ -52,6 +52,7 @@ public class Tomahawk : ProjectileWeapon
 
         Vector3 dashDirection = (_tomahawkProj.transform.position - playerCharacter.transform.position).normalized;
 
+        playerCharacter.physics.SetVelocity(Vector3.zero);
         playerCharacter.physics.AddImpulse(dashDirection * _dashStrength);
 
         _tomahawkProj.TryGetComponent(out Proj_Tomahawk proj);

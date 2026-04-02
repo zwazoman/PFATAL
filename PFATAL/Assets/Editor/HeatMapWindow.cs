@@ -162,17 +162,17 @@ public class HeatMapWindow : EditorWindow
                     //UnityEngine.Debug.Log(
                     //    $"Iterating HeatMapData list, list number : {i}, GameVersion : {map.heatMapGameVersion} {gameVersion == "0" || gameVersion == map.heatMapGameVersion}" +
                     //    $", Player Number : {map.heatMapPlayerNumber} {playerNumber == 0 || playerNumber == map.heatMapPlayerNumber}.");
-                    if (!(gameVersion == "0" || gameVersion == map.heatMapGameVersion))
+                    if (!(gameVersion == "0" || gameVersion == map.gameVersion))
                     {
                         //UnityEngine.Debug.Log($"Condition gameVersion : {gameVersion == "0" || gameVersion == map.heatMapGameVersion}");
                         continue;
                     }
-                    if (!(playerNumber == 0 || playerNumber == map.heatMapPlayerNumber))
+                    if (!(playerNumber == 0 || playerNumber == map.playerCount))
                     {
                         //UnityEngine.Debug.Log($"Condition playerNumber : {playerNumber == 0 || playerNumber == map.heatMapPlayerNumber}");
                         continue;
                     }
-                    if (!(gameId == 0 || gameId == map.heatMapGameId))
+                    if (!(gameId == 0 || gameId == map.gameId))
                     {
                         //UnityEngine.Debug.Log($"Condition game id : {gameId == 0 || gameId == map.heatMapGameId}");
                         continue;
@@ -250,7 +250,7 @@ public class HeatMapWindow : EditorWindow
             HeatMapUtility.ConvertJsonToHeatMapData(File.ReadAllText(Path.Combine(Application.persistentDataPath + "/HeatMapFolder/" + fileNameForTexture3D)));
 
         //get the size of the heatMap
-        int size = baseHeatMapUseToGenerate.heatMapCellSize;
+        int size = baseHeatMapUseToGenerate.cellSize;
 
         //set up textureSize, divide it by box Size
         Texture3D texture3D = new((int)boundsSize.x, (int)boundsSize.y, (int)boundsSize.z, TextureFormat.RFloat, false);
@@ -271,15 +271,17 @@ public class HeatMapWindow : EditorWindow
         HeatMapData heatMapAtCellSizeOfOne = new(1);
         foreach (HeatPoint point in baseHeatMapUseToGenerate.points)
         {
-            HeatPoint newPoint = new HeatPoint(
-                    (point.x != 0 ? point.x / size : 0),
-                    (point.y != 0 ? point.y / size : 0),
-                    (point.z != 0 ? point.z / size : 0),
-                    point.visitsGlobal,
-                    point.playerWithoutWeaponVisits,
-                    point.playerWithHammerVisits,
-                    point.playerWithCrossbowVisits,
-                    point.playerWithTomahawkVisits
+            HeatPoint newPoint = new HeatPoint(new List<int>
+                    {
+                        (point.P[0] != 0 ? point.P[0] / size : 0),
+                        (point.P[1] != 0 ? point.P[1] / size : 0),
+                        (point.P[2] != 0 ? point.P[2] / size : 0),
+                    },
+                    //point.G,
+                    point.W,
+                    point.H,
+                    point.C,
+                    point.T
             );
 
             /*UnityEngine.Debug.Log($"Point X : {point.x}, Y : {point.y}, Z : {point.z}," +
@@ -322,7 +324,7 @@ public class HeatMapWindow : EditorWindow
 
             if (!texture3DHasFilters)
             {
-                pixelColor = Color.Lerp(Color.black, Color.white, (float)point.visitsGlobal / attenuationInt);
+                pixelColor = Color.Lerp(Color.black, Color.white, (float)point.GetGlobalVisits() / attenuationInt);
                 textureName = "AllPlayerType";
             }
             else
@@ -331,23 +333,23 @@ public class HeatMapWindow : EditorWindow
                 {
                     case WeaponType.All:
                         UnityEngine.Debug.LogWarning("Tu t'es chié dessus frérot mais tkt ça marche quand même");
-                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.visitsGlobal / attenuationInt);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.GetGlobalVisits() / attenuationInt);
                         textureName = "AllPlayerType";
                         break;
                     case WeaponType.Without:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithoutWeaponVisits / attenuationInt);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.W / attenuationInt);
                         textureName = "NoWeapons";
                         break;
                     case WeaponType.Hammer:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithHammerVisits / attenuationInt);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.H / attenuationInt);
                         textureName = "HammerPlayer";
                         break;
                     case WeaponType.Crossbow:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithCrossbowVisits / attenuationInt);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.C / attenuationInt);
                         textureName = "CrossbowPlayer";
                         break;
                     case WeaponType.Tomahawk:
-                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.playerWithTomahawkVisits / attenuationInt);
+                        pixelColor = Color.Lerp(Color.black, Color.white, (float)point.T / attenuationInt);
                         textureName = "TomahawkPlayer";
                         break;
                 }
@@ -368,9 +370,9 @@ public class HeatMapWindow : EditorWindow
             Vector3 boxMin = bounds.m_Bounds.center - boundsSize / 2f;
             Vector3 size2 = boundsSize;
 
-            int x1 = Mathf.FloorToInt((point.x - boxMin.x) / size2.x * texture3D.width) ;
-            int y1 = Mathf.FloorToInt((point.y - boxMin.y) / size2.y * texture3D.height);
-            int z1 = Mathf.FloorToInt((point.z - boxMin.z) / size2.z * texture3D.depth) ;
+            int x1 = Mathf.FloorToInt((point.P[0] - boxMin.x) / size2.x * texture3D.width) ;
+            int y1 = Mathf.FloorToInt((point.P[1] - boxMin.y) / size2.y * texture3D.height);
+            int z1 = Mathf.FloorToInt((point.P[2] - boxMin.z) / size2.z * texture3D.depth) ;
 
             int x = Mathf.Clamp(x1, 0, texture3D.width - 1) ;
             int y = Mathf.Clamp(y1, 0, texture3D.height - 1);

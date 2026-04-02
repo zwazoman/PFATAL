@@ -53,7 +53,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
                 Vector3 playerPos = player.transform.position;
                 player.TryGetComponent(out PlayerCharacter playerCharacter);
 
-                
+
 
                 if (!mapBoundsObject.m_Bounds.Contains(playerPos))
                 {
@@ -63,52 +63,55 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
                 //search if point already exist in the list
                 var point = _theRealHeatMap.points.FirstOrDefault(p =>
-                    p.x == Mathf.Round(playerPos.x / gridSize) * gridSize &&
-                    p.y == Mathf.Round(playerPos.y / gridSize) * gridSize &&
-                    p.z == Mathf.Round(playerPos.z / gridSize) * gridSize);
+                    p.P[0] == Mathf.Round(playerPos.x / gridSize) * gridSize &&
+                    p.P[1] == Mathf.Round(playerPos.y / gridSize) * gridSize &&
+                    p.P[2] == Mathf.Round(playerPos.z / gridSize) * gridSize);
 
                 //if already exist, we increment the vists number, else we create a new point
                 if (point != null)
                 {
-                    point.visitsGlobal++;
+                    //point.vG++;
                     switch (GetPlayerWeaponType(playerCharacter))
                     {
                         case WeaponType.Without:
-                            point.playerWithoutWeaponVisits++;
+                            point.W++;
                             break;
 
                         case WeaponType.Hammer:
-                            point.playerWithHammerVisits++;
+                            point.H++;
                             break;
                         case WeaponType.Crossbow:
-                            point.playerWithCrossbowVisits++;
+                            point.C++;
                             break;
                         case WeaponType.Tomahawk:
-                            point.playerWithTomahawkVisits++;
+                            point.T++;
                             break;
                     }
                 }
                 else
                 {
-                    HeatPoint newPoint = new HeatPoint(
-                        Mathf.Round(playerPos.x / gridSize) * gridSize,
-                        Mathf.Round(playerPos.y / gridSize) * gridSize,
-                        Mathf.Round(playerPos.z / gridSize) * gridSize);
+                    HeatPoint newPoint = new HeatPoint(new List<int>()
+                    {
+                        (int)Mathf.Round(playerPos.x / gridSize) * gridSize,
+                        (int)Mathf.Round(playerPos.y / gridSize) * gridSize,
+                        (int)Mathf.Round(playerPos.z / gridSize) * gridSize 
+                    });
+            
 
                     switch (GetPlayerWeaponType(playerCharacter))
                     {
                         case WeaponType.Without:
-                            newPoint.playerWithoutWeaponVisits++;
+                            newPoint.W++;
                             break;
 
                         case WeaponType.Hammer:
-                            newPoint.playerWithHammerVisits++;
+                            newPoint.H++;
                             break;
                         case WeaponType.Crossbow:
-                            newPoint.playerWithCrossbowVisits++;
+                            newPoint.C++;
                             break;
                         case WeaponType.Tomahawk:
-                            newPoint.playerWithTomahawkVisits++;
+                            newPoint.T++;
                             break;
                     }
                     _theRealHeatMap.points.Add(newPoint);
@@ -179,13 +182,13 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
         if (!show) return;
 
-        float size = _theRealHeatMap.heatMapCellSize;
+        float size = _theRealHeatMap.cellSize;
         foreach (var point in _theRealHeatMap.points)
         {
             //Gizmos.color = Color.Lerp(Color.blue, Color.red, point.visits / MaxVisits());
-            UnityEngine.Debug.Log(point.visitsGlobal / HeatMapUtility.MaxVisits(_theRealHeatMap, WeaponType.All));
-            Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.visitsGlobal / 10);
-            Gizmos.DrawWireCube(new Vector3(point.x, point.y, point.z), new Vector3(size, size, size));
+            UnityEngine.Debug.Log(point.GetGlobalVisits() / HeatMapUtility.MaxVisits(_theRealHeatMap, WeaponType.All));
+            Gizmos.color = Color.Lerp(Color.blue, Color.red, (float)point.GetGlobalVisits() / 10);
+            Gizmos.DrawWireCube(new Vector3(point.P[0], point.P[1], point.P[2]), new Vector3(size, size, size));
         }
     }
 

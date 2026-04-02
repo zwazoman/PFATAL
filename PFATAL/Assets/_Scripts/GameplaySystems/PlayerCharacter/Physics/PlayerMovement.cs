@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public float globalMovespeedMultiplyer = 1;
+
     [Header("Scene References")]
     [SerializeField] private PlayerCharacter _playerCharacter;
 

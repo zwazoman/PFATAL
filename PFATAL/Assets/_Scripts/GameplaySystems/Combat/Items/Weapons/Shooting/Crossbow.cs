@@ -15,7 +15,7 @@ public class Crossbow : ProjectileWeapon
     [SerializeField] float _maxChargeTime = 1.5f;
     [SerializeField] float _chargeZoomThreshold = .3f;
     [SerializeField] float _chargeStartThreshold = .1f;
-    [SerializeField] float _chargeSpeedMultiplyer = .3f;
+    [SerializeField] float _chargeSpeedMaxMultiplyer = .7f;
     [SerializeField] Vector2 _CameraRecoilStrength;
 
     bool _startedCharging = false;
@@ -37,7 +37,7 @@ public class Crossbow : ProjectileWeapon
         _cameraFovOffset = 0;
         _fovOffsetVelocity = 0;
 
-        //todo => reset la speed du joueur
+        playerCharacter.movement.globalMovespeedMultiplyer = 1;
     }
 
     protected virtual void Update()
@@ -64,12 +64,11 @@ public class Crossbow : ProjectileWeapon
         {
             OnStartCharging?.Invoke();
             _startedCharging = true;
-
-            //todo => slow le joueur
-            //playerCharacter.stateMachine.s_Walking._walkSpeed *= _chargeSpeedMultiplyer;
         }
-        
-        if(_chargeValue >= 1 )
+
+        playerCharacter.movement.globalMovespeedMultiplyer =  1 - _chargeSpeedMaxMultiplyer * _chargeValue;
+
+        if (_chargeValue >= 1 )
         {
             OnCharged?.Invoke();
 
@@ -96,7 +95,9 @@ public class Crossbow : ProjectileWeapon
         _chargeValue = 0;
         _isCharged = false;
         _startedCharging = false;
-        //todo => reset la speed du joueur
+
+        playerCharacter.movement.globalMovespeedMultiplyer = 1;
+
 
         base.StopUsing();
     }

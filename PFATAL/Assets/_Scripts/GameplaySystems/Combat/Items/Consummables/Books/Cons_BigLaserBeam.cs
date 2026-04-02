@@ -1,4 +1,3 @@
-using Unity.Netcode;
 using UnityEngine;
 
 public class Cons_BigLaserBeam : Consummable
@@ -9,27 +8,37 @@ public class Cons_BigLaserBeam : Consummable
     [Header("Network")]
     [SerializeField] private GameObject _laserProjectilePrefab;
 
+    public override void StartUsing()
+    {
+        if (!playerCharacter.IsOwner) return;
+
+        playerCharacter.stateMachine.TransitionTo(playerCharacter.stateMachine.s_Frozen);
+        Debug.Log("Je Change de State Pour S_FROZEN");
+        base.StartUsing();
+    }
+
     public override void StopUsing()
     {
+        if (!playerCharacter.IsOwner) return;
+
         Transform cam = playerCharacter.playerCamera.transform;
         float chargeRatio = Mathf.Clamp01(holdDuration / _maxChargeTime);
 
-        FireLaserRpc(cam.position, cam.forward, chargeRatio);
+        SpawnContext context = new SpawnContext(playerCharacter.OwnerClientId)
+        {
+            floatData = chargeRatio,
+            floatData2 = playerCharacter.OwnerClientId // sourceId
+        };
+
+        Summoner.Instance.SpawnObject(
+            _laserProjectilePrefab,
+            cam.position,
+            Quaternion.LookRotation(cam.forward),
+            false,
+            context
+        );
 
         base.StopUsing();
         BreakItem();
-    }
-
-    [Rpc(SendTo.Server)]
-    void FireLaserRpc(Vector3 origin, Vector3 direction, float chargeRatio)
-    {
-        GameObject obj = Instantiate(_laserProjectilePrefab, origin, Quaternion.LookRotation(direction));
-        NetworkObject netObj = obj.GetComponent<NetworkObject>();
-        netObj.Spawn();
-
-        if (obj.TryGetComponent(out Proj_BigLaserBeam laser))
-        {
-            laser.Fire(origin, direction, chargeRatio, playerCharacter.OwnerClientId);
-        }
     }
 }

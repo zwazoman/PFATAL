@@ -171,6 +171,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
     public void SaveHeatMap()
     {
         File.WriteAllText(_filePath, JsonUtility.ToJson(_theRealHeatMap));
+        UnityEngine.Debug.Log("Heatmap data saved to: " + _filePath);
     }
 
     #region Debug

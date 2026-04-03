@@ -18,6 +18,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             ctx.SwapActionMapToUI();
             ctx.physics.SetVelocity(Vector3.zero);
             ctx.inputs.Clear();
+            ctx.playerInteraction.canInteract = false;
             ctx.HUD.ShowDeathUI();
             ctx.visuals.HideRpc();
             
@@ -37,6 +38,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 _respawn = false;
                 ctx.SwapActionMapToPlayer();
                 ctx.HUD.HideDeathUI();
+                ctx.playerInteraction.canInteract = true;
                 ctx.health.Heal();
                 ctx.playerHands.TryEquipRandomWeapon();
                 ctx.visuals.ShowRpc();

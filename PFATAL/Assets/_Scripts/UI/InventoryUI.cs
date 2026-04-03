@@ -4,15 +4,19 @@ using UnityEngine;
 public class InventoryUI : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] Hand _leftHand;
+    [SerializeField] HUDManager _hud;
     [SerializeField] TMP_Text _inventoryText;
+
+    Hand leftHand;
 
     private void Start()
     {
         ClearText();
 
-        _leftHand.OnUnequipItem += EditText;
-        _leftHand.OnDeleteItem += ClearText;
+        leftHand = _hud.playerCharacter.playerHands.leftHand;
+
+        leftHand.OnUnequipItem += EditText;
+        leftHand.OnDeleteItem += ClearText;
     }
 
     void ClearText()
@@ -22,7 +26,7 @@ public class InventoryUI : MonoBehaviour
 
     void EditText(Item item)
     {
-        if (_leftHand.itemInventory.Count >= 1)
+        if (leftHand.itemInventory.Count >= 1)
             _inventoryText.text = item.gameObject.name;
         else
             ClearText();

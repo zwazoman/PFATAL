@@ -172,8 +172,12 @@ public abstract class GameRulesBase
     public PlayerCharacter GetPlayerCharacter(ulong playerClientId)
     {
         if (!_players.ContainsKey(playerClientId))
+        {
             Debug.LogError("wrong player client ID");
+            return null;
+        }
 
+        Debug.Log(_players[playerClientId].Character);
         return _players[playerClientId].Character;
     }
 

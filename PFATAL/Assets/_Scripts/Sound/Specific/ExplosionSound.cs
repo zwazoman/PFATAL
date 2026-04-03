@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent (typeof(Explosion))]
 public class ExplosionSound : SoundComponent<Explosion>
 {
     override protected void LinkEvents()

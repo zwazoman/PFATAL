@@ -32,7 +32,7 @@ public class MeleeWeapon : Item
                         continue;
 
                     _hitDamageables.Add(damageable);
-                    ApplyHitRpc(damageable);
+                    ApplyHitRpc(damageable, playerCharacter.OwnerClientId);
                 }
             }
         }
@@ -40,7 +40,7 @@ public class MeleeWeapon : Item
             _hitDamageables.Clear();
     }
 
-    protected virtual void ApplyHitRpc(DamageableObject damageable) { }
+    protected virtual void ApplyHitRpc(DamageableObject damageable, ulong attackerId) { }
 
 
     private void OnDrawGizmos()

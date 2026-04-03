@@ -53,6 +53,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 60
   Length: 0
+--- !u!114 &-5221521564126636611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI/HitMarker
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/UI/HitMarker
+  Guid:
+    Data1: 1533784154
+    Data2: 1178042107
+    Data3: -1244255318
+    Data4: 130767142
+  Banks:
+  - {fileID: -2518904041505098000}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-5203072755018177848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,10 +193,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639101285054848917
+  lastModified: 639107350967167893
   FileSizes:
   - Name: Desktop
-    Value: 78592
+    Value: 119808
   Exists: 1
 --- !u!114 &-1948066595381190723
 MonoBehaviour:
@@ -248,12 +275,13 @@ MonoBehaviour:
   - {fileID: 1196947331750624841}
   - {fileID: 7294639390285380656}
   - {fileID: -4452833864905638479}
+  - {fileID: -5221521564126636611}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1373530535141412940}
   StringsBanks:
   - {fileID: 7971645662156069631}
-  cacheTime: 639102029528627886
+  cacheTime: 639107350967167893
   cacheVersion: 131635
 --- !u!114 &454870796024394520
 MonoBehaviour:
@@ -364,7 +392,7 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639102029528603014
+  lastModified: 639107342840887047
   FileSizes:
   - Name: Desktop
     Value: 5348
@@ -615,10 +643,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639102029528627886
+  lastModified: 639107342840957852
   FileSizes:
   - Name: Desktop
-    Value: 1768
+    Value: 1810
   Exists: 1
 --- !u!114 &8015081236418152981
 MonoBehaviour:

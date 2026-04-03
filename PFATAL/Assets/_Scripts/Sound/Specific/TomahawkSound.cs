@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Tomahawk))]
 public class TomahawkSound : SoundComponent<Tomahawk>
 {
     override protected void LinkEvents()

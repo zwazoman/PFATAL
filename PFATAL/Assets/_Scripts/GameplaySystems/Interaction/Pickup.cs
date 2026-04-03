@@ -20,11 +20,13 @@ public class Pickup : Interactable
     [Header("Settings")]
     [SerializeField] float _lifeTime = 5f;
 
+    [HideInInspector] public bool despawns = true;
+
     float _timer;
 
     private void Update()
     {
-        //if (!IsServer)
+        //if (!IsServer && !despawns)
         //    return;
 
         //_timer += Time.deltaTime;

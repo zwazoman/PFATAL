@@ -86,6 +86,7 @@ public class Proj_Falling : Projectile
                     DamageData data = new();
                     data.Point = _hitBuffer[i].point;
                     data.Direction = transform.forward;
+                    data.SourcePos = GameManager.Instance.GetPlayerCharacter(spawnContext.Value.spawnerClientID).transform.position;
                     data.Amount = damageAmount;
                     data.Radius = 1;
                     data.SourcePlayerClientID = spawnContext.Value.spawnerClientID;

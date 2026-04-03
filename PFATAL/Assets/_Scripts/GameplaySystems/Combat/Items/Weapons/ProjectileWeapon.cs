@@ -16,7 +16,6 @@ public class ProjectileWeapon : Item
     [SerializeField] protected LayerMask shootRayLayerMask;
 
     protected bool canShoot = true;
-    float _timer;
 
     /// <summary>
     /// g�re le delay entre 2 tirs
@@ -25,15 +24,9 @@ public class ProjectileWeapon : Item
     {
         canShoot = false;
 
-        while (_timer < shootDelay)
-        {
-            _timer += Time.deltaTime;
-            await Awaitable.NextFrameAsync();
-        }
-        _timer = 0;
+        await Awaitable.WaitForSecondsAsync(shootDelay);
 
         OnShootDelayEnd?.Invoke();
-
         canShoot = true;
     }
 

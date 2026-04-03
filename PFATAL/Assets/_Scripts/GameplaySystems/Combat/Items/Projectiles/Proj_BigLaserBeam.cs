@@ -23,6 +23,7 @@ public class Proj_BigLaserBeam : Projectile
                 DamageData damage = new DamageData(
                     amount:               _maxDamage * chargeRatio,
                     point:                hit.point,
+                    sourcePos:            GameManager.Instance.GetPlayerCharacter(spawnContext.Value.spawnerClientID).transform.position,
                     direction:            transform.forward,
                     sourcePlayerClientID: sourceId
                 );

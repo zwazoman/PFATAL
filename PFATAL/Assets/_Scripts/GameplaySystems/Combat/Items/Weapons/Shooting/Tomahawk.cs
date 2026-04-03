@@ -17,7 +17,6 @@ public class Tomahawk : ProjectileWeapon
 
     bool _dashed = false;
     bool _canDash = true;
-    bool holdingKey = false;
 
     public override void Equip()
     {
@@ -25,7 +24,6 @@ public class Tomahawk : ProjectileWeapon
 
         _dashed = false;
         _canDash = true;
-        holdingKey = false;
 
         _tomahawkProj = null;
     }
@@ -57,6 +55,8 @@ public class Tomahawk : ProjectileWeapon
     void DashTowardsProj()
     {
         _dashed = true;
+
+        OnDash?.Invoke();
 
         Vector3 dashDirection = (_tomahawkProj.transform.position - playerCharacter.transform.position).normalized;
 

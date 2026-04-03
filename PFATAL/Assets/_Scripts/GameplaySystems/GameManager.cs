@@ -94,7 +94,6 @@ public class GameManager : NetworkBehaviour
                     break;
                 default:
                     throw new Exception("Game Mode not set");
-                    break;
             };
 
             print("Link gamerules events");

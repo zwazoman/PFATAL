@@ -21,6 +21,8 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             ctx.inputs.Clear();
             ctx.HUD.ShowDeathUI();
 
+            ctx.playerInteraction.canInteract = false;
+
             //nettoie les mains et drop le consommable actuel
             ctx.playerHands.leftHand.DropEquippedtem();
             ctx.playerHands.ClearHands();
@@ -38,6 +40,8 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 ctx.SwapActionMapToPlayer();
                 ctx.ShowPlayerRpc();
                 ctx.HUD.HideDeathUI();
+                ctx.playerInteraction.canInteract = false;
+
                 ctx.health.Heal();
                 ctx.playerHands.TryEquipRandomWeapon();
                 PlayerCharacterSpawner.Instance.ReSpawnPlayer(ctx);

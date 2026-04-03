@@ -52,6 +52,9 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
+        if (!canInteract)
+            return;
+
         //Contact detection
         int contactSize = Physics.OverlapSphereNonAlloc(transform.position, 1,_contactColliderBuffer, _interactionmask);
 

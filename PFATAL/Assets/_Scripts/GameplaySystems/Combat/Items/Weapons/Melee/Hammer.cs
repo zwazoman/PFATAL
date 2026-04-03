@@ -121,7 +121,10 @@ public class Hammer : MeleeWeapon
     async void HandleDashDelay()
     {
         _canDash = false;
+
         await Awaitable.WaitForSecondsAsync(_dashCooldown);
+
+        OnDashCooledUp?.Invoke();
         _canDash = true;
     }
 

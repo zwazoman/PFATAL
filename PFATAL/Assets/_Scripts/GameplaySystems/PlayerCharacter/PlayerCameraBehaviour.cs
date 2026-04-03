@@ -33,8 +33,6 @@ public class PlayerCameraBehaviour : MonoBehaviour
     private float _fov;
     private float _tempFovOffset = 0;
     
-    
-
     void Awake()
     {
         _playerCharacter.health.OnDamageTaken += ApplyAimPuchRecoil;
@@ -43,10 +41,8 @@ public class PlayerCameraBehaviour : MonoBehaviour
     
     private void ApplyAimPuchRecoil(DamageData damageData)
     {
-        print("ahhhh j'ai maaal au secouuurs je meurs ..");
         Vector3 worldVector = (_aimPuchBodyCenterReference.position - damageData.Point).normalized;
-        Vector2 cameraVector = _cam.worldToCameraMatrix* worldVector
-                                                       * damageData.Amount/_playerCharacter.health.MaxHP;
+        Vector2 cameraVector = _cam.worldToCameraMatrix* worldVector * damageData.Amount/_playerCharacter.health.MaxHP;
         AddRecoil(Vector2.Scale(cameraVector+_aimPunchDirectionOffset,_aimPunchMultiplier));
     }
     

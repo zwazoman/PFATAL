@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using _scripts.PlayerCharacter;
 using _scripts.PlayerCharacter.StateMachine.States;
 using _Scripts.StateMachine;
@@ -6,6 +8,7 @@ using UnityEngine;
 
 public class PlayerStateMachine : StateMachine<PlayerCharacter>
 {
+    public List<PlayerState> AllStates { get; private set; } = new();
     
     [Space(20)]
     public Pst_Idle s_Idle;
@@ -13,9 +16,8 @@ public class PlayerStateMachine : StateMachine<PlayerCharacter>
     public Pst_Falling s_Falling;
     public Pst_Jumping s_Jumping;
     public Pst_Dead s_dead;
-    public Pst_GameOver s_GameOver;
-    //public Pst_Running s_running;
     public Pst_Frozen s_Frozen;
+    public Pst_GameOver s_GameOver;
     
     void SetUpStates()
     {
@@ -25,19 +27,23 @@ public class PlayerStateMachine : StateMachine<PlayerCharacter>
         s_Jumping ??= new();
         s_dead ??= new();
         s_GameOver ??= new();
-        //s_running ??= new();
         s_Frozen ??= new();
 
-        s_Idle.SetUp(this);
-        s_Walking.SetUp(this);
-        s_Falling.SetUp(this);
-        s_Jumping.SetUp(this);
-        s_dead.SetUp(this);
-        s_GameOver.SetUp(this);
-        //s_running.SetUp(this);
-        s_Frozen.SetUp(this);
+        InitializeState(s_Idle);
+        InitializeState(s_Walking);
+        InitializeState(s_Falling);
+        InitializeState(s_Jumping);
+        InitializeState(s_dead);
+        InitializeState(s_GameOver);
+        InitializeState(s_Frozen);
     }
 
+    void InitializeState(PlayerState state)
+    {
+        state.SetUp(this);
+        AllStates.Add(state);
+    }
+    
     private void Awake()
     {
         SetUpStates();

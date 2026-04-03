@@ -13,15 +13,17 @@ namespace _scripts.PlayerCharacter
     public class PlayerCharacter : NetworkBehaviour
     {
         [Header("Scene References")] 
-        public PlayerPhysics physics;
-        public PlayerMovement movement;
-        public PlayerCharacterInputs inputs;
-        public PlayerStateMachine stateMachine;
-        public NetworkObject networkObject;
-        public DamageableObject health;
-
-        public HUDManager HUD;
+        [field: SerializeField] public PlayerPhysics physics  { get; private set; }
+        [field: SerializeField] public PlayerMovement movement  { get; private set; }
+        [field: SerializeField] public PlayerCharacterInputs inputs  { get; private set; }
+        [field: SerializeField] public PlayerStateMachine stateMachine  { get; private set; }
+        [field: SerializeField] public PlayerCharacterNetworkStateMachineCallback replicatedStateMachineCallbacks  { get; private set; }
+        
+        [field: SerializeField] public NetworkObject networkObject  { get; private set; }
+        [field: SerializeField] public DamageableObject health  { get; private set; }
+        [field: SerializeField] public HUDManager HUD  { get; private set; }
         [field: SerializeField] public Camera playerCamera { get; private set; }
+        [field: SerializeField] public PlayerCharacterVisuals visuals { get; private set; }
         [field:SerializeField] public StudioListener listener { get; private set; }
         [field: SerializeField] public PlayerCameraBehaviour cameraBehaviour { get; private set; }
         [field: SerializeField] public PlayerInput playerInput { get; private set; }
@@ -82,27 +84,6 @@ namespace _scripts.PlayerCharacter
             Cursor.lockState = CursorLockMode.Locked;
             playerInput.SwitchCurrentActionMap("Player");
         }
-        //========
-
-        //==todo : mettre ça dans PlayerCharacterVisuals==
-
-        [SerializeField] List<GameObject> _visualObjects;
-        
-        [Rpc(SendTo.Everyone)]
-        public void HidePlayerRpc()
-        {
-            foreach (var obj in _visualObjects)
-                obj.SetActive(false);
-        }
-
-        [Rpc(SendTo.Everyone)]
-        public void ShowPlayerRpc()
-        {
-            foreach (var obj in _visualObjects)
-                obj.SetActive(true);
-        }
-        
-        //===============
     }
 
 }

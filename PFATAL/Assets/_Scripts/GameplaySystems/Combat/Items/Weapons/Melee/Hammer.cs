@@ -1,22 +1,31 @@
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using System;
 
 public class Hammer : MeleeWeapon
 {
+    public event Action OnDashCooledUp;
+
     [Header("Hammer References")]
     [SerializeField] Animator _animator;
     [SerializeField] HammerEventReceiver _eventReceiver;
 
     [Header("Hammer Settings")]
+
+    [SerializeField] float _knockbackStrength = 10;
+
+    [Header("Dash Settings")]
+    [SerializeField] float _dashCooldown = 1.5f;
     [SerializeField] float _dashChargedDuration;
     [SerializeField] float _dashStrength = 7;
     [SerializeField] float _dashDmgMult = .8f;
-    [SerializeField] float _knockbackStrength = 10;
+    [SerializeField] float _dashDotThreshold = 0f;
 
-    bool _dashed;
     bool _charged;
     bool _isAttacking;
+    bool _canDash = true;
+    bool _dashed;
 
     public override void Equip()
     {
@@ -28,6 +37,7 @@ public class Hammer : MeleeWeapon
         _dashed = false;
         _isAttacking = false;
         isHitting = false;
+        _canDash = true;
 
         _eventReceiver.OnHitStart += StartHitting;
         _eventReceiver.OnHitEnd += StopHitting;
@@ -70,7 +80,7 @@ public class Hammer : MeleeWeapon
     {
         base.UseUpdate();
 
-        if(holdDuration >= _dashChargedDuration && !_charged && !_isAttacking)
+        if(holdDuration >= _dashChargedDuration && !_charged && !_isAttacking && _canDash)
         {
             _animator.SetTrigger("Charged");
             _charged = true;
@@ -87,13 +97,32 @@ public class Hammer : MeleeWeapon
         if(_charged)
         {
             _animator.SetTrigger("Dash");
-            playerCharacter.physics.AddImpulse(playerCharacter.playerCamera.transform.forward * _dashStrength);
+            Dash();
             _charged = false;
         }
         else
             _animator.SetTrigger("Hit");
 
         _isAttacking = true;
+    }
+
+    void Dash()
+    {
+        float dot = Vector3.Dot(playerCharacter.playerCamera.transform.forward, playerCharacter.physics.Velocity.normalized);
+
+        if (dot <= _dashDotThreshold)
+            playerCharacter.physics.SetVelocity(Vector3.zero);
+
+        playerCharacter.physics.AddImpulse(playerCharacter.playerCamera.transform.forward * _dashStrength);
+
+        HandleDashDelay();
+    }
+
+    async void HandleDashDelay()
+    {
+        _canDash = false;
+        await Awaitable.WaitForSecondsAsync(_dashCooldown);
+        _canDash = true;
     }
 
     /// <summary>

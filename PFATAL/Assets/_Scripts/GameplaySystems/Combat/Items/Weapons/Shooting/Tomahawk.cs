@@ -19,6 +19,17 @@ public class Tomahawk : ProjectileWeapon
     bool _canDash = true;
     bool holdingKey = false;
 
+    public override void Equip()
+    {
+        base.Equip();
+
+        _dashed = false;
+        _canDash = true;
+        holdingKey = false;
+
+        _tomahawkProj = null;
+    }
+
     public override void UseUpdate()
     {
         base.UseUpdate();

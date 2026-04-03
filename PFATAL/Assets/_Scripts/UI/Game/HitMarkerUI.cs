@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HitMarkerUI : MonoBehaviour
 {
+    public event Action OnShowHitMarker;
 
     [Header("References")]
     [SerializeField] Image _hitmarkerImage;
@@ -12,6 +14,6 @@ public class HitMarkerUI : MonoBehaviour
 
     public void ShowHitMarker()
     {
-
+        OnShowHitMarker?.Invoke();
     }
 }

@@ -13,9 +13,7 @@ public class HUDManager : MonoBehaviour
 
     public void TriggerHitFeedback()
     {
-        AudioManager.Instance.PlayOneShot(Sounds.HitMarker);
-
-        //hitMarkerUI.ShowHitMarker();
+        hitMarkerUI.ShowHitMarker();
     }
 
     public void ShowDeathUI()

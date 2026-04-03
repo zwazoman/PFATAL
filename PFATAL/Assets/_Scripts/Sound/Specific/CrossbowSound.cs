@@ -2,6 +2,7 @@ using FMOD.Studio;
 using Unity.Netcode;
 using UnityEngine;
 
+[RequireComponent(typeof (Crossbow))]
 public class CrossbowSound : SoundComponent<Crossbow>
 {
     EventInstance _chargedCrossbowCharged;

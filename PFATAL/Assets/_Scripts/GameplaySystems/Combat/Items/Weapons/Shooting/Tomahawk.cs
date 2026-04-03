@@ -17,21 +17,23 @@ public class Tomahawk : ProjectileWeapon
 
     bool _dashed = false;
     bool _canDash = true;
+    bool holdingKey = false;
 
     public override void UseUpdate()
     {
         base.UseUpdate();
 
-        if (holdDuration >= _dashHoldDuration && _tomahawkProj != null && !_dashed)
+        if (holdDuration >= _dashHoldDuration && _tomahawkProj != null && !_dashed && _canDash)
         {
             DashTowardsProj();
-            StartShootDelay();
         }
     }
 
     public override async void StopUsing()
     {
-        if(canShoot && !_dashed)
+        base.StopUsing();
+
+        if (canShoot && !_dashed)
         {
             SpawnContext context = new(playerCharacter.OwnerClientId);
             Quaternion rotation = ComputeProjectileRotation() * Quaternion.Euler(-_projXOffset, 0, 0);
@@ -39,15 +41,10 @@ public class Tomahawk : ProjectileWeapon
         }
 
         _dashed = false;
-
-        base.StopUsing();
     }
 
     void DashTowardsProj()
     {
-        if (!_canDash)
-            return;
-
         _dashed = true;
 
         Vector3 dashDirection = (_tomahawkProj.transform.position - playerCharacter.transform.position).normalized;
@@ -63,7 +60,7 @@ public class Tomahawk : ProjectileWeapon
 
     async void HandleDashDelay()
     {
-        //todo UI 
+        //todo link au crosshair
 
         _canDash = false;
         await Awaitable.WaitForSecondsAsync(_dashCooldown);

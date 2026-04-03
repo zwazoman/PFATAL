@@ -17,7 +17,7 @@ public class PlayerInteraction : MonoBehaviour
 
     [SerializeField] LayerMask _interactionmask;
 
-    [HideInInspector] public bool canInteract;
+    [HideInInspector] public bool canInteract = true;
     
 
     private void Update()
@@ -51,6 +51,9 @@ public class PlayerInteraction : MonoBehaviour
                 _currentInteractable = null;
             }
         }
+
+        if (!canInteract)
+            return;
 
         //Contact detection
         int contactSize = Physics.OverlapSphereNonAlloc(transform.position, 1,_contactColliderBuffer, _interactionmask);

@@ -4,11 +4,17 @@ using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
-    [SerializeField] PlayerCharacter _main;
+    [SerializeField] public PlayerCharacter playerCharacter;
 
     [Header("References")]
     [SerializeField] public GameObject deathUi;
     [SerializeField] public Button respawnButton;
+    [SerializeField] HitMarkerUI hitMarkerUI;
+
+    public void TriggerHitFeedback()
+    {
+        hitMarkerUI.ShowHitMarker();
+    }
 
     public void ShowDeathUI()
     {

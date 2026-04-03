@@ -79,6 +79,8 @@ public class GameManager : NetworkBehaviour
     public float _gameStartTime;
     public bool IsPlaying { get; private set ; } = false;
     public bool IsGameOver { get; private set; } = false;
+
+    public PlayerCharacter localPlayerCharacter { get; private set; }
     
     private void StartGame(List<ulong> clientIDs,GameMode gameMode)
     {
@@ -92,7 +94,6 @@ public class GameManager : NetworkBehaviour
                     break;
                 default:
                     throw new Exception("Game Mode not set");
-                    break;
             };
 
             print("Link gamerules events");
@@ -118,6 +119,22 @@ public class GameManager : NetworkBehaviour
         return _serverGameRules.GetPlayerCharacter(playerClientID);
     }
 
+    public void SetLocalPlayer(PlayerCharacter playerchara, ulong ownerClientId)
+    {
+        SetLocalPlayerRpc(playerchara, RpcTarget.Single(ownerClientId, RpcTargetUse.Temp));
+    }
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    void SetLocalPlayerRpc(NetworkBehaviourReference playerBhvRef, RpcParams rpcParams = default)
+    {
+        NetworkBehaviour playerNTWBhv = null;
+
+        if(playerBhvRef.TryGet(out playerNTWBhv))
+        {
+            if(playerNTWBhv.TryGetComponent(out PlayerCharacter playercharacter))
+                localPlayerCharacter = playercharacter;
+        }
+    }
 
 //sync RPCs
 

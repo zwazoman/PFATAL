@@ -46,8 +46,8 @@ public class PlayerCharacterVisuals : NetworkBehaviour
 
     void Update()
     {
-        //if(IsServer)
-        _proxyFeetSocket.transform.rotation = Quaternion.Euler(90,0,Mathf.Atan2(_playerCharacter.physics.Velocity.z,-_playerCharacter.physics.Velocity.x)*Mathf.Rad2Deg);
+        if(!IsOwner)
+            _proxyFeetSocket.transform.rotation = Quaternion.Euler(90,0,Mathf.Atan2(_playerCharacter.physics.Velocity.z,-_playerCharacter.physics.Velocity.x)*Mathf.Rad2Deg);
     }
     
     void Awake()

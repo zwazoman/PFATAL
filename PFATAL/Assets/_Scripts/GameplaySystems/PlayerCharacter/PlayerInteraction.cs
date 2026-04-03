@@ -17,7 +17,7 @@ public class PlayerInteraction : MonoBehaviour
 
     [SerializeField] LayerMask _interactionmask;
 
-    [HideInInspector] public bool canInteract;
+    [HideInInspector] public bool canInteract = true;
     
 
     private void Update()

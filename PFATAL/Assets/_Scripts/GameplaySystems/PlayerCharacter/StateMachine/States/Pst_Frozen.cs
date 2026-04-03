@@ -9,7 +9,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
     /// Freeze est appelé quand le joueur utilise Con_BigLaserBeam pour l'instant
     /// </summary>
     [Serializable]
-    public class Pst_Frozen : PlayerState
+    public class Pst_Frozen : Pst_Alive
     {
         public float duration = 2f;
         

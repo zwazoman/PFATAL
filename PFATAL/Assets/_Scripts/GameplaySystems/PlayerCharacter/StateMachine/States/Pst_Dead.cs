@@ -9,18 +9,18 @@ namespace _scripts.PlayerCharacter.StateMachine.States
     public class Pst_Dead : PlayerState
     {
         bool _respawn;
-
+        
         protected override void OnEntered(PlayerCharacter ctx)
         {
             base.OnEntered(ctx);
             _respawn = false;
 
             ctx.SwapActionMapToUI();
-            ctx.HidePlayerRpc();
             ctx.physics.SetVelocity(Vector3.zero);
             ctx.inputs.Clear();
             ctx.HUD.ShowDeathUI();
-
+            ctx.visuals.HideRpc();
+            
             //nettoie les mains et drop le consommable actuel
             ctx.playerHands.leftHand.DropEquippedtem();
             ctx.playerHands.ClearHands();
@@ -36,10 +36,10 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             {
                 _respawn = false;
                 ctx.SwapActionMapToPlayer();
-                ctx.ShowPlayerRpc();
                 ctx.HUD.HideDeathUI();
                 ctx.health.Heal();
                 ctx.playerHands.TryEquipRandomWeapon();
+                ctx.visuals.ShowRpc();
                 PlayerCharacterSpawner.Instance.ReSpawnPlayer(ctx);
             }
 

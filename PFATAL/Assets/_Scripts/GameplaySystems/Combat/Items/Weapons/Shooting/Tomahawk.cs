@@ -5,8 +5,14 @@ public class Tomahawk : ProjectileWeapon
 {
     public event Action OnDash;
 
+    public event Action OnLoadAmmo;
+    public event Action OnAmmoEmpty;
+    public event Action OnAmmoFull;
+
     [Header("Tomahawk Settings")]
     [SerializeField] float _projXOffset = 15;
+    [SerializeField] int _maxAmmoAmount = 3;
+    [SerializeField] float _reloadTime = .7f;
 
     [Header("Tomahawk Dash Settings")]
     [SerializeField] float _dashHoldDuration = .3f;
@@ -15,13 +21,18 @@ public class Tomahawk : ProjectileWeapon
 
     GameObject _tomahawkProj;
 
+    int _currentAmmoCount;
+
     bool _dashed = false;
     bool _canDash = true;
+
+    float _timer;
 
     public override void Equip()
     {
         base.Equip();
 
+        _currentAmmoCount = _maxAmmoAmount;
         _dashed = false;
         _canDash = true;
 
@@ -42,14 +53,45 @@ public class Tomahawk : ProjectileWeapon
     {
         base.StopUsing();
 
-        if (canShoot && !_dashed)
+        if (canShoot && !_dashed && _currentAmmoCount > 0)
         {
             SpawnContext context = new(playerCharacter.OwnerClientId);
             Quaternion rotation = ComputeProjectileRotation() * Quaternion.Euler(-_projXOffset, 0, 0);
             _tomahawkProj = await Shoot(context, rotation);
+
+            _currentAmmoCount--;
+            if(_currentAmmoCount == 0)
+                OnAmmoEmpty?.Invoke();
         }
 
         _dashed = false;
+    }
+
+    private void Update()
+    {
+        print(_currentAmmoCount);
+
+        //todo fleche qui pointe vers le tomahawk actuel
+        
+
+        if (_currentAmmoCount < _maxAmmoAmount)
+        {
+            _timer += Time.deltaTime;
+
+            if(_timer >= _reloadTime)
+            {
+                LoadAmmo();
+                _timer = 0;
+            }
+        }
+    }
+
+    void LoadAmmo()
+    {
+        OnLoadAmmo?.Invoke();
+        _currentAmmoCount++;
+        if (_currentAmmoCount == _maxAmmoAmount)
+            OnAmmoFull?.Invoke();
     }
 
     void DashTowardsProj()

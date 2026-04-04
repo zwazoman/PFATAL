@@ -33,6 +33,15 @@ public class Hammer : MeleeWeapon
 
         _animator.SetTrigger("Idle");
 
+        try
+        {
+            hand.EquipSpecific(this);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
+
         _charged = false;
         _dashed = false;
         _isAttacking = false;

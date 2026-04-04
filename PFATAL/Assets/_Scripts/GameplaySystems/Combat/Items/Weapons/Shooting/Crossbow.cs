@@ -30,6 +30,15 @@ public class Crossbow : ProjectileWeapon
     {
         base.UnEquip();
 
+        try
+        {
+            hand.EquipSpecific(this);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
+
         _chargeValue = 0;
         _isCharged = false;
         _startedCharging = false;

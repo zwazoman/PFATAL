@@ -8,7 +8,7 @@ public class Cons_ToxicCloud : Consummable
     {
         base.StopUsing();
 
-        Summoner.Instance.SpawnObject(_projToxicCloudPrefab, carryingHand.visualsTransform.position, carryingHand.visualsTransform.rotation, false);
+        Summoner.Instance.SpawnObject(_projToxicCloudPrefab, hand.visualsTransform.position, hand.visualsTransform.rotation, false);
 
         BreakItem();
     }

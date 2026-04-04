@@ -33,15 +33,6 @@ public class Hammer : MeleeWeapon
 
         _animator.SetTrigger("Idle");
 
-        try
-        {
-            hand.EquipSpecific(this);
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-        }
-
         _charged = false;
         _dashed = false;
         _isAttacking = false;
@@ -50,6 +41,15 @@ public class Hammer : MeleeWeapon
 
         _eventReceiver.OnHitStart += StartHitting;
         _eventReceiver.OnHitEnd += StopHitting;
+
+        try
+        {
+            hand.EquipSpecific(this);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
     }
 
     public override void UnEquip()

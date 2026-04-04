@@ -16,7 +16,7 @@ public class Crosshair<T> : MonoBehaviour where T : Item
         manager.OnActivateCrosshair += Deactivate;
     }
 
-    public virtual void Deactivate()
+    protected virtual void Deactivate()
     {
         visuals?.SetActive(false);
         weapon = null;

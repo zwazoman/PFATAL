@@ -30,15 +30,6 @@ public class Crossbow : ProjectileWeapon
     {
         base.UnEquip();
 
-        try
-        {
-            hand.EquipSpecific(this);
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-        }
-
         _chargeValue = 0;
         _isCharged = false;
         _startedCharging = false;
@@ -47,6 +38,15 @@ public class Crossbow : ProjectileWeapon
         _fovOffsetVelocity = 0;
 
         playerCharacter.movement.globalMovespeedMultiplyer = 1;
+
+        try
+        {
+            hand.EquipSpecific(this);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
     }
 
     protected virtual void Update()

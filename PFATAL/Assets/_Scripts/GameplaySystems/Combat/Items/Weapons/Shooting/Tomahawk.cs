@@ -7,13 +7,15 @@ public class Tomahawk : ProjectileWeapon
 
     public event Action<GameObject> OnTomahawkShoot;
 
-    public event Action OnLoadAmmo;
+    public event Action<int> OnLoadAmmo;
+    public event Action<int> OnConsumeAmmo;
+
     public event Action OnAmmoEmpty;
     public event Action OnAmmoFull;
 
     [Header("Tomahawk Settings")]
+    [SerializeField] public int maxAmmoAmount = 3;
     [SerializeField] float _projXOffset = 15;
-    [SerializeField] int _maxAmmoAmount = 3;
     [SerializeField] float _reloadTime = .7f;
 
     [Header("Tomahawk Dash Settings")]
@@ -23,7 +25,7 @@ public class Tomahawk : ProjectileWeapon
 
     GameObject _tomahawkProj;
 
-    public int currentAmmoCount;
+    int _currentAmmoCount;
 
     bool _dashed = false;
     bool _canDash = true;
@@ -34,7 +36,7 @@ public class Tomahawk : ProjectileWeapon
     {
         base.Equip();
 
-        currentAmmoCount = _maxAmmoAmount;
+        _currentAmmoCount = maxAmmoAmount;
         _dashed = false;
         _canDash = true;
 
@@ -62,7 +64,7 @@ public class Tomahawk : ProjectileWeapon
 
     private void Update()
     {
-        if (currentAmmoCount < _maxAmmoAmount)
+        if (_currentAmmoCount < maxAmmoAmount)
         {
             _reloadTimer += Time.deltaTime;
 
@@ -78,7 +80,7 @@ public class Tomahawk : ProjectileWeapon
     {
         base.StopUsing();
 
-        if (canShoot && !_dashed && currentAmmoCount > 0)
+        if (canShoot && !_dashed && _currentAmmoCount > 0)
         {
             HandleShoot();
         }
@@ -88,11 +90,11 @@ public class Tomahawk : ProjectileWeapon
 
     void LoadAmmo()
     {
-        currentAmmoCount++;
+        _currentAmmoCount++;
 
-        OnLoadAmmo?.Invoke();
+        OnLoadAmmo?.Invoke(_currentAmmoCount);
 
-        if (currentAmmoCount == _maxAmmoAmount)
+        if (_currentAmmoCount == maxAmmoAmount)
             OnAmmoFull?.Invoke();
     }
 
@@ -124,8 +126,9 @@ public class Tomahawk : ProjectileWeapon
 
     async void HandleShoot()
     {
-        currentAmmoCount--;
-        if (currentAmmoCount == 0)
+        _currentAmmoCount--;
+        OnConsumeAmmo?.Invoke(_currentAmmoCount);
+        if (_currentAmmoCount == 0)
             OnAmmoEmpty?.Invoke();
 
         SpawnContext context = new(playerCharacter.OwnerClientId);

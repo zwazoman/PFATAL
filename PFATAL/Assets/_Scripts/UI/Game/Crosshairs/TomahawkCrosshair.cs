@@ -17,30 +17,30 @@ public class TomahawkCrosshair : Crosshair<Tomahawk>
 
         weapon.OnTomahawkShoot += SetProj;
 
-        weapon.OnShoot += SetAmmos;
+        weapon.OnConsumeAmmo += SetAmmos;
         weapon.OnLoadAmmo += SetAmmos;
 
-        SetAmmos();
+        SetAmmos(weapon.maxAmmoAmount);
     }
 
     protected override void Deactivate()
     {
         weapon.OnTomahawkShoot -= SetProj;
 
-        weapon.OnShoot -= SetAmmos;
+        weapon.OnConsumeAmmo -= SetAmmos;
         weapon.OnLoadAmmo -= SetAmmos;
 
         base.Deactivate();
     }
 
-    void SetAmmos()
+    void SetAmmos(int newAmount)
     {
         foreach(GameObject ammo in _ammunitions)
             ammo.SetActive(false);
 
-        if (weapon.currentAmmoCount > 0)
+        if (newAmount > 0)
         {
-            for (int i = 0; i < weapon.currentAmmoCount; i++)
+            for (int i = 0; i < newAmount; i++)
             {
                 print(i);
                 _ammunitions[i].SetActive(true);

@@ -7,6 +7,9 @@ public class Hammer : MeleeWeapon
 {
     public event Action OnDashCooledUp;
 
+    public event Action OnStartCharging;
+    public event Action OnStopCharging;
+
     [Header("Hammer References")]
     [SerializeField] Animator _animator;
     [SerializeField] HammerEventReceiver _eventReceiver;
@@ -16,11 +19,13 @@ public class Hammer : MeleeWeapon
     [SerializeField] float _knockbackStrength = 10;
 
     [Header("Dash Settings")]
-    [SerializeField] float _dashCooldown = 1.5f;
+    [SerializeField] public float dashCooldown = 1.5f;
     [SerializeField] float _dashChargedDuration;
     [SerializeField] float _dashStrength = 7;
     [SerializeField] float _dashDmgMult = .8f;
     [SerializeField] float _dashDotThreshold = 0f;
+
+    public float currentDashCooldown;
 
     bool _charged;
     bool _isAttacking;
@@ -55,6 +60,8 @@ public class Hammer : MeleeWeapon
     public override void UnEquip()
     {
         base.UnEquip();
+
+        OnStopCharging?.Invoke();
 
         _eventReceiver.OnHitStart -= StartHitting;
         _eventReceiver.OnHitEnd -= StopHitting;
@@ -91,6 +98,8 @@ public class Hammer : MeleeWeapon
 
         if(holdDuration >= _dashChargedDuration && !_charged && !_isAttacking && _canDash)
         {
+            OnStartCharging?.Invoke();
+
             _animator.SetTrigger("Charged");
             _charged = true;
         }
@@ -107,6 +116,8 @@ public class Hammer : MeleeWeapon
         {
             _animator.SetTrigger("Dash");
             Dash();
+
+            OnStopCharging?.Invoke();
             _charged = false;
         }
         else
@@ -131,7 +142,13 @@ public class Hammer : MeleeWeapon
     {
         _canDash = false;
 
-        await Awaitable.WaitForSecondsAsync(_dashCooldown);
+        while(currentDashCooldown < dashCooldown)
+        {
+            currentDashCooldown += Time.deltaTime;
+            await Awaitable.NextFrameAsync();
+        }
+
+        currentDashCooldown = 0;
 
         OnDashCooledUp?.Invoke();
         _canDash = true;
@@ -154,4 +171,6 @@ public class Hammer : MeleeWeapon
         isHitting = false;
         _isAttacking = false;
     }
+
+    
 }

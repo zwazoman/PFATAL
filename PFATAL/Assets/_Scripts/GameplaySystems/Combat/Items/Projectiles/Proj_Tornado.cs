@@ -78,6 +78,8 @@ public class Proj_Tornado : Projectile
                     Rigidbody rb = hitobject.GetComponent<Rigidbody>();
                     rb.linearVelocity = Vector3.zero;
                     hitobject.TakeDamage(damageData);
+                    PlayerStateMachine playerStateMachine = hitobject.GetComponent<PlayerStateMachine>();
+                    playerStateMachine.s_PropulseInAir.ActivateState(OwnerClientId);
                 }
             }
         }

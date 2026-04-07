@@ -1,9 +1,12 @@
 using _scripts.PlayerCharacter;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
+    public event Action OnTriggerHitFeedback;
+
     [SerializeField] public PlayerCharacter playerCharacter;
 
     [Header("References")]
@@ -13,7 +16,7 @@ public class HUDManager : MonoBehaviour
 
     public void TriggerHitFeedback()
     {
-        hitMarkerUI.ShowHitMarker();
+        OnTriggerHitFeedback?.Invoke();
     }
 
     public void ShowDeathUI()

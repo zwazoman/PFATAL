@@ -10,9 +10,12 @@ public class Hand : MonoBehaviour
     public event Action<Item> OnDropItem;
     public event Action OnDeleteItem;
 
-
     public event Action<Item> OnEquipItem;
     public event Action<Item> OnUnequipItem;
+
+    public event Action<Crossbow> OnEquipCrossbow;
+    public event Action<Tomahawk> OnEquipTomahawk;
+    public event Action<Hammer> OnEquipHammer;
 
     public event Action OnSwapItem;
 
@@ -186,4 +189,12 @@ public class Hand : MonoBehaviour
         foreach (Item item in tmpItems)
             DeleteItem(item);
     }
+
+    #region specific equips
+
+    public void EquipSpecific(Hammer hammer) { OnEquipHammer?.Invoke(hammer); }
+    public void EquipSpecific(Crossbow crossbow) { OnEquipCrossbow?.Invoke(crossbow); }
+    public void EquipSpecific(Tomahawk tomahawk) { OnEquipTomahawk?.Invoke(tomahawk); }
+
+    #endregion
 }

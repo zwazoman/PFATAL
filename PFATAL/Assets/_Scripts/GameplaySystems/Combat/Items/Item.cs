@@ -15,7 +15,7 @@ public class Item : MonoBehaviour
     public event Action OnPickup;
 
     [HideInInspector] public PlayerCharacter playerCharacter;
-    [HideInInspector] protected Hand carryingHand;
+    [HideInInspector] protected Hand hand;
 
     [SerializeField] GameObject _pickup;
 
@@ -78,7 +78,7 @@ public class Item : MonoBehaviour
         OnPickup?.Invoke();
 
         playerCharacter = main;
-        carryingHand = hand;
+        this.hand = hand;
     }
 
     public virtual void Equip() { OnEquip?.Invoke(); }

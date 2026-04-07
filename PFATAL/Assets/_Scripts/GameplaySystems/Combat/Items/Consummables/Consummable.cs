@@ -4,6 +4,6 @@ public class Consummable : Item
 {
     protected virtual void BreakItem()
     {
-        carryingHand.DeleteItem(this);
+        hand.DeleteItem(this);
     }
 }

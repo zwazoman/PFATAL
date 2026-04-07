@@ -38,6 +38,15 @@ public class Crossbow : ProjectileWeapon
         _fovOffsetVelocity = 0;
 
         playerCharacter.movement.globalMovespeedMultiplyer = 1;
+
+        try
+        {
+            hand.EquipSpecific(this);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
     }
 
     protected virtual void Update()

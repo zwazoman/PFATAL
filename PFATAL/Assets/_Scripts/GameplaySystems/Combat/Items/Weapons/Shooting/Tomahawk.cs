@@ -5,6 +5,8 @@ public class Tomahawk : ProjectileWeapon
 {
     public event Action OnDash;
 
+    public event Action<GameObject> OnTomahawkShoot;
+
     public event Action OnLoadAmmo;
     public event Action OnAmmoEmpty;
     public event Action OnAmmoFull;
@@ -21,22 +23,31 @@ public class Tomahawk : ProjectileWeapon
 
     GameObject _tomahawkProj;
 
-    int _currentAmmoCount;
+    public int currentAmmoCount;
 
     bool _dashed = false;
     bool _canDash = true;
 
-    float _timer;
+    float _reloadTimer;
 
     public override void Equip()
     {
         base.Equip();
 
-        _currentAmmoCount = _maxAmmoAmount;
+        currentAmmoCount = _maxAmmoAmount;
         _dashed = false;
         _canDash = true;
 
         _tomahawkProj = null;
+
+        try
+        {
+            hand.EquipSpecific(this);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
     }
 
     public override void UseUpdate()
@@ -49,48 +60,39 @@ public class Tomahawk : ProjectileWeapon
         }
     }
 
-    public override async void StopUsing()
+    private void Update()
+    {
+        if (currentAmmoCount < _maxAmmoAmount)
+        {
+            _reloadTimer += Time.deltaTime;
+
+            if (_reloadTimer >= _reloadTime)
+            {
+                LoadAmmo();
+                _reloadTimer = 0;
+            }
+        }
+    }
+
+    public override void StopUsing()
     {
         base.StopUsing();
 
-        if (canShoot && !_dashed && _currentAmmoCount > 0)
+        if (canShoot && !_dashed && currentAmmoCount > 0)
         {
-            SpawnContext context = new(playerCharacter.OwnerClientId);
-            Quaternion rotation = ComputeProjectileRotation() * Quaternion.Euler(-_projXOffset, 0, 0);
-            _tomahawkProj = await Shoot(context, rotation);
-
-            _currentAmmoCount--;
-            if(_currentAmmoCount == 0)
-                OnAmmoEmpty?.Invoke();
+            HandleShoot();
         }
 
         _dashed = false;
     }
 
-    private void Update()
-    {
-        print(_currentAmmoCount);
-
-        //todo fleche qui pointe vers le tomahawk actuel
-        
-
-        if (_currentAmmoCount < _maxAmmoAmount)
-        {
-            _timer += Time.deltaTime;
-
-            if(_timer >= _reloadTime)
-            {
-                LoadAmmo();
-                _timer = 0;
-            }
-        }
-    }
-
     void LoadAmmo()
     {
+        currentAmmoCount++;
+
         OnLoadAmmo?.Invoke();
-        _currentAmmoCount++;
-        if (_currentAmmoCount == _maxAmmoAmount)
+
+        if (currentAmmoCount == _maxAmmoAmount)
             OnAmmoFull?.Invoke();
     }
 
@@ -118,5 +120,18 @@ public class Tomahawk : ProjectileWeapon
         _canDash = false;
         await Awaitable.WaitForSecondsAsync(_dashCooldown);
         _canDash = true;
+    }
+
+    async void HandleShoot()
+    {
+        currentAmmoCount--;
+        if (currentAmmoCount == 0)
+            OnAmmoEmpty?.Invoke();
+
+        SpawnContext context = new(playerCharacter.OwnerClientId);
+        Quaternion rotation = ComputeProjectileRotation() * Quaternion.Euler(-_projXOffset, 0, 0);
+        _tomahawkProj = await Shoot(context, rotation);
+
+        OnTomahawkShoot?.Invoke(_tomahawkProj);
     }
 }

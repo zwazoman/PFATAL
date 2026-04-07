@@ -41,6 +41,15 @@ public class Hammer : MeleeWeapon
 
         _eventReceiver.OnHitStart += StartHitting;
         _eventReceiver.OnHitEnd += StopHitting;
+
+        try
+        {
+            hand.EquipSpecific(this);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
     }
 
     public override void UnEquip()

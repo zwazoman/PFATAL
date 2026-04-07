@@ -1,6 +1,4 @@
-using Discord;
-using Unity.VisualScripting;
-using UnityEditor.SearchService;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class Discord_Controller : MonoBehaviour
@@ -10,9 +8,13 @@ public class Discord_Controller : MonoBehaviour
     private long applicationID = 1489601105536094298;
     public string details;
     public string state;
+    public int currentPartySize;
+    public int maxPartySize;
     [Space]
     public string largeImageKey;
     public string largeText;
+    public string smallImageKey;
+    public string smallText;
 
     private long _time;
 
@@ -45,7 +47,6 @@ public class Discord_Controller : MonoBehaviour
         try
         {
             discord.RunCallbacks();
-
         }
         catch
         {
@@ -67,11 +68,24 @@ public class Discord_Controller : MonoBehaviour
             {
                 Details = details,
                 State = state,
-/*                Assets =
+
+                Party =
+                {
+                    Size =
+                    {
+                        CurrentSize = currentPartySize,
+                        MaxSize = maxPartySize,
+                    }
+                },
+
+                Assets =
                 {
                     LargeImage = largeImageKey,
+                    SmallImage = smallImageKey,
+                    SmallText = smallText,
                     LargeText = largeText
-                },*/
+                },
+
                 Timestamps =
                 {
                     Start = _time
@@ -90,5 +104,10 @@ public class Discord_Controller : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        discord?.Dispose();
     }
 }

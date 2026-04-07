@@ -20,7 +20,7 @@ public class GameLobby : NetworkBehaviour
     public event Action<PlayerList> EventOnLobbyUpdated;
     public event Action<PlayerStatus> EventOnPlayerStatusChanged;
     
-    private PlayerList _allPlayersInLobby = new();
+    public PlayerList _allPlayersInLobby = new();
     [SerializeField] private string _gameSceneName;
     public LobbyPlayerData LocalLobbyPlayerData {set; private get;}
 

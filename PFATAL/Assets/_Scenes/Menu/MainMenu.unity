@@ -1655,6 +1655,7 @@ GameObject:
   - component: {fileID: 368043904}
   - component: {fileID: 368043903}
   - component: {fileID: 368043902}
+  - component: {fileID: 368043905}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1751,6 +1752,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &368043905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368043900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e005bf8d8ba6094e9aeaf88ec606e39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ViewManager
+  _startingView: {fileID: 339102460}
 --- !u!1 &416239557
 GameObject:
   m_ObjectHideFlags: 0
@@ -2527,7 +2541,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1323577061}
+      - m_Target: {fileID: 368043905}
         m_TargetAssemblyTypeName: ViewManager, Assembly-CSharp
         m_MethodName: SwapView
         m_Mode: 2
@@ -3869,7 +3883,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1323577061}
+      - m_Target: {fileID: 368043905}
         m_TargetAssemblyTypeName: ViewManager, Assembly-CSharp
         m_MethodName: SwapView
         m_Mode: 2
@@ -4054,7 +4068,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1323577061}
+      - m_Target: {fileID: 368043905}
         m_TargetAssemblyTypeName: ViewManager, Assembly-CSharp
         m_MethodName: SwapView
         m_Mode: 2
@@ -4726,7 +4740,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1323577061}
+      - m_Target: {fileID: 368043905}
         m_TargetAssemblyTypeName: ViewManager, Assembly-CSharp
         m_MethodName: SwapView
         m_Mode: 2
@@ -4897,7 +4911,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1323577061}
+      - m_Target: {fileID: 368043905}
         m_TargetAssemblyTypeName: ViewManager, Assembly-CSharp
         m_MethodName: SwapView
         m_Mode: 2
@@ -5818,78 +5832,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1305757701}
   m_CullTransparentMesh: 1
---- !u!1 &1323577058
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1323577060}
-  - component: {fileID: 1323577059}
-  - component: {fileID: 1323577061}
-  m_Layer: 0
-  m_Name: MenuUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1323577059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323577058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 448fec84823efa547966413cc552d480, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuUI
-  mainPanel: {fileID: 339102456}
-  hostPanel: {fileID: 253527547}
-  joinPanel: {fileID: 1265241860}
-  loadingPanel: {fileID: 587676076}
-  hostButton: {fileID: 1024171410}
-  joinButton: {fileID: 1048236035}
-  lobbyNameInput: {fileID: 1326495002}
-  startHostButton: {fileID: 1928281376}
-  cancelHostButton: {fileID: 1673182853}
-  lobbyCodeText: {fileID: 1455380410}
-  joinCodeInput: {fileID: 1568409417}
-  startJoinButton: {fileID: 97337800}
-  cancelJoinButton: {fileID: 503968878}
-  loadingText: {fileID: 1199991125}
---- !u!4 &1323577060
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323577058}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.87225, y: 4.75046, z: 0.57006}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1323577061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323577058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e005bf8d8ba6094e9aeaf88ec606e39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ViewManager
-  _startingView: {fileID: 339102460}
 --- !u!1 &1326494998
 GameObject:
   m_ObjectHideFlags: 0
@@ -7165,7 +7107,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1323577061}
+      - m_Target: {fileID: 368043905}
         m_TargetAssemblyTypeName: ViewManager, Assembly-CSharp
         m_MethodName: SwapView
         m_Mode: 2
@@ -8216,7 +8158,6 @@ SceneRoots:
   - {fileID: 1421534009}
   - {fileID: 368043901}
   - {fileID: 250010512}
-  - {fileID: 1323577060}
   - {fileID: 619925744}
   - {fileID: 600773671}
   - {fileID: 960452435}

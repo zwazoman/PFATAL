@@ -25,12 +25,12 @@ public class TomahawkCrosshair : Crosshair<Tomahawk>
 
     protected override void Deactivate()
     {
-        base.Deactivate();
-
         weapon.OnTomahawkShoot -= SetProj;
 
         weapon.OnShoot -= SetAmmos;
         weapon.OnLoadAmmo -= SetAmmos;
+
+        base.Deactivate();
     }
 
     void SetAmmos()

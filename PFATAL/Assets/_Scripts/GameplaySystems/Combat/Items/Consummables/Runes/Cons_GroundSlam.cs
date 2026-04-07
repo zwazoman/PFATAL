@@ -13,7 +13,7 @@ public class Cons_GroundSlam : Consummable
             physics.AddImpulse(Vector3.down * _downForce);
         }
 
-        // activer state
+        playerCharacter.stateMachine.s_GroundSlam.ActivateState();
 
         BreakItem();
     }

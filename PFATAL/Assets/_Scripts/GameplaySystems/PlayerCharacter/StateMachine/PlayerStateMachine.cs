@@ -17,6 +17,8 @@ public class PlayerStateMachine : StateMachine<PlayerCharacter>
     public Pst_Jumping s_Jumping;
     public Pst_Dead s_dead;
     public Pst_Frozen s_Frozen;
+    public Pst_GroundSlam s_GroundSlam;
+    public Pst_PropulseInAir s_PropulseInAir;
     public Pst_GameOver s_GameOver;
     
     void SetUpStates()
@@ -28,6 +30,8 @@ public class PlayerStateMachine : StateMachine<PlayerCharacter>
         s_dead ??= new();
         s_GameOver ??= new();
         s_Frozen ??= new();
+        s_GroundSlam ??= new();
+        s_PropulseInAir ??= new();
 
         InitializeState(s_Idle);
         InitializeState(s_Walking);
@@ -36,6 +40,8 @@ public class PlayerStateMachine : StateMachine<PlayerCharacter>
         InitializeState(s_dead);
         InitializeState(s_GameOver);
         InitializeState(s_Frozen);
+        InitializeState(s_GroundSlam);
+        InitializeState(s_PropulseInAir);
     }
 
     void InitializeState(PlayerState state)

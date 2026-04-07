@@ -28,26 +28,6 @@ public class MenuUI : MonoBehaviour
     [Header("Loading Panel")]
     [SerializeField] private TextMeshProUGUI loadingText;
 
-    private void Start()
-    {
-        hostButton.onClick.AddListener(OnHostButtonClicked);
-        joinButton.onClick.AddListener(OnJoinButtonClicked);
-        startHostButton.onClick.AddListener(OnStartHostClicked);
-        cancelHostButton.onClick.AddListener(OnCancelHostClicked);
-        startJoinButton.onClick.AddListener(OnStartJoinClicked);
-        cancelJoinButton.onClick.AddListener(OnCancelJoinClicked);
-
-        ShowMainPanel();
-    }
-
-    private void ShowMainPanel()
-    {
-        mainPanel.SetActive(true);
-        hostPanel.SetActive(false);
-        joinPanel.SetActive(false);
-        loadingPanel.SetActive(false);
-    }
-
     private void ShowHostPanel()
     {
         mainPanel.SetActive(false);
@@ -75,17 +55,7 @@ public class MenuUI : MonoBehaviour
         joinPanel.SetActive(false);
     }
 
-    private void OnHostButtonClicked()
-    {
-        ShowHostPanel();
-    }
-
-    private void OnJoinButtonClicked()
-    {
-        ShowJoinPanel();
-    }
-
-    private async void OnStartHostClicked()
+    private async void StartHost()
     {
         string lobbyName = string.IsNullOrEmpty(lobbyNameInput.text) ? "MyGame" : lobbyNameInput.text;
 
@@ -113,12 +83,7 @@ public class MenuUI : MonoBehaviour
         }
     }
 
-    private void OnCancelHostClicked()
-    {
-        ShowMainPanel();
-    }
-
-    private async void OnStartJoinClicked()
+    private async void StartJoin()
     {
         string joinCode = joinCodeInput.text.Trim();
 
@@ -141,10 +106,5 @@ public class MenuUI : MonoBehaviour
         {
             Debug.Log("[Menu] Client connect� avec succ�s");
         }
-    }
-
-    private void OnCancelJoinClicked()
-    {
-        ShowMainPanel();
     }
 }

@@ -56,9 +56,12 @@ public class Hand : MonoBehaviour
         }
         else if (_swapWhenFull)
         {
+            DeleteEquippedItem();
+
             itemInventory.Add(item);
             item.Pickup(_main, this);
-            SwapAndDeleteEquippedItem(item);
+
+            EquipItem(item);
 
             OnPickUpItem?.Invoke(item);
             return true;
@@ -86,6 +89,7 @@ public class Hand : MonoBehaviour
 
         if (equippedItem != null)
         {
+            print(equippedItem.name);
             UnEquipItem();
         }
 
@@ -135,6 +139,8 @@ public class Hand : MonoBehaviour
     /// </summary>
     public void UnEquipItem()
     {
+        print("unequip item " + equippedItem.gameObject.name);
+
         OnUnequipItem?.Invoke(equippedItem);
 
         equippedItem.UnEquip();

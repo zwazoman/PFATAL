@@ -14,12 +14,11 @@ public class DamageIndicatorManager : MonoBehaviour
 
     public void ShowIndicator(DamageData damageData)
     {
-        DamageIndicator indicator = Instantiate(_prefab, transform).GetComponent<DamageIndicator>();
-        indicator._manager = this;
+        DirectionIndicator indicator = Instantiate(_prefab, transform).GetComponent<DirectionIndicator>();
         if(damageData.Point != default)
-            indicator.damagePosition = damageData.SourcePos;
+            indicator.Setup(damageData.SourcePos, hud.playerCharacter.transform);
         else
-            indicator.damagePosition = Vector3.zero;
+            indicator.Setup(Vector3.zero, hud.playerCharacter.transform);
     }
 }
 

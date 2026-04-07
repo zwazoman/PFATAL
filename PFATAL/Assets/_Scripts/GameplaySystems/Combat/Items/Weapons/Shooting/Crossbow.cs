@@ -20,17 +20,32 @@ public class Crossbow : ProjectileWeapon
 
     bool _startedCharging = false;
     bool _isCharged = false;
-    float _chargeValue;
+
+    public float chargeValue;
 
     //zoom
     private float _cameraFovOffset = 0;
     private float _fovOffsetVelocity = 0;
 
+    public override void Equip()
+    {
+        base.Equip();
+
+        try
+        {
+            hand.EquipSpecific(this);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
+    }
+
     public override void UnEquip()
     {
         base.UnEquip();
 
-        _chargeValue = 0;
+        chargeValue = 0;
         _isCharged = false;
         _startedCharging = false;
 
@@ -42,10 +57,9 @@ public class Crossbow : ProjectileWeapon
 
     protected virtual void Update()
     {
-
         //update camera zoom
         const float MAX_FOV_ZOOM = 15;
-        float alpha = Mathf.Max( (_chargeValue - _chargeZoomThreshold) / (1f - _chargeZoomThreshold),0);
+        float alpha = Mathf.Max( (chargeValue - _chargeZoomThreshold) / (1f - _chargeZoomThreshold),0);
         _cameraFovOffset = 
             Mathf.SmoothDamp(_cameraFovOffset, - alpha * MAX_FOV_ZOOM,
                 ref _fovOffsetVelocity, .13f,Mathf.Infinity,Time.deltaTime);
@@ -58,22 +72,22 @@ public class Crossbow : ProjectileWeapon
         if (_isCharged || ! canShoot) return;
         
         //charge shot when holding the click
-        _chargeValue += Time.deltaTime / _maxChargeTime;
+        chargeValue += Time.deltaTime / _maxChargeTime;
 
-        if(_chargeValue >= _chargeStartThreshold && ! _startedCharging)
+        if(chargeValue >= _chargeStartThreshold && ! _startedCharging)
         {
             OnStartCharging?.Invoke();
             _startedCharging = true;
         }
 
-        playerCharacter.movement.globalMovespeedMultiplyer =  1 - _chargeSpeedMaxMultiplyer * _chargeValue;
+        playerCharacter.movement.globalMovespeedMultiplyer =  1 - _chargeSpeedMaxMultiplyer * chargeValue;
 
-        if (_chargeValue >= 1 )
+        if (chargeValue >= 1 )
         {
             OnCharged?.Invoke();
 
             _isCharged = true;
-            _chargeValue = 1f;
+            chargeValue = 1f;
         }
     }
     
@@ -84,15 +98,15 @@ public class Crossbow : ProjectileWeapon
 
         //spawn projectile
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
-        spawnContext.floatData = _chargeValue;
+        spawnContext.floatData = chargeValue;
         Shoot(spawnContext, ComputeProjectileRotation());
 
         //recoil
         playerCharacter.cameraBehaviour.AddRecoil(
-            new Vector2(Random.Range(- _CameraRecoilStrength.x, _CameraRecoilStrength.x), _CameraRecoilStrength.y) * (1f+_chargeValue));
+            new Vector2(Random.Range(- _CameraRecoilStrength.x, _CameraRecoilStrength.x), _CameraRecoilStrength.y) * (1f+chargeValue));
         
         //reset charge
-        _chargeValue = 0;
+        chargeValue = 0;
         _isCharged = false;
         _startedCharging = false;
 
@@ -104,7 +118,7 @@ public class Crossbow : ProjectileWeapon
 
     protected override Awaitable<GameObject> Shoot(SpawnContext spawnContext,Quaternion rotation)
     {
-        OnCrossbowShoot?.Invoke(_chargeValue);
+        OnCrossbowShoot?.Invoke(chargeValue);
 
         return base.Shoot(spawnContext, rotation);
     }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 312709263419611719}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Shoot Socket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,6 +39,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 284077027490995440, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -99,6 +103,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Item_WP_Hammer
       objectReference: {fileID: 0}
+    - target: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -151,11 +159,12 @@ MonoBehaviour:
   _animator: {fileID: 3052496390831374632}
   _eventReceiver: {fileID: 7725396704301697543}
   _knockbackStrength: 10
-  _dashCooldown: 2.5
+  dashCooldown: 1.5
   _dashChargedDuration: 0.3
   _dashStrength: 12
   _dashDmgMult: 0.6
   _dashDotThreshold: 0
+  currentDashCooldown: 0
 --- !u!1001 &8392829366872443326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -223,6 +232,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: dd617358e210a204184ccb40cb621904, type: 3}
       propertyPath: m_Name
       value: Mesh_Marteau
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: dd617358e210a204184ccb40cb621904, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

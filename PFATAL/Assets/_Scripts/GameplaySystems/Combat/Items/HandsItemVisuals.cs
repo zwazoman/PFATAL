@@ -6,12 +6,11 @@ using System.Collections.Generic;
 using UnityEditor;
 using _scripts.PlayerCharacter;
 
-public class ItemHolder : NetworkBehaviour
+public class HandsItemVisuals : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] PlayerCharacter _playerCharacter;
-    [SerializeField] Hand _leftHand;
-    [SerializeField] Hand _rightHand;
+    [SerializeField] PlayerHands _hands;
 
     [Header("Settings")]
 
@@ -26,7 +25,7 @@ public class ItemHolder : NetworkBehaviour
     {
         foreach (GameObject prefab in itemPrefabs)
         {
-            GameObject itemObject = Instantiate(prefab, _leftHand.transform.parent);
+            GameObject itemObject = Instantiate(prefab, _hands.transform.parent);
             itemObject.name = prefab.name;
 
             if(itemObject.TryGetComponent(out Item item))
@@ -79,14 +78,11 @@ public class ItemHolder : NetworkBehaviour
             currentItem = _rightItem;
 
         currentItem.gameObject.SetActive(false);
-        currentItem.transform.parent = _leftHand.transform.parent;
+        currentItem.transform.parent = _hands.transform.parent;
     }
 
     Hand GetHand(bool isLeft)
     {
-        if (isLeft)
-            return _leftHand;
-        else
-            return _rightHand;
+        return isLeft ? _hands.leftHand : _hands.rightHand;
     }
 }

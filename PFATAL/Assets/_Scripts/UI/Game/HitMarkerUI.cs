@@ -32,7 +32,7 @@ public class HitMarkerUI : MonoBehaviour
         //_hitmarkerImage.transform.eulerAngles = new Vector3(0, 0, Random.Range(-_rotationOffset, _rotationOffset));
 
         _hitmarkerImage.transform.DOPunchRotation(new Vector3(0, 0, Random.Range(-_rotationOffset, _rotationOffset)), _duration);
-        _hitmarkerImage.transform.DOPunchScale(Vector3.one * _scalePunchIntensity, _duration).onComplete += OnPunchScale_Callback;
+        _hitmarkerImage.transform.DOPunchScale(Vector2.one * _scalePunchIntensity, _duration).onComplete += OnPunchScale_Callback;
     }
 
     void OnPunchScale_Callback()

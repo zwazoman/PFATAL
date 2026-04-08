@@ -9,9 +9,9 @@ public class PlayerDetector : MonoBehaviour
     private bool _canDecrease = true;
     private RaycastHit _hitInfo;
 
-    [Range(0f, 1f)][SerializeField] private float _maxOffset = 0.1f;
-    [Range(0f, 1f)][SerializeField] private float _assistStrength = 0.1f;
-    [Range(0f, 1f)][SerializeField] private float _minInputMultiplier = 0.1f;
+    [Range(0f, 1f)][SerializeField] private float _maxOffset;
+    [Range(0f, 1f)][SerializeField] private float _assistStrength;
+    [Range(0f, 1f)][SerializeField] private float _minInputMultiplier;
 
     private void OnDrawGizmos()
     {

@@ -56,6 +56,7 @@ public class GameManager : NetworkBehaviour
     async void InitializeGame()
     {
         await _timeSyncManager.SyncClientTimestamps();
+        //todo : recuperer pseudos steam et construire liste de structs
         StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(),gameMode);
     }
     
@@ -82,6 +83,7 @@ public class GameManager : NetworkBehaviour
 
     public PlayerCharacter localPlayerCharacter { get; private set; }
     
+    //todo : faire passer liste de structs avec clent ids et player names
     private void StartGame(List<ulong> clientIDs,GameMode gameMode)
     {
         if (IsServer)
@@ -90,6 +92,7 @@ public class GameManager : NetworkBehaviour
             switch (gameMode)
             {
                 case GameMode.DeathMatch:
+                    //todo : faire passer liste de structs avec clent ids et player names
                     _serverGameRules = new GameRulesDeathMatch(clientIDs,DEATH_MATCH_GAME_DURATION);
                     break;
                 default:

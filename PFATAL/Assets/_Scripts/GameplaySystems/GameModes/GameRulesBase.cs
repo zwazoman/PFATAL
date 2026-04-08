@@ -35,6 +35,7 @@ public abstract class GameRulesBase
     // == data ==
     protected class PlayerData
     {
+        //todo : ajouter player name
         public ulong ClientID;
         [CanBeNull] public PlayerCharacter Character;
         public ScoreEntry Score;
@@ -119,6 +120,9 @@ public abstract class GameRulesBase
     
     public GameRulesBase(List<ulong> clientIDs)
     {
+        //todo : faire passer des structs avec clientID + player name
+        
+        
         Debug.Log($"instantiated game rule.");
         
         if(!NetworkManager.Singleton.IsServer) 
@@ -126,6 +130,7 @@ public abstract class GameRulesBase
         
         foreach (ulong clientID in clientIDs)
         {
+            //todo : set player name
             _players.Add(clientID, new PlayerData() { ClientID = clientID });
             _players[clientID].Score = new ScoreEntry() { ClientID = clientID };
         }       

@@ -70,6 +70,7 @@ public struct ScoreEntry :IComparable<ScoreEntry>, INetworkSerializeByMemcpy
         Kills = kills;
         Deaths = deaths;
         Points = points;
+        //todo : ajouter player name
     }
 
     public override string ToString()

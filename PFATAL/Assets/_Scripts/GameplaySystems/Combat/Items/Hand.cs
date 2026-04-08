@@ -42,7 +42,7 @@ public class Hand : MonoBehaviour
     /// <returns></returns>
     public bool TryPickupItem(ItemInfo itemInfo)
     {
-        Item item = handsItemVisuals.GetItem(itemInfo.itemPrefab.name);
+        Item item = handsItemVisuals.GetItemInstance(itemInfo.itemPrefab.name);
 
         if (itemInventory.Count < _inventorySize)
         {

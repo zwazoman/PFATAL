@@ -4,6 +4,8 @@ public class DiscordUpdater : MonoBehaviour
 {
     public string details;
     public string state;
+    public int currentPartySize;
+    public int maxPartySize;
     [Space]
     public string largeImageKey;
     public string largeText;
@@ -59,6 +61,12 @@ public class DiscordUpdater : MonoBehaviour
             controller.largeText = largeText;
             controller.smallImageKey = smallImageKey;
             controller.smallText = smallText;
+
+            if (maxPartySize == 0 && currentPartySize == 0)
+            {
+                controller.currentPartySize = 0;
+                controller.maxPartySize = 0;
+            }
         }
     }
 }

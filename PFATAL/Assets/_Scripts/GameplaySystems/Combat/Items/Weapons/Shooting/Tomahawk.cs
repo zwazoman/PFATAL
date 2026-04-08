@@ -21,7 +21,10 @@ public class Tomahawk : ProjectileWeapon
     [Header("Tomahawk Dash Settings")]
     [SerializeField] float _dashHoldDuration = .3f;
     [SerializeField] float _dashStrength = 10;
-    [SerializeField] float _dashCooldown = 3;
+    [SerializeField] public float dashCooldown = 3;
+
+    [HideInInspector] public float currentDashCooldown;
+
 
     GameObject _tomahawkProj;
 
@@ -36,6 +39,7 @@ public class Tomahawk : ProjectileWeapon
     {
         base.Equip();
 
+        currentDashCooldown = 0;
         _currentAmmoCount = maxAmmoAmount;
         _dashed = false;
         _canDash = true;
@@ -50,6 +54,13 @@ public class Tomahawk : ProjectileWeapon
         {
             Debug.LogException(e);
         }
+    }
+
+    public override void UnEquip()
+    {
+        base.UnEquip();
+
+        currentDashCooldown = 0;
     }
 
     public override void UseUpdate()
@@ -120,7 +131,17 @@ public class Tomahawk : ProjectileWeapon
         //todo link au crosshair
 
         _canDash = false;
-        await Awaitable.WaitForSecondsAsync(_dashCooldown);
+
+        currentDashCooldown = 0;
+
+        while(currentDashCooldown < dashCooldown)
+        {
+            currentDashCooldown += Time.deltaTime;
+            await Awaitable.NextFrameAsync();
+        }
+
+        currentDashCooldown = dashCooldown;
+
         _canDash = true;
     }
 

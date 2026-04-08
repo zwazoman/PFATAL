@@ -67,17 +67,16 @@ public class Hammer : MeleeWeapon
         _eventReceiver.OnHitEnd -= StopHitting;
     }
 
-    [Rpc(SendTo.Server)]
-    protected override void ApplyHitRpc(DamageableObject damageable, ulong attackerId)
+    protected override void ApplyHit(DamageableObject damageable, ulong attackerId)
     {
-        base.ApplyHitRpc(damageable, attackerId);
+        base.ApplyHit(damageable, attackerId);
 
         print("hit hammer");
 
         DamageData data = new();
         data.Point = hitSocket.position;
-        data.Direction = transform.forward;
-        data.SourcePos = GameManager.Instance.GetPlayerCharacter(attackerId).transform.position;
+        data.Direction = hitSocket.transform.forward;
+        data.SourcePos = playerCharacter.transform.position;
 
         if (_dashed)
             data.Amount = damageAmount * _dashDmgMult;
@@ -88,8 +87,8 @@ public class Hammer : MeleeWeapon
         data.SourcePlayerClientID = playerCharacter.OwnerClientId;
         data.KnockbackForce = playerCharacter.transform.forward * _knockbackStrength;
 
-        damageable.TakeDamage(data);
-
+        Summoner.Instance.ApplyDamageRpc(damageable, data);
+        //damageable.TakeDamage(data);
     }
 
     public override void UseUpdate()

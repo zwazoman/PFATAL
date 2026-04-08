@@ -2,11 +2,13 @@ using DG.Tweening;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TomahawkCrosshair : Crosshair<Tomahawk>
 {
     [Header("Crosshair settings")]
     [SerializeField] DirectionIndicator _indicator;
+    [SerializeField] Slider _dashCooldoawnSlider;
     [SerializeField] List<GameObject> _ammunitions;
 
     GameObject _tomahawkProj;
@@ -65,5 +67,7 @@ public class TomahawkCrosshair : Crosshair<Tomahawk>
         {
             _indicator.gameObject.SetActive(false);
         }
+
+        _dashCooldoawnSlider.value = weapon.currentDashCooldown / weapon.dashCooldown;
     }
 }

@@ -829,7 +829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2244990602
+  GlobalObjectIdHash: 3886975174
   InScenePlacedSourceGlobalObjectIdHash: 3886975174
   DeferredDespawnTick: 0
   Ownership: 1
@@ -870,7 +870,7 @@ MonoBehaviour:
   <playerInput>k__BackingField: {fileID: 3052311963987476349}
   <playerInteraction>k__BackingField: {fileID: 8381638155586477791}
   <playerHands>k__BackingField: {fileID: 3154864167769977567}
-  <HandsItemVisuals>k__BackingField: {fileID: 0}
+  <HandsItemVisuals>k__BackingField: {fileID: 6020512486325100065}
 --- !u!114 &1845953556628065240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1439,6 +1439,7 @@ MonoBehaviour:
   - {fileID: 1845953556628065240}
   - {fileID: 8381638155586477791}
   - {fileID: 3154864167769977567}
+  - {fileID: 8263624313195347228}
 --- !u!114 &845404014533269378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1458,8 +1459,8 @@ MonoBehaviour:
   _proxyVisuals:
   - {fileID: 6689666011458762781}
   _proxyAnimator: {fileID: 82412548688972271}
-  _proxyTorsoSocket: {fileID: 2402075793566304318}
-  _proxyFeetSocket: {fileID: 2710948237261871107}
+  _proxyTorsoSocket: {fileID: 0}
+  _proxyFeetSocket: {fileID: 0}
   TorsoPitchAmplitude: 75
   _visualObjects:
   - {fileID: 6449991026818304305}
@@ -2094,16 +2095,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4d9bf200d09c5674183952478e4dcd31, type: 3}
   m_PrefabInstance: {fileID: 710150242201562015}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2402075793566304318 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2922579786809303969, guid: 4d9bf200d09c5674183952478e4dcd31, type: 3}
-  m_PrefabInstance: {fileID: 710150242201562015}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2710948237261871107 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3190181238029939612, guid: 4d9bf200d09c5674183952478e4dcd31, type: 3}
-  m_PrefabInstance: {fileID: 710150242201562015}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4842812427599228747
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2261,6 +2252,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5098448c5b8754fb198dd6af31bc9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDManager
+--- !u!223 &8263624313195347228 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 3574568073621672535, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
+  m_PrefabInstance: {fileID: 4842812427599228747}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4989060095297001106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2341,10 +2337,6 @@ PrefabInstance:
       propertyPath: handsItemVisuals
       value: 
       objectReference: {fileID: 6020512486325100065}
-    - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
-      propertyPath: visualsTransform
-      value: 
-      objectReference: {fileID: 1068761285215778065}
     - target: {fileID: 3157924894929603148, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -21.878788
@@ -2548,11 +2540,6 @@ PrefabInstance:
 --- !u!4 &750602434352784858 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5716791234918691656, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
-  m_PrefabInstance: {fileID: 4989060095297001106}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1068761285215778065 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5470100038316778371, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
   m_PrefabInstance: {fileID: 4989060095297001106}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &7425674613640483050 stripped

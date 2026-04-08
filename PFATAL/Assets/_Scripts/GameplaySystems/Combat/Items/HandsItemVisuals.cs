@@ -27,7 +27,7 @@ public class HandsItemVisuals : NetworkBehaviour
         {
             GameObject itemObject = Instantiate(prefab, _hands.transform.parent);
             itemObject.name = prefab.name;
-
+            
             if(itemObject.TryGetComponent(out Item item))
             {
                 _itemsDict.Add(prefab.name, item);
@@ -57,8 +57,10 @@ public class HandsItemVisuals : NetworkBehaviour
 
         Item currentItem =  GetItem(prefabName);
         currentItem.enabled = _playerCharacter.IsOwner;
-        currentItem.transform.parent = hand.visualsTransform;
-        currentItem.transform.position = hand.visualsTransform.position;
+        currentItem.transform.parent = hand._itemSocket;
+        currentItem.transform.localPosition = Vector3.zero;
+        currentItem.transform.localRotation = Quaternion.identity;
+        currentItem.transform.localScale = Vector3.one;
         currentItem.gameObject.SetActive(true);
 
         if (leftHand)

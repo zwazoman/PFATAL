@@ -22,7 +22,7 @@ public class Hand : MonoBehaviour
     [Header("References")]
     [SerializeField] PlayerCharacter _main;
     [SerializeField] HandsItemVisuals handsItemVisuals;
-    [SerializeField] public Transform visualsTransform;
+    [SerializeField] public Transform _itemSocket;
 
     [Header("Parameters")]
 

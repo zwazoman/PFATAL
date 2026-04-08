@@ -13,8 +13,15 @@ namespace GameplaySystems.PlayerCharacter
         void Awake()
         {
             _hand.OnEquipItem += SetEquippedItemTypeAnimatorProperty;
+            _hand.OnUnequipItem += (_) => ClearEquippedItem();
+            _hand.OnDeleteItem += ClearEquippedItem;
+            _hand.OnDropItem += (_) => ClearEquippedItem();
         }
 
+        private void ClearEquippedItem()
+        {
+            _animator.SetInteger(EquippedItemTypeAnimatorProperty,0);
+        }
         private void SetEquippedItemTypeAnimatorProperty(Item equippedItem)
         {
             _animator.SetInteger(EquippedItemTypeAnimatorProperty,equippedItem switch

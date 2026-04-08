@@ -87,7 +87,6 @@ public class CharacterAiming : NetworkBehaviour
         {
             _rigidbody.MoveRotation(_rigidbody.rotation * quaternion.RotateY(Sensitivity * Time.deltaTime * _character.inputs.aimInput.x * Mathf.Deg2Rad));
         }
-        Debug.Log(_inputMultiplier);
     }
 
     public void AssistAim(Vector2 aimAssist, float inputMultiplier)

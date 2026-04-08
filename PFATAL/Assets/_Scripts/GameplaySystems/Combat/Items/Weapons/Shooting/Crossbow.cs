@@ -65,11 +65,13 @@ public class Crossbow : ProjectileWeapon
                 ref _fovOffsetVelocity, .13f,Mathf.Infinity,Time.deltaTime);
         
         playerCharacter.cameraBehaviour.AddTemporaryFovOffset(_cameraFovOffset);
+
+        print(isUsing);
     }
 
     public override void UseUpdate()
     {
-        if (_isCharged || ! canShoot) return;
+        if (_isCharged || !canShoot) return;
         
         //charge shot when holding the click
         chargeValue += Time.deltaTime / _maxChargeTime;
@@ -93,7 +95,9 @@ public class Crossbow : ProjectileWeapon
     
     public override void StopUsing()
     {
-        if (!canShoot || !isUsing)
+        base.StopUsing();
+
+        if (!canShoot)
             return;
 
         //spawn projectile
@@ -111,9 +115,6 @@ public class Crossbow : ProjectileWeapon
         _startedCharging = false;
 
         playerCharacter.movement.globalMovespeedMultiplyer = 1;
-
-
-        base.StopUsing();
     }
 
     protected override Awaitable<GameObject> Shoot(SpawnContext spawnContext,Quaternion rotation)

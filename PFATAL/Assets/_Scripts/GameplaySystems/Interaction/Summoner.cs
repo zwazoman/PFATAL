@@ -45,6 +45,7 @@ public class Summoner : NetworkBehaviour
             }
         }
     }
+
     /// <summary>
     /// 
     /// </summary>
@@ -113,6 +114,16 @@ public class Summoner : NetworkBehaviour
         if (networkObjRef.TryGet(out NetworkObject networkObj))
         {
             _currentObject = networkObj.gameObject;
+        }
+    }
+
+    [Rpc(SendTo.Server)]
+    public void ApplyDamageRpc(NetworkBehaviourReference playerBhvRef, DamageData damageData)
+    {
+        if(playerBhvRef.TryGet(out NetworkBehaviour playerbhv))
+        {
+            if(playerbhv.TryGetComponent(out DamageableObject damageable))
+                damageable.TakeDamage(damageData);
         }
     }
 }

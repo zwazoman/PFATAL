@@ -65,8 +65,6 @@ public class Crossbow : ProjectileWeapon
                 ref _fovOffsetVelocity, .13f,Mathf.Infinity,Time.deltaTime);
         
         playerCharacter.cameraBehaviour.AddTemporaryFovOffset(_cameraFovOffset);
-
-        print(isUsing);
     }
 
     public override void UseUpdate()

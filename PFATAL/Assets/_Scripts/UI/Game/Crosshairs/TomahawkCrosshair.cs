@@ -52,7 +52,7 @@ public class TomahawkCrosshair : Crosshair<Tomahawk>
     {
         _tomahawkProj = proj;
         _indicator.gameObject.SetActive(true);
-        _indicator.Setup(_tomahawkProj.transform.position, manager.hud.playerCharacter.transform);
+        _indicator.Setup(_tomahawkProj.transform.position, manager.hud.playerCharacter);
     }
 
     private void Update()

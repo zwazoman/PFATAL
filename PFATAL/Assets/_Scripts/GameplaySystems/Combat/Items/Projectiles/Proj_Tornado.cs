@@ -51,15 +51,15 @@ public class Proj_Tornado : Projectile
 
         for (int i = 0; i < count; i++)
         {
-            if (buffer[i].TryGetComponent(out DamageableObject hitobject))
+            if (buffer[i].TryGetComponent(out DamageableObject hitObject))
             {
-                Vector3 dir = transform.position - hitobject.transform.position;
+                Vector3 dir = transform.position - hitObject.transform.position;
                 float dist = dir.magnitude;
                 Vector3 knockbackForce;
 
-                if (!damageableObjects.Contains(hitobject))
+                if (!damageableObjects.Contains(hitObject))
                 {
-                    Vector3 eject = hitobject.transform.up * _ejectionForce;
+                    Vector3 eject = hitObject.transform.up * _ejectionForce;
 
                     knockbackForce = eject;
 
@@ -67,18 +67,21 @@ public class Proj_Tornado : Projectile
                     {
                         Amount = 0,
                         SourcePlayerClientID = OwnerClientId,
-                        Point = hitobject.transform.position,
+                        Point = hitObject.transform.position,
                         Direction = dir.normalized,
                         KnockbackForce = knockbackForce,
                         Radius = _ejectionRadius
                     };
 
-                    damageableObjects.Add(hitobject);
-                    StartCoroutine(DeleteToList(hitobject));
-                    Rigidbody rb = hitobject.GetComponent<Rigidbody>();
+                    damageableObjects.Add(hitObject);
+                    StartCoroutine(DeleteToList(hitObject));
+
+                    hitObject.TryGetComponent(out Rigidbody rb);
                     rb.linearVelocity = Vector3.zero;
-                    hitobject.TakeDamage(damageData);
-                    PlayerStateMachine playerStateMachine = hitobject.GetComponent<PlayerStateMachine>();
+
+                    hitObject.TakeDamage(damageData);
+
+                    hitObject.TryGetComponent(out PlayerStateMachine playerStateMachine);
                     playerStateMachine.s_PropulseInAir.ActivateState(OwnerClientId);
                 }
             }

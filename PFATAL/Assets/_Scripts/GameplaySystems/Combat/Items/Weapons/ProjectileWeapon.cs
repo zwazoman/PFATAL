@@ -47,14 +47,35 @@ public class ProjectileWeapon : Item
         Quaternion rotation;
 
         RaycastHit hit;
-        if (Physics.Raycast(playerCharacter.playerCamera.transform.position, playerCharacter.playerCamera.transform.forward, out hit, Mathf.Infinity, shootRayLayerMask))
+        if (playerCharacter.inputs.UsingGamePad == true)
         {
-            Vector3 direction = shootSocket.position - hit.point;
-            rotation = Quaternion.LookRotation(-direction, transform.up);
+            if (Physics.SphereCast(playerCharacter.playerCamera.transform.position, 1f,playerCharacter.playerCamera.transform.forward, out hit, 100f, LayerMask.GetMask("Player")))
+            {
+                //Vector3 direction = shootSocket.position - hit.point;
+                Vector3 direction = (hit.point - shootSocket.position).normalized;
+                //rotation = Quaternion.LookRotation(-direction, transform.up);
+                rotation = Quaternion.LookRotation(direction);
+                return rotation;
+            }
+            else
+            {
+                rotation = shootSocket.rotation;
+                return rotation;
+            }
         }
         else
-            rotation = shootSocket.rotation;
-
-        return rotation;
+        {
+            if (Physics.Raycast(playerCharacter.playerCamera.transform.position, playerCharacter.playerCamera.transform.forward, out hit, Mathf.Infinity, shootRayLayerMask))
+            {
+                Vector3 direction = shootSocket.position - hit.point;
+                rotation = Quaternion.LookRotation(-direction, transform.up);
+                return rotation;
+            }
+            else
+            {
+                rotation = shootSocket.rotation;
+                return rotation;
+            }  
+        }
     }
 }

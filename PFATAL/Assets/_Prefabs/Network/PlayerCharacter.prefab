@@ -918,7 +918,9 @@ MonoBehaviour:
     _updatePoint: 1
     _passThrough: 1
     _radius: 1
-    _damage: 1
+    _baseDamage: 2
+    _maxDamage: 7
+    _damageMultiplier: 0.5
     _knockback: 1
   s_PropulseInAir:
     _updatePoint: 1
@@ -2516,7 +2518,7 @@ PrefabInstance:
       objectReference: {fileID: 3860378255616416739}
     - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
       propertyPath: _swapWhenFull
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
       propertyPath: fpsPosition.x

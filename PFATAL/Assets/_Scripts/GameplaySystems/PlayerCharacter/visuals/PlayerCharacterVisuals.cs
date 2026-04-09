@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using _scripts.PlayerCharacter;
 using _Scripts.Pooling;
@@ -87,11 +88,34 @@ public class PlayerCharacterVisuals : NetworkBehaviour
 
     void SetFPSViewEnabled(bool enabled)
     {
+        //update objects visibility
         foreach(GameObject obj in _proxyVisuals)
             obj.SetActive(!enabled);
         foreach(GameObject obj in _fpsVisuals)
             obj.SetActive(enabled);
+        
+        //update hands layer
+        void SetLayerRecursive(Transform t, int layer)
+        {
+            t.gameObject.layer = layer;
+            foreach (Transform child in t)
+            {
+                SetLayerRecursive(child, layer);
+            }
+        }
+        SetLayerRecursive(_playerCharacter.playerHands.leftHand.transform,IsInFpsView ? LayerMask.NameToLayer("FpsViewOnly") : LayerMask.NameToLayer("Default"));
+        SetLayerRecursive(_playerCharacter.playerHands.rightHand.transform,IsInFpsView ? LayerMask.NameToLayer("FpsViewOnly") : LayerMask.NameToLayer("Default"));
+        
+        //update hands position
+        _playerCharacter.playerHands.leftHand.transform.localPosition = enabled ?
+            _playerCharacter.playerHands.leftHand.fpsPosition : 
+            _playerCharacter.playerHands.leftHand.tpsPosition ;
+        
+        _playerCharacter.playerHands.rightHand.transform.localPosition = enabled ?
+            _playerCharacter.playerHands.rightHand.fpsPosition : 
+            _playerCharacter.playerHands.rightHand.tpsPosition ;
     }
+    
     
     public override void OnNetworkSpawn()
     {

@@ -2,6 +2,7 @@ using _scripts.PlayerCharacter;
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 
 public class Hand : MonoBehaviour
@@ -21,9 +22,8 @@ public class Hand : MonoBehaviour
 
     [Header("References")]
     [SerializeField] PlayerCharacter _main;
-    [SerializeField] ItemHolder _itemVisuals;
-    [SerializeField] public Transform visualsTransform;
-    [SerializeField] Animator _animator;
+    [SerializeField] HandsItemVisuals handsItemVisuals;
+    [SerializeField] public Transform _itemSocket;
 
     [Header("Parameters")]
 
@@ -33,17 +33,19 @@ public class Hand : MonoBehaviour
 
     [SerializeField] int _inventorySize = 1;
 
-    [HideInInspector] public Item equippedItem;
-    [HideInInspector] public List<Item> itemInventory = new();
+    [SerializeField] public Item equippedItem;
+    [SerializeField] public List<Item> itemInventory = new();
+
+    public Vector3 fpsPosition, tpsPosition;
 
     /// <summary>
-    /// vérifie si un item est ramassable en fonction de l'item info. si il est bien ramassable : le ramasse
+    /// vï¿½rifie si un item est ramassable en fonction de l'item info. si il est bien ramassable : le ramasse
     /// </summary>
     /// <param name="itemInfo"></param>
     /// <returns></returns>
     public bool TryPickupItem(ItemInfo itemInfo)
     {
-        Item item = _itemVisuals.GetItem(itemInfo.itemPrefab.name);
+        Item item = handsItemVisuals.GetItemInstance(itemInfo.itemPrefab.name);
 
         if (itemInventory.Count < _inventorySize)
         {
@@ -71,7 +73,7 @@ public class Hand : MonoBehaviour
     }
 
     /// <summary>
-    /// définit "item" comme l'item porté par la main et l'affiche au yeux de tous les joueurs.
+    /// dï¿½finit "item" comme l'item portï¿½ par la main et l'affiche au yeux de tous les joueurs.
     /// </summary>
     /// <param name="item"></param>
     void EquipItem(Item item)
@@ -83,10 +85,7 @@ public class Hand : MonoBehaviour
         }
 
         OnEquipItem?.Invoke(item);
-
-        _animator.SetTrigger("Equip");
-
-
+        
         if (equippedItem != null)
         {
             print(equippedItem.name);
@@ -94,13 +93,13 @@ public class Hand : MonoBehaviour
         }
 
         equippedItem = item;
-        _itemVisuals.ShowItemRpc(item.gameObject.name, _isLeft);
+        handsItemVisuals.ShowItemRpc(item.gameObject.name, _isLeft);
 
         equippedItem.Equip();
     }
 
     /// <summary>
-    /// appelle "OnDrop" sur l'item équipé puis, le retire de la main et définit l'item précédent de la liste comme le nouveau dans la main
+    /// appelle "OnDrop" sur l'item ï¿½quipï¿½ puis, le retire de la main et dï¿½finit l'item prï¿½cï¿½dent de la liste comme le nouveau dans la main
     /// </summary>
     public void DropEquippedtem()
     {
@@ -114,7 +113,7 @@ public class Hand : MonoBehaviour
     }
 
     /// <summary>
-    /// définit le prochain ou le précédent (en fonction de "isPrevious") item de la liste d'items comme celui équipé
+    /// dï¿½finit le prochain ou le prï¿½cï¿½dent (en fonction de "isPrevious") item de la liste d'items comme celui ï¿½quipï¿½
     /// </summary>
     /// <param name="isPrevious"></param>
     /// <returns></returns>
@@ -135,7 +134,7 @@ public class Hand : MonoBehaviour
     }
 
     /// <summary>
-    /// retire l'item actuellement porté de la main et update le visuel pour les autres joueurs
+    /// retire l'item actuellement portï¿½ de la main et update le visuel pour les autres joueurs
     /// </summary>
     public void UnEquipItem()
     {
@@ -144,12 +143,12 @@ public class Hand : MonoBehaviour
         OnUnequipItem?.Invoke(equippedItem);
 
         equippedItem.UnEquip();
-        _itemVisuals.HideEquippedItemRpc(_isLeft);
+        handsItemVisuals.HideEquippedItemRpc(_isLeft);
         equippedItem = null;
     }
 
     /// <summary>
-    /// retire "item" de l'inventaire. le déséqippe également si il est équipé.
+    /// retire "item" de l'inventaire. le dï¿½sï¿½qippe ï¿½galement si il est ï¿½quipï¿½.
     /// </summary>
     /// <param name="item"></param>
     public void DeleteItem(Item item)
@@ -172,7 +171,7 @@ public class Hand : MonoBehaviour
     }
 
     /// <summary>
-    /// drop l'item actuel et en équipe un nouveau
+    /// drop l'item actuel et en ï¿½quipe un nouveau
     /// </summary>
     /// <param name="item"></param>
     public void SwapAndDropEquippedItem(Item item)
@@ -204,3 +203,31 @@ public class Hand : MonoBehaviour
 
     #endregion
 }
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(Hand))]
+class HandEditor : Editor
+{
+    override public void OnInspectorGUI()
+    {
+        Hand t = (Hand)target;
+        base.OnInspectorGUI();
+        
+        GUILayout.Space(10);
+        GUILayout.Label("fps position : "+t.fpsPosition);
+        if(GUILayout.Button("save current position as FPS Position"))
+            t.fpsPosition = t.transform.localPosition;
+        if(GUILayout.Button("go to FPS position"))
+            t.transform.localPosition = t.fpsPosition;
+        
+        GUILayout.Space(5);
+        GUILayout.Label("tps position : "+t.tpsPosition);
+        if(GUILayout.Button("save current position as TPS Position"))
+            t.tpsPosition = t.transform.localPosition;
+        if(GUILayout.Button("go to TPS position"))
+            t.transform.localPosition = t.tpsPosition;
+    }
+}
+
+#endif

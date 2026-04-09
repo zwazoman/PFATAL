@@ -10,7 +10,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
     [Serializable]
     public class Pst_PropulseInAir : Pst_Alive
     {
-        [SerializeField] float _damage = 1f;
+        [SerializeField] float _damage = 3f;
 
         ulong _ownerId;
 
@@ -22,31 +22,32 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         protected override void OnExited(PlayerCharacter playerCharacter)
         {
-            DamageableObject damageable = playerCharacter.GetComponent<DamageableObject>();
-
-            DamageData damage = new DamageData
+            if (playerCharacter.TryGetComponent(out DamageableObject damageable) && playerCharacter.physics.Velocity.y >= 1)
             {
-                Amount = _damage,
-                SourcePlayerClientID = _ownerId,
-                Point = transform.position,
-                Direction = Vector3.down,
-                KnockbackForce = Vector3.zero,
-                Radius = 0
-            };
+                DamageData damage = new DamageData
+                {
+                    Amount = _damage,
+                    SourcePlayerClientID = _ownerId,
+                    Point = transform.position,
+                    Direction = Vector3.down,
+                    KnockbackForce = Vector3.zero,
+                    Radius = 0
+                };
 
-            damageable.TakeDamage(damage);
+                damageable.TakeDamage(damage);
+            }
         }
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter playerCharacter)
         {
-            if (!IsOnCeiling() && playerCharacter.physics.Velocity.y >= 1) return this;
+            if (!IsOnCeiling(playerCharacter.transform.position) && playerCharacter.physics.Velocity.y >= -1) return this;
 
             return Sm.s_Falling;
         }
 
-        bool IsOnCeiling()
+        bool IsOnCeiling(Vector3 position)
         {
-            return Physics.Raycast(transform.position, Vector3.up, 0.6f);
+            return Physics.Raycast(position, Vector3.up, 0.6f);
         }
     }
 }

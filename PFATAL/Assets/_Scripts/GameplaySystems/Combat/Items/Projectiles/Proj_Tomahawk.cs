@@ -37,9 +37,7 @@ public class Proj_Tomahawk : Proj_Falling
 
     protected override void ApplyDamageToHitObject(DamageData damageData, DamageableObject damageable)
     {
-        damageData.KnockbackForce = transform.forward * _knockbackStrength;
-
-        base.ApplyDamageToHitObject(damageData, damageable);
+        
     }
 
     void Explode()

@@ -60,20 +60,22 @@ public class PlayerCharacterSpawner : MonoBehaviour
         if (_spawnSockets.Count == 0)
             return transform;
 
-        Transform selectedSpawnSocket = null;
-
+        List<Transform> availableSockets = new();
+        
+        //enumerate all spawn sockets
         foreach(Transform spawnSocket in _spawnSockets)
         {
+            //check if a player is nearby
             Collider[] players = Physics.OverlapSphere(spawnSocket.position, _playerDetectionRadius, _playerDetectionMask);
             if (players.Length > 0)
                 continue;
 
-            selectedSpawnSocket = spawnSocket;
+            availableSockets.Add(spawnSocket);
         }
-
-        if (selectedSpawnSocket == null)
+        
+        if (availableSockets.Count == 0)
             return _spawnSockets.PickRandom();
 
-        return selectedSpawnSocket;
+        return availableSockets.PickRandom();
     }
 }

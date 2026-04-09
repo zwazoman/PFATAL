@@ -124,7 +124,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
     {
         if (player == null)
         {
-            UnityEngine.Debug.Log("No player connard");
+            UnityEngine.Debug.Log("No player, connard");
 
             return WeaponType.Without;
         }

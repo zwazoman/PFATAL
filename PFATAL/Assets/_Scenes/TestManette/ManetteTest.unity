@@ -56184,7 +56184,7 @@ PrefabInstance:
     - target: {fileID: 3674458171241821603, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
       propertyPath: _inputHandler
       value: 
-      objectReference: {fileID: 2101900954}
+      objectReference: {fileID: 0}
     - target: {fileID: 3674458171241821603, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
       propertyPath: _playerCharacter
       value: 
@@ -68815,6 +68815,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2012281267629077613, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: Sensitivity
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 2607746998044308091, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.764024
@@ -68878,19 +68882,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8229283948024419731, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2101900959}
   m_SourcePrefab: {fileID: 100100000, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
---- !u!114 &2101900954 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 398001680106436040, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+--- !u!4 &2101900953 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3977227000568191379, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
   m_PrefabInstance: {fileID: 2101900952}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+--- !u!114 &2101900954 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8726357715619173195, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+  m_PrefabInstance: {fileID: 2101900952}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101900955}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47b873f42b852284aa5e96d0fb7694f8, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b64cbdfb8d2b1c44ae1aeb25f7785d1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InputHandler
+  m_EditorClassIdentifier: 
+--- !u!1 &2101900955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8229283948024419731, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+  m_PrefabInstance: {fileID: 2101900952}
+  m_PrefabAsset: {fileID: 0}
 --- !u!20 &2101900956 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 622695028666583639, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
@@ -68901,7 +68918,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6498883890364450799, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
   m_PrefabInstance: {fileID: 2101900952}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2101900955}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0baf660102902f43acbd3bd57cc0ced, type: 3}
@@ -68912,12 +68929,33 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2012281267629077613, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
   m_PrefabInstance: {fileID: 2101900952}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2101900955}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3bd255875516e244a8052e275a9a2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2101900959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101900955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec7383acfd0a864a9812f33a08c746c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDetector
+  _cameraTransform: {fileID: 2101900953}
+  _mask:
+    serializedVersion: 2
+    m_Bits: 256
+  _input: {fileID: 2101900954}
+  _characterAiming: {fileID: 2101900958}
+  _maxOffset: 0.1
+  _assistStrength: 0.01
+  _minInputMultiplier: 0.05
 --- !u!1 &2108202238
 GameObject:
   m_ObjectHideFlags: 0

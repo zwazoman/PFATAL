@@ -1,5 +1,6 @@
-using UnityEngine;
 using _scripts.PlayerCharacter;
+using System;
+using UnityEngine;
 
 public class Proj_WolfTrap : Projectile
 {
@@ -13,6 +14,7 @@ public class Proj_WolfTrap : Projectile
     float timer;
     bool isArmed = false;
     bool hasActivated = false;
+    private static Collider[] buffer = new Collider[20];
 
     private void Awake()
     {
@@ -46,6 +48,11 @@ public class Proj_WolfTrap : Projectile
             _rb.isKinematic = true;
         }
 
+        if (isArmed && !hasActivated)
+        {
+            HandlePlayers();
+        }
+
         if (timer >= _duringTime)
         {
             Despawn();
@@ -57,7 +64,36 @@ public class Proj_WolfTrap : Projectile
         return Physics.Raycast(transform.position, Vector3.down, 0.35f);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void HandlePlayers()
+    {
+        int count = Physics.OverlapSphereNonAlloc(transform.position, 1, buffer);
+
+        for (int i = 0; i < count; i++)
+        {
+            if (buffer[i].TryGetComponent(out DamageableObject hitObject))
+            {
+                DamageData damageData = new DamageData
+                {
+                    Amount = _dammage,
+                    SourcePlayerClientID = OwnerClientId,
+                    Point = hitObject.transform.position,
+                    Direction = Vector3.down,
+                    KnockbackForce = Vector3.zero,
+                    Radius = 1
+                };
+
+                hitObject.TakeDamage(damageData);
+
+                hitObject.TryGetComponent(out PlayerStateMachine state);
+                state.s_Frozen.Freeze(_freezeDuration);
+
+                timer = _duringTime - _freezeDuration;
+                hasActivated = true;
+            }
+        }
+    }
+
+    /*private void OnTriggerEnter(Collider other)
     {
         if (!isArmed || !IsServer || hasActivated) return;
 
@@ -85,5 +121,5 @@ public class Proj_WolfTrap : Projectile
             timer = _duringTime - _freezeDuration;
             hasActivated = true;
         }
-    }
+    }*/
 }

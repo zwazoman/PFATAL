@@ -12,9 +12,14 @@ namespace _scripts.PlayerCharacter.StateMachine.States
     {
         private static Collider[] buffer = new Collider[20];
 
+        [Header("Ground Slam Settings")]
         [SerializeField] float _radius = 1f;
-        [SerializeField] float _damage = 1f;
+        [SerializeField] int _baseDamage = 2;
+        [SerializeField] int _maxDamage = 7;
+        [SerializeField] float _damageMultiplier = 0.5f;
         [SerializeField] float _knockback = 1f;
+
+        private float _startY;
 
         public void ActivateState()
         {
@@ -24,32 +29,44 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         protected override void OnEntered(PlayerCharacter playerCharacter)
         {
             playerCharacter.movement.enabled = false;
+
+            _startY = playerCharacter.transform.position.y;
         }
 
         protected override void OnExited(PlayerCharacter playerCharacter)
         {
             playerCharacter.movement.enabled = true;
 
-            _radius *= playerCharacter.physics.Velocity.magnitude;
-            _damage *= playerCharacter.physics.Velocity.magnitude;
+            float velocity = Mathf.Abs(playerCharacter.physics.Velocity.y);
+            float fallHeight = _startY - playerCharacter.transform.position.y;
 
-            int count = Physics.OverlapSphereNonAlloc(transform.position, _radius, buffer);
+            float rawDamage = _baseDamage + (fallHeight * _damageMultiplier);
+            rawDamage = Mathf.Clamp(rawDamage, _baseDamage, _maxDamage);
+            int finalDamage = Mathf.Clamp(Mathf.RoundToInt(rawDamage), (int)_baseDamage, (int)_maxDamage);
+            float radius = _radius * (1 + fallHeight * 0.1f);
+
+
+            int count = Physics.OverlapSphereNonAlloc(playerCharacter.transform.position, _radius, buffer);
 
             for (int i = 0; i < count; i++)
             {
                 if (buffer[i].TryGetComponent(out DamageableObject hit))
                 {
-                    DamageData damage = new DamageData
+                    if (hit.gameObject == playerCharacter.gameObject) return;
+
+                    DamageData damageData = new DamageData
                     {
-                        Amount = _damage,
+                        Amount = finalDamage,
                         SourcePlayerClientID = playerCharacter.OwnerClientId,
                         Point = hit.transform.position,
                         Direction = Vector3.up,
                         KnockbackForce = new Vector3(0, _knockback, 0),
-                        Radius = _radius
+                        Radius = radius
                     };
 
-                    hit.TakeDamage(damage);
+                    hit.TakeDamage(damageData);
+
+                    Debug.Log($"Ground Slam hit {hit.name} for {damageData.Amount}");
                 }
             }
         }

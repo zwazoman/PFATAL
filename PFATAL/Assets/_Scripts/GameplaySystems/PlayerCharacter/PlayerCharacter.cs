@@ -29,7 +29,7 @@ namespace _scripts.PlayerCharacter
         [field: SerializeField] public PlayerInput playerInput { get; private set; }
         [field: SerializeField] public PlayerInteraction playerInteraction { get; private set; }
         [field: SerializeField] public PlayerHands playerHands { get; private set; }
-        [field : SerializeField] public ItemHolder itemHolder { get; private set; }
+        [field : SerializeField] public HandsItemVisuals HandsItemVisuals { get; private set; }
 
         public override void OnNetworkSpawn()
         {

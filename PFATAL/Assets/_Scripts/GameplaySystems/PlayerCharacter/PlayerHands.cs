@@ -45,7 +45,7 @@ public class PlayerHands : MonoBehaviour
     bool TryEquipRandomItem(string condition = "")
     {
         List<GameObject> prefabs = new();
-        foreach (GameObject prefab in _playerCharacter.itemHolder.itemPrefabs)
+        foreach (GameObject prefab in _playerCharacter.HandsItemVisuals.itemPrefabs)
         {
             if (prefab.name.Contains(condition))
                 prefabs.Add(prefab);

@@ -13,7 +13,7 @@ public class Cons_WolfTrap : Consummable
     {
         base.StopUsing();
 
-        Summoner.Instance.SpawnObject(_wolfTrapPrefab, hand.visualsTransform.position, playerCharacter.transform.rotation, false);
+        Summoner.Instance.SpawnObject(_wolfTrapPrefab, hand._itemSocket.position, playerCharacter.transform.rotation, false);
         BreakItem();
     }
 }

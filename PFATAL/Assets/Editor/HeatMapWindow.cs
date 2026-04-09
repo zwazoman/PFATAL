@@ -37,20 +37,22 @@ public class HeatMapWindow : EditorWindow
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
 
         mapBound = (GameObject)EditorGUILayout.ObjectField("Map bounds", mapBound, typeof(GameObject), true);
+        if (mapBound != null)
+        {
+            GUILayout.Label("Objet sélectionné : " + mapBound.name);
+        }
+
+
         rayMarchingMat = (Material)EditorGUILayout.ObjectField("Ray Marching Material", rayMarchingMat, typeof(Material), false);
-
-
-        // AJOUTE ÇA JUSTE APRÈS
         if (rayMarchingMat != null)
         {
             EditorGUILayout.LabelField("Shader:", rayMarchingMat.shader.name);
         }
 
-        if (mapBound != null)
-        {
-            GUILayout.Label("Objet sélectionné : " + mapBound.name);
-        }
+
         GUILayout.Space(25);
+
+        GUILayout.
 
         //Filters options for the heapmap
         GUILayout.Label("HeatMaps Filter", EditorStyles.boldLabel);
@@ -99,7 +101,12 @@ public class HeatMapWindow : EditorWindow
                 ),
             attenuation);
 
-        texture3DHasFilters = EditorGUILayout.BeginToggleGroup("Apply texture3D Filters", texture3DHasFilters);
+        texture3DHasFilters = EditorGUILayout.BeginToggleGroup(
+            new GUIContent(
+                "Apply texture3D Filters",
+                "Apply or not filters for the creation of the texture3D"
+                ), 
+            texture3DHasFilters);
 
         weaponType = (WeaponType)EditorGUILayout.EnumPopup(
             new GUIContent(

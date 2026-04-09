@@ -39,7 +39,7 @@ public class Tomahawk : ProjectileWeapon
     {
         base.Equip();
 
-        currentDashCooldown = 0;
+        currentDashCooldown = dashCooldown;
         _currentAmmoCount = maxAmmoAmount;
         _dashed = false;
         _canDash = true;
@@ -60,7 +60,7 @@ public class Tomahawk : ProjectileWeapon
     {
         base.UnEquip();
 
-        currentDashCooldown = 0;
+        currentDashCooldown = dashCooldown;
     }
 
     public override void UseUpdate()

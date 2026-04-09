@@ -13,6 +13,8 @@ public class ProjectileWeapon : Item
     [SerializeField] protected GameObject projectile;
     [SerializeField] float shootDelay;
 
+    [SerializeField] float _shootSocketDownPosMult = .1f;
+
     [SerializeField] protected LayerMask shootRayLayerMask;
 
     protected bool canShoot = true;
@@ -39,7 +41,7 @@ public class ProjectileWeapon : Item
         OnShoot?.Invoke();
         StartShootDelay();
 
-        return await Summoner.Instance.SpawnObject(projectile, shootSocket.position, rotation,true, spawnContext);
+        return await Summoner.Instance.SpawnObject(projectile, playerCharacter.playerCamera.transform.position +Vector3.down * .3f, rotation,true, spawnContext);
     }
 
     protected Quaternion ComputeProjectileRotation()
@@ -52,7 +54,7 @@ public class ProjectileWeapon : Item
             if (Physics.SphereCast(playerCharacter.playerCamera.transform.position, 1f,playerCharacter.playerCamera.transform.forward, out hit, 100f, LayerMask.GetMask("Player")))
             {
                 //Vector3 direction = shootSocket.position - hit.point;
-                Vector3 direction = (hit.point - shootSocket.position).normalized;
+                Vector3 direction = (hit.point - playerCharacter.playerCamera.transform.position + Vector3.down * _shootSocketDownPosMult).normalized;
                 //rotation = Quaternion.LookRotation(-direction, transform.up);
                 rotation = Quaternion.LookRotation(direction);
                 return rotation;
@@ -67,13 +69,13 @@ public class ProjectileWeapon : Item
         {
             if (Physics.Raycast(playerCharacter.playerCamera.transform.position, playerCharacter.playerCamera.transform.forward, out hit, Mathf.Infinity, shootRayLayerMask))
             {
-                Vector3 direction = shootSocket.position - hit.point;
+                Vector3 direction = playerCharacter.playerCamera.transform.position + Vector3.down * _shootSocketDownPosMult - hit.point;
                 rotation = Quaternion.LookRotation(-direction, transform.up);
                 return rotation;
             }
             else
             {
-                rotation = shootSocket.rotation;
+                rotation = playerCharacter.playerCamera.transform.rotation;
                 return rotation;
             }  
         }

@@ -41,6 +41,8 @@ public class ProjectileWeapon : Item
         OnShoot?.Invoke();
         StartShootDelay();
 
+        //todo => faire spawn un faux projectile coté client qui part du socket de l'arme et follow la trajectoire du vrai projo
+
         return await Summoner.Instance.SpawnObject(projectile, playerCharacter.playerCamera.transform.position +Vector3.down * .3f, rotation,true, spawnContext);
     }
 

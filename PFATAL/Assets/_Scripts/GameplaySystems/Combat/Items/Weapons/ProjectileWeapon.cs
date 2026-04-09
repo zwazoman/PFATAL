@@ -11,9 +11,10 @@ public class ProjectileWeapon : Item
 
     [Header("Weapon Settings")]
     [SerializeField] protected GameObject projectile;
+    [SerializeField] protected GameObject visualProjectile;
     [SerializeField] float shootDelay;
 
-    [SerializeField] float _shootSocketDownPosMult = .1f;
+    [SerializeField] protected float shootSocketDownPosMult = .1f;
 
     [SerializeField] protected LayerMask shootRayLayerMask;
 
@@ -42,11 +43,16 @@ public class ProjectileWeapon : Item
         StartShootDelay();
 
         //todo => faire spawn un faux projectile coté client qui part du socket de l'arme et follow la trajectoire du vrai projo
+        if(visualProjectile != null)
+        {
+            Instantiate(visualProjectile, shootSocket.position, ComputeProjectileRotation(shootSocket.position)).TryGetComponent(out Proj_Visual visual);
+            visual.context = spawnContext;
+        }
 
-        return await Summoner.Instance.SpawnObject(projectile, playerCharacter.playerCamera.transform.position +Vector3.down * .3f, rotation,true, spawnContext);
+        return await Summoner.Instance.SpawnObject(projectile, playerCharacter.playerCamera.transform.position +Vector3.down * shootSocketDownPosMult, rotation,true, spawnContext);
     }
 
-    protected Quaternion ComputeProjectileRotation()
+    protected Quaternion ComputeProjectileRotation(Vector3 spawnPos)
     {
         Quaternion rotation;
         
@@ -56,7 +62,7 @@ public class ProjectileWeapon : Item
             if (Physics.SphereCast(playerCharacter.playerCamera.transform.position, 1f,playerCharacter.playerCamera.transform.forward, out hit, 100f, LayerMask.GetMask("Player")))
             {
                 //Vector3 direction = shootSocket.position - hit.point;
-                Vector3 direction = (hit.point - playerCharacter.playerCamera.transform.position + Vector3.down * _shootSocketDownPosMult).normalized;
+                Vector3 direction = (hit.point - spawnPos).normalized;
                 //rotation = Quaternion.LookRotation(-direction, transform.up);
                 rotation = Quaternion.LookRotation(direction);
                 return rotation;
@@ -71,8 +77,8 @@ public class ProjectileWeapon : Item
         {
             if (Physics.Raycast(playerCharacter.playerCamera.transform.position, playerCharacter.playerCamera.transform.forward, out hit, Mathf.Infinity, shootRayLayerMask))
             {
-                Vector3 direction = playerCharacter.playerCamera.transform.position + Vector3.down * _shootSocketDownPosMult - hit.point;
-                rotation = Quaternion.LookRotation(-direction, transform.up);
+                Vector3 direction = hit.point - spawnPos;
+                rotation = Quaternion.LookRotation(direction, transform.up);
                 return rotation;
             }
             else

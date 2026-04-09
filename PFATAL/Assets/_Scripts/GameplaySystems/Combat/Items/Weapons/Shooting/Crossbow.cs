@@ -101,7 +101,7 @@ public class Crossbow : ProjectileWeapon
         //spawn projectile
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
         spawnContext.floatData = chargeValue;
-        Shoot(spawnContext, ComputeProjectileRotation());
+        Shoot(spawnContext, ComputeProjectileRotation(playerCharacter.playerCamera.transform.position + Vector3.down * shootSocketDownPosMult));
 
         //recoil
         playerCharacter.cameraBehaviour.AddRecoil(

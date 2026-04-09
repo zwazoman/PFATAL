@@ -153,7 +153,7 @@ public class Tomahawk : ProjectileWeapon
             OnAmmoEmpty?.Invoke();
 
         SpawnContext context = new(playerCharacter.OwnerClientId);
-        Quaternion rotation = ComputeProjectileRotation() * Quaternion.Euler(-_projXOffset, 0, 0);
+        Quaternion rotation = ComputeProjectileRotation(playerCharacter.playerCamera.transform.position + Vector3.down * shootSocketDownPosMult) * Quaternion.Euler(-_projXOffset, 0, 0);
         _tomahawkProj = await Shoot(context, rotation);
 
         OnTomahawkShoot?.Invoke(_tomahawkProj);

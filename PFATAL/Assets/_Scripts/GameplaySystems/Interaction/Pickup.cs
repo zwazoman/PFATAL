@@ -42,6 +42,8 @@ public class Pickup : Interactable
     {
         base.Interact(interaction);
 
+        print("allo");
+
         if (interaction._playerCharacter.playerHands.TryEquipItem(_itemInfo))
         {
             transform.DOPunchScale(transform.localScale * _pickupTweenScale, _pickupTweenDuration,0,0);

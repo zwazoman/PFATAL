@@ -15,6 +15,9 @@ public class DiscordUpdater : MonoBehaviour
     [SerializeField] private bool _isInLobbyScene;
     [SerializeField] private GameLobby _gameLobby;
 
+    [SerializeField] private bool _isInGame;
+
+    private float _timer;
     Discord_Controller controller;
 
     private void Start()
@@ -43,6 +46,10 @@ public class DiscordUpdater : MonoBehaviour
         {
             controller.currentPartySize = _gameLobby._allPlayersInLobby.dictionnary.Count;
             controller.maxPartySize = 8;
+        }
+        else if ( _isInGame)
+        {
+            
         }
     }
 

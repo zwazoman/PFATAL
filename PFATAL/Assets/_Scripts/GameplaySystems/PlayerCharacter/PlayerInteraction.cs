@@ -17,8 +17,13 @@ public class PlayerInteraction : MonoBehaviour
 
     [SerializeField] LayerMask _interactionmask;
 
-    [HideInInspector] public bool canInteract = true;
-    
+    [HideInInspector] public bool canInteract;
+
+    private void Start()
+    {
+        canInteract = true;
+    }
+
 
     private void Update()
     {
@@ -52,17 +57,20 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
+        print(canInteract);
+
         if (!canInteract)
             return;
 
         //Contact detection
-        int contactSize = Physics.OverlapSphereNonAlloc(transform.position, 1,_contactColliderBuffer, _interactionmask);
+        int contactSize = Physics.OverlapSphereNonAlloc(transform.position, 1.2f,_contactColliderBuffer, _interactionmask);
 
 
         if(contactSize > 0)
         {
             for (int i = 0; i < contactSize; i++)
             {
+                print(_contactColliderBuffer[i].gameObject.name);
                 if (_contactColliderBuffer[i].gameObject.TryGetComponent(out Pickup pickup))
                     pickup.Interact(this);
             }

@@ -19,6 +19,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             ctx.physics.SetVelocity(Vector3.zero);
             ctx.inputs.Clear();
             ctx.playerInteraction.canInteract = false;
+ 
             ctx.HUD.ShowDeathUI();
             ctx.visuals.HideRpc();
             

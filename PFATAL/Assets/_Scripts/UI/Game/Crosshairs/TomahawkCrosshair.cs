@@ -44,7 +44,6 @@ public class TomahawkCrosshair : Crosshair<Tomahawk>
         {
             for (int i = 0; i < newAmount; i++)
             {
-                print(i);
                 _ammunitions[i].SetActive(true);
             }
         }

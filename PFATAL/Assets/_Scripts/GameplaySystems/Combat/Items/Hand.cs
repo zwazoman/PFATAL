@@ -2,6 +2,7 @@ using _scripts.PlayerCharacter;
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 
 public class Hand : MonoBehaviour
@@ -32,8 +33,10 @@ public class Hand : MonoBehaviour
 
     [SerializeField] int _inventorySize = 1;
 
-    [HideInInspector] public Item equippedItem;
-    [HideInInspector] public List<Item> itemInventory = new();
+    [SerializeField] public Item equippedItem;
+    [SerializeField] public List<Item> itemInventory = new();
+
+    public Vector3 fpsPosition, tpsPosition;
 
     /// <summary>
     /// v�rifie si un item est ramassable en fonction de l'item info. si il est bien ramassable : le ramasse
@@ -200,3 +203,31 @@ public class Hand : MonoBehaviour
 
     #endregion
 }
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(Hand))]
+class HandEditor : Editor
+{
+    override public void OnInspectorGUI()
+    {
+        Hand t = (Hand)target;
+        base.OnInspectorGUI();
+        
+        GUILayout.Space(10);
+        GUILayout.Label("fps position : "+t.fpsPosition);
+        if(GUILayout.Button("save current position as FPS Position"))
+            t.fpsPosition = t.transform.localPosition;
+        if(GUILayout.Button("go to FPS position"))
+            t.transform.localPosition = t.fpsPosition;
+        
+        GUILayout.Space(5);
+        GUILayout.Label("tps position : "+t.tpsPosition);
+        if(GUILayout.Button("save current position as TPS Position"))
+            t.tpsPosition = t.transform.localPosition;
+        if(GUILayout.Button("go to TPS position"))
+            t.transform.localPosition = t.tpsPosition;
+    }
+}
+
+#endif

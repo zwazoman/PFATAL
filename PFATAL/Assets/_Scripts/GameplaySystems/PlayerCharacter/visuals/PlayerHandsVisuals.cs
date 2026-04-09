@@ -22,6 +22,7 @@ namespace GameplaySystems.PlayerCharacter
         {
             _animator.SetInteger(EquippedItemTypeAnimatorProperty,0);
         }
+        
         private void SetEquippedItemTypeAnimatorProperty(Item equippedItem)
         {
             _animator.SetInteger(EquippedItemTypeAnimatorProperty,equippedItem switch

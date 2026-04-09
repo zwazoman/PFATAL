@@ -45,7 +45,7 @@ public class ProjectileWeapon : Item
     protected Quaternion ComputeProjectileRotation()
     {
         Quaternion rotation;
-
+        
         RaycastHit hit;
         if (playerCharacter.inputs.UsingGamePad == true)
         {
@@ -59,7 +59,7 @@ public class ProjectileWeapon : Item
             }
             else
             {
-                rotation = shootSocket.rotation;
+                rotation = playerCharacter.playerCamera.transform.rotation;//shootSocket.rotation;
                 return rotation;
             }
         }

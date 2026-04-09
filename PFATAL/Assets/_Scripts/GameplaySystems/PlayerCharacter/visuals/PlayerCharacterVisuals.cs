@@ -105,7 +105,17 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         }
         SetLayerRecursive(_playerCharacter.playerHands.leftHand.transform,IsInFpsView ? LayerMask.NameToLayer("FpsViewOnly") : LayerMask.NameToLayer("Default"));
         SetLayerRecursive(_playerCharacter.playerHands.rightHand.transform,IsInFpsView ? LayerMask.NameToLayer("FpsViewOnly") : LayerMask.NameToLayer("Default"));
+        
+        //update hands position
+        _playerCharacter.playerHands.leftHand.transform.localPosition = enabled ?
+            _playerCharacter.playerHands.leftHand.fpsPosition : 
+            _playerCharacter.playerHands.leftHand.tpsPosition ;
+        
+        _playerCharacter.playerHands.rightHand.transform.localPosition = enabled ?
+            _playerCharacter.playerHands.rightHand.fpsPosition : 
+            _playerCharacter.playerHands.rightHand.tpsPosition ;
     }
+    
     
     public override void OnNetworkSpawn()
     {

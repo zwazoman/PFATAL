@@ -9,8 +9,10 @@ public class Proj_BigLaserBeam : Projectile
     [SerializeField] private float _maxDamage = 100f;
     [SerializeField] private LayerMask _hitLayer;
 
-    public override void OnSpawn()
+    public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
+
         float chargeRatio = spawnContext.Value.floatData;
         ulong sourceId = (ulong)spawnContext.Value.floatData2;
 

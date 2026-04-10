@@ -101,7 +101,7 @@ public class Crossbow : ProjectileWeapon
         //spawn projectile
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
         spawnContext.floatData = chargeValue;
-        Shoot(spawnContext, ComputeProjectileRotation());
+        Shoot(spawnContext, Quaternion.identity, playerCharacter.playerCamera.transform.position + Vector3.down * shootSocketDownPosMult);
 
         //recoil
         playerCharacter.cameraBehaviour.AddRecoil(
@@ -115,10 +115,10 @@ public class Crossbow : ProjectileWeapon
         playerCharacter.movement.globalMovespeedMultiplyer = 1;
     }
 
-    protected override Awaitable<GameObject> Shoot(SpawnContext spawnContext,Quaternion rotation)
+    protected override Awaitable<GameObject> Shoot(SpawnContext spawnContext,Quaternion rotation, Vector3 spawnPos, Vector3 mirrorSpawnPos = default )
     {
         OnCrossbowShoot?.Invoke(chargeValue);
 
-        return base.Shoot(spawnContext, rotation);
+        return base.Shoot(spawnContext, rotation, spawnPos, mirrorSpawnPos);
     }
 }

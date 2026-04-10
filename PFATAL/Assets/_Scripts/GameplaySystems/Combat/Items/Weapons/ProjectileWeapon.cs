@@ -11,13 +11,22 @@ public class ProjectileWeapon : Item
 
     [Header("Weapon Settings")]
     [SerializeField] protected GameObject projectile;
+    [SerializeField] protected GameObject visualProjectile;
     [SerializeField] float shootDelay;
 
-    [SerializeField] float _shootSocketDownPosMult = .1f;
+    [SerializeField] protected float shootSocketDownPosMult = .1f;
 
     [SerializeField] protected LayerMask shootRayLayerMask;
 
+    protected Projectile _currentProjectile;
     protected bool canShoot = true;
+
+    public override void UnEquip()
+    {
+        base.UnEquip();
+
+        _currentProjectile = null;
+    }
 
     /// <summary>
     /// g�re le delay entre 2 tirs
@@ -36,25 +45,43 @@ public class ProjectileWeapon : Item
     /// prend en param�tre un context, spawn le projectile donn� et le tourne vers le point d'un raycast tir� depuis la cam�ra
     /// </summary>
     /// <param name="spawnContext"> le context du spawn</param>
-    protected virtual async Awaitable<GameObject> Shoot(SpawnContext spawnContext, Quaternion rotation)
+    protected virtual async Awaitable<GameObject> Shoot(SpawnContext spawnContext, Quaternion rotationOffset, Vector3 spawnPos, Vector3 mirrorSpawnPos = default)
     {
         OnShoot?.Invoke();
         StartShootDelay();
 
-        return await Summoner.Instance.SpawnObject(projectile, playerCharacter.playerCamera.transform.position +Vector3.down * .3f, rotation,true, spawnContext);
+        Proj_Visual visual = null;
+
+        //fait spawn un projectile "miroir" imitant les déplacements du vrai projectile sans délai chez le client
+        if (visualProjectile != null)
+        {
+            if(mirrorSpawnPos == default)
+                Instantiate(visualProjectile, shootSocket.position, ComputeProjectileRotation(shootSocket.position) * rotationOffset).TryGetComponent(out visual);
+            else
+                Instantiate(visualProjectile, mirrorSpawnPos, ComputeProjectileRotation(mirrorSpawnPos) * rotationOffset).TryGetComponent(out visual);
+            visual.context = spawnContext;
+        }
+
+        GameObject _currentProjectileObject = await Summoner.Instance.SpawnObject(projectile, spawnPos, ComputeProjectileRotation(spawnPos) * rotationOffset, true, spawnContext);
+        _currentProjectile = _currentProjectileObject.GetComponent<Projectile>();
+
+        if (visual != null)
+            visual._mirrorProjectile = _currentProjectile;
+
+        return _currentProjectileObject;
     }
 
-    protected Quaternion ComputeProjectileRotation()
+    protected Quaternion ComputeProjectileRotation(Vector3 spawnPos)
     {
         Quaternion rotation;
-        
+
         RaycastHit hit;
         if (playerCharacter.inputs.UsingGamePad == true)
         {
-            if (Physics.SphereCast(playerCharacter.playerCamera.transform.position, 1f,playerCharacter.playerCamera.transform.forward, out hit, 100f, LayerMask.GetMask("Player")))
+            if (Physics.SphereCast(playerCharacter.playerCamera.transform.position, 1f, playerCharacter.playerCamera.transform.forward, out hit, 100f, LayerMask.GetMask("Player")))
             {
                 //Vector3 direction = shootSocket.position - hit.point;
-                Vector3 direction = (hit.point - playerCharacter.playerCamera.transform.position + Vector3.down * _shootSocketDownPosMult).normalized;
+                Vector3 direction = (hit.point - spawnPos).normalized;
                 //rotation = Quaternion.LookRotation(-direction, transform.up);
                 rotation = Quaternion.LookRotation(direction);
                 return rotation;
@@ -69,15 +96,15 @@ public class ProjectileWeapon : Item
         {
             if (Physics.Raycast(playerCharacter.playerCamera.transform.position, playerCharacter.playerCamera.transform.forward, out hit, Mathf.Infinity, shootRayLayerMask))
             {
-                Vector3 direction = playerCharacter.playerCamera.transform.position + Vector3.down * _shootSocketDownPosMult - hit.point;
-                rotation = Quaternion.LookRotation(-direction, transform.up);
+                Vector3 direction = hit.point - spawnPos;
+                rotation = Quaternion.LookRotation(direction, Vector3.up);
                 return rotation;
             }
             else
             {
                 rotation = playerCharacter.playerCamera.transform.rotation;
                 return rotation;
-            }  
+            }
         }
     }
 }

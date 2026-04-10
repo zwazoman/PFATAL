@@ -10,6 +10,7 @@ public struct  PermanentPlayerIdentity : INetworkSerializable
     public string platformID;
     public ePlatform platform;
     public ulong tempNetworkClientId;
+    public string tempUnityId;
     
     public enum ePlatform
     {
@@ -18,12 +19,13 @@ public struct  PermanentPlayerIdentity : INetworkSerializable
         Unity,
     }
 
-    public PermanentPlayerIdentity(string name, string platformID, ePlatform platform, ulong tempNetworkClientId)
+    public PermanentPlayerIdentity(string name, string platformID, ePlatform platform, ulong tempNetworkClientId, string tempUnityId)
     {
         this.name = name;
         this.platformID = platformID;
         this.platform = platform;
         this.tempNetworkClientId = tempNetworkClientId;
+        this.tempUnityId = tempUnityId;
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -32,5 +34,6 @@ public struct  PermanentPlayerIdentity : INetworkSerializable
         serializer.SerializeValue(ref platformID);
         serializer.SerializeValue(ref platform);
         serializer.SerializeValue(ref tempNetworkClientId);
+        serializer.SerializeValue(ref tempUnityId);
     }
 }

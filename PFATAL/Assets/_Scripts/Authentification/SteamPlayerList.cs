@@ -37,12 +37,16 @@ public class SteamPlayerList : NetworkBehaviour
         
         Debug.Log("[SteamPlayerList] NetworkSpawn OK");
         
-        if(NetworkManager.Singleton.IsServer)
+        if(NetworkManager.Singleton.IsServer){
+            Debug.Log("[SteamPlayerList] NetworkSpawn JE PASSE PAR LA ");
             NetworkManager.Singleton.OnClientConnectedCallback += OnNewPlayerJoined;
+        }
     }
 
     private void OnNewPlayerJoined(ulong newClientNetworkID)
     {
+        Debug.Log("[SteamPlayerList] NewPlayerJoined ");
+        Debug.Log("[SteamPlayerList] NewPlayerJoined " + newClientNetworkID);
         SendPlayerListToNewClientRPC(
             Players.ToArray(),
             RpcTarget.Single(newClientNetworkID, RpcTargetUse.Temp));
@@ -57,14 +61,15 @@ public class SteamPlayerList : NetworkBehaviour
 
 
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
-    public void AddPlayerRpc(ulong NetworkClientId, string steamId, string playerName,RpcParams rpcParams = default)
+    public void AddPlayerRpc(ulong NetworkClientId, string steamId, string playerName, string tempUnityId,RpcParams rpcParams = default)
     {
         //met à jour la liste de joueurs chez tout le monde
         PermanentPlayerIdentity data = new (
             playerName,
             steamId,
             PermanentPlayerIdentity.ePlatform.Steam,
-            NetworkClientId);
+            NetworkClientId,
+            tempUnityId);
         Players.Add(data);
         
         //met à jour le dico du gamemanager
@@ -82,6 +87,7 @@ public class SteamPlayerList : NetworkBehaviour
         
         // Notifie GameLobby avec le clientId du sender pour mettre à jour le nom Steam
         ulong senderClientId = rpcParams.Receive.SenderClientId;
+        Debug.Log($"[SteamPlayerList] senderClientId: {senderClientId} + {playerName}");
         GameLobby.Instance?.OnSteamPlayerRegistered(senderClientId, playerName, steamId);
     }
 

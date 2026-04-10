@@ -30,7 +30,8 @@ public class LeaderboardDisplay : MonoBehaviour
         foreach (var item in result.LeaderBoard.entries)
         {
             Debug.Log("Adding player to end game leaderboard: " + result);
-            ScoreboardUIEndGamePanel.AddPlayerCard(item.ClientID.ToString(), item.Points, item.Kills, item.Deaths, 99);
+            Debug.Log(item.PlayerName);
+            ScoreboardUIEndGamePanel.AddPlayerCard(item.PlayerName.ToString(), item.Points, item.Kills, item.Deaths, 99);
         }
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

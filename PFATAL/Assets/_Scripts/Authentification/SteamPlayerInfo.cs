@@ -1,7 +1,5 @@
-using Discord;
 using UnityEngine;
 using Steamworks;
-using Unity.Netcode;
 using NetworkManager = Unity.Netcode.NetworkManager;
 
 public class SteamPlayerInfo : MonoBehaviour
@@ -9,10 +7,11 @@ public class SteamPlayerInfo : MonoBehaviour
     const ulong NULL_NETWORK_ID = ulong.MaxValue;
     
     public static SteamPlayerInfo Instance;
-
     public ulong NetworkClientId { get; private set; } = NULL_NETWORK_ID;
     public string SteamId { get; private set; }
     public string PlayerName { get; private set; }
+    
+    public string tempUnityId;
 
     void Awake()
     {
@@ -25,8 +24,9 @@ public class SteamPlayerInfo : MonoBehaviour
     void Start()
     {
         InitSteamData();
-        StartCoroutine(WaitAndSend());
-        
+        WaitAndSend_Async();
+        UnityServicesManager.Instance.GetPlayerId();
+        tempUnityId = UnityServicesManager.Instance.GetPlayerId();
         NetworkManager.Singleton.OnClientStarted += () =>
         {
             NetworkClientId = NetworkManager.Singleton.LocalClientId;
@@ -41,15 +41,17 @@ public class SteamPlayerInfo : MonoBehaviour
         PlayerName = SteamFriends.GetPersonaName();
         Debug.Log($"[SteamPlayerInfo] {PlayerName} ({SteamId})");
     }
-
-    System.Collections.IEnumerator WaitAndSend()
+    
+    async void WaitAndSend_Async()
     {
-        //attend d'être connecté à netcode et à steam
-        yield return new WaitUntil(() =>
-            SteamPlayerList.Instance != null 
-            && NetworkClientId != NULL_NETWORK_ID);
+        Debug.Log("[SteamPlayerInfo] WaitAndSend_Async");
+        while (SteamPlayerList.Instance == null 
+               || NetworkClientId == NULL_NETWORK_ID)
+        {
+            print($"[SteamPlayerInfo] {SteamPlayerList.Instance} ({NetworkClientId})");
+            await Awaitable.NextFrameAsync();
+        }
         
-        //Met à jour la liste de tous les clients
-        SteamPlayerList.Instance.AddPlayerRpc(NetworkClientId,SteamId, PlayerName);
+        SteamPlayerList.Instance.AddPlayerRpc(NetworkClientId,SteamId, PlayerName, tempUnityId);
     }
 }

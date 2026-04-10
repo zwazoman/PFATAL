@@ -1,6 +1,3 @@
-using Discord;
-using Unity.VisualScripting;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class Discord_Controller : MonoBehaviour

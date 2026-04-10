@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -53,30 +54,32 @@ public class LeaderBoardData : INetworkSerializable
     }
 }
 
-public struct ScoreEntry :IComparable<ScoreEntry>, INetworkSerializeByMemcpy
+public struct ScoreEntry : IComparable<ScoreEntry>, INetworkSerializeByMemcpy
 {
     public ulong ClientID;
-    public int Rank,Kills,Deaths,Points;
+    public int Rank, Kills, Deaths, Points;
+    public FixedString64Bytes PlayerName; // todo : ajouter player name → récupérer via GameLobby.Instance ou SteamPlayerList.Instance
+
     public int CompareTo(ScoreEntry other)
     {
         int result = other.Points.CompareTo(Points);
-        return result !=0 ? result : ClientID.CompareTo(other.ClientID);
+        return result != 0 ? result : ClientID.CompareTo(other.ClientID);
     }
 
-    public ScoreEntry(ulong clientID, int rank, int kills, int deaths, int points)
+    public ScoreEntry(ulong clientID, int rank, int kills, int deaths, int points, string playerName = "")
     {
         ClientID = clientID;
         Rank = rank;
         Kills = kills;
         Deaths = deaths;
         Points = points;
-        //todo : ajouter player name
+        PlayerName = playerName;
     }
 
     public override string ToString()
     {
         const string space = " | ";
-        return "Player : " + ClientID + space +
+        return "Player : " + PlayerName + " (" + ClientID + ")" + space +
                "Kills : " + Kills + space +
                "Deaths : " + Deaths + space +
                "Points : " + Points + space +

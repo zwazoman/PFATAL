@@ -1,43 +1,20 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using Unity.Netcode;
 using Unity.Collections;
 
-public struct PlayerDataSteam : INetworkSerializable, IEquatable<PlayerDataSteam>
-{
-    public FixedString64Bytes SteamId;
-    public FixedString64Bytes PlayerName;
 
-    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-    {
-        serializer.SerializeValue(ref SteamId);
-        serializer.SerializeValue(ref PlayerName);
-    }
-    
-    public bool Equals(PlayerDataSteam other)
-    {
-        return SteamId.Equals(other.SteamId);
-    }
-
-    public override bool Equals(object obj)
-    {
-        return obj is PlayerDataSteam other && Equals(other);
-    }
-
-    public override int GetHashCode()
-    {
-        return SteamId.GetHashCode();
-    }
-}
 
 public class SteamPlayerList : NetworkBehaviour
 {
     public static SteamPlayerList Instance;
 
-    public NetworkList<PlayerDataSteam> Players = new NetworkList<PlayerDataSteam>();
+    public List<PermanentPlayerIdentity> Players = new();
     
-    public TextMeshProUGUI  playersText;
+    public TextMeshProUGUI playersText;
 
     void Awake()
     {
@@ -57,52 +34,74 @@ public class SteamPlayerList : NetworkBehaviour
             Debug.LogError("Players est NULL !");
             return;
         }
-
-        Players.OnListChanged += OnListChanged;
-
+        
         Debug.Log("[SteamPlayerList] NetworkSpawn OK");
+        
+        if(NetworkManager.Singleton.IsServer)
+            NetworkManager.Singleton.OnClientConnectedCallback += OnNewPlayerJoined;
     }
 
-    private void OnListChanged(NetworkListEvent<PlayerDataSteam> changeEvent)
+    private void OnNewPlayerJoined(ulong newClientNetworkID)
     {
-        Debug.Log($"[SteamPlayerList] Liste mise à jour : {Players.Count} joueur(s)");
-
-        foreach (var p in Players)
-        {
-            Debug.Log($" → {p.PlayerName} | {p.SteamId}");
-        }
+        SendPlayerListToNewClientRPC(
+            Players.ToArray(),
+            RpcTarget.Single(newClientNetworkID, RpcTargetUse.Temp));
     }
-    
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void AddPlayerServerRpc(string steamId, string playerName, RpcParams rpcParams = default)
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    private void SendPlayerListToNewClientRPC(PermanentPlayerIdentity[] players, RpcParams rpcParams = default)
     {
-        foreach (var p in Players)
-        {
-            if (p.SteamId.ToString() == steamId)
-            {
-                Debug.LogWarning($"[SteamPlayerList] Joueur déjà présent : {playerName}");
-                return;
-            }
-        }
+        Players = players.ToList();
+        UpdateGameManagerDictionnary();
+    }
 
-        PlayerDataSteam data = new PlayerDataSteam
-        {
-            SteamId = steamId,
-            PlayerName = playerName
-        };
 
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    public void AddPlayerRpc(ulong NetworkClientId, string steamId, string playerName,RpcParams rpcParams = default)
+    {
+        //met à jour la liste de joueurs chez tout le monde
+        PermanentPlayerIdentity data = new (
+            playerName,
+            steamId,
+            PermanentPlayerIdentity.ePlatform.Steam,
+            NetworkClientId);
         Players.Add(data);
-        playersText.text += " | " + data.SteamId + " " + data.PlayerName;
+        
+        //met à jour le dico du gamemanager
+        UpdateGameManagerDictionnary();
+
+        //debug
+        playersText.text += " | " + data.platformID + " " + data.name;
+        foreach (var p in Players)
+            Debug.LogWarning($"[SteamPlayerList] Joueur déjà présent : {playerName}");
         Debug.Log($"[SteamPlayerList] Ajout : {playerName}");
+        
+        if (!NetworkManager.Singleton.IsServer) return;
+        
+        //=== code server ==
+        
+        // Notifie GameLobby avec le clientId du sender pour mettre à jour le nom Steam
+        ulong senderClientId = rpcParams.Receive.SenderClientId;
+        GameLobby.Instance?.OnSteamPlayerRegistered(senderClientId, playerName, steamId);
+    }
+
+    private void UpdateGameManagerDictionnary()
+    {
+        Dictionary<ulong, PermanentPlayerIdentity> playerIdentities = new();
+        foreach (var p in Players)
+        {
+            playerIdentities.Add(
+                p.tempNetworkClientId,
+                p);
+        }
+        GameManager.SetPlayerIdentities(playerIdentities);
+    }
+
+    public int RemovePlayer(ulong clientId)
+    {
+        // todo : faire ça vite !!!!
+        throw new NotImplementedException("Théo a toi joué");
     }
     
-    public void RemovePlayer(ulong clientId)
-    {
-        if (!IsServer) return;
-
-        for (int i = Players.Count - 1; i >= 0; i--)
-        {
-            Players.RemoveAt(i);
-        }
-    }
+    
 }

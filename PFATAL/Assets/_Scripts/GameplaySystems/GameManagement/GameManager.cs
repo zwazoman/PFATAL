@@ -14,7 +14,9 @@ public class GameManager : NetworkBehaviour
     public const float DEATH_MATCH_GAME_DURATION = 300f;
 
     public static GameMode gameMode = GameMode.DeathMatch;
-
+    
+    private static Dictionary<ulong,PermanentPlayerIdentity> _playerIdentities = new();
+     
     private int _playersInScene = 0;
     
     public static GameManager Instance { get; private set ; }
@@ -23,6 +25,7 @@ public class GameManager : NetworkBehaviour
     {
         Instance = this;
     }
+    
 
     public override void OnDestroy()
     {
@@ -59,6 +62,19 @@ public class GameManager : NetworkBehaviour
         //todo : recuperer pseudos steam et construire liste de structs
         StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(),gameMode);
     }
+
+    /// <summary>
+    /// Donne l'identité permanente d'un joueur (steam...) via NetworkClientId de Netcode
+    /// </summary>
+    public static PermanentPlayerIdentity GetPlayerIdentity(ulong playerClientID)
+    {
+        return _playerIdentities[playerClientID];
+    }
+
+    public static void SetPlayerIdentities(Dictionary<ulong,PermanentPlayerIdentity> playerIdentities)
+    {
+        _playerIdentities = playerIdentities;
+    }
     
     //data
     public enum GameMode
@@ -83,7 +99,6 @@ public class GameManager : NetworkBehaviour
 
     public PlayerCharacter localPlayerCharacter { get; private set; }
     
-    //todo : faire passer liste de structs avec clent ids et player names
     private void StartGame(List<ulong> clientIDs,GameMode gameMode)
     {
         if (IsServer)
@@ -92,7 +107,6 @@ public class GameManager : NetworkBehaviour
             switch (gameMode)
             {
                 case GameMode.DeathMatch:
-                    //todo : faire passer liste de structs avec clent ids et player names
                     _serverGameRules = new GameRulesDeathMatch(clientIDs,DEATH_MATCH_GAME_DURATION);
                     break;
                 default:

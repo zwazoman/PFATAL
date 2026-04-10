@@ -57,8 +57,6 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
-        print(canInteract);
-
         if (!canInteract)
             return;
 

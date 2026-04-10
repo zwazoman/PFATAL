@@ -17,9 +17,12 @@ public class HitMarkerUI : MonoBehaviour
     [SerializeField] float _scalePunchIntensity = 3;
     [SerializeField] float _rotationOffset = 20;
 
+    Vector3 _initialScale;
+
     private void Start()
     {
         _hud.OnTriggerHitFeedback += ShowHitMarker;
+        _initialScale = _hitmarkerImage.transform.localScale;
     }
 
     public void ShowHitMarker()
@@ -27,9 +30,8 @@ public class HitMarkerUI : MonoBehaviour
         OnShowHitMarker?.Invoke();
 
         _hitmarkerImage.gameObject.SetActive(true);
+        _hitmarkerImage.transform.localScale = _initialScale;
 
-        //_hitmarkerImage.transform.eulerAngles = Vector3.zero;
-        //_hitmarkerImage.transform.eulerAngles = new Vector3(0, 0, Random.Range(-_rotationOffset, _rotationOffset));
 
         _hitmarkerImage.transform.DOPunchRotation(new Vector3(0, 0, Random.Range(-_rotationOffset, _rotationOffset)), _duration);
         _hitmarkerImage.transform.DOPunchScale(Vector2.one * _scalePunchIntensity, _duration).onComplete += OnPunchScale_Callback;

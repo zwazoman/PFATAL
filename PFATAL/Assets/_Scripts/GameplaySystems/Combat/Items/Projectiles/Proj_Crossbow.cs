@@ -9,9 +9,9 @@ public class Proj_Crossbow : Proj_Falling
     [SerializeField] float _chargeDamageMultiplyer = 2;
     [SerializeField] float _chargeSpeedMultiplyer = 1;
 
-    public override void OnSpawn()
+    public override void OnNetworkSpawn()
     {
-        base.OnSpawn();
+        base.OnNetworkSpawn();
 
         _initialSpeed = speed;
         _initialDamage = damageAmount;

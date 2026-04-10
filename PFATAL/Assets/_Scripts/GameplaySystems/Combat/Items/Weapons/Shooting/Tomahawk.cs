@@ -5,7 +5,7 @@ public class Tomahawk : ProjectileWeapon
 {
     public event Action OnDash;
 
-    public event Action<GameObject> OnTomahawkShoot;
+    public event Action<Projectile> OnTomahawkShoot;
 
     public event Action<int> OnLoadAmmo;
     public event Action<int> OnConsumeAmmo;
@@ -25,9 +25,6 @@ public class Tomahawk : ProjectileWeapon
 
     [HideInInspector] public float currentDashCooldown;
 
-
-    GameObject _tomahawkProj;
-
     int _currentAmmoCount;
 
     bool _dashed = false;
@@ -43,8 +40,6 @@ public class Tomahawk : ProjectileWeapon
         _currentAmmoCount = maxAmmoAmount;
         _dashed = false;
         _canDash = true;
-
-        _tomahawkProj = null;
 
         try
         {
@@ -67,7 +62,7 @@ public class Tomahawk : ProjectileWeapon
     {
         base.UseUpdate();
 
-        if (holdDuration >= _dashHoldDuration && _tomahawkProj != null && !_dashed && _canDash)
+        if (holdDuration >= _dashHoldDuration && _currentProjectile != null && !_dashed && _canDash)
         {
             DashTowardsProj();
         }
@@ -115,13 +110,12 @@ public class Tomahawk : ProjectileWeapon
 
         OnDash?.Invoke();
 
-        Vector3 dashDirection = (_tomahawkProj.transform.position - playerCharacter.transform.position).normalized;
+        Vector3 dashDirection = (_currentProjectile.transform.position - playerCharacter.transform.position).normalized;
 
         playerCharacter.physics.SetVelocity(Vector3.zero);
         playerCharacter.physics.AddImpulse(dashDirection * _dashStrength);
 
-        _tomahawkProj.TryGetComponent(out Proj_Tomahawk proj);
-        proj.Despawn();
+        _currentProjectile.Despawn();
 
         HandleDashDelay();
     }
@@ -153,9 +147,8 @@ public class Tomahawk : ProjectileWeapon
             OnAmmoEmpty?.Invoke();
 
         SpawnContext context = new(playerCharacter.OwnerClientId);
-        Quaternion rotation = ComputeProjectileRotation() * Quaternion.Euler(-_projXOffset, 0, 0);
-        _tomahawkProj = await Shoot(context, rotation);
+        await Shoot(context, Quaternion.Euler(-_projXOffset, 0, 0), shootSocket.position);
 
-        OnTomahawkShoot?.Invoke(_tomahawkProj);
+        OnTomahawkShoot?.Invoke(_currentProjectile);
     }
 }

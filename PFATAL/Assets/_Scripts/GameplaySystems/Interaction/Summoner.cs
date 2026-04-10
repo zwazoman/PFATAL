@@ -96,7 +96,6 @@ public class Summoner : NetworkBehaviour
         if (newObject.TryGetComponent(out Projectile projectile))
         {
             projectile.spawnContext = new(context);
-            projectile.OnSpawn();
         }
 
         if (futureOwner == 1000)

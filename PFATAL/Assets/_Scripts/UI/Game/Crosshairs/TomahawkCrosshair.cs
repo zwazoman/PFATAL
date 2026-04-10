@@ -49,9 +49,9 @@ public class TomahawkCrosshair : Crosshair<Tomahawk>
         }
     }
 
-    void SetProj(GameObject proj)
+    void SetProj(Projectile proj)
     {
-        _tomahawkProj = proj;
+        _tomahawkProj = proj.gameObject;
         _indicator.gameObject.SetActive(true);
         _indicator.Setup(_tomahawkProj.transform.position, manager.hud.playerCharacter);
     }

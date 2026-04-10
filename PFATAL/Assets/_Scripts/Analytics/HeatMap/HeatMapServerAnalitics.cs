@@ -39,7 +39,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
     private void Start()
     {
-        _theRealHeatMap = new(gridSize);
+        _theRealHeatMap = new(gridSize, 0, 001, Players.Count);
     }
 
     private void Update()

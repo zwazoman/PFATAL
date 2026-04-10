@@ -2,12 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum HeatMapType
-{
-    Game = 0,
-    multipleGame = 1,
-}
-
 public enum WeaponType
 {
     All = 0,
@@ -29,9 +23,8 @@ public class HeatMapData
 {
     public int cellSize;
     public int gameId;
-    public string gameVersion;
+    public int gameVersion;
     public int playerCount;
-    public HeatMapType type;
 
     public List<HeatPoint> points = new List<HeatPoint>();
 
@@ -48,9 +41,9 @@ public class HeatMapData
     /// <param name="heatMapGameId">Game id of the game that created the heatmap</param>
     /// <param name="heatMapGameVersion">Game version when the heatmap was created</param>
     /// <param name="heatMapPlayerNumber">Number of players that particpate to make the heatmap</param>
-    public HeatMapData(int cellSize, int heatMapGameId, string heatMapGameVersion, int heatMapPlayerNumber, HeatMapType mapType) => 
-        (this.cellSize, this.gameId, this.gameVersion, this.playerCount, this.type) = 
-        (cellSize, heatMapGameId, heatMapGameVersion, heatMapPlayerNumber, mapType);
+    public HeatMapData(int cellSize, int heatMapGameId, int heatMapGameVersion, int heatMapPlayerNumber) => 
+        (this.cellSize, this.gameId, this.gameVersion, this.playerCount) = 
+        (cellSize, heatMapGameId, heatMapGameVersion, heatMapPlayerNumber);
 }
 
 /// <summary>

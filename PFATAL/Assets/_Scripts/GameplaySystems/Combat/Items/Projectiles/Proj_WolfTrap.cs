@@ -1,5 +1,4 @@
-using _scripts.PlayerCharacter;
-using System;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Proj_WolfTrap : Projectile
@@ -8,7 +7,7 @@ public class Proj_WolfTrap : Projectile
     [SerializeField] float _duringTime = 25f;
     [SerializeField] float _freezeDuration = 5f;
     [SerializeField] float _throwStrength = 25f;
-    [SerializeField] float _activationDelay = 0.25f;
+    [SerializeField] float _activationDelay = 0.5f;
     [SerializeField] float _dammage = 1f;
 
     float timer;
@@ -40,7 +39,7 @@ public class Proj_WolfTrap : Projectile
 
         timer += Time.deltaTime;
 
-        if (IsGrounded() && timer >= _freezeDuration && !isArmed)
+        if (IsGrounded() && timer >= _activationDelay && !isArmed)
         {
             isArmed = true;
             _rb.linearVelocity = Vector3.zero;
@@ -70,56 +69,45 @@ public class Proj_WolfTrap : Projectile
 
         for (int i = 0; i < count; i++)
         {
-            if (buffer[i].TryGetComponent(out DamageableObject hitObject))
-            {
-                DamageData damageData = new DamageData
-                {
-                    Amount = _dammage,
-                    SourcePlayerClientID = OwnerClientId,
-                    Point = hitObject.transform.position,
-                    Direction = Vector3.down,
-                    KnockbackForce = Vector3.zero,
-                    Radius = 1
-                };
+            if (!buffer[i].TryGetComponent(out DamageableObject hitObject)) continue;
 
-                hitObject.TakeDamage(damageData);
-
-                hitObject.TryGetComponent(out PlayerStateMachine state);
-                state.s_Frozen.Freeze(_freezeDuration);
-
-                timer = _duringTime - _freezeDuration;
-                hasActivated = true;
-            }
-        }
-    }
-
-    /*private void OnTriggerEnter(Collider other)
-    {
-        if (!isArmed || !IsServer || hasActivated) return;
-
-        if (other.TryGetComponent(out PlayerCharacter hit))
-        {
-            Debug.Log("WolfTrap triggered");
-
-            Vector3 dir = transform.position - hit.transform.position;
-            float dist = dir.magnitude;
-
+            // Dégâts côté serveur
             DamageData damageData = new DamageData
             {
                 Amount = _dammage,
                 SourcePlayerClientID = OwnerClientId,
-                Point = hit.transform.position,
-                Direction = dir.normalized,
+                Point = hitObject.transform.position,
+                Direction = Vector3.down,
                 KnockbackForce = Vector3.zero,
-                Radius = 0
+                Radius = 1
             };
+            hitObject.TakeDamage(damageData);
 
-            hit.GetComponent<DamageableObject>().TakeDamage(damageData);
-
-            hit.stateMachine.s_Frozen.Freeze(_freezeDuration);
+            // RPC vers le client ciblé
+            ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
+            ApplyFreezeRPC(
+                _freezeDuration,
+                RpcTarget.Single(targetClientId, RpcTargetUse.Temp)
+            );
 
             timer = _duringTime - _freezeDuration;
             hasActivated = true;
+            break;
         }
-    }*/
+    }
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    void ApplyFreezeRPC(float duration, RpcParams rpcParams = default)
+    {
+        var player = GameManager.Instance.localPlayerCharacter;
+
+        if (player == null)
+        {
+            Debug.LogError("[WolfTrap RPC] localPlayerCharacter est null");
+            return;
+        }
+
+        Debug.Log($"[WolfTrap RPC] APPLY FREEZE sur client {NetworkManager.Singleton.LocalClientId}");
+        player.stateMachine.s_Frozen.Freeze(duration);
+    }
 }

@@ -3,8 +3,6 @@ using UnityEngine.InputSystem;
 using TMPro;
 using _scripts.PlayerCharacter;
 using UnityEngine.UI;
-using System.Net;
-using Unity.VisualScripting;
 
 namespace Settings
 {

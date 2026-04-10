@@ -1,6 +1,4 @@
-using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class LeaderboardDisplay : MonoBehaviour
 {

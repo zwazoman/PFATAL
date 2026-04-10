@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
 
 public class LobbyPanelUI : MonoBehaviour

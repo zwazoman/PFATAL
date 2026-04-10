@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.Rendering;
 using UnityEngine.VFX;
 
 namespace SimpleVFXs

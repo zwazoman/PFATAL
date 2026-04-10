@@ -1,5 +1,3 @@
-using DG.Tweening;
-using System.Drawing;
 using UnityEngine;
 
 public class CrossbowCrosshair : Crosshair<Crossbow>

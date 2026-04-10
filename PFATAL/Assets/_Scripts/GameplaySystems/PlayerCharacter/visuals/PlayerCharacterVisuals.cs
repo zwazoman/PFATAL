@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _scripts.PlayerCharacter;
 using _Scripts.Pooling;
 using Unity.Netcode;

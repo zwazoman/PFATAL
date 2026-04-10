@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -88,7 +89,11 @@ public class Proj_Tornado : Projectile
                     StartCoroutine(RemoveObjectFromBlackList_Delayed(hitObject));
 
                     if( hitObject.TryGetComponent(out PlayerStateMachine playerStateMachine));
-                    playerStateMachine.s_PropulseInAir.ActivateState(OwnerClientId);
+
+                    // RPC vers le client ciblé
+                    ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
+                    ApplyPropulsedRPC(RpcTarget.Single(targetClientId, RpcTargetUse.Temp)
+                    );
                 }
             }
         }
@@ -98,5 +103,20 @@ public class Proj_Tornado : Projectile
     {
         yield return new WaitForSeconds(1f);
         blackList.Remove(damageableObject);
+    }
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    void ApplyPropulsedRPC(RpcParams rpcParams = default)
+    {
+        var player = GameManager.Instance.localPlayerCharacter;
+
+        if (player == null)
+        {
+            Debug.LogError("[Tornado RPC] localPlayerCharacter est null");
+            return;
+        }
+
+        Debug.Log($"[Tornado RPC] APPLY PROPULSION sur client {NetworkManager.Singleton.LocalClientId}");
+        player.stateMachine.s_PropulseInAir.ActivateState(OwnerClientId);
     }
 }

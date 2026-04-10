@@ -788,6 +788,7 @@ GameObject:
   - component: {fileID: 3898847388129945752}
   - component: {fileID: 9173803931921782257}
   - component: {fileID: 6077973829030890437}
+  - component: {fileID: 3718568392821401935}
   m_Layer: 8
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -925,7 +926,9 @@ MonoBehaviour:
   s_PropulseInAir:
     _updatePoint: 1
     _passThrough: 1
-    _damage: 1
+    _airSpeed: 4
+    _acceleration: 1
+    _damage: 2
   s_GameOver:
     _updatePoint: 1
     _passThrough: 0
@@ -1014,6 +1017,7 @@ MonoBehaviour:
   _rigidbody: {fileID: 7107920408180270023}
   Sensitivity: 10
   _recoilCompensationMultiplier: {x: 0, y: 0}
+  _aimAssistYStrength: 1
 --- !u!135 &6943353650538722316
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1474,6 +1478,27 @@ MonoBehaviour:
   TorsoPitchAmplitude: 75
   _visualObjects:
   - {fileID: 4179012326148749122}
+--- !u!114 &3718568392821401935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8535136328113993408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec7383acfd0a864a9812f33a08c746c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDetector
+  _cameraTransform: {fileID: 3747001941619547642}
+  _mask:
+    serializedVersion: 2
+    m_Bits: 256
+  _input: {fileID: 2069463516094485431}
+  _characterAiming: {fileID: 4888209787928335878}
+  _maxOffset: 0.1
+  _assistStrength: 0.01
+  _minInputMultiplier: 0.05
 --- !u!1 &8852470855691711139
 GameObject:
   m_ObjectHideFlags: 0
@@ -2301,14 +2326,6 @@ PrefabInstance:
     - target: {fileID: 2837987485113016653, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
       propertyPath: m_Name
       value: HUD UI
-      objectReference: {fileID: 0}
-    - target: {fileID: 5143225999332877002, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5143225999332877002, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7916094896053849041, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
       propertyPath: m_Pivot.x

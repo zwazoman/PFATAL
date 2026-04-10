@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Proj_Tornado : Projectile
@@ -13,7 +14,12 @@ public class Proj_Tornado : Projectile
     private float _timer;
     private bool _halfTimeReached = false;
     private static Collider[] buffer = new Collider[20];
-    private List<DamageableObject> damageableObjects = new();
+    private List<DamageableObject> blackList = new();
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, _ejectionRadius);
+    }
 
     public override void OnNetworkSpawn()
     {
@@ -23,15 +29,17 @@ public class Proj_Tornado : Projectile
 
     private void Update()
     {
+        //todo : synchoniser déplacements client et server avec le timestamp et l'override de la méthode computePosition(float timestamp...) plutot qu'avec le network transform
+        
         if (!IsSpawned || !IsServer) return;
 
-        transform.position += transform.forward * _speed * Time.deltaTime;
+        transform.position += transform.forward * (_speed * Time.deltaTime);
 
         _timer += Time.deltaTime;
 
         if (_timer >= 1f)
         {
-            HandlePlayers();
+            CheckForCollisionsAgainstPlayers();
 
             if (_timer >= _duringTime/2 && !_halfTimeReached)
             {
@@ -45,7 +53,7 @@ public class Proj_Tornado : Projectile
         }
     }
 
-    void HandlePlayers()
+    void CheckForCollisionsAgainstPlayers()
     {
         int count = Physics.OverlapSphereNonAlloc(transform.position, _ejectionRadius, buffer);
 
@@ -53,44 +61,60 @@ public class Proj_Tornado : Projectile
         {
             if (buffer[i].TryGetComponent(out DamageableObject hitObject))
             {
-                Vector3 dir = transform.position - hitObject.transform.position;
-                float dist = dir.magnitude;
-                Vector3 knockbackForce;
+                
 
-                if (!damageableObjects.Contains(hitObject))
+                if (!blackList.Contains(hitObject))
                 {
-                    Vector3 eject = hitObject.transform.up * _ejectionForce;
-
-                    knockbackForce = eject;
-
+                    Vector3 dir = transform.position - hitObject.transform.position;
+                    float dist = dir.magnitude;
+                    
+                    Vector3 playerVelocity = GameManager.Instance.GetPlayerCharacter(hitObject.OwnerClientId).physics.Velocity;
+                    Vector3 velocityAfterKnockback = new Vector3(playerVelocity.x,_ejectionForce,playerVelocity.z);
+                    Vector3 knockback = velocityAfterKnockback-playerVelocity;
+                    
                     DamageData damageData = new DamageData
                     {
                         Amount = 0,
                         SourcePlayerClientID = OwnerClientId,
                         Point = hitObject.transform.position,
                         Direction = dir.normalized,
-                        KnockbackForce = knockbackForce,
+                        KnockbackForce = knockback,
                         Radius = _ejectionRadius
                     };
-
-                    damageableObjects.Add(hitObject);
-                    StartCoroutine(DeleteToList(hitObject));
-
-                    hitObject.TryGetComponent(out Rigidbody rb);
-                    rb.linearVelocity = Vector3.zero;
-
                     hitObject.TakeDamage(damageData);
 
-                    hitObject.TryGetComponent(out PlayerStateMachine playerStateMachine);
-                    playerStateMachine.s_PropulseInAir.ActivateState(OwnerClientId);
+                    blackList.Add(hitObject);
+                    StartCoroutine(RemoveObjectFromBlackList_Delayed(hitObject));
+
+                    if( hitObject.TryGetComponent(out PlayerStateMachine playerStateMachine));
+
+                    // RPC vers le client ciblé
+                    ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
+                    ApplyPropulsedRPC(RpcTarget.Single(targetClientId, RpcTargetUse.Temp)
+                    );
                 }
             }
         }
     }
 
-    IEnumerator DeleteToList(DamageableObject damageableObject)
+    IEnumerator RemoveObjectFromBlackList_Delayed(DamageableObject damageableObject)
     {
         yield return new WaitForSeconds(1f);
-        damageableObjects.Remove(damageableObject);
+        blackList.Remove(damageableObject);
+    }
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    void ApplyPropulsedRPC(RpcParams rpcParams = default)
+    {
+        var player = GameManager.Instance.localPlayerCharacter;
+
+        if (player == null)
+        {
+            Debug.LogError("[Tornado RPC] localPlayerCharacter est null");
+            return;
+        }
+
+        Debug.Log($"[Tornado RPC] APPLY PROPULSION sur client {NetworkManager.Singleton.LocalClientId}");
+        player.stateMachine.s_PropulseInAir.ActivateState(OwnerClientId);
     }
 }

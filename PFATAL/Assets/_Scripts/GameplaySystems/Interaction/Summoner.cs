@@ -1,4 +1,3 @@
-using _scripts.PlayerCharacter;
 using System;
 using System.Collections.Generic;
 using NetworkTime;
@@ -96,7 +95,6 @@ public class Summoner : NetworkBehaviour
         if (newObject.TryGetComponent(out Projectile projectile))
         {
             projectile.spawnContext = new(context);
-            projectile.OnSpawn();
         }
 
         if (futureOwner == 1000)

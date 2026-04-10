@@ -5,13 +5,14 @@ using UnityEngine;
 namespace _scripts.PlayerCharacter.StateMachine.States
 {
     /// <summary>
-    /// ActivateState est appelé quand le joueur est touché par Proj_Tornado
+    /// ActivateState est appelï¿½ quand le joueur est touchï¿½ par Proj_Tornado
     /// </summary>
     [Serializable]
-    public class Pst_PropulseInAir : Pst_Alive
+    public class Pst_PropulseInAir : Pst_Airborne
     {
         [SerializeField] float _damage = 3f;
 
+        private float _startVelocityY;
         ulong _ownerId;
 
         public void ActivateState(ulong ownerId)
@@ -20,13 +21,25 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             _ownerId = ownerId;
         }
 
+        protected override void OnEntered(PlayerCharacter ctx)
+        {
+            base.OnEntered(ctx);
+            _startVelocityY = ctx.physics.Velocity.y;
+        }
+
+        public override void Behave(PlayerCharacter ctx, UpdatePoint updatePoint)
+        {
+            base.Behave(ctx, updatePoint);
+            ApplyAirControls(ctx);
+        }
+
         protected override void OnExited(PlayerCharacter playerCharacter)
         {
-            if (playerCharacter.TryGetComponent(out DamageableObject damageable) && playerCharacter.physics.Velocity.y >= 1)
+            if (playerCharacter.TryGetComponent(out DamageableObject damageable) && playerCharacter.physics.Velocity.y >=1 )
             {
-                DamageData damage = new DamageData
+                DamageData damageData = new DamageData
                 {
-                    Amount = _damage,
+                    Amount = _damage * (playerCharacter.physics.Velocity.y/_startVelocityY),
                     SourcePlayerClientID = _ownerId,
                     Point = transform.position,
                     Direction = Vector3.down,
@@ -34,15 +47,16 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                     Radius = 0
                 };
 
-                damageable.TakeDamage(damage);
+                damageable.TakeDamage(damageData);
             }
         }
 
-        public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter playerCharacter)
+        public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter ctx)
         {
-            if (!IsOnCeiling(playerCharacter.transform.position) && playerCharacter.physics.Velocity.y >= -1) return this;
+            if (IsOnCeiling(ctx.transform.position) || ctx.physics.Velocity.y < -.1f) 
+                return Sm.s_Falling;
 
-            return Sm.s_Falling;
+            return base.FindNextState(ctx);
         }
 
         bool IsOnCeiling(Vector3 position)

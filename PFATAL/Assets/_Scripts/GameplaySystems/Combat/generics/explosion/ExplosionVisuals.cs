@@ -1,6 +1,5 @@
 using System;
 using _Scripts.Pooling;
-using SimpleVFXs;
 using UnityEngine;
 
 public class ExplosionVisuals : MonoBehaviour

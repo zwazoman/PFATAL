@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _scripts.PlayerCharacter;
 using _scripts.PlayerCharacter.StateMachine.States;

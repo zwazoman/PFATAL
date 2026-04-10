@@ -1,7 +1,6 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ScriptTestTemporaire : MonoBehaviour

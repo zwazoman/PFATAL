@@ -1,6 +1,5 @@
 using System;
 using _Scripts.StateMachine;
-using UnityEngine;
 
 namespace _scripts.PlayerCharacter.StateMachine.States
 {

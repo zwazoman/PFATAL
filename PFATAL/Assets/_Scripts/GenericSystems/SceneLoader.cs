@@ -1,5 +1,4 @@
 using Unity.Services.Lobbies;
-using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
 public class SceneLoader : MonoBehaviour

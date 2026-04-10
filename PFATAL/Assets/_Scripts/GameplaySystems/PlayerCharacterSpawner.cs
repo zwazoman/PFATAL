@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using _scripts.PlayerCharacter;
-using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class PlayerCharacterSpawner : MonoBehaviour
 {

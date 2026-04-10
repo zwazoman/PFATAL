@@ -1,7 +1,6 @@
 using _scripts.PlayerCharacter;
 using System;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 

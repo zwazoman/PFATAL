@@ -52,7 +52,8 @@ public class GameManager : NetworkBehaviour
             InitializeGame();
         }
     }
-
+    
+    
     async void InitializeGame()
     {
         await _timeSyncManager.SyncClientTimestamps();

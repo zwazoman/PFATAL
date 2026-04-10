@@ -10,7 +10,7 @@ namespace _scripts.Editor
         public static void PlayFromStart()
         {
             UnityEditor.SceneManagement.EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-            UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/_Scenes/lobby/scene_lobbyBowser.unity");
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/_Scenes/Menu/MainMenu.unity");
             EditorApplication.EnterPlaymode();
         }
 #endif

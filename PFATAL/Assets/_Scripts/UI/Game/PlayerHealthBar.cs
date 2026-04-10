@@ -1,4 +1,3 @@
-using _scripts.PlayerCharacter;
 using UnityEngine;
 using UnityEngine.UI;
 

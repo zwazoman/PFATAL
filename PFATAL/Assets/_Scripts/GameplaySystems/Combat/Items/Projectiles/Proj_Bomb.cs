@@ -1,5 +1,4 @@
 using _Scripts.Exceptions;
-using Unity.Netcode;
 using UnityEngine;
 
 public class Proj_Bomb : Projectile

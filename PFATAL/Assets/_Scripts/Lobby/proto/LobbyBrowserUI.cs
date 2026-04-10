@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.UI;

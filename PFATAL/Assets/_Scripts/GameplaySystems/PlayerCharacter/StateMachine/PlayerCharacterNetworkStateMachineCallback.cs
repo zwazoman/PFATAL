@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using _scripts.PlayerCharacter;
 using _scripts.PlayerCharacter.StateMachine.States;
 using _Scripts.StateMachine;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 /// <summary>
 /// cette classe permet de recevoir des events liés à la state machine sur tous les clients,

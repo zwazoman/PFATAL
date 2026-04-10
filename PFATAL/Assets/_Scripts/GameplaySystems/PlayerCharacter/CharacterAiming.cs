@@ -21,8 +21,10 @@ public class CharacterAiming : NetworkBehaviour
 
     private float angle = 0;
 
+    [Header("Controller")]
     private Vector2 _aimAssist;
     private float _inputMultiplier = 1f;
+    [SerializeField][Range(0.5f,3f)] private float _aimAssistYStrength = 1f;
     
     private void Start()
     {
@@ -38,7 +40,11 @@ public class CharacterAiming : NetworkBehaviour
         angle = (angle + Sensitivity * Time.deltaTime * _character.inputs.aimInput.y * _inputMultiplier);
         if (_character.inputs.UsingGamePad == true)
         {
-            angle -= _aimAssist.y;
+            float angle1 = angle;
+            if (angle1 < 0) 
+                angle1 *= -1;
+
+            angle -= (angle1 * _aimAssist.y) * _aimAssistYStrength;
             _aimAssist.y = 0f;
             _inputMultiplier = 1f;
         }

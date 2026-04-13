@@ -25,6 +25,7 @@ public class SteamPlayerList : NetworkBehaviour
         }
 
         Instance = this;
+        
     }
 
     public override void OnNetworkSpawn()

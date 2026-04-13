@@ -29,7 +29,7 @@ public class ProjectileWeapon : Item
     }
 
     /// <summary>
-    /// g�re le delay entre 2 tirs
+    /// gere le delay entre 2 tirs
     /// </summary>
     protected async void StartShootDelay()
     {
@@ -45,20 +45,23 @@ public class ProjectileWeapon : Item
     /// prend en param�tre un context, spawn le projectile donn� et le tourne vers le point d'un raycast tir� depuis la cam�ra
     /// </summary>
     /// <param name="spawnContext"> le context du spawn</param>
-    protected virtual async Awaitable<GameObject> Shoot(SpawnContext spawnContext, Quaternion rotationOffset, Vector3 spawnPos, Vector3 mirrorSpawnPos = default)
+    protected virtual async Awaitable<GameObject> Shoot(SpawnContext spawnContext, Quaternion rotationOffset, Vector3 spawnPos)
     {
         OnShoot?.Invoke();
         StartShootDelay();
 
         Proj_Visual visual = null;
 
+        Vector3 mirorPos;
+
+        Vector3 newPos = playerCharacter.playerCamera.ScreenToWorldPoint(new Vector3(playerCharacter.handsCamera.WorldToScreenPoint(shootSocket.position).x, playerCharacter.handsCamera.WorldToScreenPoint(shootSocket.position).y, .3f));
+
+        mirorPos = newPos;
+
         //fait spawn un projectile "miroir" imitant les déplacements du vrai projectile sans délai chez le client
         if (visualProjectile != null)
         {
-            if(mirrorSpawnPos == default)
-                Instantiate(visualProjectile, shootSocket.position, ComputeProjectileRotation(shootSocket.position) * rotationOffset).TryGetComponent(out visual);
-            else
-                Instantiate(visualProjectile, mirrorSpawnPos, ComputeProjectileRotation(mirrorSpawnPos) * rotationOffset).TryGetComponent(out visual);
+            Instantiate(visualProjectile, mirorPos, ComputeProjectileRotation(mirorPos) * rotationOffset).TryGetComponent(out visual);
             visual.context = spawnContext;
         }
 

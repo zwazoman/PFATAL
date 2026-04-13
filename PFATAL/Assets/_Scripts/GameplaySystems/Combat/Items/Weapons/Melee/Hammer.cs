@@ -23,7 +23,7 @@ public class Hammer : MeleeWeapon
     [SerializeField] float _dashDmgMult = .8f;
     [SerializeField] float _dashDotThreshold = 0f;
 
-    public float currentDashCooldown;
+    [HideInInspector] public float currentDashCooldown;
 
     bool _charged;
     bool _isAttacking;
@@ -41,6 +41,8 @@ public class Hammer : MeleeWeapon
         _isAttacking = false;
         isHitting = false;
         _canDash = true;
+
+        currentDashCooldown = 0;
 
         _eventReceiver.OnHitStart += StartHitting;
         _eventReceiver.OnHitEnd += StopHitting;
@@ -60,6 +62,8 @@ public class Hammer : MeleeWeapon
         base.UnEquip();
 
         OnStopCharging?.Invoke();
+
+        currentDashCooldown = dashCooldown;
 
         _eventReceiver.OnHitStart -= StartHitting;
         _eventReceiver.OnHitEnd -= StopHitting;
@@ -86,7 +90,6 @@ public class Hammer : MeleeWeapon
         data.KnockbackForce = playerCharacter.transform.forward * _knockbackStrength;
 
         Summoner.Instance.ApplyDamageRpc(damageable, data);
-        //damageable.TakeDamage(data);
     }
 
     public override void UseUpdate()

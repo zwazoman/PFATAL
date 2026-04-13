@@ -15,6 +15,16 @@ public class HammerCrosshair : Crosshair<Hammer>
         weapon.OnStopCharging += SwapCrosshairState;
     }
 
+    protected override void Deactivate()
+    {
+        weapon.OnStartCharging -= SwapCrosshairState;
+        weapon.OnStopCharging -= SwapCrosshairState;
+
+        _dashCH.SetActive(false);
+
+        base.Deactivate();
+    }
+
     void SwapCrosshairState()
     {
         _dashCH.SetActive(!_dashCH.activeSelf);

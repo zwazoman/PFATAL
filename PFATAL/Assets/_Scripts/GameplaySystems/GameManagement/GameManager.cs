@@ -59,8 +59,17 @@ public class GameManager : NetworkBehaviour
     async void InitializeGame()
     {
         await _timeSyncManager.SyncClientTimestamps();
-        //todo : recuperer pseudos steam et construire liste de structs
-        StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(),gameMode);
+        SyncPlayerIdentitiesToClientsRPC(_playerIdentities.Keys.ToArray(), _playerIdentities.Values.ToArray());
+        StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(), gameMode);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    void SyncPlayerIdentitiesToClientsRPC(ulong[] ids, PermanentPlayerIdentity[] identities)
+    {
+        _playerIdentities.Clear();
+        for (int i = 0; i < ids.Length; i++)
+            _playerIdentities[ids[i]] = identities[i];
+        Debug.Log($"[GameManager] PlayerIdentities synchronisées : {_playerIdentities.Count}");
     }
 
     /// <summary>

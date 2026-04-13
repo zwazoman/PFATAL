@@ -94,12 +94,12 @@ public class SteamPlayerList : NetworkBehaviour
 
     private void UpdateGameManagerDictionnary()
     {
+        if (Players.Count == 0) return;
+    
         Dictionary<ulong, PermanentPlayerIdentity> playerIdentities = new();
         foreach (var p in Players)
         {
-            playerIdentities.Add(
-                p.tempNetworkClientId,
-                p);
+            playerIdentities.Add(p.tempNetworkClientId, p);
         }
         GameManager.SetPlayerIdentities(playerIdentities);
     }

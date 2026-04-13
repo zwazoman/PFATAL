@@ -109,6 +109,11 @@ public class GameLobby : NetworkBehaviour
         print("SetLocalPlayerStatus");
         LobbyPlayerData lobbyPlayerData = new(LocalLobbyPlayerData);
         lobbyPlayerData.status = status;
+        
+        if (_allPlayersInLobby.dictionnary.TryGetValue(NetworkManager.Singleton.LocalClientId, out LobbyPlayerData existing))
+            if (!string.IsNullOrEmpty(existing.name) && existing.name != "_")
+                lobbyPlayerData.name = existing.name;
+
         LocalLobbyPlayerData = lobbyPlayerData;
         _allPlayersInLobby.dictionnary[NetworkManager.Singleton.LocalClientId] = lobbyPlayerData;
 

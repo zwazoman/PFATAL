@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.LightTransport;
@@ -230,43 +232,43 @@ public class HeatMapUtility
         }
 
         int index = 0;
-        byte[] mapInfo = new byte[5 * sizeof(int) + heatMapData.points.Count * 7 * sizeof(int)]; // Assuming HeatMapData has 5 integer properties (cellSize, gameId, gameVersion, playerCount) and 1 for points count
+        byte[] mapInfo = new byte[5 * sizeof(short) + heatMapData.points.Count * 7 * sizeof(short)]; // Assuming HeatMapData has 5 integer properties (cellSize, gameId, gameVersion, playerCount) and 1 for points count
+        Debug.Log($"{sizeof(short)}");
 
         // Convert HeatMapData properties to bytes
-        Buffer.BlockCopy(BitConverter.GetBytes(heatMapData.cellSize), 0, mapInfo, index, 4);
-        index += 4;
-        Buffer.BlockCopy(BitConverter.GetBytes(heatMapData.gameId), 0, mapInfo, index, 4);
-        index += 4;
-        Buffer.BlockCopy(BitConverter.GetBytes(heatMapData.gameVersion), 0, mapInfo, index, 4);
-        index += 4;
-        Buffer.BlockCopy(BitConverter.GetBytes(heatMapData.playerCount), 0, mapInfo, index, 4);
-        index += 4;
-        Buffer.BlockCopy(BitConverter.GetBytes(heatMapData.points.Count), 0, mapInfo, index, 4);
-        index += 4;
-
+        Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.cellSize), 0, mapInfo, index, 2);
+        index += 2;
+        Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.gameId), 0, mapInfo, index, 2);
+        index += 2;
+        Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.gameVersion), 0, mapInfo, index, 2);
+        index += 2;
+        Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.playerCount), 0, mapInfo, index, 2);
+        index += 2;
+        Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.points.Count), 0, mapInfo, index, 2);
+        index += 2;
         // Convert HeatPoint properties to bytes
         foreach (var point in heatMapData.points)
         {
-            Buffer.BlockCopy(BitConverter.GetBytes(point.P[0]), 0, mapInfo, index, 4);
-            index += 4;
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.P[0]), 0, mapInfo, index, 2);
+            index += 2;
 
-            Buffer.BlockCopy(BitConverter.GetBytes(point.P[1]), 0, mapInfo, index, 4);
-            index += 4;
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.P[1]), 0, mapInfo, index, 2);
+            index += 2;
 
-            Buffer.BlockCopy(BitConverter.GetBytes(point.P[2]), 0, mapInfo, index, 4);
-            index += 4;
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.P[2]), 0, mapInfo, index, 2);
+            index += 2;
 
-            Buffer.BlockCopy(BitConverter.GetBytes(point.W), 0, mapInfo, index, 4);
-            index += 4;
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.W), 0, mapInfo, index, 2);
+            index += 2;
 
-            Buffer.BlockCopy(BitConverter.GetBytes(point.H), 0, mapInfo, index, 4);
-            index += 4;
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.H), 0, mapInfo, index, 2);
+            index += 2;
 
-            Buffer.BlockCopy(BitConverter.GetBytes(point.C), 0, mapInfo, index, 4);
-            index += 4;
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.C), 0, mapInfo, index, 2);
+            index += 2;
 
-            Buffer.BlockCopy(BitConverter.GetBytes(point.T), 0, mapInfo, index, 4);
-            index += 4;
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.T), 0, mapInfo, index, 2);
+            index += 2;
         }
 
         #region TEST
@@ -314,7 +316,7 @@ public class HeatMapUtility
 
     public static HeatMapData ConvertByteToMap(byte[] bytes)
     {
-        if (bytes == null || bytes.Length < 5 * sizeof(int))
+        if (bytes == null || bytes.Length < 5 * sizeof(short))
         {
             Debug.LogError("Invalid byte array for HeatMapData conversion.");
             return null;
@@ -324,16 +326,16 @@ public class HeatMapUtility
 
         HeatMapData heatMapData = new HeatMapData
         (
-            BitConverter.ToInt32(bytes, index), //0 - 3
-            BitConverter.ToInt32(bytes, index + 4), //4 - 7
-            BitConverter.ToInt32(bytes, index + 8), //8 - 11
-            BitConverter.ToInt32(bytes, index + 12) //12 - 15
+            BitConverter.ToInt16(bytes, index), //0 - 1
+            BitConverter.ToInt16(bytes, index + 2), //2 - 3
+            BitConverter.ToInt16(bytes, index + 4), //4 - 5
+            BitConverter.ToInt16(bytes, index + 6) //6 - 7
         );
 
-        index += 16; // Move past the first 4 integers
+        index += 8; // Move past the first 4 shorts
 
-        int pointsCount = BitConverter.ToInt32(bytes, index); //16 - 19
-        index += 4; // Move past the points count, now index is at 20
+        int pointsCount = BitConverter.ToInt16(bytes, index); //8 - 9
+        index += 2; // Move past the points count, now index is at 10
 
         heatMapData.points = new List<HeatPoint>();
 
@@ -342,17 +344,17 @@ public class HeatMapUtility
             HeatPoint point = new HeatPoint
             (
                 new List<int> { 
-                    BitConverter.ToInt32(bytes, index),      //20 - 23
-                    BitConverter.ToInt32(bytes, index + 4),  //24 - 27
-                    BitConverter.ToInt32(bytes, index + 8)   //28 - 31
+                    BitConverter.ToInt16(bytes, index),      //10 - 11
+                    BitConverter.ToInt16(bytes, index + 2),  //12 - 13
+                    BitConverter.ToInt16(bytes, index + 4)   //14 - 15
                 },
-                BitConverter.ToInt32(bytes, index + 12),     //32 - 35
-                BitConverter.ToInt32(bytes, index + 16),     //36 - 39
-                BitConverter.ToInt32(bytes, index + 20),     //40 - 43
-                BitConverter.ToInt32(bytes, index + 24)      //44 - 47
+                BitConverter.ToInt16(bytes, index + 6),     //16 - 17
+                BitConverter.ToInt16(bytes, index + 8),     //18 - 19
+                BitConverter.ToInt16(bytes, index + 10),     //20 - 21
+                BitConverter.ToInt16(bytes, index + 12)      //22 - 23
             );
             heatMapData.points.Add(point);
-            index += 7 * 4; // Move to the next point (7 integers per point)
+            index += 7 * 2; // Move to the next point (7 shorts per point)
         }
 
         File.WriteAllText(Path.Combine(Application.persistentDataPath, "heatmapFromByte.json"), ConvertHeatMapDataToJson(heatMapData));

@@ -45,20 +45,21 @@ public class ProjectileWeapon : Item
     /// prend en param�tre un context, spawn le projectile donn� et le tourne vers le point d'un raycast tir� depuis la cam�ra
     /// </summary>
     /// <param name="spawnContext"> le context du spawn</param>
-    protected virtual async Awaitable<GameObject> Shoot(SpawnContext spawnContext, Quaternion rotationOffset, Vector3 spawnPos, Vector3 mirrorSpawnPos = default)
+    protected virtual async Awaitable<GameObject> Shoot(SpawnContext spawnContext, Quaternion rotationOffset, Vector3 spawnPos)
     {
         OnShoot?.Invoke();
         StartShootDelay();
 
         Proj_Visual visual = null;
 
+        Vector3 mirorPos;
+
+        mirorPos = shootSocket.position;
+
         //fait spawn un projectile "miroir" imitant les déplacements du vrai projectile sans délai chez le client
         if (visualProjectile != null)
         {
-            if(mirrorSpawnPos == default)
-                Instantiate(visualProjectile, shootSocket.position, ComputeProjectileRotation(shootSocket.position) * rotationOffset).TryGetComponent(out visual);
-            else
-                Instantiate(visualProjectile, mirrorSpawnPos, ComputeProjectileRotation(mirrorSpawnPos) * rotationOffset).TryGetComponent(out visual);
+            Instantiate(visualProjectile, mirorPos, ComputeProjectileRotation(mirorPos) * rotationOffset).TryGetComponent(out visual);
             visual.context = spawnContext;
         }
 

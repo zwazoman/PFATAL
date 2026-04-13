@@ -21,6 +21,7 @@ namespace _scripts.PlayerCharacter
         [field: SerializeField] public NetworkObject networkObject  { get; private set; }
         [field: SerializeField] public DamageableObject health  { get; private set; }
         [field: SerializeField] public HUDManager HUD  { get; private set; }
+        [field : SerializeField] public Camera handsCamera { get; private set; }
         [field: SerializeField] public Camera playerCamera { get; private set; }
         [field: SerializeField] public PlayerCharacterVisuals visuals { get; private set; }
         [field:SerializeField] public StudioListener listener { get; private set; }

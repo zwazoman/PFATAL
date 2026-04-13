@@ -16,6 +16,8 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             ctx.health.enabled = false;
             ctx.physics.enabled = false;
             ctx.inputs.enabled = false;
+
+            ctx.SwapActionMapToUI();
         }
 
         public override StateBase<global::_scripts.PlayerCharacter.PlayerCharacter> FindNextState(global::_scripts.PlayerCharacter.PlayerCharacter ctx)

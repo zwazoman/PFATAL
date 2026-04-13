@@ -29,7 +29,7 @@ public class ProjectileWeapon : Item
     }
 
     /// <summary>
-    /// g�re le delay entre 2 tirs
+    /// gere le delay entre 2 tirs
     /// </summary>
     protected async void StartShootDelay()
     {
@@ -54,7 +54,9 @@ public class ProjectileWeapon : Item
 
         Vector3 mirorPos;
 
-        mirorPos = shootSocket.position;
+        Vector3 newPos = playerCharacter.playerCamera.ScreenToWorldPoint(new Vector3(playerCharacter.handsCamera.WorldToScreenPoint(shootSocket.position).x, playerCharacter.handsCamera.WorldToScreenPoint(shootSocket.position).y, .3f));
+
+        mirorPos = newPos;
 
         //fait spawn un projectile "miroir" imitant les déplacements du vrai projectile sans délai chez le client
         if (visualProjectile != null)

@@ -773,6 +773,7 @@ GameObject:
   - component: {fileID: 9173803931921782257}
   - component: {fileID: 6077973829030890437}
   - component: {fileID: 3718568392821401935}
+  - component: {fileID: -6261384678717647340}
   m_Layer: 8
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -1000,7 +1001,7 @@ MonoBehaviour:
   _character: {fileID: 1068121725211319751}
   _cameraRoot: {fileID: 8942696625020924298}
   _rigidbody: {fileID: 7107920408180270023}
-  Sensitivity: 10
+  Sensitivity: 100
   _recoilCompensationMultiplier: {x: 0, y: 0}
   _aimAssistYStrength: 1
 --- !u!135 &6943353650538722316
@@ -1484,6 +1485,21 @@ MonoBehaviour:
   _maxOffset: 0.1
   _assistStrength: 0.01
   _minInputMultiplier: 0.05
+--- !u!114 &-6261384678717647340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8535136328113993408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38b1a4c372b55034b9f9a1bd2d8d62ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeatMapAnalitycs
+  character: {fileID: 1068121725211319751}
+  playerWeaponSocket: {fileID: 9091535359676874972}
+  isOnCapsule: 0
 --- !u!1 &8852470855691711139
 GameObject:
   m_ObjectHideFlags: 0
@@ -2796,5 +2812,10 @@ MonoBehaviour:
 --- !u!4 &8399313606681264964 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5716791234918691656, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+  m_PrefabInstance: {fileID: 4307205339695198220}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9091535359676874972 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5038924703587315920, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
   m_PrefabInstance: {fileID: 4307205339695198220}
   m_PrefabAsset: {fileID: 0}

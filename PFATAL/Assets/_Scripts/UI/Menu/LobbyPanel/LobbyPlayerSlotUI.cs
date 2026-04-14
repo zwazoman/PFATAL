@@ -10,7 +10,7 @@ public class LobbyPlayerSlotUI : MonoBehaviour
 
     public void SetData(LobbyPlayerData data)
     {
-        _playerNameText.text = data.name;
+        _playerNameText.text = data.DisplayName;
         _statusText.text = data.status.ToString();
     }
 }

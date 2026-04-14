@@ -35,7 +35,8 @@ public class ScoreboardUI : MonoBehaviour
 
         foreach (var player in GameManager.Instance.LeaderBoard.entries)
         {
-            AddPlayerCard(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths, 99);
+            Debug.Log(player.PlayerName);
+            AddPlayerCard(player.PlayerName.ToString(), player.Points, player.Kills, player.Deaths, 99);
             Debug.LogWarning("Added player card for ClientID: " + player.ClientID);
         }
     }
@@ -47,7 +48,7 @@ public class ScoreboardUI : MonoBehaviour
         foreach (var player in GameManager.Instance.LeaderBoard.entries)
         {
             PlayerCardUI card = playerCards[i];
-            card.SetPlayerInfo(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths, 99);
+            card.SetPlayerInfo(player.PlayerName.ToString(), player.Points, player.Kills, player.Deaths, 99);
             card.transform.SetSiblingIndex(i);
             i++;
         }

@@ -58,14 +58,17 @@ public class SteamPlayerInfo : MonoBehaviour
     async void WaitAndSend_Async()
     {
         Debug.Log("[SteamPlayerInfo] WaitAndSend_Async");
+        var i = 0;
         while (SteamPlayerList.Instance == null 
                || tempUnityId == null
-               || NetworkClientId == NULL_NETWORK_ID)
+               || NetworkClientId == NULL_NETWORK_ID
+               || i < 100)
         {
             print($"[SteamPlayerInfo] waiting... SteamPlayerList={SteamPlayerList.Instance} | tempUnityId={tempUnityId} | NetworkClientId={NetworkClientId}");
+            i++;
             await Awaitable.NextFrameAsync();
         }
-        
+        if (!SteamManager.Initialized) { Debug.LogError("[SteamPlayerInfo] Steam non initialisé !"); return; }
         Debug.Log($"[SteamPlayerInfo] Envoi : {PlayerName} | {SteamId} | {NetworkClientId} | {tempUnityId}");
         SteamPlayerList.Instance.AddPlayerRpc(NetworkClientId, SteamId, PlayerName, tempUnityId);
     }

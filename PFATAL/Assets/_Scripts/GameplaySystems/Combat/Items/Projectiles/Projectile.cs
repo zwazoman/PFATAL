@@ -1,4 +1,5 @@
 using System;
+using _Scripts.Exceptions;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -20,19 +21,15 @@ public class Projectile : NetworkBehaviour
 
     public virtual void Despawn()
     {
+        if (!IsServer) throw new NetworkAuthorityException();
         BroadcastDespawnRpc();
-        DespawnRpc();
     }
-
-    [Rpc(SendTo.Server)]
-    void DespawnRpc()
-    {
-        NetworkObject.Despawn();
-    }
-
+    
     [Rpc(SendTo.Everyone)]
     void BroadcastDespawnRpc()
     {
+        if(IsServer)
+            NetworkObject.Despawn();
         OnDespawn?.Invoke();
     }
 }

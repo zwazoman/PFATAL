@@ -1,5 +1,5 @@
 using NetworkTime;
-using Unity.Android.Gradle.Manifest;
+//using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 
 public class Proj_Visual : MonoBehaviour

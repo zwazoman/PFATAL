@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.LightTransport;
+using static UnityEngine.Rendering.DebugUI;
 
 /// <summary>
 /// Class that contains some functions for the heatmapData
@@ -217,5 +221,144 @@ public class HeatMapUtility
 
         Debug.LogError("Cassé");
         return 0;
+    }
+
+    public static byte[] ConvertMapToByte(HeatMapData heatMapData)
+    {
+        if (heatMapData == null)
+        {
+            Debug.LogError("Tu te fou de ma gueule, connard");
+            return null;
+        }
+
+        int index = 0;
+        byte[] mapInfo = new byte[5 * sizeof(short) + heatMapData.points.Count * 7 * sizeof(short)]; // Assuming HeatMapData has 5 integer properties (cellSize, gameId, gameVersion, playerCount) and 1 for points count
+        Debug.Log($"{sizeof(short)}");
+
+        // Convert HeatMapData properties to bytes
+        Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.cellSize), 0, mapInfo, index, 2);
+        index += 2;
+        Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.gameId), 0, mapInfo, index, 2);
+        index += 2;
+        Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.gameVersion), 0, mapInfo, index, 2);
+        index += 2;
+        Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.playerCount), 0, mapInfo, index, 2);
+        index += 2;
+        Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.points.Count), 0, mapInfo, index, 2);
+        index += 2;
+        // Convert HeatPoint properties to bytes
+        foreach (var point in heatMapData.points)
+        {
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.P[0]), 0, mapInfo, index, 2);
+            index += 2;
+
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.P[1]), 0, mapInfo, index, 2);
+            index += 2;
+
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.P[2]), 0, mapInfo, index, 2);
+            index += 2;
+
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.W), 0, mapInfo, index, 2);
+            index += 2;
+
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.H), 0, mapInfo, index, 2);
+            index += 2;
+
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.C), 0, mapInfo, index, 2);
+            index += 2;
+
+            Buffer.BlockCopy(BitConverter.GetBytes((short)point.T), 0, mapInfo, index, 2);
+            index += 2;
+        }
+
+        #region TEST
+        byte[] test = new byte[(5 + 7)*4];
+        test[0] = BitConverter.GetBytes(heatMapData.cellSize)[0];
+        test[4] = BitConverter.GetBytes(heatMapData.gameId)[0];
+        test[8] = BitConverter.GetBytes(heatMapData.gameVersion)[0];
+        test[12] = BitConverter.GetBytes(heatMapData.playerCount)[0];
+        test[16] = BitConverter.GetBytes(heatMapData.points.Count)[0];
+        test[20] = BitConverter.GetBytes(heatMapData.points[0].P[0])[0];
+        test[24] = BitConverter.GetBytes(heatMapData.points[0].P[1])[0];
+        test[28] = BitConverter.GetBytes(heatMapData.points[0].P[2])[0];
+        test[32] = BitConverter.GetBytes(heatMapData.points[0].W)[0];
+        test[36] = BitConverter.GetBytes(heatMapData.points[0].H)[0];
+        test[40] = BitConverter.GetBytes(heatMapData.points[0].C)[0];
+        test[44] = BitConverter.GetBytes(heatMapData.points[0].T)[0];
+
+        /*UnityEngine.Debug.Log($"Test bytes length: {test.Length}, Size : {test[0]}, Id : {test[1]}, Version : {test[2]}, PlayerCount : {test[3]}, PointsCount : {test[4]}, X : {test[5]}, Y : {test[6]}, Z : {test[7]}, W : {test[8]}, H : {test[9]}, C : {test[10]}, T : {test[11]}");
+        UnityEngine.Debug.Log($"Test bytes length: {test.Length}, " +
+            $"Size : {BitConverter.ToInt32(test, 0)}, " +
+            $"Id : {BitConverter.ToInt32(test, 4)}, " +
+            $"Version : {BitConverter.ToInt32(test, 8)}, " +
+            $"PlayerCount : {BitConverter.ToInt32(test, 12)}, " +
+            $"PointsCount : {BitConverter.ToInt32(test, 16)}, " +
+            $"X : {BitConverter.ToInt32(test, 20)}, " +
+            $"Y : {BitConverter.ToInt32(test, 24)}, " +
+            $"Z : {BitConverter.ToInt32(test, 28)}, " +
+            $"W : {BitConverter.ToInt32(test, 32)}, " +
+            $"H : {BitConverter.ToInt32(test, 36)}, " +
+            $"C : {BitConverter.ToInt32(test, 40)}, " +
+            $"T : {BitConverter.ToInt32(test, 44)}");
+        Debug.Log(BitConverter.ToString(test));
+
+        int test2 = -4;
+        Debug.Log(BitConverter.ToString(BitConverter.GetBytes(test2)));*/
+        #endregion
+
+
+        //UnityEngine.Debug.Log($"Heatmap points count: {heatMapData.points.Count}, Combined bytes length: {mapInfo.Length}");
+
+        File.WriteAllBytes(Path.Combine(Application.persistentDataPath, "heatmap.bin"), mapInfo);
+
+        return mapInfo;
+    }
+
+    public static HeatMapData ConvertByteToMap(byte[] bytes)
+    {
+        if (bytes == null || bytes.Length < 5 * sizeof(short))
+        {
+            Debug.LogError("Invalid byte array for HeatMapData conversion.");
+            return null;
+        }
+
+        int index = 0;
+
+        HeatMapData heatMapData = new HeatMapData
+        (
+            BitConverter.ToInt16(bytes, index), //0 - 1
+            BitConverter.ToInt16(bytes, index + 2), //2 - 3
+            BitConverter.ToInt16(bytes, index + 4), //4 - 5
+            BitConverter.ToInt16(bytes, index + 6) //6 - 7
+        );
+
+        index += 8; // Move past the first 4 shorts
+
+        int pointsCount = BitConverter.ToInt16(bytes, index); //8 - 9
+        index += 2; // Move past the points count, now index is at 10
+
+        heatMapData.points = new List<HeatPoint>();
+
+        for (int i = 0; i < pointsCount; i++)
+        {
+            HeatPoint point = new HeatPoint
+            (
+                new List<int> { 
+                    BitConverter.ToInt16(bytes, index),      //10 - 11
+                    BitConverter.ToInt16(bytes, index + 2),  //12 - 13
+                    BitConverter.ToInt16(bytes, index + 4)   //14 - 15
+                },
+                BitConverter.ToInt16(bytes, index + 6),     //16 - 17
+                BitConverter.ToInt16(bytes, index + 8),     //18 - 19
+                BitConverter.ToInt16(bytes, index + 10),     //20 - 21
+                BitConverter.ToInt16(bytes, index + 12)      //22 - 23
+            );
+            heatMapData.points.Add(point);
+            index += 7 * 2; // Move to the next point (7 shorts per point)
+        }
+
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "heatmapFromByte.json"), ConvertHeatMapDataToJson(heatMapData));
+
+        return heatMapData;
     }
 }

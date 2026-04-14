@@ -15,6 +15,7 @@ public class CharacterAiming : NetworkBehaviour
     
     [Header("parameters")]
     public float Sensitivity;
+    public float ControllerSensitivity;
     [SerializeField] Vector2 _recoilCompensationMultiplier;
 
     private float angle = 0;
@@ -35,9 +36,9 @@ public class CharacterAiming : NetworkBehaviour
     {
         //camera rotation
         //_cameraRoot.Rotate(_sensitivity * Time.deltaTime* _character.inputs.aimInput.y * Vector3.right,Space.Self);
-        angle = (angle + Sensitivity * Time.deltaTime * _character.inputs.aimInput.y * _inputMultiplier);
         if (_character.inputs.UsingGamePad == true)
         {
+            angle = (angle + ControllerSensitivity * Time.deltaTime * _character.inputs.aimInput.y * _inputMultiplier);
             float angle1 = angle;
             if (angle1 < 0) 
                 angle1 *= -1;
@@ -45,6 +46,10 @@ public class CharacterAiming : NetworkBehaviour
             angle -= (angle1 * _aimAssist.y) * _aimAssistYStrength;
             _aimAssist.y = 0f;
             _inputMultiplier = 1f;
+        }
+        else
+        {
+            angle = (angle + Sensitivity * Time.deltaTime * _character.inputs.aimInput.y * _inputMultiplier);
         }
         angle = Mathf.Clamp(angle, -90, 90);
         
@@ -82,7 +87,7 @@ public class CharacterAiming : NetworkBehaviour
     {
         if (_character.inputs.UsingGamePad == true)
         {
-            float angle2 = Sensitivity * Time.deltaTime * _character.inputs.aimInput.x * Mathf.Deg2Rad * _inputMultiplier;
+            float angle2 = ControllerSensitivity * Time.deltaTime * _character.inputs.aimInput.x * Mathf.Deg2Rad * _inputMultiplier;
             angle2 += _aimAssist.x;
             _aimAssist.x = 0f;
             _rigidbody.MoveRotation(_rigidbody.rotation * quaternion.RotateY(angle2));

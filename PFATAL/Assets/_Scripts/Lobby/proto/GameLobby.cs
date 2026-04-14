@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,17 +15,22 @@ using UnityEngine.SceneManagement;
 public class GameLobby : NetworkBehaviour
 {
     
-    //todo : scene seection, gamemode selection
+    //todo : scene selection, gamemode selection
+    
+    public static GameLobby Instance { get; private set; }
     
     public event Action<PlayerList> EventOnLobbyUpdated;
     public event Action<PlayerStatus> EventOnPlayerStatusChanged;
     
     public PlayerList _allPlayersInLobby = new();
+    private int _lobbyIDCounter = 0;
     [SerializeField] private string _gameSceneName;
     public LobbyPlayerData LocalLobbyPlayerData {set; private get;}
 
     void Awake()
     {
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        Instance = this;
         Init();
     }
     
@@ -39,8 +45,8 @@ public class GameLobby : NetworkBehaviour
             NetworkManager.Singleton.OnClientConnectedCallback += (ulong id) =>
             {
                 print("OnClientConnected");
-                //todo : steam name, lobbyID
-                _allPlayersInLobby.dictionnary[id] = new LobbyPlayerData("_",0,PlayerStatus.Waiting);
+                int assignedLobbyID = _lobbyIDCounter++;
+                _allPlayersInLobby.dictionnary[id] = new LobbyPlayerData("_", assignedLobbyID, PlayerStatus.Waiting);
                 SyncPlayerListRPC(_allPlayersInLobby);
             };
             
@@ -50,12 +56,28 @@ public class GameLobby : NetworkBehaviour
                 _allPlayersInLobby.dictionnary.Remove(id);
                 SyncPlayerListRPC(_allPlayersInLobby);
             };
-            
-            _allPlayersInLobby.dictionnary[NetworkManager.Singleton.LocalClientId] = LocalLobbyPlayerData;
+
+            int hostLobbyID = _lobbyIDCounter++;
+            _allPlayersInLobby.dictionnary[NetworkManager.Singleton.LocalClientId] = new LobbyPlayerData("_", hostLobbyID, PlayerStatus.Waiting);
             EventOnLobbyUpdated?.Invoke(_allPlayersInLobby);
 
             //SyncPlayerListRPC(_allPlayersInLobby);
         }
+    }
+
+    /// <summary>
+    /// Appelé par SteamPlayerList quand un joueur s'est enregistré avec ses infos Steam.
+    /// </summary>
+    public void OnSteamPlayerRegistered(ulong clientId, string steamName, string steamId)
+    {
+        if (!IsServer) return;
+        if (!_allPlayersInLobby.dictionnary.TryGetValue(clientId, out LobbyPlayerData existing)) return;
+
+        LobbyPlayerData updated = new(existing);
+        updated.name = steamName;
+        updated.steamId = steamId;
+        _allPlayersInLobby.dictionnary[clientId] = updated;
+        SyncPlayerListRPC(_allPlayersInLobby);
     }
     
     public void ToggleLocalPlayerStatus()
@@ -87,6 +109,11 @@ public class GameLobby : NetworkBehaviour
         print("SetLocalPlayerStatus");
         LobbyPlayerData lobbyPlayerData = new(LocalLobbyPlayerData);
         lobbyPlayerData.status = status;
+        
+        if (_allPlayersInLobby.dictionnary.TryGetValue(NetworkManager.Singleton.LocalClientId, out LobbyPlayerData existing))
+            if (!string.IsNullOrEmpty(existing.name) && existing.name != "_")
+                lobbyPlayerData.name = existing.name;
+
         LocalLobbyPlayerData = lobbyPlayerData;
         _allPlayersInLobby.dictionnary[NetworkManager.Singleton.LocalClientId] = lobbyPlayerData;
 
@@ -137,7 +164,8 @@ public struct LobbyPlayerData : INetworkSerializable
     public LobbyPlayerData(string name, int lobbyID, PlayerStatus status)
     {
         this.name = name;
-        if(this.name ==null) Debug.LogError("ahhhhhh");
+        if(this.name == null) Debug.LogError("ahhhhhh");
+        this.steamId = "";
         this.lobbyID = lobbyID;
         this.status = status;
     }
@@ -146,29 +174,32 @@ public struct LobbyPlayerData : INetworkSerializable
     {
         this.name = data.name;
         if(this.name == null) Debug.LogError("ohhhhhh");
+        this.steamId = data.steamId;
         this.lobbyID = data.lobbyID;
         this.status = data.status;
     }
 
     public string name;
+    public string steamId;
     public int lobbyID; 
     public PlayerStatus status;
         
-    //todo : steam name
-    public string DisplayName => "player_"+lobbyID;
+    public string DisplayName => string.IsNullOrEmpty(name) || name == "_" ? "player_" + lobbyID : name;
+    
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
-        Debug.Log("name is null : "+(name ==null));
-        Debug.Log("lobbyID is null : "+(lobbyID ==null));
-        Debug.Log("status is null : "+(status ==null));
+        Debug.Log("name is null : "+(name == null));
+        Debug.Log("lobbyID is null : "+(lobbyID == null));
+        Debug.Log("status is null : "+(status == null));
         serializer.SerializeValue(ref name);
+        serializer.SerializeValue(ref steamId);
         serializer.SerializeValue(ref lobbyID);
         serializer.SerializeValue(ref status);
     }
 
     public override string ToString()
     {
-        return DisplayName + " - lobbyID : "+lobbyID+", "+status.ToString();
+        return DisplayName + " (Steam: "+steamId+") - lobbyID : "+lobbyID+", "+status.ToString();
     }
 }
 public class PlayerList : INetworkSerializable
@@ -215,4 +246,3 @@ public class PlayerList : INetworkSerializable
         return s;
     }
 }
-

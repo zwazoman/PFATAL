@@ -18,7 +18,7 @@ public class HeatMapWindow : EditorWindow
     Material rayMarchingMat;
 
     //heatMap generaton pparameters
-    string gameVersion;
+    int gameVersion;
     int gameId;
     int playerNumber;
 
@@ -37,20 +37,21 @@ public class HeatMapWindow : EditorWindow
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
 
         mapBound = (GameObject)EditorGUILayout.ObjectField("Map bounds", mapBound, typeof(GameObject), true);
+        if (mapBound != null)
+        {
+            GUILayout.Label("Objet sélectionné : " + mapBound.name);
+        }
+
+
         rayMarchingMat = (Material)EditorGUILayout.ObjectField("Ray Marching Material", rayMarchingMat, typeof(Material), false);
-
-
-        // AJOUTE ÇA JUSTE APRÈS
         if (rayMarchingMat != null)
         {
             EditorGUILayout.LabelField("Shader:", rayMarchingMat.shader.name);
         }
 
-        if (mapBound != null)
-        {
-            GUILayout.Label("Objet sélectionné : " + mapBound.name);
-        }
+
         GUILayout.Space(25);
+
 
         //Filters options for the heapmap
         GUILayout.Label("HeatMaps Filter", EditorStyles.boldLabel);
@@ -62,7 +63,7 @@ public class HeatMapWindow : EditorWindow
         isFileOnThisComputer = EditorGUILayout.Toggle(
             new GUIContent(
                 "Is Files On This Computer",
-                "Check true if the file used to generate the heatmap are in the persistent data path on this computer."), 
+                "Check true if the file used to generate the heatmap are in the persistent data path on this computer."),
             isFileOnThisComputer);
         fileNameToSave = EditorGUILayout.TextField(
             new GUIContent(
@@ -71,7 +72,7 @@ public class HeatMapWindow : EditorWindow
             fileNameToSave);
 
         heatMapHasFilters = EditorGUILayout.BeginToggleGroup("Apply heatMap Filters", heatMapHasFilters);
-        gameVersion = EditorGUILayout.TextField("Game Version", gameVersion);
+        gameVersion = EditorGUILayout.IntField("Game Version", gameVersion);
         gameId = EditorGUILayout.IntField("Game Id", gameId);
         playerNumber = EditorGUILayout.IntField("Player Number", playerNumber);
         EditorGUILayout.EndToggleGroup();
@@ -89,7 +90,7 @@ public class HeatMapWindow : EditorWindow
         fileNameForTexture3D = EditorGUILayout.TextField(
             new GUIContent(
                 "File Name For Texture3D",
-                "File name use to generate the texture3D, locate ine the folder HeatMapFolder in the persiistent data path"), 
+                "File name use to generate the texture3D, locate ine the folder HeatMapFolder in the persiistent data path"),
             fileNameForTexture3D);
 
         attenuation = EditorGUILayout.TextField(
@@ -99,13 +100,18 @@ public class HeatMapWindow : EditorWindow
                 ),
             attenuation);
 
-        texture3DHasFilters = EditorGUILayout.BeginToggleGroup("Apply texture3D Filters", texture3DHasFilters);
+        texture3DHasFilters = EditorGUILayout.BeginToggleGroup(
+            new GUIContent(
+                "Apply texture3D Filters",
+                "Apply or not filters for the creation of the texture3D"
+                ),
+            texture3DHasFilters);
 
         weaponType = (WeaponType)EditorGUILayout.EnumPopup(
             new GUIContent(
                 "Weapon Type",
                 "Weapon use by players"), weaponType);
-        
+
         EditorGUILayout.EndToggleGroup();
 
         EditorGUILayout.Space(10);
@@ -120,9 +126,23 @@ public class HeatMapWindow : EditorWindow
         {
             //GUIUtility.systemCopyBuffer = Application.persistentDataPath;
             //EditorUtility.RevealInFinder(Application.persistentDataPath);
-            #if UNITY_EDITOR_WIN
-                Process.Start(Application.persistentDataPath);
-            #endif
+#if UNITY_EDITOR_WIN
+            Process.Start(Application.persistentDataPath);
+#endif
+        }
+
+        EditorGUILayout.Space(5);
+
+        if (GUILayout.Button("Test"))
+        {
+            HeatMapData heatMapData = HeatMapUtility.ConvertJsonToHeatMapData(File.ReadAllText(Path.Combine(Application.persistentDataPath + "/HeatMapFolder/" + fileNameForTexture3D)));
+            HeatMapUtility.ConvertMapToByte(heatMapData);
+        }
+
+        if (GUILayout.Button("Test 2"))
+        {
+            byte[] bytes = File.ReadAllBytes(Path.Combine(Application.persistentDataPath + "/" + fileNameForTexture3D));
+            HeatMapUtility.ConvertByteToMap(bytes);
         }
     }
 
@@ -151,7 +171,7 @@ public class HeatMapWindow : EditorWindow
                 allMaps.Add(HeatMapUtility.ConvertJsonToHeatMapData(File.ReadAllText(file)));
 
             //checking if there's sorting conditions, if yes check all HeatMapData to find which accord to the conditions
-            if (heatMapHasFilters && (gameVersion != "0" || playerNumber != 0))
+            if (heatMapHasFilters && (gameVersion != 0 || playerNumber != 0))
             {
                 //UnityEngine.Debug.Log("Start filtering.");
                 List<HeatMapData> filteredMaps = new List<HeatMapData>();
@@ -162,7 +182,7 @@ public class HeatMapWindow : EditorWindow
                     //UnityEngine.Debug.Log(
                     //    $"Iterating HeatMapData list, list number : {i}, GameVersion : {map.heatMapGameVersion} {gameVersion == "0" || gameVersion == map.heatMapGameVersion}" +
                     //    $", Player Number : {map.heatMapPlayerNumber} {playerNumber == 0 || playerNumber == map.heatMapPlayerNumber}.");
-                    if (!(gameVersion == "0" || gameVersion == map.gameVersion))
+                    if (!(gameVersion == 0 || gameVersion == map.gameVersion))
                     {
                         //UnityEngine.Debug.Log($"Condition gameVersion : {gameVersion == "0" || gameVersion == map.heatMapGameVersion}");
                         continue;

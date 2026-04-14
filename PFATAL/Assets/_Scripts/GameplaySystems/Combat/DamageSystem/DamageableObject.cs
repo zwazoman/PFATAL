@@ -1,10 +1,8 @@
 using System;
 using _scripts.PlayerCharacter;
-using NUnit.Framework;
 using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
-using static DG.Tweening.DOTweenModuleUtils;
 
 public class DamageableObject : NetworkBehaviour, IDamageable
 {

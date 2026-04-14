@@ -1,10 +1,6 @@
 using NetworkTime;
 using System;
-using Unity.Netcode;
-using Unity.Netcode.Components;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Proj_Falling : Projectile
 {

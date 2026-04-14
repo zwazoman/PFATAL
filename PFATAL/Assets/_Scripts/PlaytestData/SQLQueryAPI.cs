@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using System;
 using NaughtyAttributes;
 
 public class SQLQueryAPI : MonoBehaviour

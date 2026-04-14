@@ -1,4 +1,3 @@
-using _scripts.PlayerCharacter;
 using DG.Tweening;
 using System;
 using Unity.Netcode;

@@ -1,11 +1,9 @@
-using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UIElements;
 
 public class DatabaseRequest : MonoBehaviour
 {
@@ -25,7 +23,7 @@ public class DatabaseRequest : MonoBehaviour
     }*/
 
     /// <summary>
-    /// Fonction qui envoie un joueur à la base de données via une requete POST
+    /// Fonction qui envoie un joueur ï¿½ la base de donnï¿½es via une requete POST
     /// </summary>
     /// <param name="player"></param>
     public IEnumerator SendPlayer(Player player)
@@ -56,12 +54,12 @@ public class DatabaseRequest : MonoBehaviour
     {
         StartCoroutine(SendGame(gameTest,(result) =>
         { 
-            Debug.Log("ID de la partie ajoutée : " + result);
+            Debug.Log("ID de la partie ajoutï¿½e : " + result);
         }));
     }*/
 
     /// <summary>
-    /// Fonction qui envoie une partie à la base de données via une requete POST
+    /// Fonction qui envoie une partie ï¿½ la base de donnï¿½es via une requete POST
     /// </summary>
     /// <param name="game"></param>
     public IEnumerator SendGame(Game game, Action <string> onResult)
@@ -102,7 +100,7 @@ public class DatabaseRequest : MonoBehaviour
     }*/
 
     /// <summary>
-    /// Fonction qui envoie une liste de GamePlayerSet à la base de données via une requete POST
+    /// Fonction qui envoie une liste de GamePlayerSet ï¿½ la base de donnï¿½es via une requete POST
     /// </summary>
     /// <param name="gamePlayerSets"></param>
     public IEnumerator SendGamePlayerSet(List<GamePlayerSet> gamePlayerSets)
@@ -138,7 +136,7 @@ public class DatabaseRequest : MonoBehaviour
     }*/
 
     /// <summary>
-    /// Fonction qui envoie une liste de Score à la base de données via une requete POST
+    /// Fonction qui envoie une liste de Score ï¿½ la base de donnï¿½es via une requete POST
     /// </summary>
     /// <param name="scores"></param>
     public IEnumerator SendScore(List<Score> scores)
@@ -174,7 +172,7 @@ public class DatabaseRequest : MonoBehaviour
     }*/
 
     /// <summary>
-    /// Fonction qui envoie une liste de Death à la base de données via une requete POST
+    /// Fonction qui envoie une liste de Death ï¿½ la base de donnï¿½es via une requete POST
     /// </summary>
     /// <param name="deaths"></param>
     public IEnumerator SendDeath(List<Death> deaths)
@@ -208,12 +206,12 @@ public class DatabaseRequest : MonoBehaviour
     {
         StartCoroutine(LastGameIdCoroutine((id) =>
         {
-            Debug.Log("ID récupéré : " + id);
+            Debug.Log("ID rï¿½cupï¿½rï¿½ : " + id);
         }));
     }*/
 
     /// <summary>
-    /// Fonction qui récupère le dernier ID de partie enregistré dans la base de données via une requete GET.
+    /// Fonction qui rï¿½cupï¿½re le dernier ID de partie enregistrï¿½ dans la base de donnï¿½es via une requete GET.
     /// </summary>
     /// <param name="onResult"></param>
     public IEnumerator LastGameIdCoroutine(Action<int> onResult)

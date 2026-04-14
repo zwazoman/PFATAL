@@ -1,9 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
-using AYellowpaper.SerializedCollections;
-using System;
 using System.Collections.Generic;
-using UnityEditor;
 using _scripts.PlayerCharacter;
 
 public class HandsItemVisuals : NetworkBehaviour

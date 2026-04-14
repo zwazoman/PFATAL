@@ -13,14 +13,15 @@ public class Crosshair<T> : MonoBehaviour where T : Item
         visuals.SetActive(true);
         this.weapon = weapon;
 
-        manager.OnActivateCrosshair += Deactivate;
+        weapon.OnUnEquip += Deactivate;
     }
 
     protected virtual void Deactivate()
     {
         visuals?.SetActive(false);
-        weapon = null;
+        weapon.OnUnEquip -= Deactivate;
 
-        manager.OnActivateCrosshair -= Deactivate;
+
+        weapon = null;
     }
 }

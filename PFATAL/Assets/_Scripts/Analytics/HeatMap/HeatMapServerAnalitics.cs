@@ -1,12 +1,10 @@
 using _scripts.PlayerCharacter;
-using FMOD.Studio;
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class HeatMapServerAnalitics : MonoBehaviour
 {
@@ -39,7 +37,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
     private void Start()
     {
-        _theRealHeatMap = new(gridSize);
+        _theRealHeatMap = new(gridSize, 0, 001, Players.Count);
     }
 
     private void Update()

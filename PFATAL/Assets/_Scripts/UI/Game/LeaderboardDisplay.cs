@@ -1,6 +1,4 @@
-using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class LeaderboardDisplay : MonoBehaviour
 {
@@ -27,10 +25,14 @@ public class LeaderboardDisplay : MonoBehaviour
     {
         scoreboardEndGamePanel.SetActive(true);
         ScoreboardUIEndGamePanel.gameObject.SetActive(true);
+
+        result.LeaderBoard.ResolvePlayerNames();
+
         foreach (var item in result.LeaderBoard.entries)
         {
             Debug.Log("Adding player to end game leaderboard: " + result);
-            ScoreboardUIEndGamePanel.AddPlayerCard(item.ClientID.ToString(), item.Points, item.Kills, item.Deaths, 99);
+            Debug.Log("[LeaderBoardDisplay] Player Name : " + item.PlayerName);
+            ScoreboardUIEndGamePanel.AddPlayerCard(item.PlayerName.ToString(), item.Points, item.Kills, item.Deaths, 99);
         }
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

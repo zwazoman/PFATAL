@@ -1,6 +1,4 @@
 using _scripts.PlayerCharacter;
-using System.Threading;
-using Unity.Cinemachine;
 using UnityEngine;
 
 public class DirectionIndicator : MonoBehaviour

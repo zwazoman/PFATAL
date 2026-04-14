@@ -11,10 +11,12 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private NetworkTimeSyncManager _timeSyncManager;
     
     //todo : scriptable object avec game settings ?
-    public const float DEATH_MATCH_GAME_DURATION = 300f;
+    public const float DEATH_MATCH_GAME_DURATION = 10f;
 
     public static GameMode gameMode = GameMode.DeathMatch;
-
+    
+    private static Dictionary<ulong,PermanentPlayerIdentity> _playerIdentities = new();
+     
     private int _playersInScene = 0;
     
     public static GameManager Instance { get; private set ; }
@@ -23,6 +25,7 @@ public class GameManager : NetworkBehaviour
     {
         Instance = this;
     }
+    
 
     public override void OnDestroy()
     {
@@ -52,12 +55,34 @@ public class GameManager : NetworkBehaviour
             InitializeGame();
         }
     }
-    
-    
+
     async void InitializeGame()
     {
         await _timeSyncManager.SyncClientTimestamps();
-        StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(),gameMode);
+        SyncPlayerIdentitiesToClientsRPC(_playerIdentities.Keys.ToArray(), _playerIdentities.Values.ToArray());
+        StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(), gameMode);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    void SyncPlayerIdentitiesToClientsRPC(ulong[] ids, PermanentPlayerIdentity[] identities)
+    {
+        _playerIdentities.Clear();
+        for (int i = 0; i < ids.Length; i++)
+            _playerIdentities[ids[i]] = identities[i];
+        Debug.Log($"[GameManager] PlayerIdentities synchronisées : {_playerIdentities.Count}");
+    }
+
+    /// <summary>
+    /// Donne l'identité permanente d'un joueur (steam...) via NetworkClientId de Netcode
+    /// </summary>
+    public static PermanentPlayerIdentity GetPlayerIdentity(ulong playerClientID)
+    {
+        return _playerIdentities[playerClientID];
+    }
+
+    public static void SetPlayerIdentities(Dictionary<ulong,PermanentPlayerIdentity> playerIdentities)
+    {
+        _playerIdentities = playerIdentities;
     }
     
     //data

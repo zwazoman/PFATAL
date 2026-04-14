@@ -9,12 +9,7 @@ public class PlayerDetector : MonoBehaviour
     private bool _canDecrease = true;
     private RaycastHit _hitInfo;
 
-    [Tooltip("The max tangent between your forward and your direction to the target.")]
-    [Range(0f, 1f)][SerializeField] private float _maxOffset;
-    [Tooltip("How much should the camera assist.")]
-    [Range(0f, 1f)][SerializeField] private float _assistStrength;
-    [Tooltip("How much the player can move the camera away.")]
-    [Range(0f, 0.2f)][SerializeField] private float _minInputMultiplier;
+    [SerializeField] private AimAssistVersions _assistVersions;
 
     private void OnDrawGizmos()
     {
@@ -50,7 +45,7 @@ public class PlayerDetector : MonoBehaviour
 
                 if (_canDecrease == false)
                 {
-                    _characterAiming.Sensitivity = 100;
+                    //_characterAiming.Sensitivity = 100;
                     _canDecrease = true;
                 }
             }
@@ -58,7 +53,7 @@ public class PlayerDetector : MonoBehaviour
         else
         {
             //Will need some change after the change of sensitivity with the crossbow.
-            _characterAiming.Sensitivity = 100;
+            //_characterAiming.Sensitivity = 100;
         }
     }
 
@@ -73,19 +68,19 @@ public class PlayerDetector : MonoBehaviour
             Vector3 differenceToForward = targetDirection - _cameraTransform.forward;
             float offset = differenceToForward.magnitude;
 
-            if (offset < _maxOffset)
+            if (offset < _assistVersions.MaxOffset)
             {
                 //Convert to local space.
                 Vector3 localDifference = _cameraTransform.InverseTransformDirection(differenceToForward);
-                localDifference /= _maxOffset;
+                localDifference /= _assistVersions.MaxOffset;
 
                 //Aim assist is stronger the closer target is to the center.
-                float strength = (_maxOffset - offset) / _maxOffset * _assistStrength;
+                float strength = (_assistVersions.MaxOffset - offset) / _assistVersions.MaxOffset * _assistVersions.AssistStrength;
                 localDifference *= strength;
 
                 //Calculate InputMultiplier.
-                float normalized = Mathf.Clamp01(offset / _maxOffset);
-                float inputMultiplier = Mathf.Lerp(1f, _minInputMultiplier, 1f -  normalized);
+                float normalized = Mathf.Clamp01(offset / _assistVersions.MaxOffset);
+                float inputMultiplier = Mathf.Lerp(1f, _assistVersions.MinInputMultiplier, 1f -  normalized);
 
                 _characterAiming.AssistAim(localDifference, inputMultiplier);
             }

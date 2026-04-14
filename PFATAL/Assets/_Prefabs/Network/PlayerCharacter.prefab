@@ -297,6 +297,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2464492100689562338}
+  - component: {fileID: 5545781418344288624}
   m_Layer: 0
   m_Name: Visuals
   m_TagString: Untagged
@@ -320,6 +321,20 @@ Transform:
   - {fileID: 4670963308215862787}
   m_Father: {fileID: 4314537941643326139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5545781418344288624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4179012326148749122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b009e90de7a445443ae82cdb8b4bac31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSounds
+  main: {fileID: 1560660781872837391}
+  _playerCharacter: {fileID: 1068121725211319751}
 --- !u!1 &5180221807929187229
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,7 +828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 287215609
+  GlobalObjectIdHash: 1627020838
   InScenePlacedSourceGlobalObjectIdHash: 287215609
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1001,7 +1016,8 @@ MonoBehaviour:
   _character: {fileID: 1068121725211319751}
   _cameraRoot: {fileID: 8942696625020924298}
   _rigidbody: {fileID: 7107920408180270023}
-  Sensitivity: 100
+  Sensitivity: 10
+  ControllerSensitivity: 0
   _recoilCompensationMultiplier: {x: 0, y: 0}
   _aimAssistYStrength: 1
 --- !u!135 &6943353650538722316
@@ -1482,9 +1498,7 @@ MonoBehaviour:
     m_Bits: 256
   _input: {fileID: 2069463516094485431}
   _characterAiming: {fileID: 4888209787928335878}
-  _maxOffset: 0.1
-  _assistStrength: 0.01
-  _minInputMultiplier: 0.05
+  _assistVersions: {fileID: 0}
 --- !u!114 &-6261384678717647340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2241,6 +2255,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d9bf200d09c5674183952478e4dcd31, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6109815968382572435}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d9bf200d09c5674183952478e4dcd31, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1560660781872837391}
   m_SourcePrefab: {fileID: 100100000, guid: 4d9bf200d09c5674183952478e4dcd31, type: 3}
 --- !u!4 &700869960131821557 stripped
 Transform:
@@ -2284,6 +2301,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1560660781872837391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3312259567016632581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39fb14504855adb4a80aee3a9d831874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationEventsListener
 --- !u!1001 &4148021087665442525
 PrefabInstance:
   m_ObjectHideFlags: 0

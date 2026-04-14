@@ -168,7 +168,14 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
     public void SaveHeatMap()
     {
-        File.WriteAllText(_filePath, JsonUtility.ToJson(_theRealHeatMap));
+        //File.WriteAllText(_filePath, JsonUtility.ToJson(_theRealHeatMap));
+
+        //to do : get heapMap from DB to set correct gameId and version
+
+        _theRealHeatMap.playerCount = Players.Count;
+
+        HeatMapUtility.ConvertMapToByte(_theRealHeatMap);
+        
         UnityEngine.Debug.Log("Heatmap data saved to: " + _filePath);
     }
 

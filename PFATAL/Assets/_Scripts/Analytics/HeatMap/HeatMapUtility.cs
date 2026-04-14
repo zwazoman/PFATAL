@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using UnityEngine;
 
 /// <summary>
@@ -19,7 +20,7 @@ public class HeatMapUtility
     /// method returns null.</param>
     /// <returns>A JSON string representing the combined heat map data. Returns null if the input heat maps do not share the same
     /// grid size.</returns>
-    public static string CombineHeatMap(List<HeatMapData> heatMaps)
+    public static HeatMapData CombineHeatMap(List<HeatMapData> heatMaps)
     {
         //check if the grid size is the same for all the heatmap
         if (!IsSameGridSize(heatMaps))
@@ -72,9 +73,10 @@ public class HeatMapUtility
         }
 
         combinedHeatMap.playerCount = heatMaps.Count;
-        string combinedHeatMapJson = ConvertHeatMapDataToJson(combinedHeatMap);
+        
+        //string combinedHeatMapJson = ConvertHeatMapDataToJson(combinedHeatMap);
 
-        return combinedHeatMapJson;
+        return combinedHeatMap;
     }
 
     /// <summary>
@@ -327,9 +329,9 @@ public class HeatMapUtility
             $"T : {BitConverter.ToInt16(test, 17)}");
         Debug.Log(BitConverter.ToString(test));
         
-        int test2 = -4;
-        Debug.Log(BitConverter.ToString(BitConverter.GetBytes(test2)));
+        Debug.Log(BitConverter.ToString(BitConverter.GetBytes((int)(System.DateTime.Now - new System.DateTime(1970, 1, 1)).TotalSeconds)));
         #endregion
+
 
 
         //UnityEngine.Debug.Log($"Heatmap points count: {heatMapData.points.Count}, Combined bytes length: {mapInfo.Length}");

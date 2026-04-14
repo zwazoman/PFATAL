@@ -59,6 +59,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                         Amount = finalDamage,
                         SourcePlayerClientID = playerCharacter.OwnerClientId,
                         Point = hit.transform.position,
+                        SourcePos = playerCharacter.transform.position,
                         Direction = Vector3.up,
                         KnockbackForce = new Vector3(0, _knockback, 0),
                         Radius = radius
@@ -73,9 +74,10 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter playerCharacter)
         {
-            if (!playerCharacter.physics.ComputeIsGrounded()) return this;
+            if (playerCharacter.physics.ComputeIsGrounded())
+                return Sm.s_Idle;
 
-            return Sm.s_Idle;
+            return base.FindNextState(playerCharacter);
         }
     }
 }

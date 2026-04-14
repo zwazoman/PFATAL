@@ -14,11 +14,13 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         private float _startVelocityY;
         ulong _ownerId;
+        Vector3 _ownerPos;
 
-        public void ActivateState(ulong ownerId)
+        public void ActivateState(ulong ownerId, Vector3 ownerPos)
         {
             Sm.TransitionTo(this);
             _ownerId = ownerId;
+            _ownerPos = ownerPos;
         }
 
         protected override void OnEntered(PlayerCharacter ctx)
@@ -42,9 +44,8 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                     Amount = _damage * (playerCharacter.physics.Velocity.y/_startVelocityY),
                     SourcePlayerClientID = _ownerId,
                     Point = transform.position,
+                    SourcePos = _ownerPos,
                     Direction = Vector3.down,
-                    KnockbackForce = Vector3.zero,
-                    Radius = 0
                 };
 
                 damageable.TakeDamage(damageData);

@@ -135,14 +135,14 @@ public class DataCollector : MonoBehaviour
         StartCoroutine(_databaseRequest.SendDeath(deaths));
     }
 
-    public void RegisterDeath(ulong victim, ulong killer, float time)
+    public void RegisterDeath(ulong victim, ulong killer, float distance, float time)
     {
         deaths.Add(new Death
         {
             VictimId = (int)victim,
             KillerId = (int)killer,
             Weapon = 0,
-            Distance = 0f,
+            Distance = distance,
             IdGame = gameId,
             Time = time
         });

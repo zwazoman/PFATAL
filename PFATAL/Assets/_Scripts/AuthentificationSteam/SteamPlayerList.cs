@@ -14,7 +14,6 @@ public class SteamPlayerList : NetworkBehaviour
 
     public List<PermanentPlayerIdentity> Players = new();
     
-    public TextMeshProUGUI playersText;
 
     void Awake()
     {
@@ -77,7 +76,6 @@ public class SteamPlayerList : NetworkBehaviour
         UpdateGameManagerDictionnary();
 
         //debug
-        playersText.text += " | " + data.platformID + " " + data.name;
         foreach (var p in Players)
             Debug.LogWarning($"[SteamPlayerList] Joueur déjà présent : {playerName}");
         Debug.Log($"[SteamPlayerList] Ajout : {playerName}");

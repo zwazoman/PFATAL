@@ -42,9 +42,10 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter playerCharacter)
         {
-            if (Time.time < _endTime) return this;
+            if (Time.time >= _endTime)
+                return playerCharacter.physics.ComputeIsGrounded() ? Sm.s_Idle : Sm.s_Falling;
 
-            return playerCharacter.physics.ComputeIsGrounded() ? Sm.s_Idle : (StateBase<PlayerCharacter>)Sm.s_Falling;
+            return base.FindNextState(playerCharacter);
         }
     }
 }

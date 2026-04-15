@@ -13,6 +13,7 @@ public class Proj_Tornado : Projectile
 
     private float _timer;
     private bool _halfTimeReached = false;
+    private Vector3 _startPos;
     private static Collider[] buffer = new Collider[20];
     private List<DamageableObject> blackList = new();
 
@@ -24,6 +25,9 @@ public class Proj_Tornado : Projectile
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        _startPos = transform.position;
+
         if (!IsServer) return;
     }
 
@@ -115,6 +119,6 @@ public class Proj_Tornado : Projectile
         }
 
         Debug.Log($"[Tornado RPC] APPLY PROPULSION sur client {NetworkManager.Singleton.LocalClientId}");
-        player.stateMachine.s_PropulseInAir.ActivateState(OwnerClientId);
+        player.stateMachine.s_PropulseInAir.ActivateState(OwnerClientId, _startPos);
     }
 }

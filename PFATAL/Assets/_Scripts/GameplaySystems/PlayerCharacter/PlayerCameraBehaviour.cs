@@ -6,7 +6,7 @@ public class PlayerCameraBehaviour : MonoBehaviour
     public static float BaseFov = 70;
     [Header("sceneReferences")]
     [SerializeField] PlayerCharacter _playerCharacter;
-    [SerializeField] private Camera _cam;
+    [SerializeField] public Camera _cam;
     [SerializeField] private Transform _recoilTarget;
     [SerializeField] private Transform _aimPuchBodyCenterReference;
 
@@ -32,6 +32,8 @@ public class PlayerCameraBehaviour : MonoBehaviour
 
     private float _fov;
     private float _tempFovOffset = 0;
+    
+    public static PlayerCameraBehaviour Current;
     
     void Awake()
     {

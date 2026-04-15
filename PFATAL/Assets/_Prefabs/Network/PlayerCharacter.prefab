@@ -796,6 +796,7 @@ GameObject:
   - component: {fileID: 6077973829030890437}
   - component: {fileID: 3718568392821401935}
   - component: {fileID: -6261384678717647340}
+  - component: {fileID: 8654703381458756738}
   m_Layer: 8
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -1521,6 +1522,20 @@ MonoBehaviour:
   character: {fileID: 1068121725211319751}
   playerWeaponSocket: {fileID: 9091535359676874972}
   isOnCapsule: 0
+--- !u!114 &8654703381458756738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8535136328113993408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b931ce5cfc5118b4984b23f0a752cdad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenFeedbacks
+  _playerCharacter: {fileID: 1068121725211319751}
+  _damageOverlayMaterial: {fileID: 2100000, guid: 067d6ae1bd3e1f845aeaa49c317eced5, type: 2}
 --- !u!1 &8852470855691711139
 GameObject:
   m_ObjectHideFlags: 0

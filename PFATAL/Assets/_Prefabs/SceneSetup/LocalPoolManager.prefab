@@ -94,6 +94,53 @@ MonoBehaviour:
   _prefab: {fileID: 6740965509898487199, guid: 29ee4b7f4f984494ebb628f09907b6c7, type: 3}
   BaseSize: 10
   GrowRateWhenEmpty: 5
+--- !u!1 &2262294230979303654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3722155652791055722}
+  - component: {fileID: 6793180025563575035}
+  m_Layer: 0
+  m_Name: damageIndicators
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3722155652791055722
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2262294230979303654}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5283435890391715464}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6793180025563575035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2262294230979303654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32bd68b8c2fb4744b83a76006a47f944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Pooling.Pool
+  _prefab: {fileID: 1425785110876254368, guid: 46ea7ea2d006eb841802a7d485244c99, type: 3}
+  BaseSize: 10
+  GrowRateWhenEmpty: 5
 --- !u!1 &3177229797513358144
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,6 +253,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8787378877497911397}
+  - {fileID: 5283435890391715464}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6223044168118795240
@@ -220,6 +268,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa774abf8b7d4a4429357ed495b2e01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Pooling.PoolManager
+  Pool_UI_DamageIndicator: {fileID: 6793180025563575035}
   Pool_VFX_Hit_crit: {fileID: 8546058373381736001}
   Pool_VFX_Explosion_big: {fileID: 900679118607610856}
   Pool_VFX_Explosion_small: {fileID: 690653188899277433}
+--- !u!1 &5676857051342966911
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5283435890391715464}
+  m_Layer: 0
+  m_Name: ui
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5283435890391715464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5676857051342966911}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3722155652791055722}
+  m_Father: {fileID: 1406014691294916543}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

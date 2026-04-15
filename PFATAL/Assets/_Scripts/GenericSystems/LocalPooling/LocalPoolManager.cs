@@ -26,6 +26,9 @@ namespace _Scripts.Pooling
 
         internal List<Pool> AllPools = new();
 
+        [Header("ui")]
+        public Pool Pool_UI_DamageIndicator;
+            
         [Header("VFXs")] 
         public Pool Pool_VFX_Hit_crit;
         public Pool Pool_VFX_Explosion_big;

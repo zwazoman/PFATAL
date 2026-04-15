@@ -1,3 +1,4 @@
+using _Scripts.Pooling;
 using UnityEngine;
 
 public class DamageIndicatorManager : MonoBehaviour
@@ -13,7 +14,15 @@ public class DamageIndicatorManager : MonoBehaviour
 
     public void ShowIndicator(DamageData damageData)
     {
-        DirectionIndicator indicator = Instantiate(_prefab, transform).GetComponent<DirectionIndicator>();
+        DirectionIndicator indicator = LocalPoolManager.Instance.Pool_UI_DamageIndicator.
+            PullObjectFromPool(transform)
+            .GetComponent<DirectionIndicator>();
+        
+        print("indicator is null : "+(indicator == null)+
+            "\nhud is null : "+(hud == null));
+        
+        indicator.transform.localPosition = Vector3.zero;
+        
         if(damageData.Point != default)
             indicator.Setup(damageData.SourcePos, hud.playerCharacter);
         else

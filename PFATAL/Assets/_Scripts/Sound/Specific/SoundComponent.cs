@@ -7,7 +7,9 @@ public class SoundComponent<T> : MonoBehaviour where T : Component
 
     virtual protected void Awake()
     {
-        TryGetComponent(out  main);
+        TryGetComponent(out T newMain);
+        if(newMain != null)
+            main = newMain;
     }
 
     private void Start()

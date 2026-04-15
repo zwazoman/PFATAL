@@ -53,7 +53,7 @@ public class DataCollector : MonoBehaviour
         {
             Player player = new Player
             {
-                Id = (int)clientID,
+                Id = (long)clientID,
                 Name = "Player_" + clientID
             };
 
@@ -102,7 +102,7 @@ public class DataCollector : MonoBehaviour
             {
                 Id = gameId,
                 IdGame = gameId,
-                IdPlayer = (int)entry.ClientID,
+                IdPlayer = (long)entry.ClientID,
             });
         }
 
@@ -119,7 +119,7 @@ public class DataCollector : MonoBehaviour
             scores.Add(new Score
             {
                 IdGame = gameId,
-                IdPlayer = (int)entry.ClientID,
+                IdPlayer = (long)entry.ClientID,
                 Points = entry.Points
             });
         }
@@ -139,8 +139,8 @@ public class DataCollector : MonoBehaviour
     {
         deaths.Add(new Death
         {
-            VictimId = (int)victim,
-            KillerId = (int)killer,
+            VictimId = (long)victim,
+            KillerId = (long)killer,
             Weapon = 0,
             Distance = distance,
             IdGame = gameId,

@@ -70,8 +70,6 @@ public class AudioManager : NetworkBehaviour
 
     public EventInstance PlayOneShot(Sounds sound, Vector3 pos, string parameter = null, float parameterValue = 0)
     {
-        print("play " + sound.ToString());
-
         EventInstance newInstance = CreateInstance(sound, true);
 
         if (parameter != null)

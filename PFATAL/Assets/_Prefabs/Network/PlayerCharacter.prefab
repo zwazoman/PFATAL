@@ -335,6 +335,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSounds
   main: {fileID: 1560660781872837391}
   _playerCharacter: {fileID: 1068121725211319751}
+  _groungCheckLength: 5
+  _groundCheckLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _rockMaterial: {fileID: 2100000, guid: 33029d3dcb720f0448c1ed364ec93b33, type: 2}
+  _grassMaterial: {fileID: 2100000, guid: e81d1bed1c42c9648905f1c4c0d83246, type: 2}
+  _woodMaterial: {fileID: 2100000, guid: 368118bbd318e154da1eb323e4ca0f7d, type: 2}
 --- !u!1 &5180221807929187229
 GameObject:
   m_ObjectHideFlags: 0
@@ -828,7 +835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1627020838
+  GlobalObjectIdHash: 287215609
   InScenePlacedSourceGlobalObjectIdHash: 287215609
   DeferredDespawnTick: 0
   Ownership: 1

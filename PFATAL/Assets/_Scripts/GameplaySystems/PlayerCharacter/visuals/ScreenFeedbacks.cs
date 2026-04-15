@@ -16,7 +16,10 @@ public class ScreenFeedbacks : MonoBehaviour
     {
         _playerCharacter.health.OnHpChanged += (float h) =>
         {
-            _damageOverlayMaterial.SetFloat(NormalizedAmountProperty,1.0f - ( h/ _playerCharacter.health.MaxHP)*.8f);
+            float redAmount = 1.0f - (h / _playerCharacter.health.MaxHP);
+            redAmount = redAmount * redAmount;
+            redAmount = redAmount * .8f;
+            _damageOverlayMaterial.SetFloat(NormalizedAmountProperty,redAmount);
         };
         _damageOverlayMaterial.SetFloat(NormalizedAmountProperty,0);
     }

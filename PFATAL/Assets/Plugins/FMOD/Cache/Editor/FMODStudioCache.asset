@@ -107,6 +107,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-5208899082357985717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Items/Generic/BreakRune
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Items/Generic/BreakRune
+  Guid:
+    Data1: 1863167830
+    Data2: 1158136384
+    Data3: -827072628
+    Data4: 103235747
+  Banks:
+  - {fileID: -2518904041505098000}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-5203072755018177848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,10 +301,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639118502351583448
+  lastModified: 639118633723853116
   FileSizes:
   - Name: Desktop
-    Value: 261888
+    Value: 305664
   Exists: 1
 --- !u!114 &-1948066595381190723
 MonoBehaviour:
@@ -297,6 +324,33 @@ MonoBehaviour:
     Data2: 1250923619
     Data3: 1596525697
     Data4: -1933309065
+  Banks:
+  - {fileID: -2518904041505098000}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-1799917517773424415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Player/Hurt
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Player/Hurt
+  Guid:
+    Data1: -584117397
+    Data2: 1242937104
+    Data3: 1938312591
+    Data4: -2111512776
   Banks:
   - {fileID: -2518904041505098000}
   IsStream: 0
@@ -383,12 +437,14 @@ MonoBehaviour:
   - {fileID: -5221521564126636611}
   - {fileID: -6714382150223959113}
   - {fileID: -3945287108600260716}
+  - {fileID: -1799917517773424415}
+  - {fileID: -5208899082357985717}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1373530535141412940}
   StringsBanks:
   - {fileID: 7971645662156069631}
-  cacheTime: 639118502351583448
+  cacheTime: 639118633723853116
   cacheVersion: 131635
 --- !u!114 &454870796024394520
 MonoBehaviour:
@@ -499,7 +555,7 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639117778106213640
+  lastModified: 639118633720703150
   FileSizes:
   - Name: Desktop
     Value: 5348
@@ -799,10 +855,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639117778106238637
+  lastModified: 639118633720743372
   FileSizes:
   - Name: Desktop
-    Value: 1942
+    Value: 2030
   Exists: 1
 --- !u!114 &8015081236418152981
 MonoBehaviour:

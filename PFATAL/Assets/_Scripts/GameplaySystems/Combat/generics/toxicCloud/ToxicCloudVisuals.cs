@@ -7,6 +7,11 @@ public class ToxicCloudVisuals : MonoBehaviour
     [Header("Scene references")]
     [SerializeField] private Transform _quad;
     [SerializeField] private ToxicCloud _cloud;
+
+    void Start()
+    {
+        _quad.gameObject.SetActive(false);
+    }
     
     private void Update()
     {

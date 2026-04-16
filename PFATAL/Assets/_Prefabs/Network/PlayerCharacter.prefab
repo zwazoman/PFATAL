@@ -836,7 +836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1112575950
+  GlobalObjectIdHash: 287215609
   InScenePlacedSourceGlobalObjectIdHash: 287215609
   DeferredDespawnTick: 0
   Ownership: 1
@@ -879,6 +879,7 @@ MonoBehaviour:
   <playerInteraction>k__BackingField: {fileID: 1173592674038662016}
   <playerHands>k__BackingField: {fileID: 7946938467345428475}
   <HandsItemVisuals>k__BackingField: {fileID: 3860378255616416739}
+  deathCamera: {fileID: 0}
 --- !u!114 &2571413456026774155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1632,6 +1633,10 @@ PrefabInstance:
     - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
       propertyPath: tpsPosition.z
       value: 0.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+      propertyPath: _inventorySize
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
       propertyPath: handsItemVisuals

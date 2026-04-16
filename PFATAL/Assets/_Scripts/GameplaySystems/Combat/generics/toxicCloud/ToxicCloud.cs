@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class ToxicCloud : NetworkBehaviour
 {
+    public event Action OnSmokeStart;
+    public event Action OnSmokeEnd;
+
     private static Collider[] buffer = new Collider[20];
 
     [SerializeField] public float radius = 4f;
@@ -23,6 +26,9 @@ public class ToxicCloud : NetworkBehaviour
     {
         _ownerId = ownerId;
     }
+
+    private void Start() => OnSmokeStart?.Invoke();
+
 
     private void Update()
     {
@@ -50,6 +56,7 @@ public class ToxicCloud : NetworkBehaviour
         
         if (_timer >= _duration)
         {
+            OnSmokeEnd?.Invoke();
             NetworkObject.Despawn();
         }
     }

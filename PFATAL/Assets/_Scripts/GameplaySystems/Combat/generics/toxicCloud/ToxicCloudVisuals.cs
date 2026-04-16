@@ -8,7 +8,7 @@ public class ToxicCloudVisuals : MonoBehaviour
     [SerializeField] private Transform _quad;
     [SerializeField] private ToxicCloud _cloud;
 
-    void Start()
+    void OnEnable()
     {
         _quad.gameObject.SetActive(false);
     }

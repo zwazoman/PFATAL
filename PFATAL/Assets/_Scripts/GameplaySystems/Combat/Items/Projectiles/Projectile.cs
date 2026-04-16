@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Projectile : NetworkBehaviour
 {
+    public event Action OnSpawn;
     public event Action OnDespawn;
 
     public NetworkVariable<SpawnContext> spawnContext;
@@ -14,6 +15,8 @@ public class Projectile : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        BroadcastSpawnRpc();
 
         if (visuals != null && NetworkManager.LocalClientId == spawnContext.Value.spawnerClientID)
             visuals.SetActive(false);
@@ -31,5 +34,11 @@ public class Projectile : NetworkBehaviour
         if(IsServer)
             NetworkObject.Despawn();
         OnDespawn?.Invoke();
+    }
+
+    [Rpc(SendTo.Everyone)]
+    void BroadcastSpawnRpc()
+    {
+        OnSpawn?.Invoke();
     }
 }

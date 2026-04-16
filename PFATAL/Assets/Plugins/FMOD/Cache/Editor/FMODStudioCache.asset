@@ -24,30 +24,6 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
---- !u!114 &-8500136783934415569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/Smoke/ReverbAmount
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
-  Name: ReverbAmount
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 3990394630
-    data2: 3121053706
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
 --- !u!114 &-7005062560099441751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,10 +301,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639119439692042213
+  lastModified: 639119469776487743
   FileSizes:
   - Name: Desktop
-    Value: 425312
+    Value: 543968
   Exists: 1
 --- !u!114 &-1948066595381190723
 MonoBehaviour:
@@ -489,14 +465,39 @@ MonoBehaviour:
   - {fileID: -5208899082357985717}
   - {fileID: 3729594191091754991}
   - {fileID: 2489339018829156757}
-  - {fileID: 484172687874981877}
+  - {fileID: 8893754370090585272}
+  - {fileID: 6146944654126064756}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1373530535141412940}
   StringsBanks:
   - {fileID: 7971645662156069631}
-  cacheTime: 639119439692042213
+  cacheTime: 639119469776487743
   cacheVersion: 131635
+--- !u!114 &138222234531931141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Smoke/Occlusion
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Occlusion
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3656716992
+    data2: 1176487324
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &454870796024394520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,35 +518,6 @@ MonoBehaviour:
   - Name: Desktop
     Value: 2433984
   Exists: 1
---- !u!114 &484172687874981877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Items/PoisonCloud/Smoke
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/SFX/Items/PoisonCloud/Smoke
-  Guid:
-    Data1: 1127256286
-    Data2: 1300386080
-    Data3: 288429443
-    Data4: 1349832683
-  Banks:
-  - {fileID: -2518904041505098000}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 0
-  Parameters:
-  - {fileID: -8500136783934415569}
-  - {fileID: 3659132409470303067}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 4225
 --- !u!114 &1057169750113993686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,7 +607,7 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639119339532063540
+  lastModified: 639119456640337105
   FileSizes:
   - Name: Desktop
     Value: 5348
@@ -693,6 +665,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &2288180870268947530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Smoke/ReverbAmount
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: ReverbAmount
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3990394630
+    data2: 3121053706
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &2489339018829156757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -796,30 +792,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &3659132409470303067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/Smoke/Occlusion
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
-  Name: Occlusion
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 3656716992
-    data2: 1176487324
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
 --- !u!114 &3729594191091754991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -868,6 +840,30 @@ MonoBehaviour:
   ID:
     data1: 3656716992
     data2: 1176487324
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &4367848294247288210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Tornado/ReverbAmount
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: ReverbAmount
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3990394630
+    data2: 3121053706
   Type: 0
   IsGlobal: 0
   Labels: []
@@ -949,6 +945,35 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &6146944654126064756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Items/Smoke
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Items/Smoke
+  Guid:
+    Data1: 1127256286
+    Data2: 1300386080
+    Data3: 288429443
+    Data4: 1349832683
+  Banks:
+  - {fileID: -2518904041505098000}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 2288180870268947530}
+  - {fileID: 138222234531931141}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 4225
 --- !u!114 &6272561292171829061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1039,10 +1064,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639119339532093542
+  lastModified: 639119456640362097
   FileSizes:
   - Name: Desktop
-    Value: 2156
+    Value: 2192
   Exists: 1
 --- !u!114 &8015081236418152981
 MonoBehaviour:
@@ -1055,6 +1080,30 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
   m_Name: parameter:/CrossbowShoot3D/Occlusion
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Occlusion
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3656716992
+    data2: 1176487324
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &8849655368531778151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Tornado/Occlusion
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
   Name: Occlusion
   StudioPath: 
@@ -1095,3 +1144,32 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &8893754370090585272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Items/Tornado
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Items/Tornado
+  Guid:
+    Data1: 1802266538
+    Data2: 1263142406
+    Data3: -1755340883
+    Data4: -458402472
+  Banks:
+  - {fileID: -2518904041505098000}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 8849655368531778151}
+  - {fileID: 4367848294247288210}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 12000

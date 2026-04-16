@@ -69,7 +69,7 @@ public class ProjectileWeapon : Item
         _currentProjectile = _currentProjectileObject.GetComponent<Projectile>();
 
         if (visual != null)
-            visual._mirrorProjectile = _currentProjectile;
+            visual.trueProjectile = _currentProjectile;
 
         return _currentProjectileObject;
     }

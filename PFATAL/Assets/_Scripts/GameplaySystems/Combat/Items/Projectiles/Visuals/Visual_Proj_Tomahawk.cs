@@ -12,7 +12,6 @@ public class Visual_Proj_Tomahawk : Proj_Visual
     private Tomahawk _weapon;
     /// <summary> le point d'accroche de la corde sur le joueur </summary>
     private Transform _anchorTransform;
-    private float _spawnTime;
 
     [Header("Settings")]
     [SerializeField]private float _sineScrollSpeed = 3;
@@ -26,13 +25,14 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         base.Start();
         
         //fetch references
-        _anchorTransform = GameManager.Instance.GetPlayerCharacter(context.spawnerClientID).transform;
-        _playerCharacter = GameManager.Instance.GetPlayerCharacter(context.spawnerClientID);
+        _playerCharacter = PlayerCharacter.LocalPlayerCharacter;
+        _anchorTransform = _playerCharacter.transform;
+
+
         _weapon = ((Tomahawk)_playerCharacter.playerHands.rightHand.equippedItem);
         
         //disable the rope line renderer when the player shoots another tomahawk
         _weapon.OnTomahawkShoot += DisableLineRenderer;
-        _spawnTime = Time.time;
     }
 
     void OnDestroy()
@@ -61,7 +61,7 @@ public class Visual_Proj_Tomahawk : Proj_Visual
     void UpdateLineRenderer()
     {
         const float animDuration = 1f;
-        float timeSinceAnimStart = Time.time - _spawnTime;
+        float timeSinceAnimStart = Time.time - spawnTime;
         float animAlpha = Mathf.Clamp01(timeSinceAnimStart / animDuration);
         float invertAnimAlpha = 1f-animAlpha;
         

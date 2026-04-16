@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Scripts.Exceptions;
 using _scripts.PlayerCharacter;
 using NetworkTime;
 using Unity.Netcode;
@@ -140,8 +141,14 @@ public class GameManager : NetworkBehaviour
         LeaderBoard.Clear();
     }
 
+    /// <summary>
+    /// server only
+    /// </summary>
+    /// <param name="playerClientID"></param>
+    /// <returns></returns>
     public PlayerCharacter GetPlayerCharacter(ulong playerClientID)
     {
+        if (!NetworkManager.Singleton.IsServer) throw new NetworkAuthorityException();
         return _serverGameRules.GetPlayerCharacter(playerClientID);
     }
 

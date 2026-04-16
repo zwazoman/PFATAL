@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.LightTransport;
-using static UnityEngine.Rendering.DebugUI;
 
 /// <summary>
 /// Class that contains some functions for the heatmapData

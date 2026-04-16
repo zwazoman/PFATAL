@@ -8,21 +8,26 @@ public class Proj_Visual : MonoBehaviour
     [SerializeField] protected GameObject visuals;
 
     [HideInInspector] public SpawnContext context;
-    [HideInInspector] public Projectile _mirrorProjectile;
+    [HideInInspector] public Projectile trueProjectile;
 
-    float _spawnTime;
+    protected float spawnTime;
     Vector3 _spawnPosition;
 
-    protected virtual void Start()
+    protected virtual async void Start()
     {
-        _spawnTime = Time.time;
+        spawnTime = Time.time;
         _spawnPosition = transform.position;
-        _mirrorProjectile.OnDespawn += () => Destroy(gameObject);
+
+        while (trueProjectile == null)
+        {
+            await Awaitable.NextFrameAsync();
+        }
+        trueProjectile.OnDespawn += () => Destroy(gameObject);
     }
 
     protected virtual void Update()
     {
-        float timeSinceSpawn = Time.time - _spawnTime;
+        float timeSinceSpawn = Time.time - spawnTime;
 
         transform.position = _spawnPosition
                      + transform.forward * (speed * timeSinceSpawn)

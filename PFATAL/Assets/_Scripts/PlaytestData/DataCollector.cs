@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -30,13 +31,13 @@ public class DataCollector : MonoBehaviour
 
     void Start()
     {
-        GameManager.Instance.EventOnGameStarted += RecordPlayers;
+        //GameManager.Instance.EventOnGameStarted += RecordPlayers;
         GameManager.Instance.EventOnGameEnded += OnGameEnded;
     }
 
     void OnDestroy()
     {
-        if (GameManager.Instance != null) GameManager.Instance.EventOnGameStarted -= RecordPlayers;
+        //if (GameManager.Instance != null) GameManager.Instance.EventOnGameStarted -= RecordPlayers;
 
         if (GameManager.Instance != null) GameManager.Instance.EventOnGameEnded -= OnGameEnded;
     }
@@ -47,7 +48,7 @@ public class DataCollector : MonoBehaviour
         RecordGame(result.LeaderBoard);
     }
 
-    private IEnumerator PlayerExistsCoroutine(int playerId, System.Action<bool> callback)
+    private IEnumerator PlayerExistsCoroutine(long playerId, System.Action<bool> callback)
     {
         string url = $"{apiBaseUrl}/player/exists/{playerId}";
         using UnityWebRequest request = UnityWebRequest.Get(url);
@@ -64,13 +65,12 @@ public class DataCollector : MonoBehaviour
         callback(exists);
     }
 
-    private IEnumerator ValidatePlayerIds(List<int> playerIds, System.Action<Dictionary<int, int>> callback)
+    private IEnumerator ValidatePlayerIds(List<long> playerIds, System.Action<Dictionary<long, long>> callback)
     {
-        Dictionary<int, int> validatedIds = new();
+        Dictionary<long, long> validatedIds = new();
 
-        foreach (int id in playerIds)
+        foreach (long id in playerIds)
         {
-            // Si déjà vérifié, on skip
             if (validatedIds.ContainsKey(id)) continue;
 
             bool exists = false;
@@ -84,7 +84,7 @@ public class DataCollector : MonoBehaviour
         callback(validatedIds);
     }
 
-    public void RecordPlayers()
+    /*public void RecordPlayers()
     {
         if (!NetworkManager.Singleton.IsServer) return;
 
@@ -98,7 +98,7 @@ public class DataCollector : MonoBehaviour
 
             StartCoroutine(_databaseRequest.SendPlayer(player));
         }
-    }
+    }*/
 
     /// <summary>
     /// Fonction pour enregistrer les données d'une partie.
@@ -123,9 +123,7 @@ public class DataCollector : MonoBehaviour
 
             StartCoroutine(_databaseRequest.SendGame(game, (result) =>
             {
-                RecordPlayerSet(leaderBoard);
-                RecordScore(leaderBoard);
-                RecordDeath();
+                StartCoroutine(RecordPlayerSet(leaderBoard));
             }));
         }));
     }
@@ -133,45 +131,91 @@ public class DataCollector : MonoBehaviour
     /// <summary>
     /// Fonction pour enregistrer les données des joueurs dans une partie.
     /// </summary>
-    public void RecordPlayerSet(LeaderBoardData leaderBoard)
+    private IEnumerator RecordPlayerSet(LeaderBoardData leaderBoard)
     {
+        List<long> idsToCheck = new();
+        foreach (var entry in leaderBoard.entries) idsToCheck.Add((long)entry.ClientID);
+
+        Dictionary<long, long> validatedIds = null;
+        yield return StartCoroutine(ValidatePlayerIds(idsToCheck, result => validatedIds = result));
+
+        gamePlayerSets.Clear();
+
         foreach (var entry in leaderBoard.entries)
         {
+            long safeId = validatedIds[(long)entry.ClientID];
+
             gamePlayerSets.Add(new GamePlayerSet
             {
                 Id = gameId,
                 IdGame = gameId,
-                IdPlayer = (long)entry.ClientID,
+                IdPlayer = safeId,
             });
         }
 
         StartCoroutine(_databaseRequest.SendGamePlayerSet(gamePlayerSets));
+
+        yield return StartCoroutine(RecordScore(leaderBoard, validatedIds));
     }
 
     /// <summary>
     /// Fonction pour enregistrer les données de score d'une partie.
     /// </summary>
-    public void RecordScore(LeaderBoardData leaderBoard)
+    private IEnumerator RecordScore(LeaderBoardData leaderBoard, Dictionary<long, long> validatedIds)
     {
+        scores.Clear();
+
         foreach (var entry in leaderBoard.entries)
         {
+            long safeId = validatedIds[(long)entry.ClientID];
+
             scores.Add(new Score
             {
                 IdGame = gameId,
-                IdPlayer = (long)entry.ClientID,
+                IdPlayer = safeId,
                 Points = entry.Points
             });
         }
 
         StartCoroutine(_databaseRequest.SendScore(scores));
+
+        yield return StartCoroutine(RecordDeath());
     }
 
     /// <summary>
     /// Fonction pour enregistrer les données de mort d'une partie.
     /// </summary>
-    public void RecordDeath()
+    private IEnumerator RecordDeath()
     {
-        StartCoroutine(_databaseRequest.SendDeath(deaths));
+        // Collecte tous les IDs uniques présents dans les morts
+        List<long> idsToCheck = new();
+        foreach (var death in deaths)
+        {
+            if (!idsToCheck.Contains(death.VictimId)) idsToCheck.Add(death.VictimId);
+            if (!idsToCheck.Contains(death.KillerId)) idsToCheck.Add(death.KillerId);
+        }
+
+        Dictionary<long, long> validatedIds = null;
+        yield return StartCoroutine(ValidatePlayerIds(idsToCheck, result => validatedIds = result));
+
+        // Remplacement des IDs invalides par 0
+        List<Death> safDeaths = new();
+        foreach (var death in deaths)
+        {
+            safDeaths.Add(new Death
+            {
+                VictimId = validatedIds[death.VictimId],
+                KillerId = validatedIds[death.KillerId],
+                Weapon = death.Weapon,
+                Distance = death.Distance,
+                IdGame = death.IdGame,
+                Time = death.Time
+            });
+        }
+
+        StartCoroutine(_databaseRequest.SendDeath(safDeaths));
+        Debug.Log($"[DataCollector] Envoi de {safDeaths.Count} morts au serveur.");
+        deaths.Clear();
     }
 
     public void RegisterDeath(ulong victim, ulong killer, float distance, float time)
@@ -185,5 +229,7 @@ public class DataCollector : MonoBehaviour
             IdGame = gameId,
             Time = time
         });
+
+        Debug.Log($"[DataCollector] Mort enregistrée : Victime {victim}, Tueur {killer}, Distance {distance}, Temps {time}");
     }
 }

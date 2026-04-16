@@ -10,7 +10,8 @@ public class Visual_Proj_Tomahawk : Proj_Visual
 
     private PlayerCharacter _playerCharacter;
     private Tomahawk _weapon;
-    private Transform _handTransform;
+    /// <summary> le point d'accroche de la corde sur le joueur </summary>
+    private Transform _anchorTransform;
     private float _spawnTime;
 
     [Header("Settings")]
@@ -23,14 +24,14 @@ public class Visual_Proj_Tomahawk : Proj_Visual
     protected override void Start()
     {
         base.Start();
-        //_handTransform = GameManager.Instance.GetPlayerCharacter(context.spawnerClientID).playerHands.rightHand._itemSocket.transform;
         
-        _handTransform = GameManager.Instance.GetPlayerCharacter(context.spawnerClientID).transform;
+        //fetch references
+        _anchorTransform = GameManager.Instance.GetPlayerCharacter(context.spawnerClientID).transform;
         _playerCharacter = GameManager.Instance.GetPlayerCharacter(context.spawnerClientID);
-
         _weapon = ((Tomahawk)_playerCharacter.playerHands.rightHand.equippedItem);
-        _weapon.OnTomahawkShoot += DisableLineRenderer;
         
+        //disable the rope line renderer when the player shoots another tomahawk
+        _weapon.OnTomahawkShoot += DisableLineRenderer;
         _spawnTime = Time.time;
     }
 
@@ -46,15 +47,15 @@ public class Visual_Proj_Tomahawk : Proj_Visual
     
     protected override void Update()
     {
+        //rotate tomahawk
         visuals.transform.Rotate(_spinSpeed * Time.deltaTime, 0, 0);
-         
+        
         base.Update();
 
+        //update magic rope visuals
         _lineRenderer.enabled = _isLastThrowTomahawk && _weapon.CanDash;
-        
         if(_lineRenderer.enabled)
             UpdateLineRenderer();
-        
     }
 
     void UpdateLineRenderer()
@@ -66,7 +67,7 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         
         Vector3 a = transform.position;
         //Vector3 b = _handTransform.position + Vector3.down*.05f;
-        Vector3 b = _handTransform.position + Vector3.down*.3f;
+        Vector3 b = _anchorTransform.position + Vector3.down*.3f;
         
         for (int i = 0; i < _lineRenderer.positionCount; i++)
         {

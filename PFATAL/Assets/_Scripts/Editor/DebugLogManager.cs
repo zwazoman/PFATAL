@@ -16,7 +16,7 @@ public class DebugLogManager : EditorWindow
     private string scriptNameFilter = "";
     
     private enum ActionMode { Comment, Uncomment, Delete }
-    private enum FilterMode { All, Log, Warning, Error, Assertion, Exception, Print }
+    private enum FilterMode { All, Log, Warning, Error, Assertion, Exception, Print, Instantiate, Todo }
     private enum Filter { All, Uncommented, Commented }
 
     [MenuItem("Tools/Debug Log Manager")]
@@ -37,6 +37,7 @@ public class DebugLogManager : EditorWindow
 
         if (foundLogs.Count > 0)
         {
+            DrawTypeCounts();
             GUILayout.Space(10);
             EditorGUILayout.LabelField("Lignes trouvées :", EditorStyles.boldLabel);
 
@@ -75,11 +76,18 @@ public class DebugLogManager : EditorWindow
                     "LogAssertion" => "#00FFFF",
                     "LogException" => "#FF00FF",
                     "print" => "#FFFF00",
+                    "Instantiate" => "#FFC0CB",
+                    "todo" => "#FFFFFF",
                     _ => "#00FF00"
                 };
 
+                string finalColor = baseColor + "FF";
+
                 // Alpha
-                string finalColor = isCommented ? baseColor + "88" : baseColor + "FF";
+                if (!"todo".Equals(entry.logType))
+                {
+                    finalColor = isCommented ? baseColor + "88" : baseColor + "FF";
+                }
 
                 string colorTag = $"<color={finalColor}>";
 
@@ -110,30 +118,79 @@ public class DebugLogManager : EditorWindow
         public int lineNumber;
         public string lineText;
         public bool selected = false;
-        public string logType; // Log / Warning / Error / Assertion / Exception / print
+        public string logType; // Log / Warning / Error / Assertion / Exception / print / Instantiate
     }
 
     List<DebugLogEntry> ScanForDebugLogs(string directory)
     {
         var entries = new List<DebugLogEntry>();
         string[] files = Directory.GetFiles(directory, "*.cs", SearchOption.AllDirectories);
-        Regex regex = new(@"^\s*(//\s*)?((Debug\.(LogWarning|LogError|Log|LogAssertion|LogException))|(print))\s*\(.*?\)\s*;", RegexOptions.Multiline);
+
+        Regex regex = new(
+            @"^\s*(//\s*)?((Debug\.(LogWarning|LogError|Log|LogAssertion|LogException))|(print))\s*\(.*?\)\s*;",
+            RegexOptions.Multiline
+        );
+
+        Regex instantiateRegex = new(
+            @"^\s*(//\s*)?.*\bInstantiate\s*\(",
+            RegexOptions.Multiline
+        );
+
+        Regex todoRegex = new(
+            @"^\s*(//\s*)?(TODO|todo|Todo)\b.*",
+            RegexOptions.Multiline
+        );
+
         foreach (var file in files)
         {
             string[] lines = File.ReadAllLines(file);
             for (int i = 0; i < lines.Length; i++)
             {
-                var match = regex.Match(lines[i]);
+                string line = lines[i];
+
+                var match = regex.Match(line);
                 if (match.Success)
                 {
-                    string type = match.Groups[4].Success ? match.Groups[4].Value : "print";
+                    string type;
+                    if (match.Groups[5].Success)
+                        type = "print";
+                    else if (match.Groups[4].Success)
+                        type = match.Groups[4].Value;
+                    else
+                        type = "Log";
 
                     entries.Add(new DebugLogEntry
                     {
                         filePath = file,
                         lineNumber = i,
-                        lineText = lines[i],
+                        lineText = line,
                         logType = type
+                    });
+                    continue;
+                }
+
+                var instantiateMatch = instantiateRegex.Match(line);
+                if (instantiateMatch.Success)
+                {
+                    entries.Add(new DebugLogEntry
+                    {
+                        filePath = file,
+                        lineNumber = i,
+                        lineText = line,
+                        logType = "Instantiate"
+                    });
+                    continue;
+                }
+
+                var todoMatch = todoRegex.Match(line);
+                if (todoMatch.Success)
+                {
+                    entries.Add(new DebugLogEntry
+                    {
+                        filePath = file,
+                        lineNumber = i,
+                        lineText = line,
+                        logType = "todo"
                     });
                 }
             }
@@ -224,7 +281,34 @@ public class DebugLogManager : EditorWindow
             FilterMode.Assertion => "LogAssertion",
             FilterMode.Exception => "LogException",
             FilterMode.Print => "print",
+            FilterMode.Instantiate => "Instantiate",
+            FilterMode.Todo => "todo",
             _ => "Log"
         };
+    }
+
+    void DrawTypeCounts()
+    {
+        var counts = foundLogs
+            .GroupBy(e => e.logType)
+            .ToDictionary(g => g.Key, g => g.Count());
+
+        var order = new[] { "Log", "LogWarning", "LogError", "LogAssertion", "LogException", "print", "Instantiate", "todo" };
+        var labels = new[] { "Log", "Warning", "Error", "Assertion", "Exception", "Print", "Instantiate", "Todo" };
+        var colors = new[] { "#00FF00", "#FFA500", "#FF0000", "#00FFFF", "#FF00FF", "#FFFF00", "#FFC0CB", "#FFFFFF" };
+
+        EditorGUILayout.BeginHorizontal();
+        GUIStyle style = new GUIStyle(GUI.skin.label) { richText = true };
+
+        for (int i = 0; i < order.Length; i++)
+        {
+            if (counts.TryGetValue(order[i], out int count) && count > 0)
+            {
+                GUILayout.Label($"<color={colors[i]}>{labels[i]} ({count})</color>", style);
+                GUILayout.Label("|", GUILayout.Width(10));
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
     }
 }

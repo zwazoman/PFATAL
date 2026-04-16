@@ -15,12 +15,9 @@ public class Proj_Visual : MonoBehaviour
 
     protected virtual void Start()
     {
-        print("con");
-
         _spawnTime = Time.time;
         _spawnPosition = transform.position;
-
-        _mirrorProjectile.OnDespawn += ()=> Destroy(gameObject);
+        _mirrorProjectile.OnDespawn += () => Destroy(gameObject);
     }
 
     protected virtual void Update()

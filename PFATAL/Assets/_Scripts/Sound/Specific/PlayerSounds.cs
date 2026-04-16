@@ -23,8 +23,6 @@ public class PlayerSounds : SoundComponent<PlayerAnimationEventsListener>
 
     protected override void LinkEvents()
     {
-        base.LinkEvents();
-
         if (!_playerCharacter.IsOwner)
             main.OnFootstep += PlayFootstepSound;
         else

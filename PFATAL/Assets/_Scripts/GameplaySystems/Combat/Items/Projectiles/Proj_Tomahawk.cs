@@ -29,7 +29,7 @@ public class Proj_Tomahawk : Proj_Falling
     {
         if(_initialized)
             visuals.transform.Rotate(_spinSpeed * Time.deltaTime,0,0);
-
+        
         base.Update();
     }
 

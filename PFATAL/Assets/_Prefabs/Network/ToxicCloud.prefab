@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4854459385647544291}
   - component: {fileID: 9202773725249483950}
   - component: {fileID: 1595408932505342262}
+  - component: {fileID: 4758629279095915989}
   m_Layer: 0
   m_Name: ToxicCloud
   m_TagString: Untagged
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 873874348
+  GlobalObjectIdHash: 2908747500
   InScenePlacedSourceGlobalObjectIdHash: 873874348
   DeferredDespawnTick: 0
   Ownership: 1
@@ -92,6 +93,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ToxicCloudVisuals
   _quad: {fileID: 2924575172024805210}
   _cloud: {fileID: 9202773725249483950}
+--- !u!114 &4758629279095915989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472210993572836467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d87aff21d2ad6f4cbd63c78e83d1234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToxicCloudSound
+  main: {fileID: 9202773725249483950}
 --- !u!1 &6051502467728067764
 GameObject:
   m_ObjectHideFlags: 0

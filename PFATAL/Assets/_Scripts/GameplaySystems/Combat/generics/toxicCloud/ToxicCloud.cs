@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class ToxicCloud : NetworkBehaviour
 {
+    public event Action OnSmokeStart;
+    public event Action OnSmokeEnd;
+
     private static Collider[] buffer = new Collider[20];
 
     [SerializeField] public float radius = 4f;
@@ -50,6 +53,7 @@ public class ToxicCloud : NetworkBehaviour
         
         if (_timer >= _duration)
         {
+            BroadcastSmokeEndRpc();
             NetworkObject.Despawn();
         }
     }
@@ -57,7 +61,10 @@ public class ToxicCloud : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        
+
+        print("debout connard");
+        BroadcastSmokeStartRpc();
+
         //spawn tween
         transform.localScale = Vector3.one*.2f;
         transform.DOScale(new Vector3(radius, radius, radius), TWEEN_DURATION).SetEase(Ease.OutCubic);
@@ -93,4 +100,10 @@ public class ToxicCloud : NetworkBehaviour
     {
         Gizmos.DrawWireSphere(transform.position, radius);
     }
+
+    [Rpc(SendTo.Everyone)]
+    void BroadcastSmokeStartRpc() => OnSmokeStart?.Invoke();
+
+    [Rpc(SendTo.Everyone)]
+    void BroadcastSmokeEndRpc() => OnSmokeEnd?.Invoke();
 }

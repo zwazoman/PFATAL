@@ -33,6 +33,8 @@ public class Proj_ToxicCloud : Projectile
 
         _hasHit = true;
 
+        print(collision.gameObject.name);
+
         SpawnCloud();
         Despawn();
     }

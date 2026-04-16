@@ -53,7 +53,7 @@ public class ToxicCloud : NetworkBehaviour
         
         if (_timer >= _duration)
         {
-            BroadcastSmokeEndRpc();
+            OnSmokeEnd?.Invoke();
             NetworkObject.Despawn();
         }
     }
@@ -63,7 +63,7 @@ public class ToxicCloud : NetworkBehaviour
         base.OnNetworkSpawn();
 
         print("debout connard");
-        BroadcastSmokeStartRpc();
+        OnSmokeStart?.Invoke();
 
         //spawn tween
         transform.localScale = Vector3.one*.2f;

@@ -39,7 +39,7 @@ public class DiscordUpdater : MonoBehaviour
     {
         if (controller == null)
         {
-            Debug.LogError("Discord_Controller instance not found. Please ensure a Discord_Controller is present in the scene.");
+            //Debug.LogError("Discord_Controller instance not found. Please ensure a Discord_Controller is present in the scene.");
             return;
         }
         else if (_isInLobbyScene)

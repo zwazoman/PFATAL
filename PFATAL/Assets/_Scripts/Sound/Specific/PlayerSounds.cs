@@ -1,6 +1,7 @@
 using _scripts.PlayerCharacter;
 using FMODUnity;
 using UnityEngine;
+using state = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
 public class PlayerSounds : SoundComponent<PlayerAnimationEventsListener>
 {
@@ -29,6 +30,9 @@ public class PlayerSounds : SoundComponent<PlayerAnimationEventsListener>
         else
             _autoPlayTest = true;
 
+        _playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += StateChanged_Callback;
+
+        _playerCharacter.health.OnDamageTaken += (_) => PlayDamageSound();
     }
 
     private void Update()
@@ -37,38 +41,60 @@ public class PlayerSounds : SoundComponent<PlayerAnimationEventsListener>
             return;
 
         _timer += Time.deltaTime;
-        if(_timer >= 2)
+        if (_timer >= 2)
         {
             _timer = 0;
-            PlayFootstepSound();
+            //PlayFootstepSound();
         }
-
     }
 
 
+    void StateChanged_Callback(state previousState, state newState)
+    {
+        if ((previousState == state.Falling) && ((newState & state.Grounded) == state.Grounded))
+            PlayLandSound();
+
+        if (((previousState & state.Grounded) == state.Grounded) && (newState == state.Jumping))
+            PlayJumpSound();
+    }
+
     void PlayFootstepSound()
     {
-        _currentGroundType = CheckGroundType();
-
-        print($"play {_currentGroundType.ToString()} footstep sound");
+        SwapGroundType();
 
         AudioManager.Instance.PlayOneShot(Sounds.Footsteps3D, transform.position, "GroundType", (int)_currentGroundType);
+    }
+
+    void PlayLandSound()
+    {
+        SwapGroundType() ;
+
+        AudioManager.Instance.PlayOneShot(Sounds.Footsteps3D, transform.position, "GroundType", (int)_currentGroundType);
+    }
+
+    void PlayJumpSound() => AudioManager.Instance.PlayOneShot(Sounds.Jump);
+
+    void PlayDamageSound() => AudioManager.Instance.PlayOneShot(Sounds.Hurt);
+
+    void SwapGroundType()
+    {
+        _currentGroundType = CheckGroundType();
     }
 
     GroundType CheckGroundType()
     {
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, Vector3.down, out hit, _groungCheckLength, _groundCheckLayerMask))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, _groungCheckLength, _groundCheckLayerMask))
         {
-            if(hit.collider.gameObject.TryGetComponent(out MeshRenderer mshRenderer))
+            if (hit.collider.gameObject.TryGetComponent(out MeshRenderer mshRenderer))
             {
-                print(mshRenderer.sharedMaterial.name);
+                //print(mshRenderer.sharedMaterial.name);
 
                 if (mshRenderer.sharedMaterial == _rockMaterial)
                     return GroundType.Rock;
-                if(mshRenderer.sharedMaterial == _grassMaterial)
+                if (mshRenderer.sharedMaterial == _grassMaterial)
                     return GroundType.Grass;
-                if(mshRenderer.sharedMaterial == _woodMaterial)
+                if (mshRenderer.sharedMaterial == _woodMaterial)
                     return GroundType.Wood;
             }
         }
@@ -76,11 +102,11 @@ public class PlayerSounds : SoundComponent<PlayerAnimationEventsListener>
         return GroundType.Rock;
     }
 
-}
+    public enum GroundType
+    {
+        Grass,
+        Rock,
+        Wood
+    }
 
-public enum GroundType
-{
-    Grass,
-    Rock,
-    Wood
 }

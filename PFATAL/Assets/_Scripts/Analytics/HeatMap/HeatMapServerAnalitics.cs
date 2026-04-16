@@ -55,7 +55,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
                 if (!mapBoundsObject.m_Bounds.Contains(playerPos))
                 {
-                    UnityEngine.Debug.Log("y a pas de bounds connard");
+                    //UnityEngine.Debug.Log("y a pas de bounds connard");
                     return;
                 }
 
@@ -122,7 +122,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
     {
         if (player == null)
         {
-            UnityEngine.Debug.Log("No player, connard");
+//            UnityEngine.Debug.Log("No player, connard");
 
             return WeaponType.Without;
         }
@@ -133,7 +133,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
         if (socket.transform.childCount == 0)
         {
-            UnityEngine.Debug.Log("No weapon, return");
+//            UnityEngine.Debug.Log("No weapon, return");
             return WeaponType.Without;
         }
 
@@ -141,7 +141,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
         itemName = itemName.ToLower();
 
-        UnityEngine.Debug.Log(itemName);
+//        UnityEngine.Debug.Log(itemName);
 
         if (itemName.Contains("hammer"))
         {
@@ -156,20 +156,20 @@ public class HeatMapServerAnalitics : MonoBehaviour
             return WeaponType.Tomahawk;
         }
 
-        UnityEngine.Debug.LogWarning("Unknown weapon type for item: " + itemName + ". En gros ça s'est chié dessus trèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèès très fort.");
+        //UnityEngine.Debug.LogWarning("Unknown weapon type for item: " + itemName + ". En gros ça s'est chié dessus trèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèès très fort.");
         return WeaponType.Without;
     }
 
     private void OnApplicationQuit()
     {
-        UnityEngine.Debug.Log("Application quitting, saving heatmap data...");
+        //UnityEngine.Debug.Log("Application quitting, saving heatmap data...");
         SaveHeatMap();
     }
 
     public void SaveHeatMap()
     {
         File.WriteAllText(_filePath, JsonUtility.ToJson(_theRealHeatMap));
-        UnityEngine.Debug.Log("Heatmap data saved to: " + _filePath);
+        //UnityEngine.Debug.Log("Heatmap data saved to: " + _filePath);
     }
 
     #region Debug

@@ -32,6 +32,8 @@ namespace _scripts.PlayerCharacter
         [field: SerializeField] public PlayerHands playerHands { get; private set; }
         [field : SerializeField] public HandsItemVisuals HandsItemVisuals { get; private set; }
 
+        [SerializeField] public DeathCamera deathCamera;
+        
         public static PlayerCharacter LocalPlayerCharacter { get; private set; }
 
         private void Awake()

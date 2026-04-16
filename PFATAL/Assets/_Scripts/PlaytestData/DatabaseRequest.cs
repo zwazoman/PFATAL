@@ -262,7 +262,7 @@ public class DeathBatch
 [Serializable]
 public class Player
 {
-    public int Id;
+    public long Id;
     public string Name;
 }
 
@@ -283,7 +283,7 @@ public class GamePlayerSet
 {
     public int Id;
     public int IdGame;
-    public int IdPlayer;
+    public long IdPlayer;
 }
 
 [Serializable]
@@ -291,7 +291,7 @@ public class Score
 {
     //public int Id;
     public int IdGame;
-    public int IdPlayer;
+    public long IdPlayer;
     public int Points;
 }
 
@@ -299,8 +299,8 @@ public class Score
 public class Death
 {
     //public int Id;
-    public int VictimId;
-    public int KillerId;
+    public long VictimId;
+    public long KillerId;
     public int Weapon;
     public float Distance;
     public int IdGame;

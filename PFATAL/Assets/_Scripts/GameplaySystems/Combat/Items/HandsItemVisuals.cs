@@ -55,10 +55,15 @@ public class HandsItemVisuals : NetworkBehaviour
 
         //get hand
         Hand hand = GetHand(leftHand);
-        
+
         //show item and attach it to the requested hand 
         Item item =  GetItemInstance(prefabName);
-        item.enabled = true;
+
+        if (!_playerCharacter.IsOwner)
+            item.enabled = false;
+        else
+            item.enabled = true;
+
         item.transform.parent = hand._itemSocket;
         item.transform.localPosition = Vector3.zero;
         item.transform.localRotation = Quaternion.identity;

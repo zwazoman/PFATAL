@@ -1,6 +1,6 @@
+using _Scripts.Extensions;
 using _scripts.PlayerCharacter;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements.Experimental;
@@ -31,6 +31,8 @@ public class DirectionIndicator : MonoBehaviour
         TryGetComponent(out _thisPooledObject);
     }
 
+
+    
     void OnPulledFromPool()
     {
         DOTween.Kill(this);

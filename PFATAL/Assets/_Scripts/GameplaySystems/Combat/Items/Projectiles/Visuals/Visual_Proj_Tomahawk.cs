@@ -25,8 +25,10 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         base.Start();
         
         //fetch references
-        _anchorTransform = GameManager.Instance.GetPlayerCharacter(context.spawnerClientID).transform;
-        _playerCharacter = GameManager.Instance.GetPlayerCharacter(context.spawnerClientID);
+        _playerCharacter = PlayerCharacter.LocalPlayerCharacter;
+        _anchorTransform = _playerCharacter.transform;
+
+
         _weapon = ((Tomahawk)_playerCharacter.playerHands.rightHand.equippedItem);
         
         //disable the rope line renderer when the player shoots another tomahawk

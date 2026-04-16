@@ -20,7 +20,7 @@ public class ToxicCloudSound : SoundComponent<ToxicCloud>
     {
         print("smoke sound");
 
-        _smokeInstance = AudioManager.Instance.CreateInstance(Sounds.Smoke, true);
+        _smokeInstance = AudioManager.Instance.CreateInstance(Sounds.Smoke3D, true);
         _smokeInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
         _smokeInstance.start();
     }
@@ -31,6 +31,8 @@ public class ToxicCloudSound : SoundComponent<ToxicCloud>
 
         _smokeInstance.stop(STOP_MODE.ALLOWFADEOUT);
         _smokeInstance.release();
+
+        _smokeInstance = default;
     }
 
 }

@@ -2,6 +2,8 @@ using _scripts.PlayerCharacter;
 using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
+using System.Collections;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// la gestion de la rotation de la camera
@@ -46,6 +48,8 @@ public class CharacterAiming : NetworkBehaviour
             angle -= (angle1 * _aimAssist.y) * _aimAssistYStrength;
             _aimAssist.y = 0f;
             _inputMultiplier = 1f;
+
+            StartCoroutine(Accelerate());
         }
         else
         {
@@ -102,5 +106,33 @@ public class CharacterAiming : NetworkBehaviour
     {
         _aimAssist += aimAssist;
         _inputMultiplier = Mathf.Lerp(_inputMultiplier, _inputMultiplier * inputMultiplier, 1f - inputMultiplier);
+    }
+
+    IEnumerator Accelerate()
+    {
+        Gamepad gamepad = Gamepad.current;
+        yield return new WaitForSeconds(0.4f);
+        if (_character.inputs.UsingGamePad == true)
+        {
+            if ((gamepad.rightStick.ReadValue().x > 0.5f) || (gamepad.rightStick.ReadValue().y > 0.5f) ||
+                (gamepad.rightStick.ReadValue().x < -0.5f) || (gamepad.rightStick.ReadValue().y < -0.5f))
+            {
+                while (ControllerSensitivity < 100f)
+                {
+                    ControllerSensitivity += 0.01f;
+                    yield return new WaitForSeconds(0.01f);
+                }
+            }
+            else
+            {
+                ControllerSensitivity = 50f;
+                StopAllCoroutines();
+            }
+        }
+        else
+        {
+            ControllerSensitivity = 50f;
+            StopAllCoroutines();
+        }
     }
 }

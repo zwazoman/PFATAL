@@ -28,7 +28,7 @@ public class Tomahawk : ProjectileWeapon
     int _currentAmmoCount;
 
     bool _dashed = false;
-    bool _canDash = true;
+    public bool CanDash { get; private set; }= true;
 
     float _reloadTimer;
 
@@ -39,7 +39,7 @@ public class Tomahawk : ProjectileWeapon
         currentDashCooldown = dashCooldown;
         _currentAmmoCount = maxAmmoAmount;
         _dashed = false;
-        _canDash = true;
+        CanDash = true;
 
         try
         {
@@ -62,7 +62,7 @@ public class Tomahawk : ProjectileWeapon
     {
         base.UseUpdate();
 
-        if (holdDuration >= _dashHoldDuration && _currentProjectile != null && !_dashed && _canDash)
+        if (holdDuration >= _dashHoldDuration && _currentProjectile != null && !_dashed && CanDash)
         {
             DashTowardsProj();
         }
@@ -124,7 +124,7 @@ public class Tomahawk : ProjectileWeapon
     {
         //todo link au crosshair
 
-        _canDash = false;
+        CanDash = false;
 
         currentDashCooldown = 0;
 
@@ -136,7 +136,7 @@ public class Tomahawk : ProjectileWeapon
 
         currentDashCooldown = dashCooldown;
 
-        _canDash = true;
+        CanDash = true;
     }
 
     async void HandleShoot()

@@ -10,12 +10,16 @@ public class ToxicCloudSound : SoundComponent<ToxicCloud>
 
     protected override void LinkEvents()
     {
+        print("link");
+
         main.OnSmokeStart += StartSound;
         main.OnSmokeEnd += StopSound;
     }
 
-    void StartSound()
+    public void StartSound()
     {
+        print("smoke sound");
+
         _smokeInstance = AudioManager.Instance.CreateInstance(Sounds.Smoke, true);
         _smokeInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
         _smokeInstance.start();
@@ -23,6 +27,8 @@ public class ToxicCloudSound : SoundComponent<ToxicCloud>
 
     void StopSound()
     {
+        print("no smoke sound");
+
         _smokeInstance.stop(STOP_MODE.ALLOWFADEOUT);
         _smokeInstance.release();
     }

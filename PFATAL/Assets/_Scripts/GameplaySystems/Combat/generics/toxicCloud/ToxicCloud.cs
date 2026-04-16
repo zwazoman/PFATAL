@@ -27,9 +27,6 @@ public class ToxicCloud : NetworkBehaviour
         _ownerId = ownerId;
     }
 
-    private void Start() => OnSmokeStart?.Invoke();
-
-
     private void Update()
     {
         _timer += Time.deltaTime;
@@ -56,7 +53,7 @@ public class ToxicCloud : NetworkBehaviour
         
         if (_timer >= _duration)
         {
-            OnSmokeEnd?.Invoke();
+            BroadcastSmokeEndRpc();
             NetworkObject.Despawn();
         }
     }
@@ -64,7 +61,10 @@ public class ToxicCloud : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        
+
+        print("debout connard");
+        BroadcastSmokeStartRpc();
+
         //spawn tween
         transform.localScale = Vector3.one*.2f;
         transform.DOScale(new Vector3(radius, radius, radius), TWEEN_DURATION).SetEase(Ease.OutCubic);
@@ -100,4 +100,10 @@ public class ToxicCloud : NetworkBehaviour
     {
         Gizmos.DrawWireSphere(transform.position, radius);
     }
+
+    [Rpc(SendTo.Everyone)]
+    void BroadcastSmokeStartRpc() => OnSmokeStart?.Invoke();
+
+    [Rpc(SendTo.Everyone)]
+    void BroadcastSmokeEndRpc() => OnSmokeEnd?.Invoke();
 }

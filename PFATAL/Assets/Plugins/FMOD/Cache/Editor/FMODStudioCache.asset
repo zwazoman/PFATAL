@@ -24,6 +24,30 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &-8500136783934415569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Smoke/ReverbAmount
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: ReverbAmount
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3990394630
+    data2: 3121053706
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-7005062560099441751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,10 +325,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639119339535641487
+  lastModified: 639119439692042213
   FileSizes:
   - Name: Desktop
-    Value: 356384
+    Value: 425312
   Exists: 1
 --- !u!114 &-1948066595381190723
 MonoBehaviour:
@@ -471,7 +495,7 @@ MonoBehaviour:
   - {fileID: 1373530535141412940}
   StringsBanks:
   - {fileID: 7971645662156069631}
-  cacheTime: 639119339535641487
+  cacheTime: 639119439692042213
   cacheVersion: 131635
 --- !u!114 &454870796024394520
 MonoBehaviour:
@@ -514,12 +538,14 @@ MonoBehaviour:
   Banks:
   - {fileID: -2518904041505098000}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 0
-  Parameters: []
+  Parameters:
+  - {fileID: -8500136783934415569}
+  - {fileID: 3659132409470303067}
   MinDistance: 1
   MaxDistance: 20
-  Length: 3675
+  Length: 4225
 --- !u!114 &1057169750113993686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -770,6 +796,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &3659132409470303067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Smoke/Occlusion
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Occlusion
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3656716992
+    data2: 1176487324
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &3729594191091754991
 MonoBehaviour:
   m_ObjectHideFlags: 0

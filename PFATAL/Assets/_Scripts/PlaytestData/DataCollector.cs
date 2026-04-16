@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class DataCollector : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class DataCollector : MonoBehaviour
     private List<Score> scores = new();
     private List<Death> deaths = new();
     private int gameId = 0;
+    private string apiBaseUrl = "http://localhost:5000";
     [SerializeField] private DatabaseRequest _databaseRequest;
 
     private void Awake()
@@ -44,6 +47,42 @@ public class DataCollector : MonoBehaviour
         RecordGame(result.LeaderBoard);
     }
 
+    private IEnumerator PlayerExistsCoroutine(int playerId, System.Action<bool> callback)
+    {
+        string url = $"{apiBaseUrl}/player/exists/{playerId}";
+        using UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogWarning($"[DataCollector] Impossible de vérifier le joueur {playerId} : {request.error}. Remplacement par 0.");
+            callback(false);
+            yield break;
+        }
+
+        bool exists = request.downloadHandler.text.Contains("\"exists\":true");
+        callback(exists);
+    }
+
+    private IEnumerator ValidatePlayerIds(List<int> playerIds, System.Action<Dictionary<int, int>> callback)
+    {
+        Dictionary<int, int> validatedIds = new();
+
+        foreach (int id in playerIds)
+        {
+            // Si déjà vérifié, on skip
+            if (validatedIds.ContainsKey(id)) continue;
+
+            bool exists = false;
+            yield return StartCoroutine(PlayerExistsCoroutine(id, result => exists = result));
+            validatedIds[id] = exists ? id : 0;
+
+            if (!exists)
+                Debug.LogWarning($"[DataCollector] Joueur {id} déjà dans le DB, retourne 0.");
+        }
+
+        callback(validatedIds);
+    }
 
     public void RecordPlayers()
     {

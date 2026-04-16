@@ -6,7 +6,7 @@ using Steamworks;
 public class SteamPlayerDataCollector : MonoBehaviour
 {
     [SerializeField] private DatabaseRequest _databaseRequest;
-    private string _apiBaseUrl = "http://localhost:5000";
+    private string apiBaseUrl = "http://localhost:5000";
 
     private void OnEnable()
     {
@@ -26,7 +26,7 @@ public class SteamPlayerDataCollector : MonoBehaviour
     private IEnumerator CheckAndRegisterPlayer(CSteamID steamID, string playerName)
     {
         long id = (long)steamID.m_SteamID;
-        string url = $"{_apiBaseUrl}/player/exists/{id}";
+        string url = $"{apiBaseUrl}/player/exists/{id}";
 
         using UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();

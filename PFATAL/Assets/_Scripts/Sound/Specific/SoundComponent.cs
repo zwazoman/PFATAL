@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SoundComponent<T> : MonoBehaviour where T : Component
+public abstract class SoundComponent<T> : MonoBehaviour where T : Component
 {
     [Header("Main Ref")]
     [SerializeField] protected T main;
@@ -18,5 +18,5 @@ public class SoundComponent<T> : MonoBehaviour where T : Component
             LinkEvents();
     }
 
-    protected virtual void LinkEvents() { }
+    abstract protected void LinkEvents();
 }

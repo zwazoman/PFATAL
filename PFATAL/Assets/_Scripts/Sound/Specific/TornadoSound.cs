@@ -15,7 +15,7 @@ public class TornadoSound : SoundComponent<Proj_Tornado>
 
     void StartSound()
     {
-        _tornadoInstance = AudioManager.Instance.CreateInstance(Sounds.Tornado, true);
+        _tornadoInstance = AudioManager.Instance.CreateInstance(Sounds.TornadoLaunch3D, true);
         RuntimeManager.AttachInstanceToGameObject(_tornadoInstance, gameObject, true);
         _tornadoInstance.start();
     }

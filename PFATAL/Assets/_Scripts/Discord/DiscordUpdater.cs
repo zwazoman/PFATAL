@@ -1,3 +1,4 @@
+using Steamworks;
 using UnityEngine;
 
 public class DiscordUpdater : MonoBehaviour
@@ -30,30 +31,20 @@ public class DiscordUpdater : MonoBehaviour
         else
         {
             controller = Discord_Controller.Instance;
+
+            if (_isInLobbyScene)
+            {
+                _gameLobby.EventOnLobbyUpdated += UpdateDiscord;
+
+                controller.currentPartySize = _gameLobby._allPlayersInLobby.dictionnary.Count;
+                controller.maxPartySize = 8;
+            }
         }
 
-        UpdateDiscord();
+        UpdateDiscord(new());
     }
 
-    private void Update()
-    {
-        if (controller == null)
-        {
-            Debug.LogError("Discord_Controller instance not found. Please ensure a Discord_Controller is present in the scene.");
-            return;
-        }
-        else if (_isInLobbyScene)
-        {
-            controller.currentPartySize = _gameLobby._allPlayersInLobby.dictionnary.Count;
-            controller.maxPartySize = 8;
-        }
-        else if ( _isInGame)
-        {
-            
-        }
-    }
-
-    public void UpdateDiscord()
+    public void UpdateDiscord(PlayerList list)
     {
         if (controller == null)
         {
@@ -69,11 +60,18 @@ public class DiscordUpdater : MonoBehaviour
             controller.smallImageKey = smallImageKey;
             controller.smallText = smallText;
 
-            if (maxPartySize == 0 && currentPartySize == 0)
+
+            if (_isInLobbyScene)
             {
-                controller.currentPartySize = 0;
-                controller.maxPartySize = 0;
+               currentPartySize = _gameLobby._allPlayersInLobby.dictionnary.Count;
             }
+            if (_isInGame)
+            {
+                currentPartySize = controller.currentPartySize;
+            }
+
+            controller.currentPartySize = currentPartySize;
+            controller.maxPartySize = maxPartySize;
         }
     }
 }

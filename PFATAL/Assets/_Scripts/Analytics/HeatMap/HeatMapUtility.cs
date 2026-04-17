@@ -336,6 +336,7 @@ public class HeatMapUtility
 
         //UnityEngine.Debug.Log($"Heatmap points count: {heatMapData.points.Count}, Combined bytes length: {mapInfo.Length}");
 
+        //Debug,tej later
         File.WriteAllBytes(Path.Combine(Application.persistentDataPath, "heatmap.bin"), mapInfo);
 
         return mapInfo;

@@ -229,6 +229,7 @@ GameObject:
   - component: {fileID: 5432440452121122712}
   - component: {fileID: 7995651191962547063}
   - component: {fileID: -3759863164700696748}
+  - component: {fileID: 5656416729314734404}
   m_Layer: 0
   m_Name: Proj_Tornado
   m_TagString: Untagged
@@ -265,7 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2763964953
+  GlobalObjectIdHash: 3749920816
   InScenePlacedSourceGlobalObjectIdHash: 2763964953
   DeferredDespawnTick: 0
   Ownership: 1
@@ -291,6 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Proj_Tornado
   ShowTopMostFoldoutHeaderGroup: 1
+  visuals: {fileID: 0}
   _duringTime: 5
   _speed: 4.5
   _ejectionRadius: 0.9
@@ -341,3 +343,15 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &5656416729314734404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5604889624952730010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff0b35d825bfc454ca5a396d415e88db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TornadoSound

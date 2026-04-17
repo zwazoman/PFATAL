@@ -27,6 +27,9 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             ctx.playerHands.ClearHands();
 
             ctx.inputs.OnRespawnInput += Respawn;
+            
+            if (ctx.deathCamera == null) return;
+            ctx.deathCamera.OnPlayerDeath();
         }
 
         protected override void OnExited(PlayerCharacter ctx)
@@ -43,6 +46,8 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 ctx.playerHands.TryEquipRandomWeapon();
                 ctx.visuals.ShowRpc();
                 PlayerCharacterSpawner.Instance.ReSpawnPlayer(ctx);
+                if (ctx.deathCamera == null) return;
+                ctx.deathCamera.OnPlayerRespawn();
             }
 
             ctx.inputs.OnRespawnInput -= Respawn;

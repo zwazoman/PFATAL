@@ -14,10 +14,6 @@ public class Bumper : MonoBehaviour
             }
 
         }
-        // else if (collider.TryGetComponent(out Rigidbody rb))
-        // {
-        //     
-        // }
     }
 
     void OnDrawGizmos()

@@ -53,6 +53,10 @@ public class PlayerCharacterInputs : NetworkBehaviour
             {
                 aimInput = context.ReadValue<Vector2>() * 6.5f;
                 UsingGamePad = true;
+                if (context.canceled) 
+                { 
+                    UsingGamePad = false;
+                }
             }
             else
             {

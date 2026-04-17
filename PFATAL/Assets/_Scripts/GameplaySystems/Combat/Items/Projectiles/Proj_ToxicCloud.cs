@@ -1,50 +1,45 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Proj_ToxicCloud : Projectile
+public class Proj_ToxicCloud : Proj_Falling
 {
-    [SerializeField] Rigidbody _rb;
-    [SerializeField] float _throwStrength = 30f;
+    [SerializeField] float _throwStrength = 5f;
     [SerializeField] GameObject _cloudPrefab;
-
     private bool _hasHit = false;
-
-    private void Awake()
-    {
-        TryGetComponent(out _rb);
-    }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         if (!IsServer) return;
 
-        _rb.isKinematic = false;
+        Transform cameraTransform = GameManager.Instance
+            .GetPlayerCharacter(spawnContext.Value.spawnerClientID)
+            .playerCamera.transform;
 
-        Vector3 force = transform.forward * 5 + transform.up * 3;
-        _rb.AddForce(force.normalized * _throwStrength, ForceMode.Impulse);
+        transform.forward = (cameraTransform.forward + cameraTransform.up * 0.2f).normalized;
+
+        speed = _throwStrength;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public override void Despawn()
     {
-        if (!IsServer || _hasHit) return;
-
-        _hasHit = true;
-
-        SpawnCloud();
+        if (IsServer && !_hasHit)
+        {
+            SpawnCloud();
+        }
+        base.Despawn();
     }
 
+    /// <summary>
+    /// appelé sur le server seulement
+    /// </summary>
     void SpawnCloud()
     {
+        //todo : POOL !!!
         GameObject obj = Instantiate(_cloudPrefab, transform.position, Quaternion.identity);
-
-        if (obj.TryGetComponent(out NetworkObject netObj)) netObj.Spawn();
-
         if (obj.TryGetComponent(out ToxicCloud cloud))
-        {
             cloud.Init(spawnContext.Value.spawnerClientID);
-        }
-
-        Despawn();
+        
+        if (obj.TryGetComponent(out NetworkObject netObj)) netObj.Spawn();
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Scripts.Exceptions;
 using _scripts.PlayerCharacter;
 using NetworkTime;
 using Unity.Netcode;
@@ -11,7 +12,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private NetworkTimeSyncManager _timeSyncManager;
     
     //todo : scriptable object avec game settings ?
-    public const float DEATH_MATCH_GAME_DURATION = 300f;
+    public const float DEATH_MATCH_GAME_DURATION = 100000f;
 
     public static GameMode gameMode = GameMode.DeathMatch;
     
@@ -140,8 +141,14 @@ public class GameManager : NetworkBehaviour
         LeaderBoard.Clear();
     }
 
+    /// <summary>
+    /// server only
+    /// </summary>
+    /// <param name="playerClientID"></param>
+    /// <returns></returns>
     public PlayerCharacter GetPlayerCharacter(ulong playerClientID)
     {
+        if (!NetworkManager.Singleton.IsServer) throw new NetworkAuthorityException();
         return _serverGameRules.GetPlayerCharacter(playerClientID);
     }
 

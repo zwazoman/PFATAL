@@ -1,10 +1,17 @@
+using _Scripts.Extensions;
 using _scripts.PlayerCharacter;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements.Experimental;
 
 public class DirectionIndicator : MonoBehaviour
 {
     Vector3 _targetPosition;
     PlayerCharacter _playerCharacter;
+
+    [Header("Scene References")]
+    [SerializeField] Image _image;
 
     [Header("Settings")]
     [SerializeField] bool _isScreenspace = false;
@@ -17,6 +24,26 @@ public class DirectionIndicator : MonoBehaviour
     float _timer;
     float _currentVelocity;
 
+    PooledObject _thisPooledObject;
+    
+    void OnInstantiatedByPool()
+    {
+        TryGetComponent(out _thisPooledObject);
+    }
+
+
+    
+    void OnPulledFromPool()
+    {
+        DOTween.Kill(this);
+        _image.color = _image.color.WithAlpha(1);
+        DOTween.To(
+            () => _image.color.a,
+            x => _image.color = _image.color.WithAlpha(x),
+            0, _lifeTime).SetEase(Ease.InCubic).SetTarget(this);
+    }
+    
+    
     public void Setup(Vector3 targetPosition, PlayerCharacter playerCharacter)
     {
         _targetPosition = targetPosition;
@@ -63,7 +90,7 @@ public class DirectionIndicator : MonoBehaviour
 
             if (_timer >= _lifeTime)
             {
-                Destroy(gameObject);
+                _thisPooledObject.GoBackIntoPool();
             }
         }
     }

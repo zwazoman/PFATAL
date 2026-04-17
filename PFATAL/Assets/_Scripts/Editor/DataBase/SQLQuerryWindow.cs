@@ -120,6 +120,11 @@ public class SQLQuerryWindow : EditorWindow
             CommandList.Sort((a, b) => string.Compare(b.Name, a.Name, StringComparison.Ordinal));
         }
 
+        if (GUILayout.Button("Show Schema", EditorStyles.toolbarButton, GUILayout.Width(90)))
+        {
+            FetchSchema();
+        }
+
         EditorGUILayout.EndHorizontal();
     }
 
@@ -151,5 +156,20 @@ public class SQLQuerryWindow : EditorWindow
         {
             Debug.LogError("SQL ERROR : " + request.error);
         }
+    }
+
+    public async void FetchSchema()
+    {
+        string url = baseURL + "/schema";
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        var operation = request.SendWebRequest();
+        while (!operation.isDone)
+            await System.Threading.Tasks.Task.Yield();
+
+        if (request.result == UnityWebRequest.Result.Success)
+            SchemaViewWindow.ShowSchema(request.downloadHandler.text);
+        else
+            Debug.LogError("Schema fetch error: " + request.error);
     }
 }

@@ -3,6 +3,8 @@ using FMODUnity;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -55,44 +57,41 @@ public class AudioManager : NetworkBehaviour
         //PlayOneShot(Sounds.Music);
     }
 
-    public void PlayOnlineOneShots(Sounds sound2D, Sounds sound3D, Vector3 pos = default, ulong playerClientID = 1000)
+    public void PlayOnlineOneShots(Sounds sound2D, Sounds sound3D, Vector3 pos = default, string parameter = null, float parameterValue = 0)
     {
-        PlayOneShot(sound2D);
-        PlayOneShotForOthersRPC(sound3D, pos, playerClientID);
+        PlayOneShot(sound2D, default, parameter, parameterValue);
+        PlayOneShotForOthersRPC(sound3D, pos, parameter, parameterValue);
     }
 
-    public void PlayOneShot(Sounds sound)
+    public void PlayOneShot(Sounds sound, string parameter = null, float parameterValue = 0)
     {
-        try
-        {
-            RuntimeManager.PlayOneShot(GetEventReference(sound));
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-        }
+        PlayOneShot(sound, default, parameter, parameterValue);
     }
 
-    public EventInstance PlayOneShot(Sounds sound, Vector3 pos, GameObject attachedObject = null)
+    public EventInstance PlayOneShot(Sounds sound, Vector3 pos, string parameter = null, float parameterValue = 0)
     {
         EventInstance newInstance = CreateInstance(sound, true);
 
-        try
+        if (parameter != null)
+        {
+            if (parameterValue == MathF.Floor(parameterValue))
+                newInstance.setParameterByName(parameter, (int)parameterValue);
+            else
+                newInstance.setParameterByName(parameter, parameterValue);
+        }
+
+        if(pos  != default)
         {
             newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(pos));
 
-            if (attachedObject != null)
-                RuntimeManager.AttachInstanceToGameObject(newInstance, attachedObject);
+            //if (attachedObject != null)
+            //    RuntimeManager.AttachInstanceToGameObject(newInstance, attachedObject);
 
             On3DSoundPlayed?.Invoke(newInstance);
+        }
 
-            newInstance.start();
-            newInstance.release();
-        }
-        catch(Exception e)
-        {
-            Debug.LogException(e);
-        }
+        newInstance.start();
+        newInstance.release();
 
         return newInstance;
     }
@@ -128,18 +127,15 @@ public class AudioManager : NetworkBehaviour
     //RPCS
 
     [Rpc(SendTo.Everyone)]
-    public void PlayOneShotForEveryoneRPC(Sounds sound, Vector3 pos = default)
+    public void PlayOneShotForEveryoneRPC(Sounds sound, Vector3 pos = default, string parameter = null, float parameterValue = 0)
     {
-        PlayOneShot(sound, pos);
+        PlayOneShot(sound, pos, parameter, parameterValue);
     }
 
     [Rpc(SendTo.NotMe)]
-    void PlayOneShotForOthersRPC(Sounds sound, Vector3 pos = default, ulong followPlayerId = 1000)
+    void PlayOneShotForOthersRPC(Sounds sound, Vector3 pos = default, string parameter = null, float parameterValue = 0)
     {
-        if (followPlayerId != 1000)
-            PlayOneShot(sound, pos, GameManager.Instance.GetPlayerCharacter(followPlayerId).gameObject);
-        else
-            PlayOneShot(sound, pos);
+        PlayOneShot(sound, pos, parameter, parameterValue);
     }
 
 

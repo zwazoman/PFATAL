@@ -1,11 +1,16 @@
+using System;
+using DG.Tweening;
 using Unity.Netcode;
 using UnityEngine;
 
 public class ToxicCloud : NetworkBehaviour
 {
+    public event Action OnSmokeStart;
+    public event Action OnSmokeEnd;
+
     private static Collider[] buffer = new Collider[20];
 
-    [SerializeField] float _radius = 4f;
+    [SerializeField] public float radius = 4f;
     [SerializeField] float _duration = 6f;
     [SerializeField] float _tickRate = 0.5f;
     [SerializeField] float _damagePerTick = 1f;
@@ -14,7 +19,9 @@ public class ToxicCloud : NetworkBehaviour
     float _tickTimer;
 
     ulong _ownerId;
-
+    
+    const float TWEEN_DURATION = .4f;
+    private bool _isAboutToDie = false;
     public void Init(ulong ownerId)
     {
         _ownerId = ownerId;
@@ -22,26 +29,53 @@ public class ToxicCloud : NetworkBehaviour
 
     private void Update()
     {
-        if (!IsServer) return;
-
         _timer += Time.deltaTime;
+
+        //end tween
+        if (!_isAboutToDie && _timer >= _duration-TWEEN_DURATION)
+        {
+            _isAboutToDie = true;
+            transform.DOScale(Vector3.zero, TWEEN_DURATION).SetEase(Ease.InCirc);
+            DOTween.To(()=> radius,(float v)=>radius = v,0,TWEEN_DURATION).SetEase(Ease.InCirc);
+        }
+        
+        //== server only ==
+        
+        if (!IsServer) return;
+        
         _tickTimer += Time.deltaTime;
 
         if (_tickTimer >= _tickRate)
         {
             _tickTimer = 0f;
-            ApplyDamage();
+            ApplyDamageToOverlappingPlayers();
         }
-
+        
         if (_timer >= _duration)
         {
+            OnSmokeEnd?.Invoke();
             NetworkObject.Despawn();
         }
     }
 
-    void ApplyDamage()
+    public override void OnNetworkSpawn()
     {
-        int count = Physics.OverlapSphereNonAlloc(transform.position, _radius, buffer);
+        base.OnNetworkSpawn();
+
+        print("debout connard");
+        OnSmokeStart?.Invoke();
+
+        //spawn tween
+        transform.localScale = Vector3.one*.2f;
+        transform.DOScale(new Vector3(radius, radius, radius), TWEEN_DURATION).SetEase(Ease.OutCubic);
+
+        float endRadius = radius; radius = 0;
+        DOTween.To(()=> radius,(float v)=>radius = v,endRadius,TWEEN_DURATION).SetEase(Ease.OutElastic);
+    }
+
+    void ApplyDamageToOverlappingPlayers()
+    {
+        int count = Physics.OverlapSphereNonAlloc(transform.position, radius, buffer);
 
         for (int i = 0; i < count; i++)
         {
@@ -54,7 +88,7 @@ public class ToxicCloud : NetworkBehaviour
                     Point = hit.transform.position,
                     Direction = Vector3.zero,
                     KnockbackForce = Vector3.zero,
-                    Radius = _radius
+                    Radius = radius
                 };
 
                 hit.TakeDamage(damage);
@@ -64,6 +98,12 @@ public class ToxicCloud : NetworkBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, _radius);
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
+
+    [Rpc(SendTo.Everyone)]
+    void BroadcastSmokeStartRpc() => OnSmokeStart?.Invoke();
+
+    [Rpc(SendTo.Everyone)]
+    void BroadcastSmokeEndRpc() => OnSmokeEnd?.Invoke();
 }

@@ -79,9 +79,10 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         //enable fps view by default
         SetFPSViewEnabled(true);
         
+        _playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += OnStateChanged;
+        
         //setup events
         _playerCharacter.health.OnDamageTaken += OnDamageTaken;
-        _playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += OnStateChanged;
     }
 
     void SetFPSViewEnabled(bool enabled)

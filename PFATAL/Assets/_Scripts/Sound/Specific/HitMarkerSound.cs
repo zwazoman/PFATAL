@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(HitMarkerUI))]
 public class HitMarkerSound : SoundComponent<HitMarkerUI>
 {
-    private void Start()
+    protected override void LinkEvents()
     {
         main.OnShowHitMarker += ShowHitMarker_Callback;
     }

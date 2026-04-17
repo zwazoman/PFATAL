@@ -18,6 +18,10 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     //events
     public event Action<DamageData> OnDamageTaken;
     public event Action OnDie;
+    
+    /// <summary>
+    /// float new hp
+    /// </summary>
     public event Action<float> OnHpChanged;
 
     void Awake()

@@ -1,3 +1,4 @@
+using System;
 using FMODUnity;
 using NetworkTime;
 using Unity.Netcode;
@@ -31,11 +32,20 @@ namespace _scripts.PlayerCharacter
         [field: SerializeField] public PlayerHands playerHands { get; private set; }
         [field : SerializeField] public HandsItemVisuals HandsItemVisuals { get; private set; }
 
+        [SerializeField] public DeathCamera deathCamera;
+        
+        public static PlayerCharacter LocalPlayerCharacter { get; private set; }
+
+        private void Awake()
+        {
+            LocalPlayerCharacter = this;
+        }
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-
-            gameObject.name = gameObject.name + NetworkBehaviourId + OwnerClientId;
+            if(IsLocalPlayer) LocalPlayerCharacter = this;
+            gameObject.name = "player character_" + OwnerClientId;
         }
 
         private void Update()

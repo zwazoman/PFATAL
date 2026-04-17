@@ -34,16 +34,32 @@ public class HeatMapWindow : EditorWindow
 
     private void OnGUI()
     {
+        GUILayout.Label("Laissez la souris 3 secondes sur un élément pour voir les détails", EditorStyles.boldLabel);
+
+        GUILayout.Space(17);
+
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
 
-        mapBound = (GameObject)EditorGUILayout.ObjectField("Map bounds", mapBound, typeof(GameObject), true);
+        mapBound = (GameObject)EditorGUILayout.ObjectField(
+            new GUIContent(
+                "Map Bounds",
+                "The limits of the map, must be an object with MapBounds component, one should be in the game scene already. Bounds value define the area where positions can be saved."), 
+            mapBound, 
+            typeof(GameObject), 
+            true);
         if (mapBound != null)
         {
             GUILayout.Label("Objet sélectionné : " + mapBound.name);
         }
 
 
-        rayMarchingMat = (Material)EditorGUILayout.ObjectField("Ray Marching Material", rayMarchingMat, typeof(Material), false);
+        rayMarchingMat = (Material)EditorGUILayout.ObjectField(
+            new GUIContent(
+                "Ray Marching Material",
+                "Material used for ray marching. Normally called : Mat_Texture3D_visalizer"), 
+            rayMarchingMat, 
+            typeof(Material), 
+            false);
         if (rayMarchingMat != null)
         {
             EditorGUILayout.LabelField("Shader:", rayMarchingMat.shader.name);
@@ -68,7 +84,7 @@ public class HeatMapWindow : EditorWindow
         fileNameToSave = EditorGUILayout.TextField(
             new GUIContent(
                 "New Heatmap File",
-                "Name foor the heatmap that will be generate."),
+                "Name for the heatmap that will be generate."),
             fileNameToSave);
 
         heatMapHasFilters = EditorGUILayout.BeginToggleGroup("Apply heatMap Filters", heatMapHasFilters);
@@ -90,7 +106,7 @@ public class HeatMapWindow : EditorWindow
         fileNameForTexture3D = EditorGUILayout.TextField(
             new GUIContent(
                 "File Name For Texture3D",
-                "File name use to generate the texture3D, locate ine the folder HeatMapFolder in the persiistent data path"),
+                "File name use to generate the texture3D, locate ine the folder HeatMapFolder in the persistent data path"),
             fileNameForTexture3D);
 
         attenuation = EditorGUILayout.TextField(
@@ -164,11 +180,11 @@ public class HeatMapWindow : EditorWindow
             //UnityEngine.Debug.Log("Loading heat map data from a file on this computer.");
 
             //Get all the json files that start with the designated text
-            List<string> heatMapJsonList = Directory.GetFiles(Application.persistentDataPath, $"{fileStartText}*.json").ToList(); //fileStartText + "*.json"
+            List<string> heatMapJsonList = Directory.GetFiles(Application.persistentDataPath, $"{fileStartText}*.bin").ToList(); //fileStartText + "*.json"
 
             //convert the json file to HeatMapData class
             foreach (string file in heatMapJsonList)
-                allMaps.Add(HeatMapUtility.ConvertJsonToHeatMapData(File.ReadAllText(file)));
+                allMaps.Add(HeatMapUtility.ConvertByteToMap(File.ReadAllBytes(file)));
 
             //checking if there's sorting conditions, if yes check all HeatMapData to find which accord to the conditions
             if (heatMapHasFilters && (gameVersion != 0 || playerNumber != 0))
@@ -211,7 +227,7 @@ public class HeatMapWindow : EditorWindow
         {
             UnityEngine.Debug.Log("Loading heat map data from a remote source.");
 
-
+            // to do Connard
             // Load the heat map data from a remote source or another location
             // Example: heatPoints = LoadHeatMapDataFromRemoteSource(fileStartText);
         }
@@ -227,8 +243,9 @@ public class HeatMapWindow : EditorWindow
         //UnityEngine.Debug.Log(finalMapsToCombine.Count);
 
         //Save the a new file with all the HeatMapCombined
-        string combinedHeatMapJson = HeatMapUtility.CombineHeatMap(finalMapsToCombine);
-        File.WriteAllText(Application.persistentDataPath + "/HeatMapFolder/" + fileNameToSave.Replace(" ", "_") + ".json", combinedHeatMapJson);
+        HeatMapData combinedHeatMap = HeatMapUtility.CombineHeatMap(finalMapsToCombine);
+
+        File.WriteAllBytes(Application.persistentDataPath + "/HeatMapFolder/" + fileNameToSave.Replace(" ", "_") + ".bin", HeatMapUtility.ConvertMapToByte(combinedHeatMap));
     }
 
     private void GenerateTexture3D()
@@ -244,6 +261,7 @@ public class HeatMapWindow : EditorWindow
         //check for existing heatmap files, auto generate one with the actual parameters if no files exist
         if (fileNameForTexture3D == null || fileNameForTexture3D == "")
         {
+            return;
             UnityEngine.Debug.LogWarning("Name of file to search is empty, creating new file with name : AutoGeneratedHeatmap");
             fileNameToSave = "AutogeneratedHeatmap";
             GenerateHeatMap();
@@ -267,7 +285,7 @@ public class HeatMapWindow : EditorWindow
         
         //get the heatmap
         HeatMapData baseHeatMapUseToGenerate =
-            HeatMapUtility.ConvertJsonToHeatMapData(File.ReadAllText(Path.Combine(Application.persistentDataPath + "/HeatMapFolder/" + fileNameForTexture3D)));
+            HeatMapUtility.ConvertByteToMap(File.ReadAllBytes(Path.Combine(Application.persistentDataPath + "/HeatMapFolder/" + fileNameForTexture3D)));
 
         //get the size of the heatMap
         int size = baseHeatMapUseToGenerate.cellSize;

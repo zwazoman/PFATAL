@@ -31,14 +31,16 @@ public class Projectile : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void BroadcastDespawnRpc()
     {
-        if(IsServer)
-            NetworkObject.Despawn();
         OnDespawn?.Invoke();
+
+        if (IsServer)
+            NetworkObject.Despawn();
     }
 
     [Rpc(SendTo.Everyone)]
     void BroadcastSpawnRpc()
     {
+        print("spawn");
         OnSpawn?.Invoke();
     }
 }

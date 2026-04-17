@@ -46,10 +46,12 @@ public class Discord_Controller : MonoBehaviour
         try
         {
             discord.RunCallbacks();
+            //Debug.Log("Discord est vivant");
         }
         catch
         {
-            Debug.LogError("Error running Discord callbacks: ");
+            //Debug.LogError("Error running Discord callbacks: ");
+            //Debug.LogError("Discord est mort");
         }
     }
 

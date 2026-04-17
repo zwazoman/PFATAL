@@ -45,7 +45,7 @@ public class Pickup : Interactable
 
         if (interaction._playerCharacter.playerHands.TryEquipItem(_itemInfo))
         {
-            //transform.DOPunchScale(transform.localScale * _pickupTweenScale, _pickupTweenDuration,0,0);
+            //transform.DOPunchScale(transform.localScale * _pickupTweenScale, _pickupTweenDuration, 0, 0);
             PickupRpc();
 
             if (_despawnsOnPickup)

@@ -63,7 +63,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
                 if (!mapBoundsObject.m_Bounds.Contains(playerPos))
                 {
-                    UnityEngine.Debug.Log("y a pas de bounds connard");
+                    //UnityEngine.Debug.Log("y a pas de bounds connard");
                     return;
                 }
 
@@ -164,13 +164,13 @@ public class HeatMapServerAnalitics : MonoBehaviour
             return WeaponType.Tomahawk;
         }
 
-        UnityEngine.Debug.LogWarning("Unknown weapon type for item: " + itemName + ". En gros ça s'est chié dessus trèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèès très fort.");
+        //UnityEngine.Debug.LogWarning("Unknown weapon type for item: " + itemName + ". En gros ça s'est chié dessus trèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèès très fort.");
         return WeaponType.Without;
     }
 
     private void OnApplicationQuit()
     {
-        UnityEngine.Debug.Log("Application quitting, saving heatmap data...");
+        //UnityEngine.Debug.Log("Application quitting, saving heatmap data...");
         if (isPlaying)
             SaveHeatMap(new());
     }
@@ -187,7 +187,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
         
         File.WriteAllBytes(_filePath, _byteHeatmap);
 
-        UnityEngine.Debug.Log("Heatmap data saved to: " + _filePath);
+        //UnityEngine.Debug.Log("Heatmap data saved to: " + _filePath);
     }
 
     #region Debug

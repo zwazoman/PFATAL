@@ -143,7 +143,7 @@ public class ValueSwitcher : NetworkBehaviour
     public void SwitchHammerAttackSpeedRpc()
     {
         Debug.LogError("Switching Hammer Attack Speed");
-        //PlayerCharacter.SwitchHammerAttackSpeed();
+        //Hammer();
     }
 
     [Rpc(SendTo.Everyone)]

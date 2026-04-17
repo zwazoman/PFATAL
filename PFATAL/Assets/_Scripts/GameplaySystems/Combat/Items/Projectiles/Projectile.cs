@@ -18,8 +18,8 @@ public class Projectile : NetworkBehaviour
 
         BroadcastSpawnRpc();
 
-        if (visuals != null && NetworkManager.LocalClientId == spawnContext.Value.spawnerClientID)
-            visuals.SetActive(false);
+        //if (visuals != null && NetworkManager.LocalClientId == spawnContext.Value.spawnerClientID)
+        //    visuals.SetActive(false);
     }
 
     public virtual void Despawn()
@@ -31,14 +31,16 @@ public class Projectile : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void BroadcastDespawnRpc()
     {
-        if(IsServer)
-            NetworkObject.Despawn();
         OnDespawn?.Invoke();
+
+        if (IsServer)
+            NetworkObject.Despawn();
     }
 
     [Rpc(SendTo.Everyone)]
     void BroadcastSpawnRpc()
     {
+        print("spawn");
         OnSpawn?.Invoke();
     }
 }

@@ -1,3 +1,4 @@
+using NetworkTime;
 using System;
 using UnityEngine;
 
@@ -64,6 +65,8 @@ public class ProjectileWeapon : Item
             Instantiate(visualProjectile, mirorPos, ComputeProjectileRotation(mirorPos) * rotationOffset).TryGetComponent(out visual);
             visual.context = spawnContext;
         }
+
+        print(TimeStamp.Now);
 
         GameObject _currentProjectileObject = await Summoner.Instance.SpawnObject(projectile, spawnPos, ComputeProjectileRotation(spawnPos) * rotationOffset, true, spawnContext);
         _currentProjectile = _currentProjectileObject.GetComponent<Projectile>();

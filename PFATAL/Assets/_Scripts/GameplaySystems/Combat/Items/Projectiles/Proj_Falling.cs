@@ -33,6 +33,8 @@ public class Proj_Falling : Projectile
         _spawnPosition = spawnContext.Value.spawnPos;
 
         _initialized = true;
+
+        print(TimeStamp.Now);
     }
 
     protected virtual void UpdatePosition(float timeSinceSpawn)

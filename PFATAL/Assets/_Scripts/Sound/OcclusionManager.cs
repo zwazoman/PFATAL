@@ -37,7 +37,7 @@ public class OcclusionManager : NetworkBehaviour
 
     void GameStarted_Callback()
     {
-        _listener = GameManager.Instance.GetPlayerCharacter(OwnerClientId).listener;
+        _listener = GameManager.Instance.localPlayerCharacter.listener;
     }
 
     private void Update()

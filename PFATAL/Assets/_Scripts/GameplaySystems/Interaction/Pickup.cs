@@ -53,7 +53,7 @@ public class Pickup : Interactable
         }
     }
 
-    [Rpc(SendTo.Everyone)]
+    [Rpc(SendTo.Server)]
     void PickupRpc()
     {
         OnPickup?.Invoke();

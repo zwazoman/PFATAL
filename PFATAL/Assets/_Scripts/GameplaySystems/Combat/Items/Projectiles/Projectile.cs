@@ -18,8 +18,8 @@ public class Projectile : NetworkBehaviour
 
         BroadcastSpawnRpc();
 
-        //if (visuals != null && NetworkManager.LocalClientId == spawnContext.Value.spawnerClientID)
-        //    visuals.SetActive(false);
+        if (visuals != null && NetworkManager.LocalClientId == spawnContext.Value.spawnerClientID)
+            visuals.SetActive(false);
     }
 
     public virtual void Despawn()

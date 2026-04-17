@@ -66,8 +66,6 @@ public class ProjectileWeapon : Item
             visual.context = spawnContext;
         }
 
-        print(TimeStamp.Now);
-
         GameObject _currentProjectileObject = await Summoner.Instance.SpawnObject(projectile, spawnPos, ComputeProjectileRotation(spawnPos) * rotationOffset, true, spawnContext);
         _currentProjectile = _currentProjectileObject.GetComponent<Projectile>();
 

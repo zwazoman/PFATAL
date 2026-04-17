@@ -134,7 +134,14 @@ public class DataCollector : MonoBehaviour
     private IEnumerator RecordPlayerSet(LeaderBoardData leaderBoard)
     {
         List<long> idsToCheck = new();
-        foreach (var entry in leaderBoard.entries) idsToCheck.Add((long)entry.ClientID);
+        foreach (var entry in leaderBoard.entries)
+        {
+            ulong ClientID = entry.ClientID;
+            PermanentPlayerIdentity Identity = GameManager.GetPlayerIdentity(ClientID);
+            ulong SteamID = ulong.Parse(Identity.platformID);
+
+            idsToCheck.Add((long)SteamID);
+        }
 
         Dictionary<long, long> validatedIds = null;
         yield return StartCoroutine(ValidatePlayerIds(idsToCheck, result => validatedIds = result));
@@ -143,7 +150,11 @@ public class DataCollector : MonoBehaviour
 
         foreach (var entry in leaderBoard.entries)
         {
-            long safeId = validatedIds[(long)entry.ClientID];
+            ulong ClientID = entry.ClientID;
+            PermanentPlayerIdentity Identity = GameManager.GetPlayerIdentity(ClientID);
+            ulong SteamID = ulong.Parse(Identity.platformID);
+
+            long safeId = validatedIds[(long)SteamID];
 
             gamePlayerSets.Add(new GamePlayerSet
             {
@@ -208,7 +219,7 @@ public class DataCollector : MonoBehaviour
                 KillerId = validatedIds[death.KillerId],
                 Weapon = death.Weapon,
                 Distance = death.Distance,
-                IdGame = death.IdGame,
+                IdGame = gameId,
                 Time = death.Time
             });
         }

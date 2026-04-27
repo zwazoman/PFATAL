@@ -14,6 +14,7 @@ public class ToxicCloud : NetworkBehaviour
     [SerializeField] float _duration = 6f;
     [SerializeField] float _tickRate = 0.5f;
     [SerializeField] float _damagePerTick = 1f;
+    [SerializeField] LayerMask _playerLayer;
 
     float _timer;
     float _tickTimer;
@@ -75,7 +76,7 @@ public class ToxicCloud : NetworkBehaviour
 
     void ApplyDamageToOverlappingPlayers()
     {
-        int count = Physics.OverlapSphereNonAlloc(transform.position, radius, buffer);
+        int count = Physics.OverlapSphereNonAlloc(transform.position, radius, buffer, _playerLayer);
 
         for (int i = 0; i < count; i++)
         {

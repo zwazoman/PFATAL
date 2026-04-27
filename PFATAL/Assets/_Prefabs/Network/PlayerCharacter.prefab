@@ -912,7 +912,7 @@ GameObject:
   - component: {fileID: 1173592674038662016}
   - component: {fileID: 7946938467345428475}
   - component: {fileID: 3860378255616416739}
-  - component: {fileID: 2834175776919735804}
+  - component: {fileID: 6108046155153365623}
   - component: {fileID: 9073655823701373496}
   - component: {fileID: 3898847388129945752}
   - component: {fileID: 6077973829030890437}
@@ -959,7 +959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1627020838
+  GlobalObjectIdHash: 287215609
   InScenePlacedSourceGlobalObjectIdHash: 287215609
   DeferredDespawnTick: 0
   Ownership: 1
@@ -991,7 +991,7 @@ MonoBehaviour:
   <stateMachine>k__BackingField: {fileID: 2571413456026774155}
   <replicatedStateMachineCallbacks>k__BackingField: {fileID: 771093519833283276}
   <networkObject>k__BackingField: {fileID: 7251340249803040747}
-  <health>k__BackingField: {fileID: 2834175776919735804}
+  <health>k__BackingField: {fileID: 6108046155153365623}
   <HUD>k__BackingField: {fileID: 5284614508091506229}
   <handsCamera>k__BackingField: {fileID: 5203756890567801947}
   <playerCamera>k__BackingField: {fileID: 1123145624008692130}
@@ -1152,6 +1152,7 @@ MonoBehaviour:
   ControllerSensitivity: 0
   _recoilCompensationMultiplier: {x: 0, y: 0}
   _aimAssistYStrength: 1
+  _controllerSensitivityMaxAcceleration: 0
 --- !u!135 &6943353650538722316
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1264,7 +1265,7 @@ MonoBehaviour:
   - {fileID: 5786053781384723269, guid: 5c7f49b82281eb64d8822969307104a0, type: 3}
   - {fileID: 5786053781384723269, guid: f0a9649bb0a5555499c4a0f0e1da1e89, type: 3}
   - {fileID: 5786053781384723269, guid: 422e647238236da4bb2a9dee5164fd2c, type: 3}
---- !u!114 &2834175776919735804
+--- !u!114 &6108046155153365623
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1273,12 +1274,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8535136328113993408}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0540480dadbd3174dac71a481cd08847, type: 3}
+  m_Script: {fileID: 11500000, guid: 3bfb79d06e188ab4da2db6e2751f1829, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DamageableObject
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCharacterHealth
   ShowTopMostFoldoutHeaderGroup: 1
   <MaxHP>k__BackingField: 10
   isPlayer: 1
+  _regenDelay: 0.3
+  _regenStrength: 1
+  _regenCooldown: 5
 --- !u!114 &9073655823701373496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1512,6 +1516,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ac2995cb-8b3b-4130-b91a-ef4cd69d9cd9
     m_ActionName: 'UI/Open/Close[/Keyboard/tab]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b0176e6e-77f4-4869-84f3-f48f15cbd672
+    m_ActionName: 'Player/Open Cheat Panel[/Keyboard/c]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

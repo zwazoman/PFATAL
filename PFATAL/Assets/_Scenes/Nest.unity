@@ -1633,6 +1633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Killzone
   ShowTopMostFoldoutHeaderGroup: 1
+  _damages: 100
 --- !u!64 &1395411123
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1678,10 +1679,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1022408452026289320, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
-      propertyPath: '_ownerOnlyBehaviours.Array.data[1]'
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4314537941643326139, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.6914736
@@ -1733,6 +1730,14 @@ PrefabInstance:
     - target: {fileID: 8535136328113993408, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9147043906820172823, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9147043906820172823, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2148,6 +2153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Killzone
   ShowTopMostFoldoutHeaderGroup: 1
+  _damages: 5
 --- !u!65 &1578418284
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -190,6 +190,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Open Cheat Panel"",
+                    ""type"": ""Button"",
+                    ""id"": ""b0176e6e-77f4-4869-84f3-f48f15cbd672"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -352,7 +361,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""id"": ""c1f7a91b-d0fd-4a62-997e-7fb9b69bf235"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": ""StickDeadzone(min=0.1,max=1),InvertVector2(invertX=false)"",
+                    ""processors"": ""StickDeadzone(min=0.1,max=0.9),InvertVector2(invertX=false)"",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
@@ -542,6 +551,28 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""ScrollItems"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c51de35c-5fb8-494a-8784-0b66faed0a71"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open Cheat Panel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8dc64f3b-0fd6-45a6-ba24-31ae52f64485"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open Cheat Panel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1171,6 +1202,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_Player_ScrollItems = m_Player.FindAction("ScrollItems", throwIfNotFound: true);
         m_Player_OpenClose = m_Player.FindAction("Open/Close", throwIfNotFound: true);
         m_Player_OpenChat = m_Player.FindAction("Open Chat", throwIfNotFound: true);
+        m_Player_OpenCheatPanel = m_Player.FindAction("Open Cheat Panel", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1276,6 +1308,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ScrollItems;
     private readonly InputAction m_Player_OpenClose;
     private readonly InputAction m_Player_OpenChat;
+    private readonly InputAction m_Player_OpenCheatPanel;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1331,6 +1364,10 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/OpenChat".
         /// </summary>
         public InputAction @OpenChat => m_Wrapper.m_Player_OpenChat;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/OpenCheatPanel".
+        /// </summary>
+        public InputAction @OpenCheatPanel => m_Wrapper.m_Player_OpenCheatPanel;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1390,6 +1427,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @OpenChat.started += instance.OnOpenChat;
             @OpenChat.performed += instance.OnOpenChat;
             @OpenChat.canceled += instance.OnOpenChat;
+            @OpenCheatPanel.started += instance.OnOpenCheatPanel;
+            @OpenCheatPanel.performed += instance.OnOpenCheatPanel;
+            @OpenCheatPanel.canceled += instance.OnOpenCheatPanel;
         }
 
         /// <summary>
@@ -1434,6 +1474,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @OpenChat.started -= instance.OnOpenChat;
             @OpenChat.performed -= instance.OnOpenChat;
             @OpenChat.canceled -= instance.OnOpenChat;
+            @OpenCheatPanel.started -= instance.OnOpenCheatPanel;
+            @OpenCheatPanel.performed -= instance.OnOpenCheatPanel;
+            @OpenCheatPanel.canceled -= instance.OnOpenCheatPanel;
         }
 
         /// <summary>
@@ -1822,6 +1865,13 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOpenChat(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Open Cheat Panel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenCheatPanel(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

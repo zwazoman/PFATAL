@@ -20,6 +20,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
     public MapBounds mapBoundsObject;
 
     public bool show = false;
+    public bool isPlaying = false;
 
     private void Awake()
     {
@@ -32,12 +33,19 @@ public class HeatMapServerAnalitics : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _filePath = Path.Combine(Application.persistentDataPath, "heatmap.json");
+        _filePath = Path.Combine(Application.persistentDataPath, "heatmap" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".bin");
     }
 
     private void Start()
     {
+
+
         _theRealHeatMap = new(gridSize, 0, 001, Players.Count);
+        //(int)(1f / interval * 3 * 60);
+        _theRealHeatMap.points = new List<HeatPoint>((int)(1f / interval * 3 * 60));
+
+        GameManager.Instance.EventOnGameStarted += () => isPlaying = true;
+        GameManager.Instance.EventOnGameEnded += (_) => SaveHeatMap(new());
     }
 
     private void Update()
@@ -122,7 +130,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
     {
         if (player == null)
         {
-//            UnityEngine.Debug.Log("No player, connard");
+            //UnityEngine.Debug.Log("No player, connard");
 
             return WeaponType.Without;
         }
@@ -133,7 +141,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
         if (socket.transform.childCount == 0)
         {
-//            UnityEngine.Debug.Log("No weapon, return");
+            //UnityEngine.Debug.Log("No weapon, return");
             return WeaponType.Without;
         }
 
@@ -141,7 +149,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
         itemName = itemName.ToLower();
 
-//        UnityEngine.Debug.Log(itemName);
+        //UnityEngine.Debug.Log(itemName);
 
         if (itemName.Contains("hammer"))
         {
@@ -163,12 +171,22 @@ public class HeatMapServerAnalitics : MonoBehaviour
     private void OnApplicationQuit()
     {
         //UnityEngine.Debug.Log("Application quitting, saving heatmap data...");
-        SaveHeatMap();
+        if (isPlaying)
+            SaveHeatMap(new());
     }
 
-    public void SaveHeatMap()
+    public void SaveHeatMap(GameRulesBase.GameResult gameResult)
     {
-        File.WriteAllText(_filePath, JsonUtility.ToJson(_theRealHeatMap));
+        //File.WriteAllText(_filePath, JsonUtility.ToJson(_theRealHeatMap));
+
+        //to do : get heapMap from DB to set correct gameId and version
+
+        _theRealHeatMap.playerCount = Players.Count;
+
+        byte[] _byteHeatmap = HeatMapUtility.ConvertMapToByte(_theRealHeatMap);
+        
+        File.WriteAllBytes(_filePath, _byteHeatmap);
+
         //UnityEngine.Debug.Log("Heatmap data saved to: " + _filePath);
     }
 

@@ -124,7 +124,9 @@ public class DatabaseRequest : MonoBehaviour
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success)
-            Debug.LogError(request.error);
+        {
+            Debug.LogError($"Erreur HTTP {request.responseCode}: {request.downloadHandler.text}");
+        }
         else
             Debug.Log("Player sent : " + request.downloadHandler.text);
     }
@@ -196,7 +198,9 @@ public class DatabaseRequest : MonoBehaviour
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success)
-            Debug.LogError(request.error);
+        {
+            Debug.LogError($"Erreur HTTP {request.responseCode}: {request.downloadHandler.text}");
+        }
         else
             Debug.Log("Player sent : " + request.downloadHandler.text);
     }

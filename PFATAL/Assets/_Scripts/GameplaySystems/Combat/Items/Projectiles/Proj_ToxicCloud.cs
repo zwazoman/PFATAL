@@ -1,40 +1,33 @@
 using Unity.Netcode;
 using UnityEngine;
 
-//todo : refaire sans le rigidbody, avec la physique de proj_falling
-public class Proj_ToxicCloud : Projectile
+public class Proj_ToxicCloud : Proj_Falling
 {
-    [SerializeField] Rigidbody _rb;
-    [SerializeField] float _throwStrength = 30f;
+    [SerializeField] float _throwStrength = 5f;
     [SerializeField] GameObject _cloudPrefab;
-
     private bool _hasHit = false;
-
-    private void Awake()
-    {
-        TryGetComponent(out _rb);
-    }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         if (!IsServer) return;
 
-        _rb.isKinematic = false;
+        Transform cameraTransform = GameManager.Instance
+            .GetPlayerCharacter(spawnContext.Value.spawnerClientID)
+            .playerCamera.transform;
 
-        Transform cameraTransform= GameManager.Instance.GetPlayerCharacter(spawnContext.Value.spawnerClientID).playerCamera.transform;
-        Vector3 force =  cameraTransform.forward * 5 + cameraTransform.up * 3;
-        _rb.AddForce(force.normalized * _throwStrength, ForceMode.Impulse);
+        transform.forward = (cameraTransform.forward + cameraTransform.up * 0.2f).normalized;
+
+        speed = _throwStrength;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public override void Despawn()
     {
-        if (!IsServer || _hasHit) return;
-
-        _hasHit = true;
-
-        SpawnCloud();
-        Despawn();
+        if (IsServer && !_hasHit)
+        {
+            SpawnCloud();
+        }
+        base.Despawn();
     }
 
     /// <summary>
@@ -49,5 +42,4 @@ public class Proj_ToxicCloud : Projectile
         
         if (obj.TryGetComponent(out NetworkObject netObj)) netObj.Spawn();
     }
-    
 }

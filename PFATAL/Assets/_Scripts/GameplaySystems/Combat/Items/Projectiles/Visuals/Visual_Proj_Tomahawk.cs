@@ -22,6 +22,8 @@ public class Visual_Proj_Tomahawk : Proj_Visual
     
     protected override void Start()
     {
+        print("ALLO");
+
         base.Start();
         
         //fetch references
@@ -32,17 +34,18 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         _weapon = ((Tomahawk)_playerCharacter.playerHands.rightHand.equippedItem);
         
         //disable the rope line renderer when the player shoots another tomahawk
-        _weapon.OnTomahawkShoot += DisableLineRenderer;
+        _weapon.OnShoot += DisableLineRenderer;
     }
 
     void OnDestroy()
     {
-        _weapon.OnTomahawkShoot -= DisableLineRenderer;
+        _weapon.OnShoot -= DisableLineRenderer;
     }
     
-    void DisableLineRenderer(Projectile p)
+    void DisableLineRenderer()
     {
         _isLastThrowTomahawk = false;
+        print("disable");
     }
     
     protected override void Update()

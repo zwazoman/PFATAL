@@ -49,7 +49,6 @@ public class PlayerCharacterHealth : DamageableObject
             _regenCooldownTimer += Time.deltaTime;
             if(_regenCooldownTimer >= _regenCooldown)
             {
-                
                 StartHealing();
             }
         }

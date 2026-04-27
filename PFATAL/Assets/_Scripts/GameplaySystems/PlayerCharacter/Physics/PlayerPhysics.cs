@@ -134,7 +134,7 @@ public class PlayerPhysics : MonoBehaviour
     {
         if (Physics.SphereCast(
                 Position,
-                col.radius
+                col.radius*.4f
                 ,Vector3.down,
                 out RaycastHit _
                 ,.02f

@@ -20,6 +20,8 @@ public class Pickup : Interactable
     [SerializeField] float _lifeTime = 5f;
 
     [HideInInspector] public bool despawns = true;
+    [HideInInspector] public bool pickedUp = false;
+
 
     float _timer;
 
@@ -41,7 +43,8 @@ public class Pickup : Interactable
     {
         base.Interact(interaction);
 
-        print("allo");
+        if (pickedUp)
+            return;
 
         if (interaction._playerCharacter.playerHands.TryEquipItem(_itemInfo))
         {
@@ -53,10 +56,11 @@ public class Pickup : Interactable
         }
     }
 
-    [Rpc(SendTo.Server)]
+    [Rpc(SendTo.Everyone)]
     void PickupRpc()
     {
         OnPickup?.Invoke();
+        pickedUp = true;
     }
 
     [Rpc(SendTo.Server)]

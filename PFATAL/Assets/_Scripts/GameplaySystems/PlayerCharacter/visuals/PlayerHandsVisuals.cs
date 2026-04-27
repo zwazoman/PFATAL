@@ -29,7 +29,7 @@ namespace GameplaySystems.PlayerCharacter
             {
                 Crossbow => 101, // 100 => weapon
                 Tomahawk => 102,
-                Hammer => 103,
+                Sword => 103,
                 
                 Cons_Tornado => 201, // 200 => book
                 Cons_BigLaserBeam => 202,

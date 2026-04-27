@@ -15,7 +15,7 @@ public class Hand : MonoBehaviour
 
     public event Action<Crossbow> OnEquipCrossbow;
     public event Action<Tomahawk> OnEquipTomahawk;
-    public event Action<Hammer> OnEquipHammer;
+    public event Action<Sword> OnEquipHammer;
 
     public event Action OnSwapItem;
 
@@ -196,7 +196,7 @@ public class Hand : MonoBehaviour
 
     #region specific equips
 
-    public void EquipSpecific(Hammer hammer) { OnEquipHammer?.Invoke(hammer); }
+    public void EquipSpecific(Sword hammer) { OnEquipHammer?.Invoke(hammer); }
     public void EquipSpecific(Crossbow crossbow) { OnEquipCrossbow?.Invoke(crossbow); }
     public void EquipSpecific(Tomahawk tomahawk) { OnEquipTomahawk?.Invoke(tomahawk); }
 

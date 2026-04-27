@@ -5,6 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class DataCollector : MonoBehaviour
 {
@@ -31,13 +32,13 @@ public class DataCollector : MonoBehaviour
 
     void Start()
     {
-        //GameManager.Instance.EventOnGameStarted += RecordPlayers;
+        GameManager.Instance.EventOnGameStarted += RecordPlayers;
         GameManager.Instance.EventOnGameEnded += OnGameEnded;
     }
 
     void OnDestroy()
     {
-        //if (GameManager.Instance != null) GameManager.Instance.EventOnGameStarted -= RecordPlayers;
+        if (GameManager.Instance != null) GameManager.Instance.EventOnGameStarted -= RecordPlayers;
 
         if (GameManager.Instance != null) GameManager.Instance.EventOnGameEnded -= OnGameEnded;
     }
@@ -84,21 +85,24 @@ public class DataCollector : MonoBehaviour
         callback(validatedIds);
     }
 
-    /*public void RecordPlayers()
+    public void RecordPlayers()
     {
         if (!NetworkManager.Singleton.IsServer) return;
 
         foreach (ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
         {
+            PermanentPlayerIdentity Identity = GameManager.GetPlayerIdentity(clientID);
+            ulong SteamID = ulong.Parse(Identity.platformID);
+
             Player player = new Player
             {
-                Id = (long)clientID,
-                Name = "Player_" + clientID
+                Id = (long)SteamID,
+                Name = Identity.name
             };
 
             StartCoroutine(_databaseRequest.SendPlayer(player));
         }
-    }*/
+    }
 
     /// <summary>
     /// Fonction pour enregistrer les données d'une partie.

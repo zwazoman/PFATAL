@@ -47,6 +47,9 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter playerCharacter)
         {
+            if(playerCharacter.health.IsDead)
+                return Sm.s_dead;
+                
             if (Time.time >= _endTime)
                 return playerCharacter.physics.ComputeIsGrounded() ? Sm.s_Idle : Sm.s_Falling;
 

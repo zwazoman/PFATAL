@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HammerCrosshair : Crosshair<Hammer>
+public class HammerCrosshair : Crosshair<Sword>
 {
     [Header("Hammer Crosshair References")]
     [SerializeField] GameObject _dashCH;
     [SerializeField] Slider _cooldownSlider;
 
-    public override void Activate(Hammer weapon)
+    public override void Activate(Sword weapon)
     {
         base.Activate(weapon);
 

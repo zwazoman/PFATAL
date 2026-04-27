@@ -1,5 +1,8 @@
+using _Scripts.StateMachine;
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
+using state = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
 public class Tomahawk : ProjectileWeapon
 {
@@ -40,6 +43,8 @@ public class Tomahawk : ProjectileWeapon
         _currentAmmoCount = maxAmmoAmount;
         _dashed = false;
         CanDash = true;
+
+        playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += ResetDash;
 
         try
         {
@@ -117,7 +122,14 @@ public class Tomahawk : ProjectileWeapon
 
         _currentProjectile.Despawn();
 
-        HandleDashDelay();
+        CanDash = false;
+        //HandleDashDelay();
+    }
+
+    void ResetDash(state previousState, state newState)
+    {
+        if ((previousState == state.Falling) && ((newState & state.Grounded) == state.Grounded))
+            CanDash = true;
     }
 
     async void HandleDashDelay()
@@ -150,5 +162,6 @@ public class Tomahawk : ProjectileWeapon
         await Shoot(context, Quaternion.Euler(-_projXOffset, 0, 0), shootSocket.position);
 
         OnTomahawkShoot?.Invoke(_currentProjectile);
+        print("l'event");
     }
 }

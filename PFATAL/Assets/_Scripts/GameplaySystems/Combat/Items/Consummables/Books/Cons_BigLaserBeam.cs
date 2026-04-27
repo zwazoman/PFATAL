@@ -12,14 +12,16 @@ public class Cons_BigLaserBeam : Consummable
     {
         if (!playerCharacter.IsOwner) return;
 
-        playerCharacter.stateMachine.s_Frozen.Freeze(1f);
+        playerCharacter.stateMachine.s_Frozen.Freeze(float.MaxValue);
         base.StartUsing();
     }
 
     public override void StopUsing()
     {
         if (!playerCharacter.IsOwner) return;
-
+        
+        playerCharacter.stateMachine.s_Frozen.Unfreeze();
+        
         Transform cam = playerCharacter.playerCamera.transform;
         float chargeRatio = Mathf.Clamp01(holdDuration / _maxChargeTime);
 
@@ -40,6 +42,4 @@ public class Cons_BigLaserBeam : Consummable
         base.StopUsing();
         BreakItem();
     }
-    
-
 }

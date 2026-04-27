@@ -40,7 +40,7 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         _weapon.OnTomahawkShoot -= DisableLineRenderer;
     }
     
-    void DisableLineRenderer(Projectile _)
+    void DisableLineRenderer(Projectile p)
     {
         _isLastThrowTomahawk = false;
     }

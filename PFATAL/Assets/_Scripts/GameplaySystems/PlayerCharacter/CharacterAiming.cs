@@ -26,11 +26,15 @@ public class CharacterAiming : NetworkBehaviour
     private Vector2 _aimAssist;
     private float _inputMultiplier = 1f;
     [SerializeField][Range(0.5f,3f)] private float _aimAssistYStrength = 1f;
+    private float _previousControllerSensitivity;
+    [SerializeField] private float _controllerSensitivityMaxAcceleration;
     
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         if(GameManager.Instance) GameManager.Instance.EventOnGameEnded += (_) => enabled = false;
+        _previousControllerSensitivity = ControllerSensitivity;
+        InputSystem.pollingFrequency = 120;
     }
 
 
@@ -117,7 +121,7 @@ public class CharacterAiming : NetworkBehaviour
             if ((gamepad.rightStick.ReadValue().x > 0.5f) || (gamepad.rightStick.ReadValue().y > 0.5f) ||
                 (gamepad.rightStick.ReadValue().x < -0.5f) || (gamepad.rightStick.ReadValue().y < -0.5f))
             {
-                while (ControllerSensitivity < 100f)
+                while (ControllerSensitivity < _controllerSensitivityMaxAcceleration)
                 {
                     ControllerSensitivity += 0.01f;
                     yield return new WaitForSeconds(0.01f);
@@ -125,13 +129,13 @@ public class CharacterAiming : NetworkBehaviour
             }
             else
             {
-                ControllerSensitivity = 50f;
+                ControllerSensitivity = _previousControllerSensitivity;
                 StopAllCoroutines();
             }
         }
         else
         {
-            ControllerSensitivity = 50f;
+            ControllerSensitivity = _previousControllerSensitivity;
             StopAllCoroutines();
         }
     }

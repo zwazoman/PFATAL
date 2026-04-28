@@ -24,7 +24,6 @@ public class Projectile : NetworkBehaviour
 
     public virtual void Despawn()
     {
-        if (!IsServer) throw new NetworkAuthorityException();
         BroadcastDespawnRpc();
     }
     
@@ -40,7 +39,6 @@ public class Projectile : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void BroadcastSpawnRpc()
     {
-        print("spawn");
         OnSpawn?.Invoke();
     }
 }

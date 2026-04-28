@@ -65,6 +65,9 @@ public class TomahawkCrosshair : Crosshair<Tomahawk>
             _indicator.gameObject.SetActive(false);
         }
 
-        _dashCooldoawnSlider.value = weapon.currentDashCooldown / weapon.dashCooldown;
+        if (weapon.CanDash)
+            _dashCooldoawnSlider.value = 1;
+        else
+            _dashCooldoawnSlider.value = 0;
     }
 }

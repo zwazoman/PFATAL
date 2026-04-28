@@ -54,6 +54,9 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter ctx)
         {
+            if (ctx.health.IsDead)
+                return Sm.s_dead;
+
             if (IsOnCeiling(ctx.transform.position) || ctx.physics.Velocity.y < -.1f) 
                 return Sm.s_Falling;
 

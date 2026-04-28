@@ -1,18 +1,18 @@
 using UnityEngine;
 using System;
 
-public class Hammer : MeleeWeapon
+public class Sword : MeleeWeapon
 {
     public event Action OnDashCooledUp;
 
     public event Action OnStartCharging;
     public event Action OnStopCharging;
 
-    [Header("Hammer References")]
+    [Header("Sword References")]
     [SerializeField] Animator _animator;
     [SerializeField] HammerEventReceiver _eventReceiver;
 
-    [Header("Hammer Settings")]
+    [Header("Sword Settings")]
 
     [SerializeField] float _knockbackStrength = 10;
 
@@ -72,8 +72,6 @@ public class Hammer : MeleeWeapon
     protected override void ApplyHit(DamageableObject damageable, ulong attackerId)
     {
         base.ApplyHit(damageable, attackerId);
-
-        print("hit hammer");
 
         DamageData data = new();
         data.Point = hitSocket.position;

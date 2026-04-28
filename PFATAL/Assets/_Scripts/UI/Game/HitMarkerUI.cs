@@ -33,7 +33,7 @@ public class HitMarkerUI : MonoBehaviour
         _hitmarkerImage.transform.localScale = _initialScale;
 
 
-        _hitmarkerImage.transform.DOPunchRotation(new Vector3(0, 0, Random.Range(-_rotationOffset, _rotationOffset)), _duration);
+        _hitmarkerImage.transform.DOPunchRotation(new Vector3(0, 0, Random.Range(-_rotationOffset, _rotationOffset)), _duration, 10, 10);
         _hitmarkerImage.transform.DOPunchScale(Vector2.one * _scalePunchIntensity, _duration).onComplete += OnPunchScale_Callback;
     }
 

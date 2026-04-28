@@ -5,6 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class DataCollector : MonoBehaviour
 {
@@ -31,13 +32,13 @@ public class DataCollector : MonoBehaviour
 
     void Start()
     {
-        //GameManager.Instance.EventOnGameStarted += RecordPlayers;
+        GameManager.Instance.EventOnGameStarted += RecordPlayers;
         GameManager.Instance.EventOnGameEnded += OnGameEnded;
     }
 
     void OnDestroy()
     {
-        //if (GameManager.Instance != null) GameManager.Instance.EventOnGameStarted -= RecordPlayers;
+        if (GameManager.Instance != null) GameManager.Instance.EventOnGameStarted -= RecordPlayers;
 
         if (GameManager.Instance != null) GameManager.Instance.EventOnGameEnded -= OnGameEnded;
     }
@@ -84,21 +85,24 @@ public class DataCollector : MonoBehaviour
         callback(validatedIds);
     }
 
-    /*public void RecordPlayers()
+    public void RecordPlayers()
     {
         if (!NetworkManager.Singleton.IsServer) return;
 
         foreach (ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
         {
+            PermanentPlayerIdentity Identity = GameManager.GetPlayerIdentity(clientID);
+            ulong SteamID = ulong.Parse(Identity.platformID);
+
             Player player = new Player
             {
-                Id = (long)clientID,
-                Name = "Player_" + clientID
+                Id = (long)SteamID,
+                Name = Identity.name
             };
 
             StartCoroutine(_databaseRequest.SendPlayer(player));
         }
-    }*/
+    }
 
     /// <summary>
     /// Fonction pour enregistrer les données d'une partie.
@@ -134,7 +138,14 @@ public class DataCollector : MonoBehaviour
     private IEnumerator RecordPlayerSet(LeaderBoardData leaderBoard)
     {
         List<long> idsToCheck = new();
-        foreach (var entry in leaderBoard.entries) idsToCheck.Add((long)entry.ClientID);
+        foreach (var entry in leaderBoard.entries)
+        {
+            ulong ClientID = entry.ClientID;
+            PermanentPlayerIdentity Identity = GameManager.GetPlayerIdentity(ClientID);
+            ulong SteamID = ulong.Parse(Identity.platformID);
+
+            idsToCheck.Add((long)SteamID);
+        }
 
         Dictionary<long, long> validatedIds = null;
         yield return StartCoroutine(ValidatePlayerIds(idsToCheck, result => validatedIds = result));
@@ -143,7 +154,11 @@ public class DataCollector : MonoBehaviour
 
         foreach (var entry in leaderBoard.entries)
         {
-            long safeId = validatedIds[(long)entry.ClientID];
+            ulong ClientID = entry.ClientID;
+            PermanentPlayerIdentity Identity = GameManager.GetPlayerIdentity(ClientID);
+            ulong SteamID = ulong.Parse(Identity.platformID);
+
+            long safeId = validatedIds[(long)SteamID];
 
             gamePlayerSets.Add(new GamePlayerSet
             {
@@ -208,7 +223,7 @@ public class DataCollector : MonoBehaviour
                 KillerId = validatedIds[death.KillerId],
                 Weapon = death.Weapon,
                 Distance = death.Distance,
-                IdGame = death.IdGame,
+                IdGame = gameId,
                 Time = death.Time
             });
         }

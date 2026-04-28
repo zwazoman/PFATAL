@@ -10,7 +10,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
     [Serializable]
     public class Pst_Frozen : Pst_Alive
     {
-        public float duration = 2f;
+        public float duration = 1f;
         
         private float _endTime;
 
@@ -18,6 +18,11 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         {
             duration = seconds;
             Sm.TransitionTo(this);
+        }
+        
+        public void Unfreeze()
+        {
+            _endTime = Time.time;
         }
 
         protected override void OnEntered(PlayerCharacter playerCharacter)
@@ -42,6 +47,9 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter playerCharacter)
         {
+            if(playerCharacter.health.IsDead)
+                return Sm.s_dead;
+                
             if (Time.time >= _endTime)
                 return playerCharacter.physics.ComputeIsGrounded() ? Sm.s_Idle : Sm.s_Falling;
 

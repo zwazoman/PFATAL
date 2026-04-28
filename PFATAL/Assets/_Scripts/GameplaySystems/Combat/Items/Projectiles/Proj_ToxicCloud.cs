@@ -10,13 +10,8 @@ public class Proj_ToxicCloud : Proj_Falling
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if (!IsServer) return;
 
-        Transform cameraTransform = GameManager.Instance
-            .GetPlayerCharacter(spawnContext.Value.spawnerClientID)
-            .playerCamera.transform;
-
-        transform.forward = (cameraTransform.forward + cameraTransform.up * 0.2f).normalized;
+        transform.forward = transform.forward + Vector3.up * 0.2f;
 
         speed = _throwStrength;
     }

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8256653295175443969}
   - component: {fileID: 4697483284928674964}
   - component: {fileID: 1619726894435834983}
-  - component: {fileID: 1767863103392276281}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -91,27 +90,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1767863103392276281
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1801363969722677061}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4084173529431785421
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,13 +99,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1246500142201000903}
-  - component: {fileID: 5557300847413617556}
   - component: {fileID: 7519854539836677464}
   - component: {fileID: 1906251986093296464}
   - component: {fileID: 6173769356752648167}
   - component: {fileID: 8584733664699426068}
   - component: {fileID: 3269829353930291782}
   - component: {fileID: 520835576147571097}
+  - component: {fileID: 7770727025701861415}
   m_Layer: 0
   m_Name: Proj_BearTrap
   m_TagString: Untagged
@@ -151,27 +129,6 @@ Transform:
   - {fileID: 8256653295175443969}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5557300847413617556
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4084173529431785421}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &7519854539836677464
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -232,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 513279241
+  GlobalObjectIdHash: 3239400345
   InScenePlacedSourceGlobalObjectIdHash: 3365923903
   DeferredDespawnTick: 0
   Ownership: 1
@@ -258,11 +215,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Proj_WolfTrap
   ShowTopMostFoldoutHeaderGroup: 1
+  visuals: {fileID: 0}
   _rb: {fileID: 1906251986093296464}
   _duringTime: 25
   _freezeDuration: 5
   _throwStrength: 25
   _activationDelay: 0.5
+  _dammage: 1
+  _radius: 1
 --- !u!114 &3269829353930291782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,3 +286,16 @@ MonoBehaviour:
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
+--- !u!114 &7770727025701861415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4084173529431785421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 225e7b16deda0a54bbf4814b03a7be84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BearTrapSound
+  main: {fileID: 8584733664699426068}

@@ -101,7 +101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       propertyPath: m_Name
-      value: Item_WP_Hammer
+      value: Item_WP_Sword
       objectReference: {fileID: 0}
     - target: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       propertyPath: m_Layer
@@ -119,7 +119,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -732660778803273930}
+      addedObject: {fileID: 8492910160190451158}
   m_SourcePrefab: {fileID: 100100000, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
 --- !u!4 &4400400638968211366 stripped
 Transform:
@@ -136,7 +136,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
   m_PrefabInstance: {fileID: 476667862330553218}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &-732660778803273930
+--- !u!114 &8492910160190451158
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,9 +145,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8453122098565441690}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4878f29c998639c44937c0a4b4362177, type: 3}
+  m_Script: {fileID: 11500000, guid: be73e00e57edd7f4db42275e8c59c65e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Hammer
+  m_EditorClassIdentifier: Assembly-CSharp::Sword
   playerCharacter: {fileID: 0}
   _pickup: {fileID: 8646866019681496794, guid: 9dbbfe26db967984788ffaac38ae8306, type: 3}
   hitSocket: {fileID: 312709263419611719}
@@ -159,10 +159,10 @@ MonoBehaviour:
   _animator: {fileID: 3052496390831374632}
   _eventReceiver: {fileID: 7725396704301697543}
   _knockbackStrength: 10
-  dashCooldown: 2.2
-  _dashChargedDuration: 0.3
-  _dashStrength: 9
-  _dashDmgMult: 0.6
+  dashCooldown: 1.5
+  _dashChargedDuration: 1.2
+  _dashStrength: 7
+  _dashDmgMult: 0.8
   _dashDotThreshold: 0
   currentDashCooldown: 0
 --- !u!1001 &8392829366872443326
@@ -231,7 +231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dd617358e210a204184ccb40cb621904, type: 3}
       propertyPath: m_Name
-      value: Mesh_Marteau
+      value: Mesh_Sword
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dd617358e210a204184ccb40cb621904, type: 3}
       propertyPath: m_Layer

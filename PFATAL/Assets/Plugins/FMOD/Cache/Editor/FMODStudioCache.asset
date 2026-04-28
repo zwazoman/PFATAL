@@ -509,10 +509,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639129883618542534
+  lastModified: 639129916192241097
   FileSizes:
   - Name: Desktop
-    Value: 571264
+    Value: 579104
   Exists: 1
 --- !u!114 &-2131126160251708577
 MonoBehaviour:
@@ -682,13 +682,43 @@ MonoBehaviour:
   - {fileID: -7448078539282638560}
   - {fileID: -2131126160251708577}
   - {fileID: 4081459758821036297}
+  - {fileID: 309862886503325782}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1373530535141412940}
   StringsBanks:
   - {fileID: 7971645662156069631}
-  cacheTime: 639129883618542534
+  cacheTime: 639129916192241097
   cacheVersion: 131635
+--- !u!114 &309862886503325782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Items/BearTrap/BearTrapTrigger3D
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Items/BearTrap/BearTrapTrigger3D
+  Guid:
+    Data1: -1208488022
+    Data2: 1228308322
+    Data3: 2083398306
+    Data4: 229048733
+  Banks:
+  - {fileID: -2518904041505098000}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 7888624141624938242}
+  - {fileID: 455827300936431378}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1620
 --- !u!114 &454870796024394520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,6 +738,30 @@ MonoBehaviour:
   FileSizes:
   - Name: Desktop
     Value: 2433984
+  Exists: 1
+--- !u!114 &455827300936431378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/BearTrapTrigger3D/ReverbAmount
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: ReverbAmount
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3990394630
+    data2: 3121053706
+  Type: 0
+  IsGlobal: 0
+  Labels: []
   Exists: 1
 --- !u!114 &1057169750113993686
 MonoBehaviour:
@@ -798,7 +852,7 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639129883605470487
+  lastModified: 639129911473047182
   FileSizes:
   - Name: Desktop
     Value: 5348
@@ -1007,7 +1061,7 @@ MonoBehaviour:
   - {fileID: 4672911786155780053}
   MinDistance: 1
   MaxDistance: 20
-  Length: 2385
+  Length: 2243
 --- !u!114 &4672911786155780053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1208,6 +1262,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &7888624141624938242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/BearTrapTrigger3D/Occlusion
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Occlusion
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3656716992
+    data2: 1176487324
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &7971645662156069631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1223,10 +1301,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639129883605511079
+  lastModified: 639129911473082434
   FileSizes:
   - Name: Desktop
-    Value: 2324
+    Value: 2376
   Exists: 1
 --- !u!114 &8015081236418152981
 MonoBehaviour:

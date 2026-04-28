@@ -509,10 +509,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639119511879636221
+  lastModified: 639129883618542534
   FileSizes:
   - Name: Desktop
-    Value: 555040
+    Value: 571264
   Exists: 1
 --- !u!114 &-2131126160251708577
 MonoBehaviour:
@@ -617,30 +617,6 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1036
   Exists: 1
---- !u!114 &-1595037283756350778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/Land/GroundType
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
-  Name: GroundType
-  StudioPath: 
-  Min: 0
-  Max: 2
-  Default: 0
-  ID:
-    data1: 1121515059
-    data2: 3384926809
-  Type: 1
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
 --- !u!114 &-103280224702057467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -700,19 +676,18 @@ MonoBehaviour:
   - {fileID: -3945287108600260716}
   - {fileID: -1799917517773424415}
   - {fileID: -5208899082357985717}
-  - {fileID: 3729594191091754991}
-  - {fileID: 2489339018829156757}
   - {fileID: -3672338554066865420}
   - {fileID: -8248886819164517281}
   - {fileID: -8592731403252364489}
   - {fileID: -7448078539282638560}
   - {fileID: -2131126160251708577}
+  - {fileID: 4081459758821036297}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1373530535141412940}
   StringsBanks:
   - {fileID: 7971645662156069631}
-  cacheTime: 639119511879636221
+  cacheTime: 639129883618542534
   cacheVersion: 131635
 --- !u!114 &454870796024394520
 MonoBehaviour:
@@ -823,7 +798,7 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639119504510035911
+  lastModified: 639129883605470487
   FileSizes:
   - Name: Desktop
     Value: 5348
@@ -881,35 +856,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &2489339018829156757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Player/Land3D
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/SFX/Player/Land3D
-  Guid:
-    Data1: 985687481
-    Data2: 1076466146
-    Data3: -1649182310
-    Data4: 171470861
-  Banks:
-  - {fileID: -2518904041505098000}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters:
-  - {fileID: 2613551825168723793}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &2613551825168723793
+--- !u!114 &2721218296360464953
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -919,17 +866,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/Land3D/GroundType
+  m_Name: parameter:/BearTrapSetup3D/ReverbAmount
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
-  Name: GroundType
+  Name: ReverbAmount
   StudioPath: 
   Min: 0
-  Max: 2
+  Max: 1
   Default: 0
   ID:
-    data1: 1121515059
-    data2: 3384926809
-  Type: 1
+    data1: 3990394630
+    data2: 3121053706
+  Type: 0
   IsGlobal: 0
   Labels: []
   Exists: 1
@@ -1008,34 +955,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &3729594191091754991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Player/Land
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/SFX/Player/Land
-  Guid:
-    Data1: 2063987627
-    Data2: 1197430214
-    Data3: 1996475549
-    Data4: 1184319987
-  Banks:
-  - {fileID: -2518904041505098000}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters:
-  - {fileID: -1595037283756350778}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &3855629435670686213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1047,6 +966,59 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
   m_Name: parameter:/Footsteps3D/Occlusion
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Occlusion
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3656716992
+    data2: 1176487324
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &4081459758821036297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Items/BearTrap/BearTrapSetup3D
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Items/BearTrap/BearTrapSetup3D
+  Guid:
+    Data1: 1169339876
+    Data2: 1286471567
+    Data3: 2112674745
+    Data4: 184341347
+  Banks:
+  - {fileID: -2518904041505098000}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 2721218296360464953}
+  - {fileID: 4672911786155780053}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2385
+--- !u!114 &4672911786155780053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/BearTrapSetup3D/Occlusion
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
   Name: Occlusion
   StudioPath: 
@@ -1251,10 +1223,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639119504510066057
+  lastModified: 639129883605511079
   FileSizes:
   - Name: Desktop
-    Value: 2348
+    Value: 2324
   Exists: 1
 --- !u!114 &8015081236418152981
 MonoBehaviour:

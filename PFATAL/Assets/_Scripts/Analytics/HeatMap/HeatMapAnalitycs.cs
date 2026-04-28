@@ -17,6 +17,6 @@ public class HeatMapAnalitycs : MonoBehaviour
             if (!character.IsServer) return;
         }
 
-        HeatMapServerAnalitics.instance.Players.Add(gameObject);
+        //HeatMapServerAnalitics.instance.Players.Add(gameObject);
     }
 }

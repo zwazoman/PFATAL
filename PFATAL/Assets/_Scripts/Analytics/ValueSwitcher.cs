@@ -18,6 +18,7 @@ public class ValueSwitcher : NetworkBehaviour
     public TMP_InputField lookSensitivityText;
     public TMP_InputField jumpForceText;
     public TMP_InputField gravityText;
+
     private void Awake()
     {
         //TryGetComponent(out playerCharacter);
@@ -118,7 +119,7 @@ public class ValueSwitcher : NetworkBehaviour
         Debug.LogError("Switching Gravity");
         foreach (PlayerCharacter character in characters)
         {
-            //character.physics.ChangeGravity(2f);
+            character.physics.ChangeGravityStrenght(float.Parse(gravityText.text));
         }
     }
 
@@ -209,6 +210,7 @@ public class ValueSwitcher : NetworkBehaviour
     //Tomahawk
     //Tomahawk damage
     //Tomahawk attack speed
+    //Tomahawk ammo
     //Tomahawk explosion radius
     //Tomahawk grab reload time
     //Tomahawk grab force

@@ -38,7 +38,7 @@ public class ScriptTestTemporaire : MonoBehaviour
     }
 
     [Button("Test pour voir les valeur de dégradé")]
-    public void GetTheFuckingPixel()
+    public void GetPixel()
     {
         HeatMapData heatMapData = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(path));
 

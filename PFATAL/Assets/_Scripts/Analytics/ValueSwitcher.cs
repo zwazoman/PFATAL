@@ -1,10 +1,8 @@
 using _scripts.PlayerCharacter;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,17 +10,17 @@ public class ValueSwitcher : NetworkBehaviour
 {
     public GameObject cheatPanel;
     public PlayerCharacter playerCharacter;
-    public TextMeshProUGUI test;
     public List<PlayerCharacter> characters = new();
 
-
-    #region Player values
-    public TextMeshProUGUI playerHpText;
-    #endregion
-
+    [Header("Player")]
+    public TMP_InputField hpText;
+    public TMP_InputField movementSpeedText;
+    public TMP_InputField lookSensitivityText;
+    public TMP_InputField jumpForceText;
+    public TMP_InputField gravityText;
     private void Awake()
     {
-        TryGetComponent(out playerCharacter);
+        //TryGetComponent(out playerCharacter);
     }
 
     async void Start()
@@ -45,7 +43,7 @@ public class ValueSwitcher : NetworkBehaviour
 
             Debug.Log("CONNARD");
 
-            if (!cheatPanel.activeSelf)
+            if (cheatPanel.activeSelf)
             {
                 cheatPanel.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
@@ -57,10 +55,10 @@ public class ValueSwitcher : NetworkBehaviour
             }
         }
 
-        if (context.canceled)
+        /*if (context.canceled)
         {
-            SwitchHammerDamageRpc();
-        }
+            
+        }*/
     }
 
     //Player
@@ -77,7 +75,7 @@ public class ValueSwitcher : NetworkBehaviour
         
         foreach (PlayerCharacter character in characters)
         {
-            character.health.SetMaxHP(200);
+            character.health.SetMaxHP(float.Parse(hpText.text));
         }
     }
 
@@ -88,7 +86,7 @@ public class ValueSwitcher : NetworkBehaviour
 
         foreach (PlayerCharacter character in characters)
         {
-            character.movement.globalMovespeedMultiplyer = 2;
+            character.movement.globalMovespeedMultiplyer = float.Parse(movementSpeedText.text);
         }
     }
 
@@ -100,7 +98,7 @@ public class ValueSwitcher : NetworkBehaviour
         {
             character.TryGetComponent(out CharacterAiming aiming);
 
-            aiming.Sensitivity = 10f;
+            aiming.Sensitivity = float.Parse(lookSensitivityText.text);
         }
     }
 
@@ -110,7 +108,7 @@ public class ValueSwitcher : NetworkBehaviour
         Debug.LogError("Switching Jump Force");
         foreach (PlayerCharacter character in characters)
         {
-            //character.physics. = 10f;
+            character.stateMachine.s_Jumping.ChangeJumpForce(float.Parse(jumpForceText.text));
         }
     }
 

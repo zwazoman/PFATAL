@@ -9,8 +9,6 @@ public class JoiningView : View
 
     [Header("Join References")]
     [SerializeField] private TMP_InputField joinCodeInput;
-    [SerializeField] private Button startJoinButton;
-    [SerializeField] private Button cancelJoinButton;
 
     public async void StartJoin()
     {

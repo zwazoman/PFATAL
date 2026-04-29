@@ -77,6 +77,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 4225
+--- !u!114 &-8428761357866832769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/GroundSlamHit3D/ReverbAmount
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: ReverbAmount
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3990394630
+    data2: 3121053706
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-8248886819164517281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,7 +129,7 @@ MonoBehaviour:
   - {fileID: 6819778999272931330}
   MinDistance: 1
   MaxDistance: 20
-  Length: 12000
+  Length: 5000
 --- !u!114 &-7501371581693033615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,6 +446,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-3574953816171228867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Items/GroundSlam/GroundSlamHit
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Items/GroundSlam/GroundSlamHit
+  Guid:
+    Data1: -680124750
+    Data2: 1222792315
+    Data3: -461782644
+    Data4: 1127652134
+  Banks:
+  - {fileID: -2518904041505098000}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-3528371254459945633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,10 +560,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639130565104435015
+  lastModified: 639130776380588664
   FileSizes:
   - Name: Desktop
-    Value: 602016
+    Value: 1094240
   Exists: 1
 --- !u!114 &-2389884414179561786
 MonoBehaviour:
@@ -711,12 +762,15 @@ MonoBehaviour:
   - {fileID: 4081459758821036297}
   - {fileID: 309862886503325782}
   - {fileID: -2389884414179561786}
+  - {fileID: -3574953816171228867}
+  - {fileID: 7286511439417374534}
+  - {fileID: 4716686741404004879}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1373530535141412940}
   StringsBanks:
   - {fileID: 7971645662156069631}
-  cacheTime: 639130565104435015
+  cacheTime: 639130776380588664
   cacheVersion: 131635
 --- !u!114 &309862886503325782
 MonoBehaviour:
@@ -880,7 +934,7 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639130555651507165
+  lastModified: 639130776336708389
   FileSizes:
   - Name: Desktop
     Value: 5348
@@ -1114,6 +1168,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &4716686741404004879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/SplashAmbience
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Ambience/SplashAmbience
+  Guid:
+    Data1: 660043579
+    Data2: 1326877894
+    Data3: 1599923074
+    Data4: -1339706700
+  Banks:
+  - {fileID: -2518904041505098000}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 38000
 --- !u!114 &4876777421940479374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1235,6 +1316,59 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &6974728194834730055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/GroundSlamHit3D/Occlusion
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Occlusion
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3656716992
+    data2: 1176487324
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &7286511439417374534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Items/GroundSlam/GroundSlamHit3D
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Items/GroundSlam/GroundSlamHit3D
+  Guid:
+    Data1: -77677368
+    Data2: 1156598554
+    Data3: 1462163605
+    Data4: 298319553
+  Banks:
+  - {fileID: -2518904041505098000}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -8428761357866832769}
+  - {fileID: 6974728194834730055}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &7294639390285380656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1329,10 +1463,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639130555651542393
+  lastModified: 639130776336880938
   FileSizes:
   - Name: Desktop
-    Value: 2412
+    Value: 2576
   Exists: 1
 --- !u!114 &8015081236418152981
 MonoBehaviour:

@@ -1,14 +1,19 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Proj_WolfTrap : Projectile
 {
+    public event Action OnTrapPlayer;
+    public event Action OnDeploy;
+
     [SerializeField] Rigidbody _rb;
     [SerializeField] float _duringTime = 25f;
     [SerializeField] float _freezeDuration = 5f;
     [SerializeField] float _throwStrength = 25f;
     [SerializeField] float _activationDelay = 0.5f;
     [SerializeField] float _dammage = 1f;
+    [SerializeField] float _radius = 1;
 
     float timer;
     bool isArmed = false;
@@ -45,6 +50,7 @@ public class Proj_WolfTrap : Projectile
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             _rb.isKinematic = true;
+            OnDeploy?.Invoke();
         }
 
         if (isArmed && !hasActivated)
@@ -65,7 +71,7 @@ public class Proj_WolfTrap : Projectile
 
     private void HandlePlayers()
     {
-        int count = Physics.OverlapSphereNonAlloc(transform.position, 1, buffer);
+        int count = Physics.OverlapSphereNonAlloc(transform.position, _radius, buffer);
 
         for (int i = 0; i < count; i++)
         {
@@ -76,10 +82,11 @@ public class Proj_WolfTrap : Projectile
             {
                 Amount = _dammage,
                 SourcePlayerClientID = OwnerClientId,
+                SourcePos = transform.position,
                 Point = hitObject.transform.position,
                 Direction = Vector3.down,
                 KnockbackForce = Vector3.zero,
-                Radius = 1
+                Radius = _radius
             };
             hitObject.TakeDamage(damageData);
 
@@ -89,6 +96,8 @@ public class Proj_WolfTrap : Projectile
                 ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
                 ApplyFreezeRPC(_freezeDuration, RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
             }
+
+            OnTrapPlayer?.Invoke();
 
             timer = _duringTime - _freezeDuration;
             hasActivated = true;
@@ -109,5 +118,10 @@ public class Proj_WolfTrap : Projectile
 
         Debug.Log($"[WolfTrap RPC] APPLY FREEZE sur client {NetworkManager.Singleton.LocalClientId}");
         player.stateMachine.s_Frozen.Freeze(duration);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, _radius);
     }
 }

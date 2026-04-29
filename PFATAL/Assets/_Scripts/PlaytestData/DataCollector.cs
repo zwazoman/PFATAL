@@ -182,7 +182,15 @@ public class DataCollector : MonoBehaviour
 
         foreach (var entry in leaderBoard.entries)
         {
-            long safeId = validatedIds[(long)entry.ClientID];
+            ulong ClientID = entry.ClientID;
+            PermanentPlayerIdentity Identity = GameManager.GetPlayerIdentity(ClientID);
+            ulong SteamID = ulong.Parse(Identity.platformID);
+
+            if (!validatedIds.TryGetValue((long)SteamID, out long safeId))
+            {
+                Debug.LogError($"[DataCollector] SteamID {SteamID} introuvable dans validatedIds !");
+                safeId = 0;
+            }
 
             scores.Add(new Score
             {

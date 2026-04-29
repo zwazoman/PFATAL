@@ -70,7 +70,7 @@ public class ToxicCloud : NetworkBehaviour
         transform.localScale = Vector3.one*.2f;
         transform.DOScale(new Vector3(radius, radius, radius), TWEEN_DURATION).SetEase(Ease.OutCubic);
 
-        float endRadius = radius; radius = 0;
+        float endRadius = radius; radius = 0.2f;
         DOTween.To(()=> radius,(float v)=>radius = v,endRadius,TWEEN_DURATION).SetEase(Ease.OutElastic);
     }
 

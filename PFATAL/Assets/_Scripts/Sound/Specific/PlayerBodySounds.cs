@@ -48,7 +48,7 @@ public class PlayerBodySounds : SoundComponent<PlayerAnimationEventsListener>
             PlayGroundSlamSound();
     }
 
-    void PlayGroundSlamSound() => AudioManager.Instance.PlayOnlineOneShots(Sounds.GroundSlam, Sounds.GroundSlam3D, transform.position);
+    void PlayGroundSlamSound() => AudioManager.Instance.PlayOnlineOneShots(Sounds.GroundSlamHit, Sounds.GroundSlamHit3D, transform.position);
 
     void PlayFootstepSound()
     {

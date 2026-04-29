@@ -131,7 +131,7 @@ public class PlayerCharacterInputs : NetworkBehaviour
 
     public void Respawn() { OnRespawnInput?.Invoke(); }
 
-    void FixedUpdate()
+    void Update()
     {
         if (IsSpawned && !IsOwner) return;
         if (_paused) return;

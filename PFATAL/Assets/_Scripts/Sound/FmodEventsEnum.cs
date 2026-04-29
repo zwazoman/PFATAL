@@ -1,1 +1,1 @@
-public enum Sounds{Music,CrossbowCharge,CrossbowShoot3D,TomahawkShoot3D,Footsteps,TomahawkSpin3D,Explosion3D,TomahawkShoot,CrossbowShoot,PlayerReverb,Indoor,Menu,HitMarker,Jump,Footsteps3D,Hurt,BreakRune,Land,Land3D,TornadoHit,TornadoLaunch3D,Smoke3D,TP,TP3D,}
+public enum Sounds{Music,CrossbowCharge,CrossbowShoot3D,TomahawkShoot3D,Footsteps,TomahawkSpin3D,Explosion3D,TomahawkShoot,CrossbowShoot,PlayerReverb,Indoor,Menu,HitMarker,Jump,Footsteps3D,Hurt,BreakRune,TornadoHit,TornadoLaunch3D,Smoke3D,TP,TP3D,BearTrapSetup3D,BearTrapTrigger3D,Pickup,}

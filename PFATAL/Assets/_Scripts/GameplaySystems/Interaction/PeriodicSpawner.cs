@@ -29,7 +29,7 @@ public class PeriodicSpawner : NetworkBehaviour
     {
         if(_currentPickup != null)
         {
-            _currentPickup.OnPickup -= StartSpawning;
+            _currentPickup.OnOnlinePickup -= StartSpawning;
             //Debug.Log("unlink pickup event");
             _currentPickup = null;
         }
@@ -46,7 +46,7 @@ public class PeriodicSpawner : NetworkBehaviour
         GameObject pickupObject = await Summoner.Instance.SpawnObject(pickupPrefab, _spawnSocket.position, _spawnSocket.rotation,true);
         if (pickupObject.TryGetComponent(out _currentPickup))
         {
-            _currentPickup.OnPickup += StartSpawning;
+            _currentPickup.OnOnlinePickup += StartSpawning;
         }
     }
 }

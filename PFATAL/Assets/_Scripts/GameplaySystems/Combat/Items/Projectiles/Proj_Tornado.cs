@@ -90,12 +90,12 @@ public class Proj_Tornado : Projectile
                     blackList.Add(hitObject);
                     StartCoroutine(RemoveObjectFromBlackList_Delayed(hitObject));
 
-                    if( hitObject.TryGetComponent(out PlayerStateMachine playerStateMachine));
-
-                    // RPC vers le client ciblé
-                    ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
-                    ApplyPropulsedRPC(RpcTarget.Single(targetClientId, RpcTargetUse.Temp)
-                    );
+                    if (hitObject.isPlayer)
+                    {
+                        // RPC vers le client ciblé
+                        ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
+                        ApplyPropulsedRPC(RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
+                    }
                 }
             }
         }

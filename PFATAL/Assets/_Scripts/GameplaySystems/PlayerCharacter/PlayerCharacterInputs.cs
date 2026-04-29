@@ -1,4 +1,5 @@
 using Chat;
+using NetworkTime;
 using System;
 using Unity.Netcode;
 using UnityEditor;
@@ -42,6 +43,18 @@ public class PlayerCharacterInputs : NetworkBehaviour
     {
         _gamepad = Gamepad.current;
         movementInput = context.ReadValue<Vector2>();
+
+        if (_gamepad != null)
+        {
+            if (context.action.activeControl.device.name == _gamepad.name)
+            {
+                UsingGamePad = true;
+                if (context.canceled)
+                {
+                    UsingGamePad = false;
+                }
+            }
+        }
     }
 
     public void Look(InputAction.CallbackContext context)
@@ -73,17 +86,31 @@ public class PlayerCharacterInputs : NetworkBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
+        _gamepad = Gamepad.current;
         IsHoldingJumpKey = true;
         if (context.started)
         {
             _jumpKeyBuffered = true;
             _lastJumpKeyPressTime = Time.time;
+            print(TimeStamp.Now);
         }
         _jumpKeyBuffered &= Time.time - _lastJumpKeyPressTime <= _jumpBufferingDuration && IsHoldingJumpKey;
         if (context.canceled)
         {
             IsHoldingJumpKey = false;
             _jumpKeyBuffered = false;
+        }
+
+        if (_gamepad != null)
+        {
+            if (context.action.activeControl.device.name == _gamepad.name)
+            {
+                UsingGamePad = true;
+                if (context.canceled)
+                {
+                    UsingGamePad = false;
+                }
+            }
         }
     }
 
@@ -104,7 +131,7 @@ public class PlayerCharacterInputs : NetworkBehaviour
 
     public void Respawn() { OnRespawnInput?.Invoke(); }
 
-    void Update()
+    void FixedUpdate()
     {
         if (IsSpawned && !IsOwner) return;
         if (_paused) return;

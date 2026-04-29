@@ -43,18 +43,6 @@ public class PlayerCharacterInputs : NetworkBehaviour
     {
         _gamepad = Gamepad.current;
         movementInput = context.ReadValue<Vector2>();
-
-        if (_gamepad != null)
-        {
-            if (context.action.activeControl.device.name == _gamepad.name)
-            {
-                UsingGamePad = true;
-                if (context.canceled)
-                {
-                    UsingGamePad = false;
-                }
-            }
-        }
     }
 
     public void Look(InputAction.CallbackContext context)
@@ -86,7 +74,6 @@ public class PlayerCharacterInputs : NetworkBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        _gamepad = Gamepad.current;
         IsHoldingJumpKey = true;
         if (context.started)
         {
@@ -99,18 +86,6 @@ public class PlayerCharacterInputs : NetworkBehaviour
         {
             IsHoldingJumpKey = false;
             _jumpKeyBuffered = false;
-        }
-
-        if (_gamepad != null)
-        {
-            if (context.action.activeControl.device.name == _gamepad.name)
-            {
-                UsingGamePad = true;
-                if (context.canceled)
-                {
-                    UsingGamePad = false;
-                }
-            }
         }
     }
 
@@ -131,7 +106,7 @@ public class PlayerCharacterInputs : NetworkBehaviour
 
     public void Respawn() { OnRespawnInput?.Invoke(); }
 
-    void FixedUpdate()
+    void Update()
     {
         if (IsSpawned && !IsOwner) return;
         if (_paused) return;

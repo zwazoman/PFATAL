@@ -1,4 +1,5 @@
 using Chat;
+using NetworkTime;
 using System;
 using Unity.Netcode;
 using UnityEditor;
@@ -78,6 +79,7 @@ public class PlayerCharacterInputs : NetworkBehaviour
         {
             _jumpKeyBuffered = true;
             _lastJumpKeyPressTime = Time.time;
+            print(TimeStamp.Now);
         }
         _jumpKeyBuffered &= Time.time - _lastJumpKeyPressTime <= _jumpBufferingDuration && IsHoldingJumpKey;
         if (context.canceled)

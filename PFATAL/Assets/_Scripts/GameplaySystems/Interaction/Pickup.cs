@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class Pickup : Interactable
 {
+    public event Action OnOnlinePickup;
     public event Action OnPickup;
 
     [SerializeField] bool _despawnsOnPickup = true;
+
+    [Header("References")]
+    [SerializeField] GameObject _visuals;
 
     [Header("Item Info")]
     [SerializeField] ItemInfo _itemInfo;
@@ -25,20 +29,6 @@ public class Pickup : Interactable
 
     float _timer;
 
-    private void Update()
-    {
-        //if (!IsServer && !despawns)
-        //    return;
-
-        //_timer += Time.deltaTime;
-
-        //if(_timer > _lifeTime)
-        //{
-        //    _timer = 0;
-        //    DespawnRpc();
-        //}
-    }
-
     public override void Interact(PlayerInteraction interaction)
     {
         base.Interact(interaction);
@@ -48,7 +38,10 @@ public class Pickup : Interactable
 
         if (interaction._playerCharacter.playerHands.TryEquipItem(_itemInfo))
         {
-            //transform.DOPunchScale(transform.localScale * _pickupTweenScale, _pickupTweenDuration, 0, 0);
+            OnPickup?.Invoke();
+
+            _visuals.SetActive(false);
+
             PickupRpc();
 
             if (_despawnsOnPickup)
@@ -59,7 +52,7 @@ public class Pickup : Interactable
     [Rpc(SendTo.Everyone)]
     void PickupRpc()
     {
-        OnPickup?.Invoke();
+        OnOnlinePickup?.Invoke();
         pickedUp = true;
     }
 

@@ -83,12 +83,12 @@ public class Proj_WolfTrap : Projectile
             };
             hitObject.TakeDamage(damageData);
 
-            // RPC vers le client ciblé
-            ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
-            ApplyFreezeRPC(
-                _freezeDuration,
-                RpcTarget.Single(targetClientId, RpcTargetUse.Temp)
-            );
+            if (hitObject.isPlayer)
+            {
+                // RPC vers le client ciblé
+                ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
+                ApplyFreezeRPC(_freezeDuration, RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
+            }
 
             timer = _duringTime - _freezeDuration;
             hasActivated = true;

@@ -155,6 +155,13 @@ public abstract class GameRulesBase
             {
                 playerData.Character =
                     await PlayerCharacterSpawner.Instance.SpawnInitialPlayerCharacter(playerData.ClientID);
+
+                var capturedPlayer = playerData;
+
+                capturedPlayer.Character.health.OnDie += () =>
+                {
+                    RegisterDeath(capturedPlayer);
+                };
             }
         }
         catch (Exception e)
@@ -187,6 +194,28 @@ public abstract class GameRulesBase
         OnGameEnded?.Invoke(result);
     }
 
+    protected void RegisterDeath(PlayerData player)
+    {
+        // System pour enregistre les morts dans le data collector
+        ulong victimClientID = player.ClientID;
+        ulong killerClientID = player.Character.health.LastDamageSourceClientID;
+
+        PermanentPlayerIdentity victimIdentity = GameManager.GetPlayerIdentity(victimClientID);
+        PermanentPlayerIdentity killerIdentity = GameManager.GetPlayerIdentity(killerClientID);
+
+        ulong victimSteamID = ulong.Parse(victimIdentity.platformID);
+        ulong killerSteamID = ulong.Parse(killerIdentity.platformID);
+
+        int weaponID = player.Character.health.LastDamageWeaponID;
+        float timeOfDeath = GameManager.Instance.TimeSinceGameStart;
+        float distance = Vector3.Distance(
+            player.Character.transform.position,
+            player.Character.health.SourcePos
+        );
+
+        DataCollector.Instance.RegisterDeath(victimSteamID, killerSteamID, weaponID, distance, timeOfDeath);
+    }
+
     //abstract functions
     
     /// <summary>
@@ -198,6 +227,4 @@ public abstract class GameRulesBase
     /// called after the game ends.
     /// </summary>
     protected abstract GameResult EndGame();
-    
-
 }

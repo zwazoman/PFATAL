@@ -24,15 +24,15 @@ public class ValueSwitcher : NetworkBehaviour
         //TryGetComponent(out playerCharacter);
     }
 
-    async void Start()
+    void Start()
     {
-        await Task.Delay(5000);
+        //await Task.Delay(500);
 
-        foreach (GameObject playerObject in HeatMapServerAnalitics.instance.Players)
+        /*foreach (GameObject playerObject in HeatMapServerAnalitics.instance.Players)
         {
             playerObject.TryGetComponent(out PlayerCharacter character);
             characters.Add(character);
-        }
+        }*/
     }
 
     public void OnToggleCheatPanel(InputAction.CallbackContext context)
@@ -62,6 +62,12 @@ public class ValueSwitcher : NetworkBehaviour
         }*/
     }
 
+    public void Test()
+    {
+        Debug.Log("Test");
+        SwitchHpRpc();
+    }
+
     //Player
     //HP
     //Movement speed
@@ -72,11 +78,12 @@ public class ValueSwitcher : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     public void SwitchHpRpc()
     {
-        Debug.LogError("Sala Switching Hp");
+        Debug.Log("Sala Switching Hp");
         
         foreach (PlayerCharacter character in characters)
         {
             character.health.SetMaxHP(float.Parse(hpText.text));
+            Debug.LogError($"Hp switched to {float.Parse(hpText.text)}");
         }
     }
 

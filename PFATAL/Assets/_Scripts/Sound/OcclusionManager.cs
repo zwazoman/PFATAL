@@ -29,6 +29,7 @@ public class OcclusionManager : NetworkBehaviour
 
     private void Start()
     {
+        return; //todo => gérer hors game
         if(GameManager.Instance != null)
             GameManager.Instance.EventOnGameStarted += GameStarted_Callback;
 
@@ -38,12 +39,13 @@ public class OcclusionManager : NetworkBehaviour
     void GameStarted_Callback()
     {
         _listener = GameManager.Instance.localPlayerCharacter.listener;
+        _listener = FindAnyObjectByType<StudioListener>();
     }
 
     private void Update()
     {
         if (_listener == null)
-            _listener = FindAnyObjectByType<StudioListener>();
+            return;
 
         //update delay
         if(_timer < _occlusionUpdateDelay)

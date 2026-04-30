@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 5643960309130710458}
   - component: {fileID: 6991424612061894925}
   - component: {fileID: 3397786899144706925}
+  - component: {fileID: 1895880019322822491}
   - component: {fileID: 7823175114929191935}
   - component: {fileID: 8708929634013125961}
   m_Layer: 7
@@ -108,6 +109,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   isInteractable: 1
   _despawnsOnPickup: 1
+  _visuals: {fileID: 6469985150561325490}
   _itemInfo:
     itemType: 0
     itemPrefab: {fileID: 0}
@@ -115,6 +117,20 @@ MonoBehaviour:
   _pickupTweenDuration: 0.3
   _lifeTime: 5
   despawns: 1
+  pickedUp: 0
+--- !u!114 &1895880019322822491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7940127125792608664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 103eceba33d39df41a8e821b6333cd31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickupSound
+  main: {fileID: 3397786899144706925}
 --- !u!114 &7823175114929191935
 MonoBehaviour:
   m_ObjectHideFlags: 0

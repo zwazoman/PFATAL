@@ -1,9 +1,9 @@
 using _scripts.PlayerCharacter;
-using FMODUnity;
+using NetworkTime;
 using UnityEngine;
 using state = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
-public class PlayerSounds : SoundComponent<PlayerAnimationEventsListener>
+public class PlayerBodySounds : SoundComponent<PlayerAnimationEventsListener>
 {
     [SerializeField] PlayerCharacter _playerCharacter;
 
@@ -24,26 +24,13 @@ public class PlayerSounds : SoundComponent<PlayerAnimationEventsListener>
     protected override void LinkEvents()
     {
         if (!_playerCharacter.IsOwner)
+        {
             main.OnFootstep += PlayFootstepSound;
-        else
-            _autoPlayTest = true;
+        }
 
         _playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += StateChanged_Callback;
 
         _playerCharacter.health.OnDamageTaken += (_) => PlayDamageSound();
-    }
-
-    private void Update()
-    {
-        if (!_autoPlayTest)
-            return;
-
-        _timer += Time.deltaTime;
-        if (_timer >= 2)
-        {
-            _timer = 0;
-            //PlayFootstepSound();
-        }
     }
 
 
@@ -54,7 +41,14 @@ public class PlayerSounds : SoundComponent<PlayerAnimationEventsListener>
 
         if (((previousState & state.Grounded) == state.Grounded) && (newState == state.Jumping))
             PlayJumpSound();
+
+        print(previousState + " " + newState);
+
+        if ((previousState == state.GroundSlam) && (newState == state.Idle))
+            PlayGroundSlamSound();
     }
+
+    void PlayGroundSlamSound() => AudioManager.Instance.PlayOnlineOneShots(Sounds.GroundSlamHit, Sounds.GroundSlamHit3D, transform.position);
 
     void PlayFootstepSound()
     {
@@ -67,7 +61,8 @@ public class PlayerSounds : SoundComponent<PlayerAnimationEventsListener>
     {
         SwapGroundType() ;
 
-        AudioManager.Instance.PlayOneShot(Sounds.Footsteps3D, transform.position, "GroundType", (int)_currentGroundType);
+        AudioManager.Instance.PlayOnlineOneShots(Sounds.Footsteps, Sounds.Footsteps3D, transform.position, "GroundType", (int)_currentGroundType);
+        //AudioManager.Instance.PlayOneShot(Sounds.Footsteps3D, transform.position, "GroundType", (int)_currentGroundType);
     }
 
     void PlayJumpSound() => AudioManager.Instance.PlayOneShot(Sounds.Jump);

@@ -28,7 +28,25 @@ public class GameRulesDeathMatch : GameRulesBase
                     killer.Score.Kills++;
                     killer.Score.Points = killer.Score.Kills-killer.Score.Deaths;
                 }
-                
+
+                // System pour enregistre les morts dans le data collector
+                ulong victimClientID = player.ClientID;
+                ulong killerClientID = player.Character.health.LastDamageSourceClientID;
+
+                PermanentPlayerIdentity victimIdentity = GameManager.GetPlayerIdentity(victimClientID);
+                PermanentPlayerIdentity killerIdentity = GameManager.GetPlayerIdentity(killerClientID);
+
+                ulong victimSteamID = ulong.Parse(victimIdentity.platformID);
+                ulong killerSteamID = ulong.Parse(killerIdentity.platformID);
+
+                float timeOfDeath = GameManager.Instance.TimeSinceGameStart;
+                float distance = Vector3.Distance(
+                    player.Character.transform.position,
+                    _players[killerClientID].Character.transform.position
+                );
+
+                DataCollector.Instance.RegisterDeath(victimSteamID, killerSteamID, distance, timeOfDeath);
+
                 //puis on update le score board
                 UpdateScoreBoard();
             };

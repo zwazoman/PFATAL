@@ -2,6 +2,7 @@ using System;
 using _scripts.PlayerCharacter;
 using _scripts.PlayerCharacter.StateMachine.States;
 using _Scripts.StateMachine;
+using NetworkTime;
 using Unity.Netcode;
 using UnityEngine;
 /// <summary>
@@ -26,6 +27,8 @@ public class PlayerCharacterNetworkStateMachineCallback : NetworkBehaviour
         Walking = 128| Grounded,
         Falling = 256 | Airborne,
         Jumping = 512 | Airborne,
+
+        GroundSlam = 1024 | Alive,
     }
     
     [Header("scene references")]
@@ -47,6 +50,8 @@ public class PlayerCharacterNetworkStateMachineCallback : NetworkBehaviour
 
     void SerializeAndReplicateStateChangedEventRPC(StateBase<PlayerCharacter> from, StateBase<PlayerCharacter> to)
     {
+        //print(TimeStamp.Now);
+
         ReplicateStateChangedEventRPC(
             GetTypeEnumForStateObject(from),
             GetTypeEnumForStateObject(to));
@@ -62,7 +67,8 @@ public class PlayerCharacterNetworkStateMachineCallback : NetworkBehaviour
             Pst_Walking => PlayerStateEnum.Walking,
             Pst_Jumping => PlayerStateEnum.Jumping,
             Pst_Frozen => PlayerStateEnum.Frozen,
-            
+            Pst_GroundSlam => PlayerStateEnum.GroundSlam,
+
             //abstraits ( dans l'ordre )
             Pst_Grounded => PlayerStateEnum.Grounded,
             Pst_Airborne => PlayerStateEnum.Airborne,

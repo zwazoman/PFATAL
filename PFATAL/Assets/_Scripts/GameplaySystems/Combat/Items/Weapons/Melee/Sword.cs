@@ -13,7 +13,6 @@ public class Sword : MeleeWeapon
     [SerializeField] HammerEventReceiver _eventReceiver;
 
     [Header("Sword Settings")]
-
     [SerializeField] float _knockbackStrength = 10;
 
     [Header("Dash Settings")]

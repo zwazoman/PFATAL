@@ -1,37 +1,35 @@
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
-    private bool _isUsingController;
-    private bool _changedControls;
+    [SerializeField] private PlayerCharacterInputs _input;
+    private bool _setControllerType = false;
+    private string _wichType;
 
     private void Start()
     {
-        /*if (Input.GetJoystickNames().Length > 0)
-        {
-            GetControllerType();
-        }*/
-        // GetJoystickNames only get the Gamepad/Joystick that are currently active in unity, so i can't get  all the gamepads names from unity registery.
+        
     }
 
     private void Update()
     {
-        if (_isUsingController != true && _changedControls == false)
+        if (Gamepad.current == null)
         {
-
-            _changedControls = true;
+            _wichType = "Computer";
         }
-    }
-
-    private void SetControlsToGamepad()
-    {
-
-    }
-
-    private void SetUIToGamepad()
-    {
-
+        else
+        {
+            if (_input.UsingGamePad == true)
+            {
+                if (_setControllerType == true)
+                {
+                    //switch
+                    //_setControllerType = false;
+                }
+            }
+        }
     }
 
     public string GetControllerType()
@@ -41,22 +39,22 @@ public class InputHandler : MonoBehaviour
         if (controllerName.ToLower().Contains("xbox"))
         {
             Debug.Log("Hello xbox");
-            return "Xbox";
+            return _wichType = "Xbox";
         }
         else if (controllerName.ToLower().Contains("playstation"))
         {
             Debug.Log("Hello playstation");
-            return "PlayStation";
+            return _wichType = "PlayStation";
         }
         else if (controllerName.ToLower().Contains("pro"))
         {
             Debug.Log("Hello switch");
-            return "Switch";
+            return _wichType = "Switch";
         }
         else
         {
             Debug.Log("Who the f*ck are you?");
-            return "Others";
+            return _wichType = "Others";
         }
     }
 }

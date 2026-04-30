@@ -26,6 +26,12 @@ public class LobbyCard : MonoBehaviour
 
         bool isFull = lobby.Players.Count >= lobby.MaxPlayers;
         joinButton.interactable = !isFull;
+        
+        print("lobby is full : "+isFull);
+        joinButton.targetGraphic.color = isFull ?
+            new Color(50/255f,55/255f,74/255f)
+            : new Color(0x8C/255f,0xA1/255f,0x4B/255f);
+        
         joinButton.onClick.AddListener(() => onJoinCallback?.Invoke(lobby));
     }
 }

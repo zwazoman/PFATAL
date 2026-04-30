@@ -63,9 +63,7 @@ public class LobbyBrowserUI : MonoBehaviour
         {
             GameObject card = Instantiate(lobbyCardPrefab, lobbyListContent);
             LobbyCard cardScript = card.GetComponent<LobbyCard>();
-
-            if (cardScript != null)
-                cardScript.Setup(lobby, OnJoinLobby);
+            cardScript.Setup(lobby, OnJoinLobby);
         }
     }
 

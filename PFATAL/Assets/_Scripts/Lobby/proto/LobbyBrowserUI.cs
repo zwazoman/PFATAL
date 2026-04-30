@@ -59,21 +59,27 @@ public class LobbyBrowserUI : MonoBehaviour
 
         statusText.text = $"{lobbies.Count} lobby(s) disponible(s)";
 
+        print($"[LobbiesBrowser]" + lobbies.Count);
         foreach (Lobby lobby in lobbies)
         {
+            print($"[LobbiesBrowser]  COUCOU");
             GameObject card = Instantiate(lobbyCardPrefab, lobbyListContent);
             LobbyCard cardScript = card.GetComponent<LobbyCard>();
-            cardScript.Setup(lobby, OnJoinLobby);
+
+            if (cardScript != null)
+                cardScript.Setup(lobby, this);
         }
     }
 
-    private async void OnJoinLobby(Lobby lobby)
+    public async void JoinLobby(Lobby lobby)
     {
         SetLoading(true);
         refreshButton.interactable = false;       
 
+        Debug.Log("avant await");
         bool success = await NetworkConnectionManager.Instance.StartClientById(lobby.Id);
-
+        Debug.Log("après await");
+        
         if (!success)
         {
             SetLoading(false, "Impossible de rejoindre ce lobby.");

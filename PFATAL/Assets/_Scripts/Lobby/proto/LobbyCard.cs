@@ -13,12 +13,10 @@ public class LobbyCard : MonoBehaviour
     [SerializeField] private Button joinButton;
 
     private Lobby _lobby;
-    private Action<Lobby> onJoinCallback;
 
-    public void Setup(Lobby lobby, Action<Lobby> onJoinCallback)
+    public void Setup(Lobby lobby, LobbyBrowserUI ui)
     {
         this._lobby = lobby;
-        this.onJoinCallback = onJoinCallback;
 
         lobbyNameText.text  = lobby.Name;
         playerCountText.text = $"{lobby.Players.Count} / {lobby.MaxPlayers}";
@@ -31,7 +29,10 @@ public class LobbyCard : MonoBehaviour
         joinButton.targetGraphic.color = isFull ?
             new Color(50/255f,55/255f,74/255f)
             : new Color(0x8C/255f,0xA1/255f,0x4B/255f);
-        
-        joinButton.onClick.AddListener(() => onJoinCallback?.Invoke(lobby));
+        Debug.Log(joinButton.name , joinButton);
+        joinButton.onClick.AddListener(() => ui.JoinLobby(lobby));
+        joinButton.onClick.AddListener(()=>print("click"));
+        //onJoinCallback += (_) => print("evet !!!!");
+        Debug.Log(joinButton.onClick);
     }
 }

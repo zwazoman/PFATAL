@@ -10,6 +10,7 @@ public class LobbyBrowser : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private int maxResults = 10;
     [SerializeField] private bool filterFullLobbies = true;
+    [SerializeField] private bool filterInGameLobbies = true;
 
     public event Action<List<Lobby>> OnLobbiesRefreshed;
 
@@ -83,6 +84,16 @@ public class LobbyBrowser : MonoBehaviour
             filters.Add(new QueryFilter(
                 field: QueryFilter.FieldOptions.AvailableSlots,
                 op: QueryFilter.OpOptions.GT,
+                value: "0"
+            ));
+        }
+        
+        //Filtre les lobbies bloquér ou non 
+        if (filterInGameLobbies)
+        {
+            filters.Add(new QueryFilter(
+                field: QueryFilter.FieldOptions.IsLocked,
+                op: QueryFilter.OpOptions.EQ,
                 value: "0"
             ));
         }

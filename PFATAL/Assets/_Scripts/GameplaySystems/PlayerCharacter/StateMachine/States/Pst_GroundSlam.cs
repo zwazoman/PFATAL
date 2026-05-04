@@ -18,6 +18,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         [SerializeField] int _maxDamage = 7;
         [SerializeField] float _damageMultiplier = 0.5f;
         [SerializeField] float _knockback = 1f;
+        [SerializeField] LayerMask _playerLayer;
 
         private float _startY;
 
@@ -46,7 +47,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             float radius = _radius * (1 + fallHeight * 0.1f);
 
 
-            int count = Physics.OverlapSphereNonAlloc(playerCharacter.transform.position, _radius, buffer);
+            int count = Physics.OverlapSphereNonAlloc(playerCharacter.transform.position, _radius, buffer, _playerLayer);
 
             for (int i = 0; i < count; i++)
             {

@@ -101,6 +101,7 @@ public class Crossbow : ProjectileWeapon
         //spawn projectile
         SpawnContext spawnContext = new(NetworkManager.Singleton.LocalClientId);
         spawnContext.floatData = chargeValue;
+        spawnContext.floatData2 = ItemID;
         Shoot(spawnContext, Quaternion.identity, playerCharacter.playerCamera.transform.position);
 
         //recoil

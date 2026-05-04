@@ -25,8 +25,5 @@ public class SplashScreenUI : MonoBehaviour
         {
             _sceneLoader.LoadScene("MainMenu");
         }
-
-
-
     }
 }

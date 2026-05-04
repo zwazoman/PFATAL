@@ -241,13 +241,13 @@ public class DataCollector : MonoBehaviour
         deaths.Clear();
     }
 
-    public void RegisterDeath(ulong victim, ulong killer, float distance, float time)
+    public void RegisterDeath(ulong victim, ulong killer, int weaponID, float distance, float time)
     {
         deaths.Add(new Death
         {
             VictimId = (long)victim,
             KillerId = (long)killer,
-            Weapon = 0,
+            Weapon = weaponID,
             Distance = distance,
             IdGame = gameId,
             Time = time

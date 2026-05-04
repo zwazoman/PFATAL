@@ -22,6 +22,23 @@ public class Item : MonoBehaviour
     protected bool isUsing;
     protected float holdDuration;
 
+    public int ItemID => this switch
+    {
+        Sword => 0,
+        Tomahawk => 1,
+        Crossbow => 2,
+        Cons_Tornado => 3,
+        Cons_WolfTrap => 4,
+        Cons_Bomb => 5,
+        Cons_BigLaserBeam => 6,
+        Cons_Heal => 7,
+        Cons_TP => 8,
+        Cons_GroundSlam => 9,
+        Cons_ToxicCloud => 10,
+
+        _ => -1
+    };
+
     /// <summary>
     /// appel� lorsque le joueur commence l'input d'action de l'item
     /// </summary>

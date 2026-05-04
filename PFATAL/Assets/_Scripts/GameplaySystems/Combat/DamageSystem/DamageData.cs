@@ -50,7 +50,7 @@ public struct DamageData : INetworkSerializeByMemcpy
     /// </summary>
     public int WeaponID;
 
-    public DamageData(float amount, Vector3 point, Vector3 sourcePos, Vector3 direction, ulong sourcePlayerClientID = NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID, float radius = 0, int weaponID = 0)
+    public DamageData(float amount, Vector3 point, Vector3 sourcePos, Vector3 direction, ulong sourcePlayerClientID = NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID, float radius = 0, int weaponID = -1)
     {
         Amount = amount;
         SourcePlayerClientID = sourcePlayerClientID;

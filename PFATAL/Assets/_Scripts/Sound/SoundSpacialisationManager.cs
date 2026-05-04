@@ -27,33 +27,34 @@ public class SoundSpacialisationManager : NetworkBehaviour
     [SerializeField] StudioListener _listener;
     StudioEventEmitter _emitter;
 
-    //todo retirer cette merde
-    bool _tmp_hasListener;
+    bool _gameStarted;
 
     float _timer;
 
     private void Start()
     {
         if(GameManager.Instance != null)
-            GameManager.Instance.EventOnGameStarted += GameStarted_Callback;
-
-        _audiomanager.On3DSoundPlayed += ApplyOcclusion;
-        _audiomanager.On3DSoundPlayed += ApplyReverb;
+            GameManager.Instance.EventOnGameStarted += GameStarted_Callback; 
     }
 
     void GameStarted_Callback()
     {
-        _listener = GameManager.Instance.localPlayerCharacter.listener;
-        _listener = FindAnyObjectByType<StudioListener>();
+        _gameStarted = true;
+        _audiomanager.On3DSoundPlayed += ApplyOcclusion;
+        _audiomanager.On3DSoundPlayed += ApplyReverb;
     }
 
     private void Update()
     {
+        if (!_gameStarted)
+            return;
+
+        _listener = GameManager.Instance.localPlayerCharacter.listener;
         if (_listener == null)
             return;
 
         //update delay
-        if(_timer < AudioManager.TIME_BETWEEN_REVERB_OCCLUSION_CHECKS)
+        if (_timer < AudioManager.TIME_BETWEEN_REVERB_OCCLUSION_CHECKS)
         {
             _timer += Time.deltaTime;
             return;

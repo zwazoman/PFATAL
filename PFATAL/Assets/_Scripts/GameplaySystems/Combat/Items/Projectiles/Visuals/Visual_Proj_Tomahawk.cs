@@ -22,8 +22,6 @@ public class Visual_Proj_Tomahawk : Proj_Visual
     
     protected override void Start()
     {
-        print("ALLO");
-
         base.Start();
         
         //fetch references

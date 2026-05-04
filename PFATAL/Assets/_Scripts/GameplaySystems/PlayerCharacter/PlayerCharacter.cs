@@ -1,7 +1,9 @@
 using System;
+using _scripts.PlayerCharacter;
 using FMODUnity;
 using NetworkTime;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -38,13 +40,13 @@ namespace _scripts.PlayerCharacter
 
         private void Awake()
         {
-            LocalPlayerCharacter = this;
+            //LocalPlayerCharacter = this;
         }
 
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            if(IsLocalPlayer) LocalPlayerCharacter = this;
+            if(IsOwner) LocalPlayerCharacter = this;
             gameObject.name = "player character_" + OwnerClientId;
         }
 
@@ -97,3 +99,21 @@ namespace _scripts.PlayerCharacter
     }
 
 }
+
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(PlayerCharacter), true)]
+public class PlayerCharacterEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        PlayerCharacter t = (PlayerCharacter)target;
+        base.OnInspectorGUI();
+        GUILayout.Space(5);
+        GUILayout.Label("is local player : "+t.IsOwner);
+        GUILayout.Label("is gameManager local player character : " + (PlayerCharacter.LocalPlayerCharacter==t));
+    }
+}
+
+#endif

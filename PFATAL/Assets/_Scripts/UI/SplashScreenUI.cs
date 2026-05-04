@@ -10,7 +10,8 @@ public class SplashScreenUI : MonoBehaviour
 
     private void Start()
     {
-        AudioManager.Instance.PlayOneShot(Sounds.SplashAmbience);
+        if(AudioManager.Instance.playSounds)
+            AudioManager.Instance.PlayOneShot(Sounds.SplashAmbience);
 
         Sequence sequence = DOTween.Sequence();
         sequence.Append(_text.DOFade(0, _opacitySpeed));

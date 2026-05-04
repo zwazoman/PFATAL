@@ -56,18 +56,13 @@ public class TomahawkCrosshair : Crosshair<Tomahawk>
 
     private void Update()
     {
-        if (_tomahawkProj != null)
+        if (_tomahawkProj != null && weapon.CanDash)
         {
             _indicator.SetTargetpos(_tomahawkProj.transform.position);
         }
-        else if (_indicator.gameObject.activeSelf)
+        else
         {
             _indicator.gameObject.SetActive(false);
         }
-
-        if (weapon.CanDash)
-            _dashCooldoawnSlider.value = 1;
-        else
-            _dashCooldoawnSlider.value = 0;
     }
 }

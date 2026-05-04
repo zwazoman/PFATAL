@@ -94,13 +94,17 @@ public class AudioManager : NetworkBehaviour
         return newInstance;
     }
 
-    public EventInstance CreateInstance(Sounds sound, bool is3D = false)
+    public EventInstance CreateInstance(Sounds sound, bool is3D = false, bool disabledWithScene = true)
     {
         EventInstance instance = RuntimeManager.CreateInstance(GetEventReference(sound));
-        _eventInstances.Add(instance);
 
-        if (is3D)
-            EventInstances3D.Add(instance);
+        if (disabledWithScene)
+        {
+            _eventInstances.Add(instance);
+
+            if (is3D)
+                EventInstances3D.Add(instance);
+        }
 
         return instance;
     }

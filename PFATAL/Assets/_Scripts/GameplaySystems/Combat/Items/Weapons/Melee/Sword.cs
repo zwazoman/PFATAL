@@ -85,6 +85,7 @@ public class Sword : MeleeWeapon
         data.Radius = hitSphereRadius;
         data.SourcePlayerClientID = playerCharacter.OwnerClientId;
         data.KnockbackForce = playerCharacter.transform.forward * _knockbackStrength;
+        data.WeaponID = ItemID;
 
         Summoner.Instance.ApplyDamageRpc(damageable, data);
     }

@@ -39,10 +39,8 @@ public class PlayerBodySounds : SoundComponent<PlayerAnimationEventsListener>
         if ((previousState == state.Falling) && ((newState & state.Grounded) == state.Grounded))
             PlayLandSound();
 
-        if (((previousState & state.Grounded) == state.Grounded) && (newState == state.Jumping))
+        if (newState == state.Jumping)
             PlayJumpSound();
-
-        print(previousState + " " + newState);
 
         if ((previousState == state.GroundSlam) && (newState == state.Idle))
             PlayGroundSlamSound();

@@ -36,7 +36,7 @@ public class LobbyPanelUI : MonoBehaviour
         }
         
         //instantiate new slots
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 10; i++)
         {
             ulong[] keys = newPlayerList.dictionnary.Keys.ToArray();
             if (i < keys.Length)

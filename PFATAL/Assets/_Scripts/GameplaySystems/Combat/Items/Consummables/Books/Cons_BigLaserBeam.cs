@@ -28,7 +28,7 @@ public class Cons_BigLaserBeam : Consummable
         SpawnContext context = new SpawnContext(playerCharacter.OwnerClientId)
         {
             floatData = chargeRatio,
-            floatData2 = playerCharacter.OwnerClientId
+            floatData2 = ItemID
         };
 
         Summoner.Instance.SpawnObject(

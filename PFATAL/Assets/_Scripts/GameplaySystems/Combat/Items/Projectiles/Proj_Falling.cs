@@ -86,7 +86,8 @@ public class Proj_Falling : Projectile
                     data.Amount = damageAmount;
                     data.Radius = 1;
                     data.SourcePlayerClientID = spawnContext.Value.spawnerClientID;
-                    
+                    data.WeaponID = (int)spawnContext.Value.floatData2;
+
                     OnContact?.Invoke();
                     ApplyDamageToHitObject(data, damageable);
 

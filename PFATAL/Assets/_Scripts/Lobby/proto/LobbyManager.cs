@@ -46,8 +46,6 @@ public class LobbyManager : MonoBehaviour
             };
 
             currentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MAX_PLAYERS, options);
-            //Debug.Log($"[Lobby] Lobby cree avec le code: {currentLobby.LobbyCode}");
-
             return currentLobby.LobbyCode;
         }
         catch (Exception e)
@@ -62,7 +60,6 @@ public class LobbyManager : MonoBehaviour
         try
         {
             currentLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
-            //Debug.Log($"[Lobby] Lobby rejoint: {currentLobby.Name} ({currentLobby.Players.Count}/{currentLobby.MaxPlayers} joueurs)");
             return true;
         }
         catch (Exception e)
@@ -71,7 +68,7 @@ public class LobbyManager : MonoBehaviour
             return false;
         }
     }
-    
+
     public async Task<bool> JoinLobbyById(string lobbyId)
     {
         try
@@ -86,7 +83,7 @@ public class LobbyManager : MonoBehaviour
             return false;
         }
     }
-    
+
     public async Task<bool> UpdateLobbyRelayCode(string relayJoinCode)
     {
         try
@@ -119,19 +116,38 @@ public class LobbyManager : MonoBehaviour
             if (currentLobby.Data.ContainsKey(RELAY_JOIN_CODE_KEY))
             {
                 string relayCode = currentLobby.Data[RELAY_JOIN_CODE_KEY].Value;
-                Debug.Log($"[Lobby] Code Relay r�cup�r�: {relayCode}");
+                Debug.Log($"[Lobby] Code Relay récupéré: {relayCode}");
                 return relayCode;
             }
 
-            Debug.LogWarning("[Lobby] Aucun code Relay trouv� dans le lobby");
+            Debug.LogWarning("[Lobby] Aucun code Relay trouvé dans le lobby");
             return null;
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Lobby] Erreur lors de la r�cup�ration du code Relay: {e.Message}");
+            Debug.LogError($"[Lobby] Erreur lors de la récupération du code Relay: {e.Message}");
             return null;
         }
     }
+    
+    public async Task SetLobbyLocked(bool locked)
+    {
+        if (currentLobby == null || !IsHost()) return;
+
+        try
+        {
+            await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id, new UpdateLobbyOptions
+            {
+                IsLocked = locked
+            });
+            Debug.Log($"[Lobby] Lobby {(locked ? "verrouillé" : "déverrouillé")}.");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Lobby] Erreur lors du changement de verrou du lobby: {e.Message}");
+        }
+    }
+
     private async void HandleLobbyHeartbeat()
     {
         if (currentLobby != null && IsHost())
@@ -145,7 +161,7 @@ public class LobbyManager : MonoBehaviour
                 try
                 {
                     await LobbyService.Instance.SendHeartbeatPingAsync(currentLobby.Id);
-                    Debug.Log("[Lobby] Heartbeat envoy�");
+                    Debug.Log("[Lobby] Heartbeat envoyé");
                 }
                 catch (Exception e)
                 {
@@ -154,6 +170,7 @@ public class LobbyManager : MonoBehaviour
             }
         }
     }
+
     public async Task LeaveLobby()
     {
         if (currentLobby == null) return;
@@ -161,7 +178,6 @@ public class LobbyManager : MonoBehaviour
         try
         {
             await LobbyService.Instance.RemovePlayerAsync(currentLobby.Id, UnityServicesManager.Instance.GetPlayerId());
-            //Debug.Log("[Lobby] Lobby quitt�");
             currentLobby = null;
         }
         catch (Exception e)
@@ -177,7 +193,6 @@ public class LobbyManager : MonoBehaviour
         try
         {
             await LobbyService.Instance.DeleteLobbyAsync(currentLobby.Id);
-            //Debug.Log("[Lobby] Lobby supprim�");
             currentLobby = null;
         }
         catch (Exception e)
@@ -185,6 +200,7 @@ public class LobbyManager : MonoBehaviour
             Debug.LogError($"[Lobby] Erreur lors de la suppression du lobby: {e.Message}");
         }
     }
+
     public bool IsHost()
     {
         return currentLobby != null && currentLobby.HostId == UnityServicesManager.Instance.GetPlayerId();
@@ -200,13 +216,9 @@ public class LobbyManager : MonoBehaviour
         if (currentLobby != null)
         {
             if (IsHost())
-            {
                 _ = DeleteLobby();
-            }
             else
-            {
                 _ = LeaveLobby();
-            }
         }
     }
 }

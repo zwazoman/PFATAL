@@ -253,6 +253,6 @@ public class DataCollector : MonoBehaviour
             Time = time
         });
 
-        Debug.Log($"[DataCollector] Mort enregistrée : Victime {victim}, Tueur {killer}, Distance {distance}, Temps {time}");
+        Debug.Log($"[DataCollector] Mort enregistrée : Victime {victim}, Tueur {killer}, Arme {weaponID}, Distance {distance}, Temps {time}");
     }
 }

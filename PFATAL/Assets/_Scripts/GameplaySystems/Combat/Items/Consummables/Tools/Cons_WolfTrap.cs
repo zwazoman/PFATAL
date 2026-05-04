@@ -13,7 +13,12 @@ public class Cons_WolfTrap : Consummable
     {
         base.StopUsing();
 
-        Summoner.Instance.SpawnObject(_wolfTrapPrefab, hand._itemSocket.position, playerCharacter.transform.rotation, false);
+        SpawnContext context = new(playerCharacter.OwnerClientId);
+        context.floatData2 = ItemID;
+
+        _ = Summoner.Instance.SpawnObject(_wolfTrapPrefab, hand._itemSocket.position, 
+            playerCharacter.transform.rotation, false, context);
+
         BreakItem();
     }
 }

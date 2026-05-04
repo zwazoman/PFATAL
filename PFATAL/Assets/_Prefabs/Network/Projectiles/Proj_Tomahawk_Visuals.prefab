@@ -73,6 +73,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5604889624952730010, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8747623157744662825}
+    - targetCorrespondingSourceObject: {fileID: 5604889624952730010, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4568315897436198154}
   m_SourcePrefab: {fileID: 100100000, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
 --- !u!1 &2184216496434257578 stripped
 GameObject:
@@ -99,7 +102,7 @@ MonoBehaviour:
   speed: 15
   gravity: 12
   visuals: {fileID: 2184216496434257578}
-  _mirrorProjectile: {fileID: 0}
+  trueProjectile: {fileID: 0}
   _spinSpeed: 750
   _lineRenderer: {fileID: 8747623157744662825}
   _sineScrollSpeed: 4
@@ -228,3 +231,16 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &4568315897436198154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4712206728071598508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e0631dcd4a9c7c4da70bca3f65c0f3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TomahawkProjSound
+  main: {fileID: 3192510437221217826}

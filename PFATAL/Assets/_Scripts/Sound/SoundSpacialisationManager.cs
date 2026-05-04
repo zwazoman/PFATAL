@@ -5,19 +5,24 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class OcclusionManager : NetworkBehaviour
+public class SoundSpacialisationManager : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] AudioManager _audiomanager;
 
     [Header("Settings")]
     [SerializeField] LayerMask _occlusionLayerMask;
-    [SerializeField] float _occlusionUpdateDelay = .1f;
 
     [Header("Occlusion Settings")]
     [SerializeField] float _thinWallOcclusionValue = .1f;
     [SerializeField] float _mediumWallOcclusionValue = .3f;
     [SerializeField] float _ThickWallOcclusionValue = .5f;
+
+    [Header("Reverb Detection Stetings")]
+    [SerializeField] float _sphereRadius = .1f;
+
+    [Header("Settings")]
+    [SerializeField] LayerMask _reverbZoneLayerMask;
 
     [SerializeField] StudioListener _listener;
     StudioEventEmitter _emitter;
@@ -29,11 +34,11 @@ public class OcclusionManager : NetworkBehaviour
 
     private void Start()
     {
-        return; //todo => gérer hors game
         if(GameManager.Instance != null)
             GameManager.Instance.EventOnGameStarted += GameStarted_Callback;
 
         _audiomanager.On3DSoundPlayed += ApplyOcclusion;
+        _audiomanager.On3DSoundPlayed += ApplyReverb;
     }
 
     void GameStarted_Callback()
@@ -48,7 +53,7 @@ public class OcclusionManager : NetworkBehaviour
             return;
 
         //update delay
-        if(_timer < _occlusionUpdateDelay)
+        if(_timer < AudioManager.TIME_BETWEEN_REVERB_OCCLUSION_CHECKS)
         {
             _timer += Time.deltaTime;
             return;
@@ -66,6 +71,7 @@ public class OcclusionManager : NetworkBehaviour
                 continue;
             }
 
+            ApplyReverb(instance);
             ApplyOcclusion(instance);
         }
 
@@ -75,6 +81,22 @@ public class OcclusionManager : NetworkBehaviour
         }
         stoppedEvents.Clear();
 
+    }
+
+    void ApplyReverb(EventInstance instance)
+    {
+        Collider[] colliders = new Collider[1];
+
+        Physics.OverlapSphereNonAlloc(GetInstancePos(instance), _sphereRadius, colliders, _reverbZoneLayerMask);
+
+        if (colliders[0] != null)
+        {
+            //todo => récupérer le tag pour pouvoir set des reverbs différentes
+
+            instance.setParameterByName("ReverbAmount", 1);
+        }
+        else
+            instance.setParameterByName("ReverbAmount", 0);
     }
 
     void ApplyOcclusion(EventInstance instance)

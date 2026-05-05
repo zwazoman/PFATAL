@@ -12,8 +12,9 @@ public class Proj_BigLaserBeam : Projectile
     {
         base.OnNetworkSpawn();
 
+        ulong sourceId = (ulong)spawnContext.Value.spawnerClientID;
         float chargeRatio = spawnContext.Value.floatData;
-        ulong sourceId = (ulong)spawnContext.Value.floatData2;
+        int sourceWeaponID = (int)spawnContext.Value.floatData2;
 
         if (Physics.SphereCast(transform.position, _sphereRadius, transform.forward, out RaycastHit hit, _maxRange, _hitLayer))
         {
@@ -26,7 +27,8 @@ public class Proj_BigLaserBeam : Projectile
                     point:                hit.point,
                     sourcePos:            GameManager.Instance.GetPlayerCharacter(spawnContext.Value.spawnerClientID).transform.position,
                     direction:            transform.forward,
-                    sourcePlayerClientID: sourceId
+                    sourcePlayerClientID: sourceId,
+                    weaponID:             sourceWeaponID
                 );
 
                 damageable.TakeDamage(damage);

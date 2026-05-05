@@ -83,7 +83,8 @@ public class Proj_Tornado : Projectile
                         Point = hitObject.transform.position,
                         Direction = dir.normalized,
                         KnockbackForce = knockback,
-                        Radius = _ejectionRadius
+                        Radius = _ejectionRadius,
+                        WeaponID = (int)spawnContext.Value.floatData2
                     };
                     hitObject.TakeDamage(damageData);
 

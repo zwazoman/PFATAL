@@ -20,6 +20,8 @@ public class HitMarkerUI : MonoBehaviour
 
     Vector3 _initialScale;
 
+    bool _playing = false;
+
     private void Start()
     {
         _hud.OnTriggerHitFeedback += ShowHitMarker;
@@ -29,9 +31,12 @@ public class HitMarkerUI : MonoBehaviour
 
     public void ShowHitMarker(bool killed)
     {
-        OnShowHitMarker?.Invoke();
+        if (_playing)
+            return;
 
-        print(killed);
+        _playing = true;
+
+        OnShowHitMarker?.Invoke();
 
         if (killed)
             _hitmarkerImage.color = _killColor;
@@ -46,9 +51,9 @@ public class HitMarkerUI : MonoBehaviour
 
     void OnPunchScale_Callback()
     {
+        _playing = false;
         _hitmarkerImage.gameObject.SetActive(false);
         _hitmarkerImage.color = _baseColor;
-
     }
 
 }

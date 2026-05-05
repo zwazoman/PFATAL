@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 
 public class HeatMapAnalitycs : NetworkBehaviour
@@ -146,7 +147,7 @@ public class HeatMapAnalitycs : NetworkBehaviour
         {
             tktPllayer.Clear();
 
-            HeatMapServerAnalitics.instance.text.text = heatMapsToCombine.Count.ToString();
+            //HeatMapServerAnalitics.instance.text.text = heatMapsToCombine.Count.ToString();
 
             if (heatMapsToCombine.Count == 0) return;
 
@@ -219,16 +220,18 @@ public class HeatMapAnalitycs : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     private void AskHeatmapToClientRpc()
     {
-        foreach (var player in HeatMapServerAnalitics.instance.Players)
-        {
-            if (player.TryGetComponent(out HeatMapAnalitycs analitycs))
-            {
-                //if (analitycs.character.IsOwner)
-                //{
-                    UnityEngine.Debug.Log("Ask Heatmap from client: " + analitycs.character.name[analitycs.character.name.Length - 1]);
+        //Debug.Log("Ask Heatmap to clients");
 
-                    analitycs.SendHeatMapToServerRpc(HeatMapUtility.ConvertMapToByte(analitycs._theRealHeatMap), analitycs.character.name[analitycs.character.name.Length - 1]);
-                //}
+        foreach (var theCharacter in HeatMapServerAnalitics.instance.Players)
+        {
+            theCharacter.TryGetComponent(out HeatMapAnalitycs analitycs);
+
+            //Debug.Log(theCharacter.name[theCharacter.name.Length - 1]);
+            
+            if (analitycs.character.IsOwner)
+            {
+                //Debug.Log("This client is owner " + analitycs.character.name[analitycs.character.name.Length - 1]);
+                SendHeatMapToServerRpc(HeatMapUtility.ConvertMapToByte(analitycs._theRealHeatMap), analitycs.character.name[analitycs.character.name.Length - 1]);
             }
         }
 
@@ -238,13 +241,14 @@ public class HeatMapAnalitycs : NetworkBehaviour
     [Rpc(SendTo.Server)]
     private void SendHeatMapToServerRpc(byte[] _clientHeatmapByte, char playerId)
     {
-        if (!character.IsOwner) return;
+        //Debug.Log($"Client {playerId} sent heatmap to server");
+
+        //if (!character.IsOwner) return;
 
         HeatMapData _clientHeatmap = HeatMapUtility.ConvertByteToMap(_clientHeatmapByte);
 
-        UnityEngine.Debug.Log("Heatmap received from client: " + playerId);
+        //UnityEngine.Debug.Log("Heatmap received from client: " + playerId);
 
-        //_theRealHeatMap = HeatMapUtility.CombineHeatMap(new() {_theRealHeatMap, _clientHeatmap});
 
         HeatMapData heatmap = heatMapsToCombine.FirstOrDefault(h => h.playerId == _clientHeatmap.playerId);
         if (heatmap != null)
@@ -256,8 +260,8 @@ public class HeatMapAnalitycs : NetworkBehaviour
         {
             heatMapsToCombine.Add(_clientHeatmap);
         }
-
         
+        _theRealHeatMap = HeatMapUtility.CombineHeatMap(new() {_theRealHeatMap, _clientHeatmap});
     }
 
     public void SaveHeatMap(GameRulesBase.GameResult gameResult)
@@ -274,7 +278,7 @@ public class HeatMapAnalitycs : NetworkBehaviour
 
         //to do : get heapMap from DB to set correct gameId and version
 
-        _theRealHeatMap.playerId = Players.Count;
+        //HeatMapData map = HeatMapUtility.CombineHeatMap(heatMapsToCombine);
 
         byte[] _byteHeatmap = HeatMapUtility.ConvertMapToByte(_theRealHeatMap);
 

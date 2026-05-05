@@ -30,8 +30,10 @@ public class HeatMapUtility
         }
 
         HeatMapData combinedHeatMap = new HeatMapData(heatMaps[0].cellSize, 1, 111, 5);
+        combinedHeatMap.points = new List<HeatPoint>();
 
-        Debug.Log($"Combining {heatMaps.Count} heat maps with grid size {combinedHeatMap.cellSize}.");
+        Debug.LogError($"Combining {heatMaps.Count} heat maps with grid size {combinedHeatMap.cellSize}.");
+
 
         foreach (HeatMapData heatmap in heatMaps)
         {
@@ -56,7 +58,7 @@ public class HeatMapUtility
                     combinedHeatMap.points.Add(new HeatPoint(
                         currentPoint.P,
                         //currentPoint.G,
-                        point.W,
+                        currentPoint.W,
                         currentPoint.H,
                         currentPoint.C,
                         currentPoint.T

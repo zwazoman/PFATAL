@@ -439,7 +439,7 @@ public class HeatMapWindow : EditorWindow
 
 
 
-        string path = "Assets/Texture3D/Texture3D_" + textureName + ".asset";
+        string path = "Assets/_Data/Texture3D/Texture3D_" + textureName + ".asset";
 
         Texture3D existing = AssetDatabase.LoadAssetAtPath<Texture3D>(path);
 

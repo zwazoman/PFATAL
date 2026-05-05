@@ -203,7 +203,7 @@ public class HeatMapWindow : EditorWindow
                         //UnityEngine.Debug.Log($"Condition gameVersion : {gameVersion == "0" || gameVersion == map.heatMapGameVersion}");
                         continue;
                     }
-                    if (!(playerNumber == 0 || playerNumber == map.playerCount))
+                    if (!(playerNumber == 0 || playerNumber == map.playerId))
                     {
                         //UnityEngine.Debug.Log($"Condition playerNumber : {playerNumber == 0 || playerNumber == map.heatMapPlayerNumber}");
                         continue;

@@ -11,16 +11,32 @@ public class GameManager : NetworkBehaviour
 {
     [SerializeField] private NetworkTimeSyncManager _timeSyncManager;
     
+    //singleton
+    public static GameManager Instance { get; private set ; }
+    
+    //game rules
     //todo : scriptable object avec game settings ?
+    private GameRulesBase _serverGameRules;
     public const float DEATH_MATCH_GAME_DURATION = 60*4;
-
     public static GameMode gameMode = GameMode.DeathMatch;
     
     private static Dictionary<ulong,PermanentPlayerIdentity> _playerIdentities = new();
      
     private int _playersInScene = 0;
     
-    public static GameManager Instance { get; private set ; }
+    //synced events
+   
+    public event Action EventOnGameStarted;
+    public event Action<GameRulesBase.GameResult> EventOnGameEnded;
+    
+    //synced variables
+    public float TimeSinceGameStart => TimeStamp.Now - _gameStartTime;
+    public LeaderBoardData LeaderBoard;
+    public float _gameStartTime;
+    public bool IsPlaying { get; private set ; } = false;
+    public bool IsGameOver { get; private set; } = false;
+
+    public PlayerCharacter localPlayerCharacter { get; private set; }
 
     void Awake()
     {
@@ -106,22 +122,6 @@ public class GameManager : NetworkBehaviour
         DeathMatch,
         None
     }
-    
-    private GameRulesBase _serverGameRules;
-    
-    //synced events
-   
-    public event Action EventOnGameStarted;
-    public event Action<GameRulesBase.GameResult> EventOnGameEnded;
-    
-    //synced variables
-    public float TimeSinceGameStart => TimeStamp.Now - _gameStartTime;
-    public LeaderBoardData LeaderBoard;
-    public float _gameStartTime;
-    public bool IsPlaying { get; private set ; } = false;
-    public bool IsGameOver { get; private set; } = false;
-
-    public PlayerCharacter localPlayerCharacter { get; private set; }
     
     private void StartGame(List<ulong> clientIDs,GameMode gameMode)
     {

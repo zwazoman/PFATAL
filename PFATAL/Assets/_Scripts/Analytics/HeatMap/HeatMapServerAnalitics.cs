@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class HeatMapServerAnalitics : MonoBehaviour
@@ -19,8 +20,11 @@ public class HeatMapServerAnalitics : MonoBehaviour
     public int gridSize = 1;
     public MapBounds mapBoundsObject;
 
+    public TextMeshProUGUI text;
+
     public bool show = false;
     public bool isPlaying = false;
+    public bool isFixed = false;
 
     private void Awake()
     {
@@ -33,10 +37,10 @@ public class HeatMapServerAnalitics : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _filePath = Path.Combine(Application.persistentDataPath, "heatmap" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".bin");
+        _filePath = Path.Combine(Application.persistentDataPath, "heatmap_" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".bin");
     }
 
-    private void Start()
+    /*private void Start()
     {
 
 
@@ -50,6 +54,8 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
     private void Update()
     {
+        if (!isFixed) return;
+
         if ((_timer += Time.deltaTime) >= interval)
         {
             _timer = 0f;
@@ -222,5 +228,5 @@ public class HeatMapServerAnalitics : MonoBehaviour
         Process.Start(Application.persistentDataPath);
 #endif
     }
-    #endregion
+    #endregion*/
 }

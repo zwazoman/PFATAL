@@ -22,14 +22,13 @@ public class Visual_Proj_Tomahawk : Proj_Visual
     
     protected override void Start()
     {
-        print("ALLO");
-
         base.Start();
         
         //fetch references
         _playerCharacter = PlayerCharacter.LocalPlayerCharacter;
         _anchorTransform = _playerCharacter.transform;
 
+        //print(_playerCharacter.playerHands);
 
         _weapon = ((Tomahawk)_playerCharacter.playerHands.rightHand.equippedItem);
         
@@ -37,8 +36,10 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         _weapon.OnShoot += DisableLineRenderer;
     }
 
-    void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         _weapon.OnShoot -= DisableLineRenderer;
     }
     

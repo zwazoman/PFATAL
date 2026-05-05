@@ -19,6 +19,8 @@ public class ScriptTestTemporaire : MonoBehaviour
     public string heatMapPath;
     public WeaponType weaponType;
 
+    public HeatMapAnalitycs taMereAnalitics;
+
     public void OnDrawGizmos()
     {
         if (!File.Exists(path)) return;
@@ -38,7 +40,7 @@ public class ScriptTestTemporaire : MonoBehaviour
     }
 
     [Button("Test pour voir les valeur de dégradé")]
-    public void GetTheFuckingPixel()
+    public void GetPixel()
     {
         HeatMapData heatMapData = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(path));
 
@@ -58,5 +60,11 @@ public class ScriptTestTemporaire : MonoBehaviour
         HeatMapData heatMap = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(Path.Combine(Application.persistentDataPath, path)));
 
         HeatMapUtility.MaxVisits(heatMap, weaponType);
+    }
+
+    [Button("Appele la rpc de l'autre connard")]
+    public void TestRPC()
+    {
+        taMereAnalitics.TestRpc();
     }
 }

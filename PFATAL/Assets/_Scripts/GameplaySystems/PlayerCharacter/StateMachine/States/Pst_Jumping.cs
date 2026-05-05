@@ -61,5 +61,10 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             
             base.Behave(ctx, updatePoint);
         }
+
+        public void ChangeJumpForce(float newForce)
+        {
+            _initialImpulseStrength = newForce;
+        }
     }
 }

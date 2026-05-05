@@ -5452,7 +5452,7 @@ MonoBehaviour:
   _recoilStabilizationDuration: 0.2
   _recoilSlerpExponent: 0.002
   _aimPunchDirectionOffset: {x: 0, y: 0.1}
-  _aimPunchMultiplier: {x: 5.625, y: -3.75}
+  _aimPunchMultiplier: {x: 8.4375, y: -5.625}
 --- !u!1 &6271938890881835117
 GameObject:
   m_ObjectHideFlags: 0
@@ -10707,7 +10707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 287215609
+  GlobalObjectIdHash: 1627020838
   InScenePlacedSourceGlobalObjectIdHash: 287215609
   DeferredDespawnTick: 0
   Ownership: 1
@@ -11379,9 +11379,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b1a4c372b55034b9f9a1bd2d8d62ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeatMapAnalitycs
+  ShowTopMostFoldoutHeaderGroup: 1
   character: {fileID: 1068121725211319751}
-  playerWeaponSocket: {fileID: 9091535359676874972}
+  playerWeaponSocket: {fileID: 0}
   isOnCapsule: 0
+  Players: []
+  heatMapsToCombine: []
+  interval: 0.1
+  gridSize: 1
+  mapBoundsObject: {fileID: 0}
+  show: 0
+  isPlaying: 0
+  isFixed: 0
+  tktPllayer: 
 --- !u!114 &8654703381458756738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12728,10 +12738,5 @@ MonoBehaviour:
 --- !u!4 &8399313606681264964 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5716791234918691656, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
-  m_PrefabInstance: {fileID: 4307205339695198220}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &9091535359676874972 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5038924703587315920, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
   m_PrefabInstance: {fileID: 4307205339695198220}
   m_PrefabAsset: {fileID: 0}

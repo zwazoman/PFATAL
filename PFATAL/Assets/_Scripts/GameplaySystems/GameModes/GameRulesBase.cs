@@ -179,7 +179,6 @@ public abstract class GameRulesBase
             return null;
         }
 
-        Debug.Log(_players[playerClientId].Character);
         return _players[playerClientId].Character;
     }
 

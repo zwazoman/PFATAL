@@ -52,7 +52,9 @@ public class DamageableObject : NetworkBehaviour, IDamageable
 
         //hit feedback
         if (damageData.SourcePlayerClientID != DamageData.NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID && (damageData.SourcePlayerClientID != OwnerClientId || !isPlayer))
-            ApplyDamageInflictedFeedbacksRpc(RpcTarget.Single(damageData.SourcePlayerClientID, RpcTargetUse.Temp));
+        {
+                ApplyDamageInflictedFeedbacksRpc(IsDead, RpcTarget.Single(damageData.SourcePlayerClientID, RpcTargetUse.Temp));
+        }
 
         //knockback
         if (TryGetComponent(out PlayerCharacter player) && damageData.KnockbackForce != Vector3.zero)
@@ -104,9 +106,9 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
-    void ApplyDamageInflictedFeedbacksRpc(RpcParams rpcParams = default)
+    void ApplyDamageInflictedFeedbacksRpc(bool isDead, RpcParams rpcParams = default)
     {
-        GameManager.Instance.localPlayerCharacter.HUD.TriggerHitFeedback();
+        GameManager.Instance.localPlayerCharacter.HUD.TriggerHitFeedback(isDead);
     }
     
     [Rpc(SendTo.Everyone)]

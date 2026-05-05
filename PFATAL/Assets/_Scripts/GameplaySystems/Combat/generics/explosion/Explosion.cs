@@ -20,7 +20,7 @@ public class Explosion : NetworkBehaviour
     /// <summary>
     /// can only be called from the server
     /// </summary>
-    public async Awaitable Explode(ulong askerClientID)
+    public async Awaitable Explode(ulong askerClientID, int itemID = -1)
     {
         if(!IsServer) throw new NetworkAuthorityException();
         
@@ -34,6 +34,7 @@ public class Explosion : NetworkBehaviour
         damage.SourcePlayerClientID = askerClientID;
         damage.Point = transform.position;
         damage.Radius = Radius;
+        damage.WeaponID = itemID;
         
         //.2s hit detection
         float endTime = Time.time + HIT_DETECTION_DURATION;

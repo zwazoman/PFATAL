@@ -7,8 +7,10 @@ public class PlayerCharacterHealth : DamageableObject
     [SerializeField] float _regenDelay = .3f;
     [SerializeField] float _regenStrength = 1f;
     [SerializeField] float _regenCooldown = 3f;
+    [SerializeField] float _deathYLimit = -10f;
 
     bool _heal = false;
+    bool _canDieFall = true;
     float _regenTickTimer;
     float _regenCooldownTimer;
 
@@ -32,7 +34,22 @@ public class PlayerCharacterHealth : DamageableObject
 
     private void Update()
     {
-        if(_heal)
+        if (!_canDieFall && transform.position.y > _deathYLimit)
+        {
+            _canDieFall = true;
+        }
+
+        if (_canDieFall && transform.position.y < _deathYLimit && HP > 0)
+        {
+            _canDieFall = false;
+            DamageData damageData = new();
+            damageData.Amount = 100;
+
+            TakeDamage(damageData);
+            return;
+        }
+
+        if (_heal)
         {
             _regenTickTimer += Time.deltaTime;
             if (_regenTickTimer >= _regenDelay)

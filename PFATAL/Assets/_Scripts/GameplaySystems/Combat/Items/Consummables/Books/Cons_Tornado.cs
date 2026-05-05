@@ -8,9 +8,13 @@ public class Cons_Tornado : Consummable
     public override void StartUsing()
     {
         base.StartUsing();
+        SpawnContext context = new(playerCharacter.OwnerClientId);
+        context.floatData2 = ItemID;
 
-        Summoner.Instance.SpawnObject(_tornadoProjectilePrefab, playerCharacter.transform.position + playerCharacter.transform.forward, playerCharacter.transform.rotation, true);
-
+        _ = Summoner.Instance.SpawnObject(_tornadoProjectilePrefab,
+            playerCharacter.transform.position + playerCharacter.transform.forward,
+            playerCharacter.transform.rotation, true, context);
+        
         BreakItem();
     }
 }

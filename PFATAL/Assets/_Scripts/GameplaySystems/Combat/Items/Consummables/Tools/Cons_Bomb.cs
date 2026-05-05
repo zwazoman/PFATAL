@@ -16,7 +16,10 @@ public class Cons_Bomb : Consummable
     {
         base.StopUsing();
 
-        Summoner.Instance.SpawnObject(_bombPrefab, hand._itemSocket.position, hand.equippedItem.playerCharacter.playerCamera.transform.rotation, false);
+        SpawnContext context = new(playerCharacter.OwnerClientId);
+        context.floatData2 = ItemID;
+
+        Summoner.Instance.SpawnObject(_bombPrefab, hand._itemSocket.position, hand.equippedItem.playerCharacter.playerCamera.transform.rotation, false, context);
         BreakItem();
     }
 }

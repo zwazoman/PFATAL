@@ -16,6 +16,7 @@ public class HitMarkerUI : MonoBehaviour
     [SerializeField] float _duration = .3f;
     [SerializeField] float _scalePunchIntensity = 3;
     [SerializeField] float _rotationOffset = 20;
+    [SerializeField] Color32 _baseColor, _killColor;
 
     Vector3 _initialScale;
 
@@ -23,11 +24,17 @@ public class HitMarkerUI : MonoBehaviour
     {
         _hud.OnTriggerHitFeedback += ShowHitMarker;
         _initialScale = _hitmarkerImage.transform.localScale;
+        _hitmarkerImage.color = _baseColor;
     }
 
-    public void ShowHitMarker()
+    public void ShowHitMarker(bool killed)
     {
         OnShowHitMarker?.Invoke();
+
+        print(killed);
+
+        if (killed)
+            _hitmarkerImage.color = _killColor;
 
         _hitmarkerImage.gameObject.SetActive(true);
         _hitmarkerImage.transform.localScale = _initialScale;
@@ -40,6 +47,8 @@ public class HitMarkerUI : MonoBehaviour
     void OnPunchScale_Callback()
     {
         _hitmarkerImage.gameObject.SetActive(false);
+        _hitmarkerImage.color = _baseColor;
+
     }
 
 }

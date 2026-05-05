@@ -11034,6 +11034,7 @@ MonoBehaviour:
   _regenDelay: 0.2
   _regenStrength: 0.5
   _regenCooldown: 6
+  _deathYLimit: -25
 --- !u!114 &9073655823701373496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11379,9 +11380,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b1a4c372b55034b9f9a1bd2d8d62ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeatMapAnalitycs
+  ShowTopMostFoldoutHeaderGroup: 1
   character: {fileID: 1068121725211319751}
   playerWeaponSocket: {fileID: 9091535359676874972}
   isOnCapsule: 0
+  Players: []
+  heatMapsToCombine: []
+  interval: 0.1
+  gridSize: 1
+  mapBoundsObject: {fileID: 0}
+  show: 0
+  isPlaying: 0
+  isFixed: 0
+  tktPllayer: 
 --- !u!114 &8654703381458756738
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -78,7 +78,21 @@ public class GameManager : NetworkBehaviour
     /// </summary>
     public static PermanentPlayerIdentity GetPlayerIdentity(ulong playerClientID)
     {
-        return _playerIdentities[playerClientID];
+        if (_playerIdentities.TryGetValue(playerClientID, out var identity))
+            return identity;
+
+        // Fallback si pas de Steam
+        Debug.LogWarning($"[GameManager] Identity manquante pour clientID {playerClientID}, fallback généré.");
+        var fallback = new PermanentPlayerIdentity(
+            name: $"Player_{playerClientID}",
+            platformID: playerClientID.ToString(),
+            platform: PermanentPlayerIdentity.ePlatform.None,
+            tempNetworkClientId: playerClientID,
+            tempUnityId: ""
+        );
+
+        _playerIdentities[playerClientID] = fallback;
+        return fallback;
     }
 
     public static void SetPlayerIdentities(Dictionary<ulong,PermanentPlayerIdentity> playerIdentities)

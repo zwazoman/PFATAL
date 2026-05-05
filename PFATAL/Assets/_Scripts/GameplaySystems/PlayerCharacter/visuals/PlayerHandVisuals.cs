@@ -2,7 +2,7 @@
 
 namespace GameplaySystems.PlayerCharacter
 {
-    public class PlayerHandsVisuals : MonoBehaviour
+    public class PlayerHandVisuals : MonoBehaviour
     {
         private static readonly int MainAnim_AnimatorProperty = Animator.StringToHash("mainAnim");
 
@@ -55,11 +55,10 @@ namespace GameplaySystems.PlayerCharacter
             switch (equippedItem)
             {
                 case Sword sword:
+                    sword.OnSmallAttackStarted += ()=> _animator.SetInteger(MainAnim_AnimatorProperty,301);
                     sword.OnStartCharging += () => print("OnStartCharging");
-                    sword.OnStopCharging += () => print("OnStopCharging");
+                    sword.OnDashStarted += () => print("OnStopCharging");
                     sword.OnDashCooledUp += () => print("OnDashCooledUp");
-                    sword.EventReceiver.OnHitEnd += () => print("OnHitEnd");
-                    sword.EventReceiver.OnHitStart += (_) => print("OnHitStart");
                     break;
                 
                 default:

@@ -4,13 +4,12 @@ using System;
 public class Sword : MeleeWeapon
 {
     public event Action OnDashCooledUp;
-
     public event Action OnStartCharging;
-    public event Action OnStopCharging;
-
+    public event Action OnDashStarted;
+    public event Action OnSmallAttackStarted;
+    
     [Header("Sword References")]
-    [SerializeField] Animator _animator;
-    [SerializeField] public SwordEventReceiver EventReceiver;
+    [SerializeField] private SwordEventReceiver _animationEventReceiver;
 
     [Header("Sword Settings")]
     [SerializeField] float _knockbackStrength = 10;
@@ -26,25 +25,21 @@ public class Sword : MeleeWeapon
 
     bool _charged;
     bool _isAttacking;
+    bool _isDashing;
     bool _canDash = true;
-    bool _dashed;
 
     public override void Equip()
     {
         base.Equip();
 
-        _animator.SetTrigger("Idle");
 
         _charged = false;
-        _dashed = false;
         _isAttacking = false;
-        isHitting = false;
+        _isDashing = false;
+        hitboxIsActive = false;
         _canDash = true;
 
         currentDashCooldown = 0;
-
-        EventReceiver.OnHitStart += StartHitting;
-        EventReceiver.OnHitEnd += StopHitting;
 
         try
         {
@@ -54,18 +49,17 @@ public class Sword : MeleeWeapon
         {
             Debug.LogException(e);
         }
+
+        hand.animatorEventListener.OnSwordHitboxActivated += EnableHitbox;
+        hand.animatorEventListener.OnSwordHitboxDeactivated += DisableHitBox;
     }
 
     public override void UnEquip()
     {
         base.UnEquip();
-
-        OnStopCharging?.Invoke();
-
+        hand.animatorEventListener.OnSwordHitboxActivated -= EnableHitbox;
+        hand.animatorEventListener.OnSwordHitboxDeactivated -= DisableHitBox;
         currentDashCooldown = dashCooldown;
-
-        EventReceiver.OnHitStart -= StartHitting;
-        EventReceiver.OnHitEnd -= StopHitting;
     }
 
     protected override void ApplyHit(DamageableObject damageable, ulong attackerId)
@@ -76,12 +70,7 @@ public class Sword : MeleeWeapon
         data.Point = hitSocket.position;
         data.Direction = hitSocket.transform.forward;
         data.SourcePos = playerCharacter.transform.position;
-
-        if (_dashed)
-            data.Amount = damageAmount * _dashDmgMult;
-        else
-            data.Amount = damageAmount;
-
+        data.Amount = damageAmount * (_isDashing ? 1f :_dashDmgMult);
         data.Radius = hitSphereRadius;
         data.SourcePlayerClientID = playerCharacter.OwnerClientId;
         data.KnockbackForce = playerCharacter.transform.forward * _knockbackStrength;
@@ -94,11 +83,10 @@ public class Sword : MeleeWeapon
     {
         base.UseUpdate();
 
+        //quand on reste appuyé longtemps sur la touche
         if(holdDuration >= _dashChargedDuration && !_charged && !_isAttacking && _canDash)
         {
             OnStartCharging?.Invoke();
-
-            _animator.SetTrigger("Charged");
             _charged = true;
         }
     }
@@ -110,36 +98,40 @@ public class Sword : MeleeWeapon
         if (_isAttacking)
             return;
 
+        //quand on relache alors qu'on avait appuyé longtemps sur le bouton
         if(_charged)
         {
-            _animator.SetTrigger("Dash");
             Dash();
-
-            OnStopCharging?.Invoke();
+            OnDashStarted?.Invoke();
             _charged = false;
         }
+        //quand on relache après avoir appuyé peu longtemps
         else
-            _animator.SetTrigger("Hit");
+        {
+            OnSmallAttackStarted?.Invoke();
+        }
 
         _isAttacking = true;
     }
 
+    
     void Dash()
     {
+        _isDashing = true;
+        
+        //todo : meilleur calcul et enlever la condition
         float dot = Vector3.Dot(playerCharacter.playerCamera.transform.forward, playerCharacter.physics.Velocity.normalized);
-
         if (dot <= _dashDotThreshold)
             playerCharacter.physics.SetVelocity(Vector3.zero);
 
         playerCharacter.physics.AddImpulse(playerCharacter.playerCamera.transform.forward * _dashStrength);
 
-        HandleDashDelay();
+        WaitForDashToCoolDown();
     }
-
-    async void HandleDashDelay()
+    async void WaitForDashToCoolDown()
     {
         _canDash = false;
-
+        
         while(currentDashCooldown < dashCooldown)
         {
             currentDashCooldown += Time.deltaTime;
@@ -150,23 +142,24 @@ public class Sword : MeleeWeapon
 
         OnDashCooledUp?.Invoke();
         _canDash = true;
+        _isDashing = false;
+    }
+
+    
+    /// <summary>
+    /// callback d'animation
+    /// </summary>
+    public void EnableHitbox()
+    {
+        hitboxIsActive = true;
     }
 
     /// <summary>
     /// callback d'animation
     /// </summary>
-    public void StartHitting(bool dashed)
+    public void DisableHitBox()
     {
-        _dashed = dashed;
-        isHitting = true;
-    }
-
-    /// <summary>
-    /// callback d'animation
-    /// </summary>
-    public void StopHitting() 
-    {
-        isHitting = false;
+        hitboxIsActive = false;
         _isAttacking = false;
     }
 

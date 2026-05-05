@@ -9,7 +9,7 @@ public class CrosshairsManager : MonoBehaviour
     [SerializeField] public HUDManager hud;
     [SerializeField] GameObject _baseCrosshair;
     [SerializeField] TomahawkCrosshair _tomahawkCrosshair;
-    [SerializeField] HammerCrosshair _hammerCrosshair;
+    [SerializeField] SwordCrosshair swordCrosshair;
     [SerializeField] CrossbowCrosshair _crossbowCrosshair;
 
 
@@ -38,7 +38,7 @@ public class CrosshairsManager : MonoBehaviour
     void OnEquipHammer_Callback(Sword hammer)
     {
         OnActivateCrosshair?.Invoke();
-        _hammerCrosshair.Activate(hammer);
+        swordCrosshair.Activate(hammer);
     }
 
     void DisableBaseCrosshair()

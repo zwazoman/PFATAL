@@ -23,6 +23,7 @@ public class Hand : MonoBehaviour
     [SerializeField] PlayerCharacter _main;
     [SerializeField] HandsItemVisuals handsItemVisuals;
     [SerializeField] public Transform _itemSocket;
+    public HandAnimatorEventListener animatorEventListener;
 
     [Header("Parameters")]
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using Unity.Netcode;
+using Unity.Services.Lobbies;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -85,6 +86,16 @@ public class ClientConnectionWatcher : MonoBehaviour
 
         yield return new WaitForSeconds(redirectDelay);
 
-        SceneManager.LoadScene(mainMenuSceneName);
+        try
+        {
+            Debug.Log("Leaving lobby...");
+            LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.GetCurrentLobby().Id, UnityServicesManager.Instance.GetPlayerId());
+            _ = NetworkConnectionManager.Instance.Disconnect();
+            SceneManager.LoadScene(mainMenuSceneName);
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
     }
 }

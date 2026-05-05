@@ -21,11 +21,9 @@ public class HostHeartbeat : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
+    [Rpc(SendTo.NotServer)]
     private void SendHeartbeatClientRpc()
     {
-        if (IsHost) return;
-        
         ClientConnectionWatcher.Instance?.OnHeartbeatReceived();
     }
 }

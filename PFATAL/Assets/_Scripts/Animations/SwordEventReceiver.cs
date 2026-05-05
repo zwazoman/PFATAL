@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class HammerEventReceiver : MonoBehaviour
+public class SwordEventReceiver : MonoBehaviour
 {
     public event Action<bool> OnHitStart;
     public event Action OnHitEnd;

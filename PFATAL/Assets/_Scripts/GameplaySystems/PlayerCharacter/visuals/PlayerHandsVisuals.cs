@@ -4,7 +4,7 @@ namespace GameplaySystems.PlayerCharacter
 {
     public class PlayerHandsVisuals : MonoBehaviour
     {
-        private static readonly int Anim_AnimatorProperty = Animator.StringToHash("anim");
+        private static readonly int MainAnim_AnimatorProperty = Animator.StringToHash("mainAnim");
 
         [Header("Scene references")]
         [SerializeField] Hand _hand;
@@ -14,7 +14,7 @@ namespace GameplaySystems.PlayerCharacter
         
         void Awake()
         {
-            _hand.OnEquipItem += SetEquippedItemTypeAnimatorProperty;
+            _hand.OnEquipItem += OnNewItemEquipped;
             _hand.OnUnequipItem += (_) => ClearEquippedItem();
             _hand.OnDeleteItem += ClearEquippedItem;
             _hand.OnDropItem += (_) => ClearEquippedItem();
@@ -22,12 +22,15 @@ namespace GameplaySystems.PlayerCharacter
 
         private void ClearEquippedItem()
         {
-            _animator.SetInteger(Anim_AnimatorProperty,0);
+            _animator.SetInteger(MainAnim_AnimatorProperty,0);
         }
         
-        private void SetEquippedItemTypeAnimatorProperty(Item equippedItem)
+        
+        
+        private void OnNewItemEquipped(Item equippedItem)
         {
-            _animator.SetInteger(Anim_AnimatorProperty,equippedItem switch
+            //set idle pose
+            currentIdleID = equippedItem switch
             {
                 Crossbow => 100, //100 => crossbow
                 Tomahawk => 200, //200 => Tomahawk
@@ -42,10 +45,28 @@ namespace GameplaySystems.PlayerCharacter
                 Cons_GroundSlam => 500,
                 
                 Cons_Bomb => 600, //600 => Bomb
-                Cons_WolfTrap => 700,
+                //todo : Cons_WolfTrap => 700,
                 
                 _ => 0
-            });
+            };
+            _animator.SetInteger(MainAnim_AnimatorProperty, currentIdleID);
+            
+            //setup event
+            switch (equippedItem)
+            {
+                case Sword sword:
+                    sword.OnStartCharging += () => print("OnStartCharging");
+                    sword.OnStopCharging += () => print("OnStopCharging");
+                    sword.OnDashCooledUp += () => print("OnDashCooledUp");
+                    sword.EventReceiver.OnHitEnd += () => print("OnHitEnd");
+                    sword.EventReceiver.OnHitStart += (_) => print("OnHitStart");
+                    break;
+                
+                default:
+                    //throw new System.NotImplementedException();
+                    break;
+            }
+            
         }
     }
 }

@@ -10,7 +10,7 @@ public class Sword : MeleeWeapon
 
     [Header("Sword References")]
     [SerializeField] Animator _animator;
-    [SerializeField] HammerEventReceiver _eventReceiver;
+    [SerializeField] public SwordEventReceiver EventReceiver;
 
     [Header("Sword Settings")]
     [SerializeField] float _knockbackStrength = 10;
@@ -43,8 +43,8 @@ public class Sword : MeleeWeapon
 
         currentDashCooldown = 0;
 
-        _eventReceiver.OnHitStart += StartHitting;
-        _eventReceiver.OnHitEnd += StopHitting;
+        EventReceiver.OnHitStart += StartHitting;
+        EventReceiver.OnHitEnd += StopHitting;
 
         try
         {
@@ -64,8 +64,8 @@ public class Sword : MeleeWeapon
 
         currentDashCooldown = dashCooldown;
 
-        _eventReceiver.OnHitStart -= StartHitting;
-        _eventReceiver.OnHitEnd -= StopHitting;
+        EventReceiver.OnHitStart -= StartHitting;
+        EventReceiver.OnHitEnd -= StopHitting;
     }
 
     protected override void ApplyHit(DamageableObject damageable, ulong attackerId)

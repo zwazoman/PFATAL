@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using GameplaySystems.PlayerCharacter;
 
 public class Sword : MeleeWeapon
 {
@@ -8,9 +9,6 @@ public class Sword : MeleeWeapon
     public event Action OnDashStarted;
     public event Action OnSmallAttackStarted;
     
-    [Header("Sword References")]
-    [SerializeField] private SwordEventReceiver _animationEventReceiver;
-
     [Header("Sword Settings")]
     [SerializeField] float _knockbackStrength = 10;
 
@@ -52,6 +50,7 @@ public class Sword : MeleeWeapon
 
         hand.animatorEventListener.OnSwordHitboxActivated += EnableHitbox;
         hand.animatorEventListener.OnSwordHitboxDeactivated += DisableHitBox;
+        hand.animatorEventListener.OnAnimationFinished += AllowNextAttack;
     }
 
     public override void UnEquip()
@@ -59,6 +58,8 @@ public class Sword : MeleeWeapon
         base.UnEquip();
         hand.animatorEventListener.OnSwordHitboxActivated -= EnableHitbox;
         hand.animatorEventListener.OnSwordHitboxDeactivated -= DisableHitBox;
+        hand.animatorEventListener.OnAnimationFinished -= AllowNextAttack;
+        
         currentDashCooldown = dashCooldown;
     }
 
@@ -70,7 +71,7 @@ public class Sword : MeleeWeapon
         data.Point = hitSocket.position;
         data.Direction = hitSocket.transform.forward;
         data.SourcePos = playerCharacter.transform.position;
-        data.Amount = damageAmount * (_isDashing ? 1f :_dashDmgMult);
+        data.Amount = damageAmount * (_isDashing ? 1f : _dashDmgMult);
         data.Radius = hitSphereRadius;
         data.SourcePlayerClientID = playerCharacter.OwnerClientId;
         data.KnockbackForce = playerCharacter.transform.forward * _knockbackStrength;
@@ -86,28 +87,42 @@ public class Sword : MeleeWeapon
         //quand on reste appuyé longtemps sur la touche
         if(holdDuration >= _dashChargedDuration && !_charged && !_isAttacking && _canDash)
         {
+            //event & anim charge de l'épée
+            hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.sword_charge_idle);
+            print("sword_charge_idle");
             OnStartCharging?.Invoke();
             _charged = true;
         }
+    }
+
+    /// <summary>
+    /// (appelé à la fin des animations d'attaque)
+    /// </summary>
+    void AllowNextAttack()
+    {
+        print("Attack ended.");
+        _isAttacking = false;
     }
 
     public override void StopUsing()
     {
         base.StopUsing();
 
+        print("is attacking : "+_isAttacking);
         if (_isAttacking)
             return;
-
+        print("charged : "+_charged);
+        
         //quand on relache alors qu'on avait appuyé longtemps sur le bouton
         if(_charged)
         {
-            Dash();
-            OnDashStarted?.Invoke();
             _charged = false;
+            Dash();
         }
         //quand on relache après avoir appuyé peu longtemps
         else
         {
+            hand.visuals.PlaySwordAttackAnimation();
             OnSmallAttackStarted?.Invoke();
         }
 
@@ -118,14 +133,17 @@ public class Sword : MeleeWeapon
     void Dash()
     {
         _isDashing = true;
+        //event & anim
+        hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.sword_charge_release);
+        OnDashStarted?.Invoke();
         
+        //changelent de velocité
         //todo : meilleur calcul et enlever la condition
         float dot = Vector3.Dot(playerCharacter.playerCamera.transform.forward, playerCharacter.physics.Velocity.normalized);
         if (dot <= _dashDotThreshold)
             playerCharacter.physics.SetVelocity(Vector3.zero);
-
         playerCharacter.physics.AddImpulse(playerCharacter.playerCamera.transform.forward * _dashStrength);
-
+        
         WaitForDashToCoolDown();
     }
     async void WaitForDashToCoolDown()
@@ -143,13 +161,19 @@ public class Sword : MeleeWeapon
         OnDashCooledUp?.Invoke();
         _canDash = true;
         _isDashing = false;
+        _isAttacking = false;
     }
 
     
     /// <summary>
     /// callback d'animation
     /// </summary>
-    public void EnableHitbox()
+    /// <param name="animationIndex">
+    /// 0 -> small attack 0,  
+    /// 1 -> small attack 1,  
+    /// 2 -> dash release,  
+    /// </param>
+    public void EnableHitbox(int animationIndex)
     {
         hitboxIsActive = true;
     }

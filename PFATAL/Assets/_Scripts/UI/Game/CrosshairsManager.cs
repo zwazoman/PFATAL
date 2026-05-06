@@ -35,10 +35,10 @@ public class CrosshairsManager : MonoBehaviour
         _crossbowCrosshair.Activate(crossbow);
     }
 
-    void OnEquipHammer_Callback(Sword hammer)
+    void OnEquipHammer_Callback(Sword sword)
     {
         OnActivateCrosshair?.Invoke();
-        swordCrosshair.Activate(hammer);
+        swordCrosshair.Activate(sword);
     }
 
     void DisableBaseCrosshair()

@@ -38,10 +38,10 @@ public class HeatMapServerAnalitics : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _filePath = Path.Combine(Application.persistentDataPath, "Test_heatmap_" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".bin");
+        _filePath = Path.Combine(Application.persistentDataPath, "heatmap_" + System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".bin");
     }
 
-    public void TestIciConnard()
+    public void RealHeatMapSave()
     {
         HeatMapData mapToSave = HeatMapUtility.CombineHeatMap(HeatMaps);
 

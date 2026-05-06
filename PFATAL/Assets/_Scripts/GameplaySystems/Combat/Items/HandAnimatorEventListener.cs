@@ -2,6 +2,9 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// reçoit et propage des events depuis les animations de la main
+/// </summary>
 public class HandAnimatorEventListener : MonoBehaviour
 {
     [SerializeField] private Hand _hand;
@@ -10,21 +13,25 @@ public class HandAnimatorEventListener : MonoBehaviour
     
     //public event
     public event Action OnAnimationFinished;
-    
-    /// <summary>
-    /// 0 -> small attack 0,  
-    /// 1 -> small attack 1,  
-    /// 2 -> dash release,  
-    /// </summary>
-    public event Action<int> OnSwordHitboxActivated;
+    public event Action OnSwordHitboxActivated;
     public event Action OnSwordHitboxDeactivated;
+    public event Action OnGrapplePulled;
+    public event Action OnTomahawkShot;
     
 
     
     
+// == animator messages ==
     
-    //animator messages
-    public void TriggerOnSwordHitboxActivated(int attackID) { print("TriggerOnSwordHitboxActivated"); OnSwordHitboxActivated?.Invoke(attackID); }
-    public void TriggerOnSwordHitboxDeactivated(){print("TriggerOnSwordHitboxDeactivated");OnSwordHitboxDeactivated?.Invoke();}
+    //general
     public void TriggerOnAnimationFinished(){print("TriggerOnAnimationFinished");OnAnimationFinished?.Invoke();}
+    
+    //sword
+    public void TriggerOnSwordHitboxActivated(){print("TriggerOnSwordHitboxActivated"); OnSwordHitboxActivated?.Invoke(); }
+    public void TriggerOnSwordHitboxDeactivated(){print("TriggerOnSwordHitboxDeactivated");OnSwordHitboxDeactivated?.Invoke();}
+    
+    //tomahawk
+    public void TriggerOnGrapplePulled(){print("TriggerOnGrapplePulled");OnGrapplePulled?.Invoke();}
+    public void TriggerOnTomahawkShot(){print("TriggerOnTomahawkShot");OnTomahawkShot?.Invoke();}
+    
 }

@@ -173,7 +173,7 @@ public class Sword : MeleeWeapon
     /// 1 -> small attack 1,  
     /// 2 -> dash release,  
     /// </param>
-    public void EnableHitbox(int animationIndex)
+    public void EnableHitbox()
     {
         hitboxIsActive = true;
     }
@@ -184,7 +184,6 @@ public class Sword : MeleeWeapon
     public void DisableHitBox()
     {
         hitboxIsActive = false;
-        _isAttacking = false;
     }
 
     

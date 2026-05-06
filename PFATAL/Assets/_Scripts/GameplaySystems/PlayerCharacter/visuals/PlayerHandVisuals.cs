@@ -10,8 +10,9 @@ namespace GameplaySystems.PlayerCharacter
         {
             //voir _Graph/Meshes/Chara/AC_HandCharacter.controller
             
-            Unknown = -1,
-            CurrentDefaultIdlePose = 0,
+            unknown = -1,
+            currentDefaultIdlePose = 0,
+            freeHands_idle = 1,
             
             crossbow_idle = 100,
             crossbow_shootAndReload = 101,
@@ -38,6 +39,7 @@ namespace GameplaySystems.PlayerCharacter
         
         
         private static readonly int MainAnim_AnimatorProperty = Animator.StringToHash("mainAnim");
+        private static readonly int CrossbowShootAnimationSpeedMultiplier_AnimatorProperty = Animator.StringToHash("crossbowShootAnimationSpeedMultiplier");
 
         [Header("Scene references")]
         [SerializeField] Hand _hand;
@@ -48,18 +50,12 @@ namespace GameplaySystems.PlayerCharacter
         void Awake()
         {
             _hand.OnEquipItem += OnNewItemEquipped;
-            _hand.OnUnequipItem += (_) => ClearEquippedItem();
-            _hand.OnDeleteItem += ClearEquippedItem;
-            _hand.OnDropItem += (_) => ClearEquippedItem();
+            _hand.OnUnequipItem += OnItemUnequipped;
+            _hand.OnDeleteItem += PlayCurrentDefaultIdlePoseAnimation;
+            _hand.OnDropItem += OnItemUnequipped;
             _hand.animatorEventListener.OnAnimationFinished += PlayCurrentDefaultIdlePoseAnimation;
 
         }
-
-        private void ClearEquippedItem()
-        {
-            _animator.SetInteger(MainAnim_AnimatorProperty,0);
-        }
-        
         
         private void OnNewItemEquipped(Item equippedItem)
         {
@@ -81,31 +77,40 @@ namespace GameplaySystems.PlayerCharacter
                 Cons_Bomb => AnimationID.bomb_idle,
                 //todo : Cons_WolfTrap ,
                 
-                _ => AnimationID.Unknown
+                _ => AnimationID.unknown
             };
             PlayAnimation(currentDefaultIdlePose);
             
-            //setup event
+            //link events
             switch (equippedItem)
             {
-                case Sword sword:
-                    sword.OnSmallAttackStarted += PlaySwordAttackAnimation;
-                    sword.OnStartCharging += () => print("OnStartCharging");
-                    sword.OnDashStarted += () => print("OnStopCharging");
-                    sword.OnDashCooledUp += () => print("OnDashCooledUp");
-                    break;
-                
-                default:
-                    //throw new System.NotImplementedException();
+                case Crossbow crossbow:
+                    const float crossbowShootAnimClipLength = .542f;
+                    _animator.SetFloat(CrossbowShootAnimationSpeedMultiplier_AnimatorProperty,crossbowShootAnimClipLength/(crossbow.delayBetweenShots-.05f));
+                    crossbow.OnCrossbowShoot += PlayCrossbowShootAnimation;
                     break;
             }
             
         }
         
+        void OnItemUnequipped(Item item)
+        {
+            //unlink events
+            switch (item)
+            {
+                case Crossbow crossbow:
+                    crossbow.OnCrossbowShoot -= PlayCrossbowShootAnimation;
+                    break;
+            }
+
+            currentDefaultIdlePose = AnimationID.freeHands_idle;
+            PlayCurrentDefaultIdlePoseAnimation();
+        }
+        
         //helper functions
         public void PlayAnimation(AnimationID id)
         {
-            if (id == AnimationID.Unknown)
+            if (id == AnimationID.unknown)
             {
                 Debug.LogWarning("Unknown animation ! falling back to current default idle pause.");
                 id = currentDefaultIdlePose;
@@ -125,6 +130,12 @@ namespace GameplaySystems.PlayerCharacter
         {
             PlayAnimation(_swordAnimFlipFlop ? AnimationID.sword_attack_small_0 : AnimationID.sword_attack_small_1);
             _swordAnimFlipFlop = !_swordAnimFlipFlop;
+        }
+        
+        //crossbow animation
+        private void PlayCrossbowShootAnimation(float chargeLevel)
+        {
+            PlayAnimation(AnimationID.crossbow_shootAndReload);
         }
 
     }

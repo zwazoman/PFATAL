@@ -8,17 +8,15 @@ using UnityEngine.Serialization;
 
 public class Hand : MonoBehaviour
 {
+    //events, pas repliqués
     public event Action<Item> OnPickUpItem;
     public event Action<Item> OnDropItem;
     public event Action OnDeleteItem;
-
     public event Action<Item> OnEquipItem;
     public event Action<Item> OnUnequipItem;
-
     public event Action<Crossbow> OnEquipCrossbow;
     public event Action<Tomahawk> OnEquipTomahawk;
     public event Action<Sword> OnEquipHammer;
-
     public event Action OnSwapItem;
 
     [Header("References")]

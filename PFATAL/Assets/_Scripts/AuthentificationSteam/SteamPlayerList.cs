@@ -6,8 +6,6 @@ using UnityEngine;
 using Unity.Netcode;
 using Unity.Collections;
 
-
-
 public class SteamPlayerList : NetworkBehaviour
 {
     public static SteamPlayerList Instance;
@@ -37,9 +35,24 @@ public class SteamPlayerList : NetworkBehaviour
         
         Debug.Log("[SteamPlayerList] NetworkSpawn OK");
         
-        if(NetworkManager.Singleton.IsServer){
+        if (IsServer)
+        {
             Debug.Log("[SteamPlayerList] NetworkSpawn JE PASSE PAR LA ");
             NetworkManager.Singleton.OnClientConnectedCallback += OnNewPlayerJoined;
+        }
+        else
+        {
+            // ✅ Le client demande la liste quand IL est prêt, pas quand le serveur le décide
+            RequestPlayerListRPC();
+        }
+    }
+
+    // ✅ Bonne pratique : désabonner l'event au despawn
+    public override void OnNetworkDespawn()
+    {
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnNewPlayerJoined;
         }
     }
 
@@ -47,9 +60,19 @@ public class SteamPlayerList : NetworkBehaviour
     {
         Debug.Log("[SteamPlayerList] NewPlayerJoined ");
         Debug.Log("[SteamPlayerList] NewPlayerJoined " + newClientNetworkID);
+        // ✅ On ne pousse plus la liste ici (le client n'est pas encore prêt à recevoir des RPCs)
+        // C'est maintenant le client qui demande la liste depuis son OnNetworkSpawn via RequestPlayerListRPC()
+    }
+
+    // ✅ Le client envoie la demande au serveur quand il est prêt
+    [Rpc(SendTo.Server)]
+    private void RequestPlayerListRPC(RpcParams rpcParams = default)
+    {
+        ulong requesterId = rpcParams.Receive.SenderClientId;
+        Debug.Log("[SteamPlayerList] Client " + requesterId + " demande la liste des joueurs");
         SendPlayerListToNewClientRPC(
             Players.ToArray(),
-            RpcTarget.Single(newClientNetworkID, RpcTargetUse.Temp));
+            RpcTarget.Single(requesterId, RpcTargetUse.Temp));
     }
 
     [Rpc(SendTo.SpecifiedInParams)]

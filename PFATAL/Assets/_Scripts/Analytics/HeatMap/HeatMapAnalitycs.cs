@@ -31,7 +31,7 @@ public class HeatMapAnalitycs : NetworkBehaviour
     private string _filePath;
 
     public List<GameObject> Players;
-    public List<HeatMapData> heatMapsToCombine;
+    public List<HeatMapData> heatMapsToCombine = new List<HeatMapData>();
     public float interval = 0.1f;
     public int gridSize = 1;
     public MapBounds mapBoundsObject;
@@ -66,8 +66,12 @@ public class HeatMapAnalitycs : NetworkBehaviour
         _theRealHeatMap.points = new List<HeatPoint>((int)(1f / interval * 3 * 60));
 
         GameManager.Instance.EventOnGameStarted += () => isPlaying = true;
-        GameManager.Instance.EventOnGameEnded += (_) => SaveHeatMap(new());
+        GameManager.Instance.EventOnGameEnded += (_) => SaveHeatMap(new(), false);
 
+        if (!character.IsOwner)
+        {
+            this.enabled = false;
+        }
     }
 
     private void Update()
@@ -142,20 +146,6 @@ public class HeatMapAnalitycs : NetworkBehaviour
                 _theRealHeatMap.points.Add(newPoint);
             }
         }
-
-        if (character.IsOwner)
-        {
-            tktPllayer.Clear();
-
-            //HeatMapServerAnalitics.instance.text.text = heatMapsToCombine.Count.ToString();
-
-            if (heatMapsToCombine.Count == 0) return;
-
-            foreach (var heatmap in heatMapsToCombine)
-            {
-                tktPllayer.Add(heatmap.playerId);
-            }
-        }
     }
 
     private WeaponType GetPlayerWeaponType(PlayerCharacter player)
@@ -208,7 +198,7 @@ public class HeatMapAnalitycs : NetworkBehaviour
         if (character.IsServer)
         {
             AskHeatmapToClientRpc();
-            SaveHeatMap(new());
+            SaveHeatMap(new(), true);
         }
 
         if (character.IsClient && character.IsOwner)
@@ -246,33 +236,47 @@ public class HeatMapAnalitycs : NetworkBehaviour
         //if (!character.IsOwner) return;
 
         HeatMapData _clientHeatmap = HeatMapUtility.ConvertByteToMap(_clientHeatmapByte);
+        heatMapsToCombine = HeatMapServerAnalitics.instance.HeatMaps;
 
-        //UnityEngine.Debug.Log("Heatmap received from client: " + playerId);
+        //UnityEngine.Debug.Log($"Heatmap received from client: {playerId}, Map id : {_clientHeatmap.playerId}, " +
+        //    $"maps to combine count: {heatMapsToCombine.Count}, Script Owner : {this.gameObject.name}, Count : {_clientHeatmap.points.Count}");
 
+        //File.WriteAllBytes(Path.Combine(Application.persistentDataPath, $"heatmap_received_from_player_{playerId}.bin"), _clientHeatmapByte);
 
         HeatMapData heatmap = heatMapsToCombine.FirstOrDefault(h => h.playerId == _clientHeatmap.playerId);
         if (heatmap != null)
         {
+            //Debug.Log("Trouvé");
             heatMapsToCombine.Remove(heatmap);
             heatMapsToCombine.Add(_clientHeatmap);
         }
         else
         {
+            //Debug.Log("pas trouvé");
             heatMapsToCombine.Add(_clientHeatmap);
         }
         
-        _theRealHeatMap = HeatMapUtility.CombineHeatMap(new() {_theRealHeatMap, _clientHeatmap});
+        HeatMapServerAnalitics.instance.HeatMaps = heatMapsToCombine;
+
+        //Debug.Log($"Player : {HeatMapServerAnalitics.instance.Players.Count}, heatMap count : {heatMapsToCombine.Count}");
+
+        if (heatMapsToCombine.Count == HeatMapServerAnalitics.instance.Players.Count)
+        {
+            _theRealHeatMap = HeatMapUtility.CombineHeatMap(new() {_theRealHeatMap, _clientHeatmap});
+            //Debug.Log($"All heatmaps received, combining and saving... {HeatMapServerAnalitics.instance.Players.Count}");
+            SaveHeatMap(new(), true);
+        }
     }
 
-    public void SaveHeatMap(GameRulesBase.GameResult gameResult)
+    public void SaveHeatMap(GameRulesBase.GameResult gameResult, bool triggerByServer)
     {
         if (character.IsClient && character.IsOwner)
         {
             SendHeatMapToServerRpc(HeatMapUtility.ConvertMapToByte(_theRealHeatMap), character.name[character.name.Length - 1]);
-            Debug.Log("NTM la fin de game, j'envoie le heatmap au serveur");
+            //Debug.Log("NTM la fin de game, j'envoie le heatmap au serveur");
         }
 
-        if (!character.IsServer) return;
+        if (!character.IsServer && !triggerByServer) return;
 
         //File.WriteAllText(_filePath, JsonUtility.ToJson(_theRealHeatMap));
 
@@ -280,9 +284,12 @@ public class HeatMapAnalitycs : NetworkBehaviour
 
         //HeatMapData map = HeatMapUtility.CombineHeatMap(heatMapsToCombine);
 
+
+
         byte[] _byteHeatmap = HeatMapUtility.ConvertMapToByte(_theRealHeatMap);
 
-        File.WriteAllBytes(_filePath, _byteHeatmap);
+        //File.WriteAllBytes(_filePath, _byteHeatmap);
+        HeatMapServerAnalitics.instance.RealHeatMapSave();
 
         //UnityEngine.Debug.Log("Heatmap data saved to: " + _filePath);
     }

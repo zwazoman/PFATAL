@@ -120,9 +120,9 @@ public class DataCollector : MonoBehaviour
                 Version = int.Parse(Application.version.Replace(".", "")),
                 IdPlayerSet = gameId,
                 HeatMap = "heatmap_data",
-                GameMode = (int)GameManager.gameMode,
+                GameMode = (int)GameManager.Instance.gameSetting.GameMode,
                 MapName = SceneManager.GetActiveScene().name,
-                Duration = GameManager.DEATH_MATCH_GAME_DURATION
+                Duration = GameManager.Instance.gameSetting.GameDuration
             };
 
             StartCoroutine(_databaseRequest.SendGame(game, (result) =>

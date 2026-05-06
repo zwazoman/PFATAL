@@ -611,10 +611,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639135934785295001
+  lastModified: 639136709757240562
   FileSizes:
   - Name: Desktop
-    Value: 1136448
+    Value: 1158656
   Exists: 1
 --- !u!114 &-2389884414179561786
 MonoBehaviour:
@@ -699,6 +699,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-1943176440677569506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MushroomBump3D/ReverbAmount
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: ReverbAmount
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3990394630
+    data2: 3121053706
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-1799917517773424415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -817,13 +841,38 @@ MonoBehaviour:
   - {fileID: 7286511439417374534}
   - {fileID: 4716686741404004879}
   - {fileID: -4959983442117515542}
+  - {fileID: 8608690591152108800}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1373530535141412940}
   StringsBanks:
   - {fileID: 7971645662156069631}
-  cacheTime: 639135934785295001
+  cacheTime: 639136709757240562
   cacheVersion: 131635
+--- !u!114 &122565269627348588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MushroomBump3D/Occlusion
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Occlusion
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3656716992
+    data2: 1176487324
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &309862886503325782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -986,7 +1035,7 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639135934768324666
+  lastModified: 639136706990213511
   FileSizes:
   - Name: Desktop
     Value: 5348
@@ -1539,10 +1588,10 @@ MonoBehaviour:
   Path: ../../../../Sound Design/PFATAL/Rock-Solid-Fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639135934768390632
+  lastModified: 639136706990258648
   FileSizes:
   - Name: Desktop
-    Value: 2630
+    Value: 2680
   Exists: 1
 --- !u!114 &8015081236418152981
 MonoBehaviour:
@@ -1568,6 +1617,35 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &8608690591152108800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Map/MushroomBump3D
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Map/MushroomBump3D
+  Guid:
+    Data1: -422777342
+    Data2: 1301669127
+    Data3: -426312813
+    Data4: -185860890
+  Banks:
+  - {fileID: -2518904041505098000}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 122565269627348588}
+  - {fileID: -1943176440677569506}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &8885234761193576497
 MonoBehaviour:
   m_ObjectHideFlags: 0

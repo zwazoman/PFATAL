@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class HitMarkerUI : MonoBehaviour
 {
     public event Action OnShowHitMarker;
+    public event Action OnShowKillMarker;
 
     [Header("References")]
     [SerializeField] HUDManager _hud;
@@ -39,8 +40,11 @@ public class HitMarkerUI : MonoBehaviour
         OnShowHitMarker?.Invoke();
 
         if (killed)
+        {
             _hitmarkerImage.color = _killColor;
-
+            OnShowKillMarker?.Invoke();
+        }
+            
         _hitmarkerImage.gameObject.SetActive(true);
         _hitmarkerImage.transform.localScale = _initialScale;
 

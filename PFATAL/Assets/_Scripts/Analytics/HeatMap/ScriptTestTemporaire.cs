@@ -18,6 +18,10 @@ public class ScriptTestTemporaire : MonoBehaviour
 
     public string heatMapPath;
     public WeaponType weaponType;
+    public int cellSize;
+    public int gameId;
+    public int gameVersion;
+    public int playerId;
 
     public HeatMapAnalitycs taMereAnalitics;
 
@@ -27,7 +31,11 @@ public class ScriptTestTemporaire : MonoBehaviour
         if (!show) return;
 
 
-        HeatMapData heatMapData = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(path));
+        HeatMapData heatMapData = HeatMapUtility.ConvertByteToMap(File.ReadAllBytes(path));
+        cellSize = heatMapData.cellSize;
+        gameId = heatMapData.gameId;
+        gameVersion = heatMapData.gameVersion;
+        playerId = heatMapData.playerId;
 
         float size = heatMapData.cellSize;
         foreach (var point in heatMapData.points)

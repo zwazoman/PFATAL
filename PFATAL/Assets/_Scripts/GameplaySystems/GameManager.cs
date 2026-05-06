@@ -17,8 +17,7 @@ public class GameManager : NetworkBehaviour
     //game rules
     //todo : scriptable object avec game settings ?
     private GameRulesBase _serverGameRules;
-    public const float DEATH_MATCH_GAME_DURATION = 60*4;
-    public static GameMode gameMode = GameMode.DeathMatch;
+    public GameSetting gameSetting;
     
     private static Dictionary<ulong,PermanentPlayerIdentity> _playerIdentities = new();
      
@@ -77,7 +76,7 @@ public class GameManager : NetworkBehaviour
     {
         await _timeSyncManager.SyncClientTimestamps();
         SyncPlayerIdentitiesToClientsRPC(_playerIdentities.Keys.ToArray(), _playerIdentities.Values.ToArray());
-        StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(), gameMode);
+        StartGame(NetworkManager.Singleton.ConnectedClientsIds.ToList(), gameSetting.GameMode);
     }
 
     [Rpc(SendTo.Everyone)]
@@ -115,14 +114,7 @@ public class GameManager : NetworkBehaviour
     {
         _playerIdentities = playerIdentities;
     }
-    
-    //data
-    public enum GameMode
-    {
-        DeathMatch,
-        None
-    }
-    
+
     private void StartGame(List<ulong> clientIDs,GameMode gameMode)
     {
         if (IsServer)
@@ -131,7 +123,7 @@ public class GameManager : NetworkBehaviour
             switch (gameMode)
             {
                 case GameMode.DeathMatch:
-                    _serverGameRules = new GameRulesDeathMatch(clientIDs,DEATH_MATCH_GAME_DURATION);
+                    _serverGameRules = new GameRulesDeathMatch(clientIDs, gameSetting.GameDuration);
                     break;
                 default:
                     throw new Exception("Game Mode not set");

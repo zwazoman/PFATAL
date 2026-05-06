@@ -16,6 +16,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
     private string _filePath;
 
     public List<GameObject> Players;
+    public List<HeatMapData> HeatMaps;
     public float interval = 0.1f;
     public int gridSize = 1;
     public MapBounds mapBoundsObject;
@@ -37,7 +38,14 @@ public class HeatMapServerAnalitics : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _filePath = Path.Combine(Application.persistentDataPath, "heatmap_" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".bin");
+        _filePath = Path.Combine(Application.persistentDataPath, "heatmap_" + System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".bin");
+    }
+
+    public void RealHeatMapSave()
+    {
+        HeatMapData mapToSave = HeatMapUtility.CombineHeatMap(HeatMaps);
+
+        File.WriteAllBytes(_filePath, HeatMapUtility.ConvertMapToByte(mapToSave));
     }
 
     /*private void Start()

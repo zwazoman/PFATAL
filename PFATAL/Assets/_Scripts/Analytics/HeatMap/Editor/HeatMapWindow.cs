@@ -177,7 +177,7 @@ public class HeatMapWindow : EditorWindow
         //searching files on this computer in the persistent data path
         if (isFileOnThisComputer)
         {
-            //UnityEngine.Debug.Log("Loading heat map data from a file on this computer.");
+            UnityEngine.Debug.Log("Loading heat map data from a file on this computer.");
 
             //Get all the json files that start with the designated text
             List<string> heatMapJsonList = Directory.GetFiles(Application.persistentDataPath, $"{fileStartText}*.bin").ToList(); //fileStartText + "*.json"
@@ -439,7 +439,7 @@ public class HeatMapWindow : EditorWindow
 
 
 
-        string path = "Assets/Texture3D/Texture3D_" + textureName + ".asset";
+        string path = "Assets/_Data/Texture3D/Texture3D_" + textureName + ".asset";
 
         Texture3D existing = AssetDatabase.LoadAssetAtPath<Texture3D>(path);
 

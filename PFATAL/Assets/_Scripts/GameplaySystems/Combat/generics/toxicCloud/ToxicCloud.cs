@@ -20,12 +20,14 @@ public class ToxicCloud : NetworkBehaviour
     float _tickTimer;
 
     ulong _ownerId;
-    
+    int _itemId;
+
     const float TWEEN_DURATION = .4f;
     private bool _isAboutToDie = false;
-    public void Init(ulong ownerId)
+    public void Init(ulong ownerId, int itemId)
     {
         _ownerId = ownerId;
+        _itemId = itemId;
     }
 
     private void Update()
@@ -70,7 +72,7 @@ public class ToxicCloud : NetworkBehaviour
         transform.localScale = Vector3.one*.2f;
         transform.DOScale(new Vector3(radius, radius, radius), TWEEN_DURATION).SetEase(Ease.OutCubic);
 
-        float endRadius = radius; radius = 0;
+        float endRadius = radius; radius = 0.2f;
         DOTween.To(()=> radius,(float v)=>radius = v,endRadius,TWEEN_DURATION).SetEase(Ease.OutElastic);
     }
 
@@ -87,9 +89,11 @@ public class ToxicCloud : NetworkBehaviour
                     Amount = _damagePerTick,
                     SourcePlayerClientID = _ownerId,
                     Point = hit.transform.position,
+                    SourcePos = transform.position,
                     Direction = Vector3.zero,
                     KnockbackForce = Vector3.zero,
-                    Radius = radius
+                    Radius = radius,
+                    WeaponID = _itemId
                 };
 
                 hit.TakeDamage(damage);

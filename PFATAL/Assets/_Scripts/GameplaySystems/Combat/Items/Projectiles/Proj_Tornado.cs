@@ -10,6 +10,7 @@ public class Proj_Tornado : Projectile
     [SerializeField] float _speed = 4f;
     [SerializeField] float _ejectionRadius = 2f;
     [SerializeField] float _ejectionForce = 10f;
+    [SerializeField] LayerMask _playerLayerMask;
 
     private float _timer;
     private bool _halfTimeReached = false;
@@ -59,7 +60,7 @@ public class Proj_Tornado : Projectile
 
     void CheckForCollisionsAgainstPlayers()
     {
-        int count = Physics.OverlapSphereNonAlloc(transform.position, _ejectionRadius, buffer);
+        int count = Physics.OverlapSphereNonAlloc(transform.position, _ejectionRadius, buffer, _playerLayerMask);
 
         for (int i = 0; i < count; i++)
         {
@@ -83,19 +84,20 @@ public class Proj_Tornado : Projectile
                         Point = hitObject.transform.position,
                         Direction = dir.normalized,
                         KnockbackForce = knockback,
-                        Radius = _ejectionRadius
+                        Radius = _ejectionRadius,
+                        WeaponID = (int)spawnContext.Value.floatData2
                     };
                     hitObject.TakeDamage(damageData);
 
                     blackList.Add(hitObject);
                     StartCoroutine(RemoveObjectFromBlackList_Delayed(hitObject));
 
-                    if( hitObject.TryGetComponent(out PlayerStateMachine playerStateMachine));
-
-                    // RPC vers le client ciblé
-                    ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
-                    ApplyPropulsedRPC(RpcTarget.Single(targetClientId, RpcTargetUse.Temp)
-                    );
+                    if (hitObject.isPlayer)
+                    {
+                        // RPC vers le client ciblé
+                        ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
+                        ApplyPropulsedRPC(RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
+                    }
                 }
             }
         }

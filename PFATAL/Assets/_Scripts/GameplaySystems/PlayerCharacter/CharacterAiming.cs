@@ -118,8 +118,8 @@ public class CharacterAiming : NetworkBehaviour
         yield return new WaitForSeconds(0.4f);
         if (_character.inputs.UsingGamePad == true)
         {
-            if ((gamepad.rightStick.ReadValue().x > 0.5f) || (gamepad.rightStick.ReadValue().y > 0.5f) ||
-                (gamepad.rightStick.ReadValue().x < -0.5f) || (gamepad.rightStick.ReadValue().y < -0.5f))
+            if ((gamepad.rightStick.ReadValue().x > 0.7f) || (gamepad.rightStick.ReadValue().y > 0.7f) ||
+                (gamepad.rightStick.ReadValue().x < -0.7f) || (gamepad.rightStick.ReadValue().y < -0.7f))
             {
                 while (ControllerSensitivity < _controllerSensitivityMaxAcceleration)
                 {

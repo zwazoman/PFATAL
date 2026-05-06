@@ -50,7 +50,7 @@ public class Proj_Bomb : Projectile
         _isExploding = true;
         _rb.isKinematic = true;
 
-        await _explosion.Explode(spawnContext.Value.spawnerClientID);
+        await _explosion.Explode(spawnContext.Value.spawnerClientID, (int)spawnContext.Value.floatData2);
         
         NetworkObject.Despawn();
     }

@@ -27,33 +27,34 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         protected override void OnEntered(PlayerCharacter playerCharacter)
         {
+            base.OnEntered(playerCharacter);
             _endTime = Time.time + duration;
-            
             playerCharacter.physics.SetVelocity(Vector3.zero);
             playerCharacter.physics.enabled = false;
         }
 
         protected override void OnExited(PlayerCharacter playerCharacter)
         {
+            base.OnExited(playerCharacter);
             playerCharacter.physics.enabled = true;
         }
 
         public override void Behave(PlayerCharacter playerCharacter, UpdatePoint updatePoint)
         {
             if (updatePoint != UpdatePoint.Update) return;
-            
+            base.Behave(playerCharacter, updatePoint);
             playerCharacter.physics.SetVelocity(Vector3.zero);
         }
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter playerCharacter)
         {
-            if(playerCharacter.health.IsDead)
-                return Sm.s_dead;
-                
+            var nextState = base.FindNextState(playerCharacter);
+            if(nextState != this) return nextState;
+            
             if (Time.time >= _endTime)
                 return playerCharacter.physics.ComputeIsGrounded() ? Sm.s_Idle : Sm.s_Falling;
 
-            return base.FindNextState(playerCharacter);
+            return this;
         }
     }
 }

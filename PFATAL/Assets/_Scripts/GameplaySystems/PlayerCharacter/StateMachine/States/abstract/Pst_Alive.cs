@@ -30,7 +30,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             if(GameManager.Instance && GameManager.Instance.IsGameOver)
                 return Sm.s_GameOver;
             
-            else if (_died)
+            if (_died)
             {
                 _died = false;
                 return Sm.s_dead;

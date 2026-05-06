@@ -29,7 +29,11 @@ public class HeatMapUtility
             return null;
         }
 
-        HeatMapData combinedHeatMap = new HeatMapData(heatMaps[0].cellSize);
+        HeatMapData combinedHeatMap = new HeatMapData(heatMaps[0].cellSize, 1, 111, 5);
+        combinedHeatMap.points = new List<HeatPoint>();
+
+        Debug.LogError($"Combining {heatMaps.Count} heat maps with grid size {combinedHeatMap.cellSize}.");
+
 
         foreach (HeatMapData heatmap in heatMaps)
         {
@@ -54,7 +58,7 @@ public class HeatMapUtility
                     combinedHeatMap.points.Add(new HeatPoint(
                         currentPoint.P,
                         //currentPoint.G,
-                        point.W,
+                        currentPoint.W,
                         currentPoint.H,
                         currentPoint.C,
                         currentPoint.T
@@ -72,7 +76,7 @@ public class HeatMapUtility
             combinedHeatMap.gameId = 0;
         }
 
-        combinedHeatMap.playerCount = heatMaps.Count;
+        combinedHeatMap.playerId = heatMaps.Count;
         
         //string combinedHeatMapJson = ConvertHeatMapDataToJson(combinedHeatMap);
 
@@ -235,7 +239,7 @@ public class HeatMapUtility
 
         // Assuming HeatMapData has 5 integer properties (cellSize, gameId, gameVersion, playerCount) and 1 for points count
         byte[] mapInfo = new byte[1 + 2 + 2 + 1 + 4 + heatMapData.points.Count * (3 + 4 * 2)]; 
-        Debug.Log($"{sizeof(short)}");
+        //Debug.Log($"{sizeof(short)}");
 
         // Convert HeatMapData properties to bytes
         Buffer.BlockCopy(BitConverter.GetBytes((sbyte)heatMapData.cellSize), 0, mapInfo, index, 1);
@@ -244,7 +248,7 @@ public class HeatMapUtility
         index += 2;
         Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.gameVersion), 0, mapInfo, index, 2);
         index += 2;
-        Buffer.BlockCopy(BitConverter.GetBytes((sbyte)heatMapData.playerCount), 0, mapInfo, index, 1);
+        Buffer.BlockCopy(BitConverter.GetBytes((sbyte)heatMapData.playerId), 0, mapInfo, index, 1);
         index += 1;
         Buffer.BlockCopy(BitConverter.GetBytes(heatMapData.points.Count), 0, mapInfo, index, 4);
         index += 4;
@@ -286,7 +290,7 @@ public class HeatMapUtility
         Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.gameVersion), 0, test, indexTest, 2);
         indexTest += 2;
 
-        Buffer.BlockCopy(BitConverter.GetBytes((sbyte)heatMapData.playerCount), 0, test, indexTest, 1);
+        Buffer.BlockCopy(BitConverter.GetBytes((sbyte)heatMapData.playerId), 0, test, indexTest, 1);
         indexTest += 1;
 
         Buffer.BlockCopy(BitConverter.GetBytes((short)heatMapData.points.Count), 0, test, indexTest, 2);
@@ -314,7 +318,8 @@ public class HeatMapUtility
         indexTest += 2;
 
         //UnityEngine.Debug.Log($"Test bytes length: {test.Length}, Size : {test[0]}, Id : {test[1]}, Version : {test[2]}, PlayerCount : {test[3]}, PointsCount : {test[4]}, X : {test[5]}, Y : {test[6]}, Z : {test[7]}, W : {test[8]}, H : {test[9]}, C : {test[10]}, T : {test[11]}");
-        UnityEngine.Debug.Log($"Test bytes length: {test.Length}, " +
+        
+        /*UnityEngine.Debug.Log($"Test bytes length: {test.Length}, " +
             $"Size : {(int)test[0]}, " +
             $"Id : {BitConverter.ToInt16(test, 1)}, " +
             $"Version : {BitConverter.ToInt16(test, 3)}, " +
@@ -326,10 +331,11 @@ public class HeatMapUtility
             $"W : {BitConverter.ToInt16(test, 11)}, " +
             $"H : {BitConverter.ToInt16(test, 13)}, " +
             $"C : {BitConverter.ToInt16(test, 15)}, " +
-            $"T : {BitConverter.ToInt16(test, 17)}");
-        Debug.Log(BitConverter.ToString(test));
+            $"T : {BitConverter.ToInt16(test, 17)}");*/
+
+        //Debug.Log(BitConverter.ToString(test));
         
-        Debug.Log(BitConverter.ToString(BitConverter.GetBytes((int)(System.DateTime.Now - new System.DateTime(1970, 1, 1)).TotalSeconds)));
+        //Debug.Log(BitConverter.ToString(BitConverter.GetBytes((int)(System.DateTime.Now - new System.DateTime(1970, 1, 1)).TotalSeconds)));
         #endregion
 
 
@@ -337,7 +343,7 @@ public class HeatMapUtility
         //UnityEngine.Debug.Log($"Heatmap points count: {heatMapData.points.Count}, Combined bytes length: {mapInfo.Length}");
 
         //Debug,tej later
-        File.WriteAllBytes(Path.Combine(Application.persistentDataPath, "heatmap.bin"), mapInfo);
+        //File.WriteAllBytes(Path.Combine(Application.persistentDataPath, "heatmap.bin"), mapInfo);
 
         return mapInfo;
     }

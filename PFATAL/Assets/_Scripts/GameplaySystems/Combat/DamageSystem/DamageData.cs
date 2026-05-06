@@ -45,7 +45,12 @@ public struct DamageData : INetworkSerializeByMemcpy
     /// </summary>
     public float Radius;
 
-    public DamageData(float amount, Vector3 point, Vector3 sourcePos, Vector3 direction, ulong sourcePlayerClientID = NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID, float radius = 0)
+    /// <summary>
+    /// L'ID de l'arme utilisée pour infliger les dégâts.
+    /// </summary>
+    public int WeaponID;
+
+    public DamageData(float amount, Vector3 point, Vector3 sourcePos, Vector3 direction, ulong sourcePlayerClientID = NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID, float radius = 0, int weaponID = -1)
     {
         Amount = amount;
         SourcePlayerClientID = sourcePlayerClientID;
@@ -54,5 +59,6 @@ public struct DamageData : INetworkSerializeByMemcpy
         KnockbackForce = Vector3.zero;
         Direction = direction;
         Radius = radius;
+        WeaponID = weaponID;
     }
 }

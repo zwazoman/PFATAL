@@ -23,7 +23,7 @@ public class HeatMapData
     public int cellSize;
     public int gameId;
     public int gameVersion;
-    public int playerCount;
+    public int playerId;
 
     public List<HeatPoint> points = new List<HeatPoint>();
 
@@ -41,7 +41,7 @@ public class HeatMapData
     /// <param name="heatMapGameVersion">Game version when the heatmap was created</param>
     /// <param name="heatMapPlayerNumber">Number of players that particpate to make the heatmap</param>
     public HeatMapData(int cellSize, int heatMapGameId, int heatMapGameVersion, int heatMapPlayerNumber) => 
-        (this.cellSize, this.gameId, this.gameVersion, this.playerCount) = 
+        (this.cellSize, this.gameId, this.gameVersion, this.playerId) = 
         (cellSize, heatMapGameId, heatMapGameVersion, heatMapPlayerNumber);
 }
 

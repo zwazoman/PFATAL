@@ -73,6 +73,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Audiomanager
   ShowTopMostFoldoutHeaderGroup: 1
+  occlusionManager: {fileID: 3020583874071806366}
+  reverbManager: {fileID: 5618638444868702506}
   playSounds: 1
   _eventReferences:
   - Guid:
@@ -213,6 +215,36 @@ MonoBehaviour:
       Data3: 2112674745
       Data4: 184341347
     Path: event:/SFX/Items/BearTrap/BearTrapSetup3D
+  - Guid:
+      Data1: -1208488022
+      Data2: 1228308322
+      Data3: 2083398306
+      Data4: 229048733
+    Path: event:/SFX/Items/BearTrap/BearTrapTrigger3D
+  - Guid:
+      Data1: -1362576541
+      Data2: 1282451430
+      Data3: -1116596605
+      Data4: -2069270903
+    Path: event:/SFX/Player/Pickup
+  - Guid:
+      Data1: -680124750
+      Data2: 1222792315
+      Data3: -461782644
+      Data4: 1127652134
+    Path: event:/SFX/Items/GroundSlam/GroundSlamHit
+  - Guid:
+      Data1: -77677368
+      Data2: 1156598554
+      Data3: 1462163605
+      Data4: 298319553
+    Path: event:/SFX/Items/GroundSlam/GroundSlamHit3D
+  - Guid:
+      Data1: 660043579
+      Data2: 1326877894
+      Data3: 1599923074
+      Data4: -1339706700
+    Path: event:/Ambience/SplashAmbience
 --- !u!114 &3020583874071806366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,10 +262,13 @@ MonoBehaviour:
   _occlusionLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _occlusionUpdateDelay: 0.1
   _thinWallOcclusionValue: 0.1
   _mediumWallOcclusionValue: 0.3
   _ThickWallOcclusionValue: 0.5
+  _sphereRadius: 0.1
+  _reverbZoneLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
   _listener: {fileID: 0}
 --- !u!114 &5618638444868702506
 MonoBehaviour:

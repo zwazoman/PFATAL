@@ -8,7 +8,10 @@ public class Cons_ToxicCloud : Consummable
     {
         base.StopUsing();
 
-        Summoner.Instance.SpawnObject(_projToxicCloudPrefab, hand._itemSocket.position, playerCharacter.cameraBehaviour.transform.rotation, false);
+        SpawnContext context = new(playerCharacter.OwnerClientId);
+        context.floatData2 = ItemID;
+
+        Summoner.Instance.SpawnObject(_projToxicCloudPrefab, hand._itemSocket.position, playerCharacter.cameraBehaviour.transform.rotation, false, context);
 
         BreakItem();
     }

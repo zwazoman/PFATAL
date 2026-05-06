@@ -86,16 +86,17 @@ public class Proj_WolfTrap : Projectile
                 Point = hitObject.transform.position,
                 Direction = Vector3.down,
                 KnockbackForce = Vector3.zero,
-                Radius = _radius
+                Radius = _radius,
+                WeaponID = (int)spawnContext.Value.floatData2
             };
             hitObject.TakeDamage(damageData);
 
-            // RPC vers le client ciblé
-            ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
-            ApplyFreezeRPC(
-                _freezeDuration,
-                RpcTarget.Single(targetClientId, RpcTargetUse.Temp)
-            );
+            if (hitObject.isPlayer)
+            {
+                // RPC vers le client ciblé
+                ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
+                ApplyFreezeRPC(_freezeDuration, RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
+            }
 
             OnTrapPlayer?.Invoke();
 

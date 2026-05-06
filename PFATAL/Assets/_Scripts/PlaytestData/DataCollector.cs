@@ -248,9 +248,9 @@ public class DataCollector : MonoBehaviour
             VictimId = (long)victim,
             KillerId = (long)killer,
             Weapon = weaponID,
-            Distance = distance,
+            Distance = Mathf.Round(distance * 10) * 0.1f,
             IdGame = gameId,
-            Time = time
+            Time = Mathf.RoundToInt(time)
         });
 
         Debug.Log($"[DataCollector] Mort enregistrée : Victime {victim}, Tueur {killer}, Arme {weaponID}, Distance {distance}, Temps {time}");

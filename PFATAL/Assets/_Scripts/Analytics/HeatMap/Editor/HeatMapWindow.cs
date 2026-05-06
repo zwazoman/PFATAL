@@ -14,8 +14,8 @@ public class HeatMapWindow : EditorWindow
     bool texture3DHasFilters = false;
     string fileNameToSave;
     string fileNameForTexture3D;
-    GameObject mapBound;
-    Material rayMarchingMat;
+    static GameObject mapBound;
+    static Material rayMarchingMat;
 
     //heatMap generaton pparameters
     int gameVersion;
@@ -30,6 +30,8 @@ public class HeatMapWindow : EditorWindow
     public static void ShowWindow()
     {
         EditorWindow.GetWindow(typeof(HeatMapWindow));
+        mapBound = FindFirstObjectByType<MapBounds>()?.gameObject;
+        rayMarchingMat = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Graph/Surfaces/Materials/Raymarching/Mat_Texture3DVisualiizer.mat");
     }
 
     private void OnGUI()
@@ -43,9 +45,9 @@ public class HeatMapWindow : EditorWindow
         mapBound = (GameObject)EditorGUILayout.ObjectField(
             new GUIContent(
                 "Map Bounds",
-                "The limits of the map, must be an object with MapBounds component, one should be in the game scene already. Bounds value define the area where positions can be saved."), 
-            mapBound, 
-            typeof(GameObject), 
+                "The limits of the map, must be an object with MapBounds component, one should be in the game scene already. Bounds value define the area where positions can be saved."),
+            mapBound,
+            typeof(GameObject),
             true);
         if (mapBound != null)
         {
@@ -56,9 +58,9 @@ public class HeatMapWindow : EditorWindow
         rayMarchingMat = (Material)EditorGUILayout.ObjectField(
             new GUIContent(
                 "Ray Marching Material",
-                "Material used for ray marching. Normally called : Mat_Texture3D_visalizer"), 
-            rayMarchingMat, 
-            typeof(Material), 
+                "Material used for ray marching. Normally called : Mat_Texture3D_visalizer"),
+            rayMarchingMat,
+            typeof(Material),
             false);
         if (rayMarchingMat != null)
         {
@@ -147,18 +149,10 @@ public class HeatMapWindow : EditorWindow
 #endif
         }
 
-        EditorGUILayout.Space(5);
-
-        if (GUILayout.Button("Test"))
+        if (GUILayout.Button("Open script"))
         {
-            HeatMapData heatMapData = HeatMapUtility.ConvertJsonToHeatMapData(File.ReadAllText(Path.Combine(Application.persistentDataPath + "/HeatMapFolder/" + fileNameForTexture3D)));
-            HeatMapUtility.ConvertMapToByte(heatMapData);
-        }
-
-        if (GUILayout.Button("Test 2"))
-        {
-            byte[] bytes = File.ReadAllBytes(Path.Combine(Application.persistentDataPath + "/" + fileNameForTexture3D));
-            HeatMapUtility.ConvertByteToMap(bytes);
+            string scriptPath = AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(this));
+            AssetDatabase.OpenAsset(AssetDatabase.LoadAssetAtPath<MonoScript>(scriptPath));
         }
     }
 
@@ -180,7 +174,7 @@ public class HeatMapWindow : EditorWindow
             UnityEngine.Debug.Log("Loading heat map data from a file on this computer.");
 
             //Get all the json files that start with the designated text
-            List<string> heatMapJsonList = Directory.GetFiles(Application.persistentDataPath, $"{fileStartText}*.bin").ToList(); //fileStartText + "*.json"
+            List<string> heatMapJsonList = Directory.GetFiles(Path.Combine(Application.persistentDataPath, "HeatMapFolder"), $"{fileStartText}*.bin").ToList(); //fileStartText + "*.json"
 
             //convert the json file to HeatMapData class
             foreach (string file in heatMapJsonList)

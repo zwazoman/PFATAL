@@ -57,8 +57,10 @@ public class Explosion : NetworkBehaviour
                 if(!alreadyHitObjects.Add(hitObject)) continue;
                 
                 print($"{hitObject.gameObject.name} was hit by a bomb !");
-                //todo : data.Direction = damageable.transform.position - data.Point
                 
+                //direction
+                damageData.Direction = hitObject.transform.position - damageData.Point;
+
                 //damage
                 float normalizedDistance = Vector3.Distance(damageData.Point,hitObject.transform.position) / Radius;
                 normalizedDistance = Mathf.Clamp(normalizedDistance, 0f, 1f);

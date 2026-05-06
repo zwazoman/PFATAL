@@ -34,16 +34,18 @@ public class PlayerCharacterHealth : DamageableObject
 
     private void Update()
     {
-        if (!_canDieFall && transform.position.y > _deathYLimit)
+        if (!_canDieFall && transform.position.y > _deathYLimit && IsOwner)
         {
             _canDieFall = true;
         }
 
-        if (_canDieFall && transform.position.y < _deathYLimit && HP > 0)
+        if (_canDieFall && transform.position.y < _deathYLimit && HP > 0 && IsOwner)
         {
             _canDieFall = false;
             DamageData damageData = new();
-            damageData.Amount = 100;
+            damageData.Amount = MaxHP;
+            damageData.SourcePlayerClientID = DamageData.NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID;
+            damageData.SourcePos = transform.position;
 
             TakeDamage(damageData);
             return;

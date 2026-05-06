@@ -1,9 +1,6 @@
-using _scripts.PlayerCharacter;
-using NaughtyAttributes;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -27,6 +24,8 @@ public class HeatMapServerAnalitics : MonoBehaviour
     public bool isPlaying = false;
     public bool isFixed = false;
 
+    public event Action<byte[]> OnHeatMapSaved;
+
     private void Awake()
     {
         if (instance == null)
@@ -38,20 +37,25 @@ public class HeatMapServerAnalitics : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _filePath = Path.Combine(Application.persistentDataPath, "heatmap_" + System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".bin");
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "HeatMapFolder")))
+        {
+            Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "HeatMapFolder"));
+        }
+
+        _filePath = Path.Combine(Application.persistentDataPath, "HeatMapFolder", "heatmap_" + System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".bin");
     }
 
     public void RealHeatMapSave()
     {
         HeatMapData mapToSave = HeatMapUtility.CombineHeatMap(HeatMaps);
 
+        OnHeatMapSaved?.Invoke(HeatMapUtility.ConvertMapToByte(mapToSave));
+
         File.WriteAllBytes(_filePath, HeatMapUtility.ConvertMapToByte(mapToSave));
     }
 
     /*private void Start()
     {
-
-
         _theRealHeatMap = new(gridSize, 0, 001, Players.Count);
         //(int)(1f / interval * 3 * 60);
         _theRealHeatMap.points = new List<HeatPoint>((int)(1f / interval * 3 * 60));

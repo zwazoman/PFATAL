@@ -1,6 +1,5 @@
 using _scripts.PlayerCharacter;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;

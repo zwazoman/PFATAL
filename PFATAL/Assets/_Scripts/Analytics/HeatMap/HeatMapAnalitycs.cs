@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 
 public class HeatMapAnalitycs : NetworkBehaviour

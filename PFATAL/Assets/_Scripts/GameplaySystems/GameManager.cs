@@ -17,7 +17,7 @@ public class GameManager : NetworkBehaviour
     //game rules
     //todo : scriptable object avec game settings ?
     private GameRulesBase _serverGameRules;
-    public const float DEATH_MATCH_GAME_DURATION = 60*0.5f;
+    public const float DEATH_MATCH_GAME_DURATION = 60*4f;
     public static GameMode gameMode = GameMode.DeathMatch;
     
     private static Dictionary<ulong,PermanentPlayerIdentity> _playerIdentities = new();

@@ -123,6 +123,8 @@ namespace GameplaySystems.PlayerCharacter
                 Debug.LogWarning("Unknown animation ! falling back to current default idle pause.");
                 id = currentDefaultIdlePose;
             }
+            else if (id == AnimationID.currentDefaultIdlePose)
+                id = currentDefaultIdlePose;
             
             _animator.SetInteger(MainAnim_AnimatorProperty, (int)id);
             _animator.SetTrigger(PlayMainAnimation_AnimatorProperty);
@@ -131,6 +133,7 @@ namespace GameplaySystems.PlayerCharacter
         void PlayCurrentDefaultIdlePoseAnimation()
         {
             _animator.SetInteger(MainAnim_AnimatorProperty, (int)currentDefaultIdlePose);
+            _animator.SetTrigger(PlayMainAnimation_AnimatorProperty);
         }
         
         //sword animation

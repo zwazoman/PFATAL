@@ -46,15 +46,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c8705e9469c12141953976868350a23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _main: {fileID: 0}
-  handsItemVisuals: {fileID: 0}
-  _itemSocket: {fileID: 6615792393729289642}
+  playerCharacter: {fileID: 0}
+  itemVisuals: {fileID: 0}
+  visuals: {fileID: 7603030828234390209}
+  animatorEventListener: {fileID: 430471261041386170}
+  _itemSocket: {fileID: 6896011397870051281}
   _isLeft: 0
   type: 0
   _swapWhenFull: 1
   _inventorySize: 1
   equippedItem: {fileID: 0}
   itemInventory: []
+  fpsPosition: {x: 0, y: 0, z: 0}
+  tpsPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &7603030828234390209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +137,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: -8036388059931664739, guid: b668462db59551148aa51069ff6bf238, type: 3}
+      propertyPath: m_Name
+      value: skeletalMesh
+      objectReference: {fileID: 0}
     - target: {fileID: -7829144231270442813, guid: b668462db59551148aa51069ff6bf238, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -207,7 +215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b668462db59551148aa51069ff6bf238, type: 3}
       propertyPath: m_Name
-      value: SMSH_RIG_Hand_Character
+      value: Rig
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b668462db59551148aa51069ff6bf238, type: 3}
       propertyPath: m_Layer
@@ -348,10 +356,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b668462db59551148aa51069ff6bf238, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4239889504654183195}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b668462db59551148aa51069ff6bf238, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 430471261041386170}
   m_SourcePrefab: {fileID: 100100000, guid: b668462db59551148aa51069ff6bf238, type: 3}
---- !u!4 &6615792393729289642 stripped
+--- !u!4 &6896011397870051281 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 2533196687095635126, guid: b668462db59551148aa51069ff6bf238, type: 3}
+  m_CorrespondingSourceObject: {fileID: -6393931686057742643, guid: b668462db59551148aa51069ff6bf238, type: 3}
   m_PrefabInstance: {fileID: 8716643232844296476}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8374114785388792909 stripped
@@ -381,6 +392,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &430471261041386170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8374114785388792909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bcc75cbc230680409fd6ceaf97cc5f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HandAnimatorListener
+  _hand: {fileID: 2464023214136510072}
+  _animator: {fileID: 4239889504654183195}
 --- !u!4 &9186505047335393015 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b668462db59551148aa51069ff6bf238, type: 3}

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HammerCrosshair : Crosshair<Sword>
+public class SwordCrosshair : Crosshair<Sword>
 {
     [Header("Hammer Crosshair References")]
     [SerializeField] GameObject _dashCH;
@@ -12,13 +12,13 @@ public class HammerCrosshair : Crosshair<Sword>
         base.Activate(weapon);
 
         weapon.OnStartCharging += SwapCrosshairState;
-        weapon.OnStopCharging += SwapCrosshairState;
+        weapon.OnDashStarted += SwapCrosshairState;
     }
 
     protected override void Deactivate()
     {
         weapon.OnStartCharging -= SwapCrosshairState;
-        weapon.OnStopCharging -= SwapCrosshairState;
+        weapon.OnDashStarted -= SwapCrosshairState;
 
         _dashCH.SetActive(false);
 

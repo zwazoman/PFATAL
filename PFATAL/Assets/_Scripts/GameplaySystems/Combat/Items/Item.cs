@@ -98,6 +98,9 @@ public class Item : MonoBehaviour
         this.hand = hand;
     }
 
+    /// <summary>
+    /// appelé quand la main equipe l'item
+    /// </summary>
     public virtual void Equip() { OnEquip?.Invoke(); }
 
     public virtual void UnEquip()

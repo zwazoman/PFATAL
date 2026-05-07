@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
 
     [SerializeField] GameObject _pickup;
 
-    protected bool isUsing;
+    public bool isUsing;
     protected float holdDuration;
 
     public int ItemID => this switch
@@ -61,7 +61,7 @@ public class Item : MonoBehaviour
     }
 
     /// <summary>
-    /// appel� lorsque le joueur relache la touche d'action de l'item
+    /// appel� lorsque le joueur relache la touche d'action de l'item si le joueur a d'abord "startusing" l'item
     /// </summary>
     public virtual void StopUsing()
     {

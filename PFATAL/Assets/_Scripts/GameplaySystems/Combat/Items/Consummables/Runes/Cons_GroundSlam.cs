@@ -8,9 +8,9 @@ public class Cons_GroundSlam : Consummable
     [SerializeField] float _upForce = 10f;
     [SerializeField] float _duration = .3f;
 
-    public override async void StartUsing()
+    public override async void StopUsing()
     {
-        base.StartUsing();
+        base.StopUsing();
 
         PlayerPhysics physics = playerCharacter.physics;
 

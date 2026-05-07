@@ -66,6 +66,9 @@ public class AudioManager : NetworkBehaviour
 
     public EventInstance PlayOneShot(Sounds sound, Vector3 pos, string parameter = null, float parameterValue = 0)
     {
+        if (!playSounds)
+            return default;
+
         EventInstance newInstance = CreateInstance(sound, true);
 
         if (parameter != null)

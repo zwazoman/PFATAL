@@ -28,13 +28,13 @@ public class Tomahawk : ProjectileWeapon
     [SerializeField] public float dashCooldown = 3;
 
     [HideInInspector] public float currentDashCooldown;
-
     int _currentAmmoCount;
 
     bool _dashed = false;
     public bool CanDash { get; private set; }= true;
 
     float _reloadTimer;
+    private Vector3 _dashDirection;
 
     public override void Equip()
     {
@@ -80,6 +80,8 @@ public class Tomahawk : ProjectileWeapon
         if (holdDuration >= _dashHoldDuration && _currentProjectile != null && !_dashed && CanDash)
         {
             //play dash animation
+            _dashed = true;
+            _dashDirection = (_currentProjectile.transform.position - playerCharacter.transform.position).normalized;
             hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.tomahawk_grapple);
         }
     }
@@ -124,16 +126,13 @@ public class Tomahawk : ProjectileWeapon
 
     void DashTowardsProj()
     {
-        _dashed = true;
 
         OnDash?.Invoke();
-
-        Vector3 dashDirection = (_currentProjectile.transform.position - playerCharacter.transform.position).normalized;
-
+        
         playerCharacter.physics.SetVelocity(Vector3.zero);
-        playerCharacter.physics.AddImpulse(dashDirection * _dashStrength);
+        playerCharacter.physics.AddImpulse(_dashDirection * _dashStrength);
 
-        _currentProjectile.Despawn();
+        if(_currentProjectile!=null) _currentProjectile.Despawn();
 
         CanDash = false;
         //HandleDashDelay();

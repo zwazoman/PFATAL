@@ -1,4 +1,5 @@
 using System;
+using GameplaySystems.PlayerCharacter;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -14,13 +15,12 @@ public class Crossbow : ProjectileWeapon
     public event Action<float> OnCrossbowShoot;
 
     [Header("Crossbow Parameters")]
-
     [SerializeField] float _maxChargeTime = 1.5f;
     [SerializeField] float _chargeZoomThreshold = .3f;
     [SerializeField] float _chargeStartThreshold = .1f;
     [SerializeField] float _chargeSpeedMaxMultiplyer = .7f;
     [SerializeField] Vector2 _CameraRecoilStrength;
-
+    
     bool _startedCharging = false;
     bool _isCharged = false;
 
@@ -30,6 +30,8 @@ public class Crossbow : ProjectileWeapon
     private float _cameraFovOffset = 0;
     private float _fovOffsetVelocity = 0;
 
+    [SerializeField] private Animator _animator;
+    
     public override void Equip()
     {
         base.Equip();
@@ -61,7 +63,7 @@ public class Crossbow : ProjectileWeapon
     protected virtual void Update()
     {
         //update camera zoom
-        const float MAX_FOV_ZOOM = 15;
+        const float MAX_FOV_ZOOM = 25;
         float alpha = Mathf.Max( (normalizedChargeValue - _chargeZoomThreshold) / (1f - _chargeZoomThreshold),0);
         _cameraFovOffset = 
             Mathf.SmoothDamp(_cameraFovOffset, - alpha * MAX_FOV_ZOOM,
@@ -107,7 +109,9 @@ public class Crossbow : ProjectileWeapon
         spawnContext.floatData2 = ItemID;
         Shoot(spawnContext, Quaternion.identity, playerCharacter.playerCamera.transform.position);
 
-        //recoil
+        //recoil & animation
+        _animator.SetTrigger("shoot");
+        _animator.SetFloat("shootingAnimationSpeedMultiplier",PlayerHandVisuals.CrossbowAnimationSpeedMultiplier);
         playerCharacter.cameraBehaviour.AddRecoil(
             new Vector2(Random.Range(- _CameraRecoilStrength.x, _CameraRecoilStrength.x), _CameraRecoilStrength.y) * (1f+normalizedChargeValue));
         

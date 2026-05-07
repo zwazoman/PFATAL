@@ -5,7 +5,7 @@ namespace GameplaySystems.PlayerCharacter
 {
     public class PlayerHandVisuals : MonoBehaviour
     {
-
+        public static float CrossbowAnimationSpeedMultiplier = 1;
         public enum AnimationID
         {
             //voir _Graph/Meshes/Chara/AC_HandCharacter.controller
@@ -40,6 +40,8 @@ namespace GameplaySystems.PlayerCharacter
         
         private static readonly int MainAnim_AnimatorProperty = Animator.StringToHash("mainAnim");
         private static readonly int CrossbowShootAnimationSpeedMultiplier_AnimatorProperty = Animator.StringToHash("crossbowShootAnimationSpeedMultiplier");
+        private static readonly int TomahawkThrowAnimationSpeedMultiplier_AnimatorProperty = Animator.StringToHash("TomahawkThrowAnimationSpeedMultiplier");
+        private static readonly int PlayMainAnimation_AnimatorProperty = Animator.StringToHash("PlayMainAnimation");
 
         [Header("Scene references")]
         [SerializeField] Hand _hand;
@@ -86,9 +88,15 @@ namespace GameplaySystems.PlayerCharacter
             {
                 case Crossbow crossbow:
                     const float crossbowShootAnimClipLength = .542f;
-                    _animator.SetFloat(CrossbowShootAnimationSpeedMultiplier_AnimatorProperty,crossbowShootAnimClipLength/(crossbow.delayBetweenShots-.05f));
+                    CrossbowAnimationSpeedMultiplier = crossbowShootAnimClipLength / (crossbow.delayBetweenShots - .05f);
+                    _animator.SetFloat(CrossbowShootAnimationSpeedMultiplier_AnimatorProperty,CrossbowAnimationSpeedMultiplier);
                     crossbow.OnCrossbowShoot += PlayCrossbowShootAnimation;
                     break;
+                // case Tomahawk tomahawk:
+                //     const float tomahawkThrowAnimClipLength = 1.083f;
+                //     float tomahawkAnimationSpeedMultiplier = tomahawkThrowAnimClipLength / (tomahawk.delayBetweenShots - .05f);
+                //     _animator.SetFloat(TomahawkThrowAnimationSpeedMultiplier_AnimatorProperty,tomahawkAnimationSpeedMultiplier);
+                //     break;
             }
             
         }
@@ -117,6 +125,7 @@ namespace GameplaySystems.PlayerCharacter
             }
             
             _animator.SetInteger(MainAnim_AnimatorProperty, (int)id);
+            _animator.SetTrigger(PlayMainAnimation_AnimatorProperty);
         }
 
         void PlayCurrentDefaultIdlePoseAnimation()

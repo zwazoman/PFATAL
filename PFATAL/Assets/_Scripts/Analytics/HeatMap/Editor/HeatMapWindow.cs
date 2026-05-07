@@ -336,7 +336,7 @@ public class HeatMapWindow : EditorWindow
 
         int maxGlobal = HeatMapUtility.MaxVisits(heatMapAtCellSizeOfOne, WeaponType.All);
         int maxWithout = HeatMapUtility.MaxVisits(heatMapAtCellSizeOfOne, WeaponType.Without);
-        int maxHammer = HeatMapUtility.MaxVisits(heatMapAtCellSizeOfOne, WeaponType.Hammer);
+        int maxHammer = HeatMapUtility.MaxVisits(heatMapAtCellSizeOfOne, WeaponType.Sword);
         int maxCrossbow = HeatMapUtility.MaxVisits(heatMapAtCellSizeOfOne, WeaponType.Crossbow);
         int maxTomahawk = HeatMapUtility.MaxVisits(heatMapAtCellSizeOfOne, WeaponType.Tomahawk);
 
@@ -372,7 +372,7 @@ public class HeatMapWindow : EditorWindow
                         pixelColor = Color.Lerp(Color.black, Color.white, (float)point.W / attenuationInt);
                         textureName = "NoWeapons";
                         break;
-                    case WeaponType.Hammer:
+                    case WeaponType.Sword:
                         pixelColor = Color.Lerp(Color.black, Color.white, (float)point.H / attenuationInt);
                         textureName = "HammerPlayer";
                         break;

@@ -9,7 +9,7 @@ public class SplashScreenUI : MonoBehaviour
     [SerializeField] TMP_Text _text;
     [SerializeField] float _opacitySpeed = .3f;
 
-    
+    bool _animPlaying;
 
     private void Start()
     {
@@ -29,10 +29,11 @@ public class SplashScreenUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.anyKeyDown)
+        if (Input.anyKeyDown && !_animPlaying)
         {
-            //_anim.GetComponent<Animation>().Play();
             _anim.GetComponent<Animator>().SetTrigger("GrabHat");
+            AudioManager.Instance.PlayOneShot(Sounds.SplashScreenStinger);
+            _animPlaying = true;
         }
     }
 }

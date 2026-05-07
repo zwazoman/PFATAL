@@ -34,7 +34,7 @@ public class AudioManager : NetworkBehaviour
             Destroy(this);
 
         DontDestroyOnLoad(gameObject);
-        SceneManager.activeSceneChanged += (_, _) => CleanUp();
+        UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (_, _) => CleanUp();
     }
     #endregion
 

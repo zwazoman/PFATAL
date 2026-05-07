@@ -91,7 +91,7 @@ public class ClientConnectionWatcher : MonoBehaviour
             Debug.Log("Leaving lobby...");
             LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.GetCurrentLobby().Id, UnityServicesManager.Instance.GetPlayerId());
             _ = NetworkConnectionManager.Instance.Disconnect();
-            SceneManager.LoadScene(mainMenuSceneName);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(mainMenuSceneName);
         }
         catch (LobbyServiceException e)
         {

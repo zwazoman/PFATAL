@@ -68,7 +68,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             for (int i = 0; i < contactSize; i++)
             {
-                print(_contactColliderBuffer[i].gameObject.name);
                 if (_contactColliderBuffer[i].gameObject.TryGetComponent(out Pickup pickup))
                     pickup.Interact(this);
             }

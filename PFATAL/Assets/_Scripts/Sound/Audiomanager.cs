@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
@@ -17,10 +18,10 @@ public class AudioManager : NetworkBehaviour
     {
         get
         {
-            if (instance == null)
-            {
-                Debug.LogError("no audiomanager in the scene");
-            }
+            //if (instance == null)
+            //{
+            //    Debug.LogError("no audiomanager in the scene");
+            //}
             return instance;
         }
     }
@@ -33,11 +34,11 @@ public class AudioManager : NetworkBehaviour
             Destroy(this);
 
         DontDestroyOnLoad(gameObject);
-        SceneManager.activeSceneChanged += (_, _) => CleanUp();
+        UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (_, _) => CleanUp();
     }
     #endregion
 
-    public const float TIME_BETWEEN_REVERB_OCCLUSION_CHECKS = .1f;
+    public const float TIME_BETWEEN_REVERB_OCCLUSION_CHECKS = .2f;
 
     public event Action<EventInstance> On3DSoundPlayed;
     public List<EventInstance> EventInstances3D = new();
@@ -65,6 +66,9 @@ public class AudioManager : NetworkBehaviour
 
     public EventInstance PlayOneShot(Sounds sound, Vector3 pos, string parameter = null, float parameterValue = 0)
     {
+        if (!playSounds)
+            return default;
+
         EventInstance newInstance = CreateInstance(sound, true);
 
         if (parameter != null)

@@ -12,14 +12,15 @@ public class Projectile : NetworkBehaviour
 
     [SerializeField] protected GameObject visuals;
 
-    public override void OnNetworkSpawn()
+    public override async void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
 
-        BroadcastSpawnRpc();
-
         if (visuals != null && NetworkManager.LocalClientId == spawnContext.Value.spawnerClientID)
             visuals.SetActive(false);
+
+        await Awaitable.NextFrameAsync();
+        BroadcastSpawnRpc();
     }
 
     public virtual void Despawn()

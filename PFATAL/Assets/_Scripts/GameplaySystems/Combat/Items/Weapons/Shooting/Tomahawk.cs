@@ -163,6 +163,5 @@ public class Tomahawk : ProjectileWeapon
         await Shoot(context, Quaternion.Euler(-_projXOffset, 0, 0), shootSocket.position);
 
         OnTomahawkShoot?.Invoke(_currentProjectile);
-        print("l'event");
     }
 }

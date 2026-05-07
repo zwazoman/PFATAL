@@ -1,10 +1,7 @@
 using _scripts.PlayerCharacter;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,28 +9,29 @@ public class ValueSwitcher : NetworkBehaviour
 {
     public GameObject cheatPanel;
     public PlayerCharacter playerCharacter;
-    public TextMeshProUGUI test;
     public List<PlayerCharacter> characters = new();
 
-
-    #region Player values
-    public TextMeshProUGUI playerHpText;
-    #endregion
+    [Header("Player")]
+    public TMP_InputField hpText;
+    public TMP_InputField movementSpeedText;
+    public TMP_InputField lookSensitivityText;
+    public TMP_InputField jumpForceText;
+    public TMP_InputField gravityText;
 
     private void Awake()
     {
-        TryGetComponent(out playerCharacter);
+        //TryGetComponent(out playerCharacter);
     }
 
-    async void Start()
+    void Start()
     {
-        await Task.Delay(5000);
+        //await Task.Delay(500);
 
-        foreach (GameObject playerObject in HeatMapServerAnalitics.instance.Players)
+        /*foreach (GameObject playerObject in HeatMapServerAnalitics.instance.Players)
         {
             playerObject.TryGetComponent(out PlayerCharacter character);
             characters.Add(character);
-        }
+        }*/
     }
 
     public void OnToggleCheatPanel(InputAction.CallbackContext context)
@@ -45,7 +43,7 @@ public class ValueSwitcher : NetworkBehaviour
 
             Debug.Log("CONNARD");
 
-            if (!cheatPanel.activeSelf)
+            if (cheatPanel.activeSelf)
             {
                 cheatPanel.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
@@ -57,10 +55,16 @@ public class ValueSwitcher : NetworkBehaviour
             }
         }
 
-        if (context.canceled)
+        /*if (context.canceled)
         {
-            SwitchHammerDamageRpc();
-        }
+            
+        }*/
+    }
+
+    public void Test()
+    {
+        Debug.Log("Test");
+        SwitchHpRpc();
     }
 
     //Player
@@ -73,11 +77,12 @@ public class ValueSwitcher : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     public void SwitchHpRpc()
     {
-        Debug.LogError("Sala Switching Hp");
+        Debug.Log("Sala Switching Hp");
         
         foreach (PlayerCharacter character in characters)
         {
-            character.health.SetMaxHP(200);
+            character.health.SetMaxHP(float.Parse(hpText.text));
+            Debug.LogError($"Hp switched to {float.Parse(hpText.text)}");
         }
     }
 
@@ -88,7 +93,7 @@ public class ValueSwitcher : NetworkBehaviour
 
         foreach (PlayerCharacter character in characters)
         {
-            character.movement.globalMovespeedMultiplyer = 2;
+            character.movement.globalMovespeedMultiplyer = float.Parse(movementSpeedText.text);
         }
     }
 
@@ -100,7 +105,7 @@ public class ValueSwitcher : NetworkBehaviour
         {
             character.TryGetComponent(out CharacterAiming aiming);
 
-            aiming.Sensitivity = 10f;
+            aiming.Sensitivity = float.Parse(lookSensitivityText.text);
         }
     }
 
@@ -110,7 +115,7 @@ public class ValueSwitcher : NetworkBehaviour
         Debug.LogError("Switching Jump Force");
         foreach (PlayerCharacter character in characters)
         {
-            //character.physics. = 10f;
+            character.stateMachine.s_Jumping.ChangeJumpForce(float.Parse(jumpForceText.text));
         }
     }
 
@@ -120,7 +125,7 @@ public class ValueSwitcher : NetworkBehaviour
         Debug.LogError("Switching Gravity");
         foreach (PlayerCharacter character in characters)
         {
-            //character.physics.ChangeGravity(2f);
+            character.physics.ChangeGravityStrenght(float.Parse(gravityText.text));
         }
     }
 
@@ -211,6 +216,7 @@ public class ValueSwitcher : NetworkBehaviour
     //Tomahawk
     //Tomahawk damage
     //Tomahawk attack speed
+    //Tomahawk ammo
     //Tomahawk explosion radius
     //Tomahawk grab reload time
     //Tomahawk grab force

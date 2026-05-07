@@ -159,9 +159,9 @@ public class Tomahawk : ProjectileWeapon
             OnAmmoEmpty?.Invoke();
 
         SpawnContext context = new(playerCharacter.OwnerClientId);
+        context.floatData2 = ItemID;
         await Shoot(context, Quaternion.Euler(-_projXOffset, 0, 0), shootSocket.position);
 
         OnTomahawkShoot?.Invoke(_currentProjectile);
-        print("l'event");
     }
 }

@@ -1,9 +1,7 @@
-using _scripts.PlayerCharacter;
-using NaughtyAttributes;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class HeatMapServerAnalitics : MonoBehaviour
@@ -15,12 +13,18 @@ public class HeatMapServerAnalitics : MonoBehaviour
     private string _filePath;
 
     public List<GameObject> Players;
+    public List<HeatMapData> HeatMaps;
     public float interval = 0.1f;
     public int gridSize = 1;
     public MapBounds mapBoundsObject;
 
+    public TextMeshProUGUI text;
+
     public bool show = false;
     public bool isPlaying = false;
+    public bool isFixed = false;
+
+    public event Action<byte[]> OnHeatMapSaved;
 
     private void Awake()
     {
@@ -33,13 +37,25 @@ public class HeatMapServerAnalitics : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _filePath = Path.Combine(Application.persistentDataPath, "heatmap" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".bin");
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "HeatMapFolder")))
+        {
+            Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "HeatMapFolder"));
+        }
+
+        _filePath = Path.Combine(Application.persistentDataPath, "HeatMapFolder", "heatmap_" + System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".bin");
     }
 
-    private void Start()
+    public void RealHeatMapSave()
     {
+        HeatMapData mapToSave = HeatMapUtility.CombineHeatMap(HeatMaps);
 
+        OnHeatMapSaved?.Invoke(HeatMapUtility.ConvertMapToByte(mapToSave));
 
+        File.WriteAllBytes(_filePath, HeatMapUtility.ConvertMapToByte(mapToSave));
+    }
+
+    /*private void Start()
+    {
         _theRealHeatMap = new(gridSize, 0, 001, Players.Count);
         //(int)(1f / interval * 3 * 60);
         _theRealHeatMap.points = new List<HeatPoint>((int)(1f / interval * 3 * 60));
@@ -50,6 +66,8 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
     private void Update()
     {
+        if (!isFixed) return;
+
         if ((_timer += Time.deltaTime) >= interval)
         {
             _timer = 0f;
@@ -222,5 +240,5 @@ public class HeatMapServerAnalitics : MonoBehaviour
         Process.Start(Application.persistentDataPath);
 #endif
     }
-    #endregion
+    #endregion*/
 }

@@ -17,7 +17,6 @@ public class SteamPlayerInfo : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     void Start()

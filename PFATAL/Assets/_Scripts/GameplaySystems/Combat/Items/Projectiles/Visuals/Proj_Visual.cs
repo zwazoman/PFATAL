@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
 
 public class Proj_Visual : MonoBehaviour
 {
+    public event Action OnSpawn;
+    public event Action OnDespawn;
+
     [Header("Settings")]
     [SerializeField] protected float speed;
     [SerializeField] protected float gravity;
@@ -15,6 +19,8 @@ public class Proj_Visual : MonoBehaviour
 
     protected virtual async void Start()
     {
+        OnSpawn?.Invoke();
+
         spawnTime = Time.time;
         _spawnPosition = transform.position;
 
@@ -32,5 +38,10 @@ public class Proj_Visual : MonoBehaviour
         transform.position = _spawnPosition
                      + transform.forward * (speed * timeSinceSpawn)
                      + Vector3.up * (timeSinceSpawn * timeSinceSpawn * -.5f * gravity);
+    }
+
+    protected virtual void OnDestroy()
+    {
+        OnDespawn?.Invoke();
     }
 }

@@ -39,16 +39,14 @@ public class PlayerBodySounds : SoundComponent<PlayerAnimationEventsListener>
         if ((previousState == state.Falling) && ((newState & state.Grounded) == state.Grounded))
             PlayLandSound();
 
-        if (((previousState & state.Grounded) == state.Grounded) && (newState == state.Jumping))
+        if (newState == state.Jumping)
             PlayJumpSound();
-
-        print(previousState + " " + newState);
 
         if ((previousState == state.GroundSlam) && (newState == state.Idle))
             PlayGroundSlamSound();
     }
 
-    void PlayGroundSlamSound() => AudioManager.Instance.PlayOnlineOneShots(Sounds.GroundSlam, Sounds.GroundSlam3D, transform.position);
+    void PlayGroundSlamSound() => AudioManager.Instance.PlayOnlineOneShots(Sounds.GroundSlamHit, Sounds.GroundSlamHit3D, transform.position);
 
     void PlayFootstepSound()
     {

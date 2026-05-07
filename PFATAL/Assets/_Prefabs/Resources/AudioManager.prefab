@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Audiomanager
   ShowTopMostFoldoutHeaderGroup: 1
-  playSounds: 1
+  playSounds: 0
   _eventReferences:
   - Guid:
       Data1: -245424221
@@ -230,13 +230,37 @@ MonoBehaviour:
       Data2: 1222792315
       Data3: -461782644
       Data4: 1127652134
-    Path: event:/SFX/Items/GroundSlam/GroundSlam
+    Path: event:/SFX/Items/GroundSlam/GroundSlamHit
   - Guid:
       Data1: -77677368
       Data2: 1156598554
       Data3: 1462163605
       Data4: 298319553
-    Path: event:/SFX/Items/GroundSlam/GroundSlam3D
+    Path: event:/SFX/Items/GroundSlam/GroundSlamHit3D
+  - Guid:
+      Data1: 660043579
+      Data2: 1326877894
+      Data3: 1599923074
+      Data4: -1339706700
+    Path: event:/Ambience/SplashAmbience
+  - Guid:
+      Data1: 1038166227
+      Data2: 1258322311
+      Data3: 219375261
+      Data4: -140392739
+    Path: event:/UI/ButtonClick
+  - Guid:
+      Data1: -422777342
+      Data2: 1301669127
+      Data3: -426312813
+      Data4: -185860890
+    Path: event:/SFX/Map/MushroomBump3D
+  - Guid:
+      Data1: -672503092
+      Data2: 1269725824
+      Data3: 615083182
+      Data4: 1672658361
+    Path: event:/UI/Kill
 --- !u!114 &3020583874071806366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,10 +278,13 @@ MonoBehaviour:
   _occlusionLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _occlusionUpdateDelay: 0.1
   _thinWallOcclusionValue: 0.1
   _mediumWallOcclusionValue: 0.3
   _ThickWallOcclusionValue: 0.5
+  _sphereRadius: 0.1
+  _reverbZoneLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
   _listener: {fileID: 0}
 --- !u!114 &5618638444868702506
 MonoBehaviour:

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
-    public event Action OnTriggerHitFeedback;
+    public event Action<bool> OnTriggerHitFeedback;
 
     [SerializeField] public PlayerCharacter playerCharacter;
 
@@ -14,9 +14,9 @@ public class HUDManager : MonoBehaviour
     [SerializeField] public Button respawnButton;
     [SerializeField] HitMarkerUI hitMarkerUI;
 
-    public void TriggerHitFeedback()
+    public void TriggerHitFeedback(bool isDead)
     {
-        OnTriggerHitFeedback?.Invoke();
+        OnTriggerHitFeedback?.Invoke(isDead);
     }
 
     public void ShowDeathUI()

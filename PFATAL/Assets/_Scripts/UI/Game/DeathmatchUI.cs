@@ -16,7 +16,7 @@ public class DeathmatchUI : MonoBehaviour
         _timerText.enabled = false;
         GameManager.Instance.EventOnGameStarted += () =>
         {
-            if (GameManager.gameMode is not GameManager.GameMode.DeathMatch)
+            if (GameManager.Instance.gameSetting.GameMode is not GameMode.DeathMatch)
             {
                 Destroy(gameObject);
                 return;
@@ -36,7 +36,7 @@ public class DeathmatchUI : MonoBehaviour
     void UpdateTimerText()
     {
         _timerText.text = Mathf.Ceil(
-            (GameManager.DEATH_MATCH_GAME_DURATION-GameManager.Instance.TimeSinceGameStart))
+            (GameManager.Instance.gameSetting.GameDuration - GameManager.Instance.TimeSinceGameStart))
             .ToString();
     }
     

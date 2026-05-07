@@ -37,6 +37,8 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         protected override void OnExited(PlayerCharacter playerCharacter)
         {
+            base.OnExited(playerCharacter);
+            
             if (playerCharacter.TryGetComponent(out DamageableObject damageable) && playerCharacter.physics.Velocity.y >=1 )
             {
                 DamageData damageData = new DamageData
@@ -50,17 +52,18 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
                 damageable.TakeDamage(damageData);
             }
+            
         }
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter ctx)
         {
-            if (ctx.health.IsDead)
-                return Sm.s_dead;
-
+            var nextState = base.FindNextState(ctx);
+            if(nextState != this) return nextState;
+            
             if (IsOnCeiling(ctx.transform.position) || ctx.physics.Velocity.y < -.1f) 
                 return Sm.s_Falling;
 
-            return base.FindNextState(ctx);
+            return this;
         }
 
         bool IsOnCeiling(Vector3 position)

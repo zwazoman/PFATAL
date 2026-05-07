@@ -20,7 +20,7 @@ public class Explosion : NetworkBehaviour
     /// <summary>
     /// can only be called from the server
     /// </summary>
-    public async Awaitable Explode(ulong askerClientID)
+    public async Awaitable Explode(ulong askerClientID, int itemID = -1)
     {
         if(!IsServer) throw new NetworkAuthorityException();
         
@@ -34,6 +34,7 @@ public class Explosion : NetworkBehaviour
         damage.SourcePlayerClientID = askerClientID;
         damage.Point = transform.position;
         damage.Radius = Radius;
+        damage.WeaponID = itemID;
         
         //.2s hit detection
         float endTime = Time.time + HIT_DETECTION_DURATION;
@@ -56,8 +57,10 @@ public class Explosion : NetworkBehaviour
                 if(!alreadyHitObjects.Add(hitObject)) continue;
                 
                 print($"{hitObject.gameObject.name} was hit by a bomb !");
-                //todo : data.Direction = damageable.transform.position - data.Point
                 
+                //direction
+                damageData.Direction = hitObject.transform.position - damageData.Point;
+
                 //damage
                 float normalizedDistance = Vector3.Distance(damageData.Point,hitObject.transform.position) / Radius;
                 normalizedDistance = Mathf.Clamp(normalizedDistance, 0f, 1f);

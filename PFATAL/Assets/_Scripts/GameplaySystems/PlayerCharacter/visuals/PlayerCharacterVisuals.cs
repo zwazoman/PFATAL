@@ -24,6 +24,8 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     [SerializeField] Animator _proxyAnimator;
     [SerializeField] Transform _proxyTorsoSocket;
     [SerializeField] Transform _proxyFeetSocket;
+    [SerializeField] ParticleSystem _walkVFX;
+    [SerializeField] ParticleSystem _jumpVFX;
 
     [Header("Settings")]
     [SerializeField] float TorsoPitchAmplitude = 75;
@@ -33,7 +35,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     //public methods
 
     [SerializeField] List<GameObject> _visualObjects;
-        
+
     [Rpc(SendTo.Everyone)]
     public void HideRpc()
     {
@@ -125,12 +127,28 @@ public class PlayerCharacterVisuals : NetworkBehaviour
 
     private void OnStateChanged(State oldState, State newState)
     { 
+        //tp proxy animation
         _proxyAnimator.SetInteger(StateAnimatorPropertyIndex,(int)newState);
+        
+        //walk particles
+        if ((newState & State.Walking) == State.Walking)
+            _walkVFX.Play();
+        else 
+            _walkVFX.Stop();
+        
+        //landing particles
+        if ((oldState & State.Airborne) == State.Airborne
+            && (newState & State.Grounded) == State.Grounded)
+            _jumpVFX.Play();
+        
+        //jump particles
+        if ((newState & State.Jumping) == State.Jumping)
+            _jumpVFX.Play();
     }
 
     private void OnDamageTaken(DamageData damageData)
     {
-        //vfx
+        //hit vfx
         LocalPoolManager.Instance.Pool_VFX_Hit_crit.
             PullObjectFromPool(damageData.Point, Quaternion.LookRotation(-damageData.Direction))
             .GoBackIntoPool_Delayed(1.5f);

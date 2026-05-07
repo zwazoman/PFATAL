@@ -11,7 +11,7 @@ public abstract class SoundComponent<T> : MonoBehaviour where T : Component
         if(newMain != null)
             main = newMain;
 
-        if (AudioManager.Instance.playSounds)
+        if (AudioManager.Instance && AudioManager.Instance.playSounds)
             LinkEvents();
     }
 

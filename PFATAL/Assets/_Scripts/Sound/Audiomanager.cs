@@ -19,7 +19,7 @@ public class AudioManager : NetworkBehaviour
         {
             if (instance == null)
             {
-                Debug.LogError("no audiomanager in the scene");
+                Debug.LogWarning("no audiomanager in the scene");
             }
             return instance;
         }

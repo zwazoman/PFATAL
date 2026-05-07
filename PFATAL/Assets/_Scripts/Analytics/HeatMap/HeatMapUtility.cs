@@ -209,7 +209,7 @@ public class HeatMapUtility
                 return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.W) : 0;
 
             //hammer
-            case WeaponType.Hammer:
+            case WeaponType.Sword:
                 return heatMapData.points.Count > 0 ? heatMapData.points.Max(p => p.H) : 0;
             
             //crosbow

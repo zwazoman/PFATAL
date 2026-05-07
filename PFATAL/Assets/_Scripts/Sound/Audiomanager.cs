@@ -18,10 +18,10 @@ public class AudioManager : NetworkBehaviour
     {
         get
         {
-            if (instance == null)
-            {
-                Debug.LogError("no audiomanager in the scene");
-            }
+            //if (instance == null)
+            //{
+            //    Debug.LogError("no audiomanager in the scene");
+            //}
             return instance;
         }
     }
@@ -38,7 +38,7 @@ public class AudioManager : NetworkBehaviour
     }
     #endregion
 
-    public const float TIME_BETWEEN_REVERB_OCCLUSION_CHECKS = .1f;
+    public const float TIME_BETWEEN_REVERB_OCCLUSION_CHECKS = .2f;
 
     public event Action<EventInstance> On3DSoundPlayed;
     public List<EventInstance> EventInstances3D = new();

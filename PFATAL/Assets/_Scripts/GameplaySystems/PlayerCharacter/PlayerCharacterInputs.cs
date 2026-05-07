@@ -26,9 +26,13 @@ public class PlayerCharacterInputs : NetworkBehaviour
     private bool _paused = false;
 
     private Gamepad _gamepad;
-    [SerializeField] private PlayerInput _playerInput;
+    private PlayerInput _playerInput;
     [HideInInspector] public bool UsingGamePad = false;
 
+    private void Awake()
+    {
+        _playerInput = GetComponent<PlayerInput>();
+    }
     public bool TryConsumeJumpKeyPress()
     {
         bool wasBuffered = _jumpKeyBuffered;

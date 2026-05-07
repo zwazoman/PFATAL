@@ -1,7 +1,10 @@
+#if UNITY_EDITOR
+
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+
 
 public class AnimationEventSaver : MonoBehaviour
 {
@@ -107,3 +110,5 @@ struct EventSave
         this.intParam = intParam;
     }
 }
+
+#endif

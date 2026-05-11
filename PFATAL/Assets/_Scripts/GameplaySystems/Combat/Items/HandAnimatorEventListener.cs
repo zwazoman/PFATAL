@@ -18,6 +18,7 @@ public class HandAnimatorEventListener : MonoBehaviour
     public event Action OnGrapplePulled;
     public event Action OnTomahawkShot;
     public event Action OnGemBroken;
+    public event Action OnSpellCast;
     
 
     
@@ -37,4 +38,5 @@ public class HandAnimatorEventListener : MonoBehaviour
     
     //items
     public void TriggerOnGemBreak() { print("TriggerOnGemBreak"); OnGemBroken?.Invoke(); }
+    public void TriggerOnSpellCast() { print("TriggerOnSpellCast"); OnSpellCast?.Invoke(); }
 }

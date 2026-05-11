@@ -2,7 +2,7 @@ using System;
 using GameplaySystems.PlayerCharacter;
 using UnityEngine;
 
-public class Cons_TP : Consummable
+public class Cons_TP : Cons_RuneBase
 {
     [SerializeField] float _range;
     [SerializeField] float _wallOffsetRange = .5f;
@@ -11,21 +11,12 @@ public class Cons_TP : Consummable
 
     GameObject marker;
     Vector3 tpDestination;
-
-    private bool breakAnimationIsPlaying = false;
-
-    public override void Equip()
-    {
-        base.Equip();
-        breakAnimationIsPlaying = false;
-        hand.animatorEventListener.OnGemBroken += BreakGem;
-        hand.animatorEventListener.OnAnimationFinished += OnAnimationFinished;
-    }
+    
 
     //quand on appuie sur la touche
     public override void StartUsing()
     {
-        if (breakAnimationIsPlaying)return;
+        if (_breakAnimationIsPlaying) return;
         
         //afficher le marker de TP
         marker = Instantiate(_markerPrefab);
@@ -35,32 +26,25 @@ public class Cons_TP : Consummable
     //quand on relache la touche
     public override void StopUsing()
     {
-        if (breakAnimationIsPlaying) return;
+        if (_breakAnimationIsPlaying) return;
         
         //lancer l'animation de break
-        breakAnimationIsPlaying = true;
-        hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.gem_break);
+        StartBreakingAnimation();
         base.StopUsing();
     }
-
-    //appelée par un animation event
-    void BreakGem()
+    
+    public override void UnEquip()
     {
-        playerCharacter.physics.SetPosition(tpDestination);
-        //hand.animatorEventListener.OnGemBroken -= BreakGem;
+        base.UnEquip();
         HideMarker();
     }
-
-    //appelé par un animation event
-    void OnAnimationFinished()
+    
+    //appelée par un animation event
+    protected override void ApplyGemEffect()
     {
-        if (breakAnimationIsPlaying)
-        {
-            breakAnimationIsPlaying = false;
-            BreakItem();
-        }
+        playerCharacter.physics.SetPosition(tpDestination);
+        HideMarker();
     }
-
     protected virtual void Update()
     {
         //Update TP marker position
@@ -80,14 +64,7 @@ public class Cons_TP : Consummable
         
     }
 
-    public override void UnEquip()
-    {
-        base.UnEquip();
-        HideMarker();
-        hand.animatorEventListener.OnGemBroken -= BreakGem;
-        hand.animatorEventListener.OnAnimationFinished -= OnAnimationFinished;
-    }
-
+    //cache le marker de previsualisation du tp
     void HideMarker()
     {
         Destroy(marker);

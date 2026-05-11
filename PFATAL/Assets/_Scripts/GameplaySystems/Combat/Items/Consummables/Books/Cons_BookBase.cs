@@ -2,30 +2,30 @@ using System;
 using GameplaySystems.PlayerCharacter;
 using UnityEngine;
 
-public abstract class Cons_RuneBase : Consummable
+public abstract class BookBase : Consummable
 {
-    protected bool _breakAnimationIsPlaying { get; private set; } = false;
+    protected bool _spellAnimationIsPlaying { get; private set; } = false;
 
     public override void Equip()
     {
         base.Equip();
-        _breakAnimationIsPlaying = false;
-        hand.animatorEventListener.OnGemBroken += OnGemBroken;
+        _spellAnimationIsPlaying = false;
+        hand.animatorEventListener.OnSpellCast += OnGemBroken;
         hand.animatorEventListener.OnAnimationFinished += OnAnimationFinished;
     }
 
     public override void UnEquip()
     {
         base.UnEquip();
-        hand.animatorEventListener.OnGemBroken -= OnGemBroken;
+        hand.animatorEventListener.OnSpellCast -= OnGemBroken;
         hand.animatorEventListener.OnAnimationFinished -= OnAnimationFinished;
     }
 
     protected void StartBreakingAnimation()
     {
-        if (_breakAnimationIsPlaying) return;
+        if (_spellAnimationIsPlaying) return;
         
-        _breakAnimationIsPlaying = true;
+        _spellAnimationIsPlaying = true;
         hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.gem_break);
     }
     
@@ -37,9 +37,9 @@ public abstract class Cons_RuneBase : Consummable
     //animation callbacks
     private void OnAnimationFinished()
     {
-        if (_breakAnimationIsPlaying)
+        if (_spellAnimationIsPlaying)
         {
-            _breakAnimationIsPlaying = false;
+            _spellAnimationIsPlaying = false;
             BreakItem();
         }
     }

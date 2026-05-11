@@ -12,9 +12,9 @@ public class CrossbowCrosshair : Crosshair<Crossbow>
     private void Update()
     {
         float size = 100;
-        if(weapon.chargeValue > 0)
+        if(weapon.normalizedChargeValue > 0)
         {
-            size = 100 - weapon.chargeValue * (100 - _margin);
+            size = 100 - weapon.normalizedChargeValue * (100 - _margin);
            
         }
         else if(_zoomingCrosshair.sizeDelta.x < 100)

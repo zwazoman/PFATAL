@@ -5,9 +5,9 @@ public class Cons_Tornado : Consummable
     [Header("Network")]
     [SerializeField] private GameObject _tornadoProjectilePrefab;
 
-    public override void StartUsing()
+    public override void StopUsing()
     {
-        base.StartUsing();
+        base.StopUsing();
         SpawnContext context = new(playerCharacter.OwnerClientId);
         context.floatData2 = ItemID;
 

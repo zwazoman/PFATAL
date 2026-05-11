@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4474850090580258328}
   - component: {fileID: 4809348523567443632}
   - component: {fileID: 4378573093632434537}
-  m_Layer: 0
+  - component: {fileID: 4525362825558738339}
+  m_Layer: 6
   m_Name: prop_crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,9 +27,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1198315499066202837}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.046908718, y: 0.7059089, z: 0.6856355, w: -0.17145318}
+  m_LocalRotation: {x: 0.04691324, y: 0.7059082, z: 0.68563503, w: -0.1714568}
   m_LocalPosition: {x: -0.47, y: -0.01, z: 15.4}
-  m_LocalScale: {x: 62.57014, y: 62.57014, z: 62.57014}
+  m_LocalScale: {x: 90.44514, y: 90.44513, z: 90.44514}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4268409289720877445}
@@ -91,6 +92,27 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &4525362825558738339
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198315499066202837}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.00993096
+  m_Center: {x: -0.004849591, y: -0.0014223708, z: 0.00961731}
 --- !u!1 &2192725208276000358
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,7 +124,7 @@ GameObject:
   - component: {fileID: 4268409289720877445}
   - component: {fileID: 2573101844228481664}
   - component: {fileID: 5493563449179121826}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

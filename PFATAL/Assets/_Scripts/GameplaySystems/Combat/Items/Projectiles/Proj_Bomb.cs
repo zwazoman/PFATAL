@@ -11,7 +11,7 @@ public class Proj_Bomb : Projectile
     [SerializeField] float _fuseTime = 3f;
 
     [SerializeField] private float _throwStrength = 25;
-    float _timer;
+    float _fuseTimer;
     private bool _isExploding = false;
 
 
@@ -26,7 +26,7 @@ public class Proj_Bomb : Projectile
         if (!IsServer) return;
 
         _isExploding = false;
-        _timer = 0f;
+        _fuseTimer = spawnContext.Value.floatData;
         _rb.isKinematic = false;
         Vector3 force = transform.forward * 5 + transform.up * 3;
         _rb.AddForce(force.normalized * _throwStrength, ForceMode.Impulse);
@@ -37,8 +37,8 @@ public class Proj_Bomb : Projectile
         if (!IsSpawned) return;
         if (!IsServer) return;
         
-        _timer += Time.deltaTime;
-        if(_timer >= _fuseTime&& !_isExploding)
+        _fuseTimer += Time.deltaTime;
+        if(_fuseTimer >= _fuseTime&& !_isExploding)
         {
             ExplodeAndDespawn();
         }

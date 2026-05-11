@@ -13,7 +13,7 @@ public class MovingSoundComponent<T> : SoundComponent<T> where T: Component
 
     protected virtual void StartSound(Sounds sound)
     {
-        _soundInstance = AudioManager.Instance.CreateInstance(Sounds.TomahawkSpin3D, true);
+        _soundInstance = AudioManager.Instance.CreateInstance(sound, true);
         RuntimeManager.AttachInstanceToGameObject(_soundInstance, gameObject);
         _soundInstance.start();
         AudioManager.Instance.Trigger3dSoundPlayed(_soundInstance);

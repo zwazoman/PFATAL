@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 
 public class HeatMapAnalitycs : NetworkBehaviour
@@ -106,7 +105,7 @@ public class HeatMapAnalitycs : NetworkBehaviour
                         point.W++;
                         break;
 
-                    case WeaponType.Hammer:
+                    case WeaponType.Sword:
                         point.H++;
                         break;
                     case WeaponType.Crossbow:
@@ -133,7 +132,7 @@ public class HeatMapAnalitycs : NetworkBehaviour
                         newPoint.W++;
                         break;
 
-                    case WeaponType.Hammer:
+                    case WeaponType.Sword:
                         newPoint.H++;
                         break;
                     case WeaponType.Crossbow:
@@ -173,9 +172,9 @@ public class HeatMapAnalitycs : NetworkBehaviour
 
         //UnityEngine.Debug.Log(itemName);
 
-        if (itemName.Contains("hammer"))
+        if (itemName.Contains("sword"))
         {
-            return WeaponType.Hammer;
+            return WeaponType.Sword;
         }
         else if (itemName.Contains("crossbow"))
         {

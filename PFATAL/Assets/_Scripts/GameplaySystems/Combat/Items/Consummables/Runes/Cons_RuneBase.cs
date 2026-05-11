@@ -1,5 +1,6 @@
 using System;
 using GameplaySystems.PlayerCharacter;
+using UnityEditor;
 using UnityEngine;
 
 public abstract class Cons_RuneBase : Consummable
@@ -56,7 +57,8 @@ public abstract class Cons_RuneBase : Consummable
     {
         //feedbacks
         _gemstoneRenderer.enabled = false;
-        
+        print("Gemstone Destroyed");
+        EditorApplication.isPaused = true;
         //gameplay effect
         ApplyGemEffect();
     }

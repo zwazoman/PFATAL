@@ -10,20 +10,29 @@ public abstract class Cons_BookBase : Consummable
     protected bool _spellAnimationIsPlaying { get; private set; } = false;
     [SerializeField] Animator _animator;
     [SerializeField] Transform _Vfx;
-    
+    private Vector3 _vfxBaseScale;
+
+    protected virtual void Awake()
+    {
+        _vfxBaseScale = _Vfx.localScale;
+    }
     public override void Equip()
     {
         base.Equip();
         _spellAnimationIsPlaying = false;
         hand.animatorEventListener.OnSpellCast += OnSpellCast;
         hand.animatorEventListener.OnAnimationFinished += OnAnimationFinished;
+        
+        //reset anim
+        _animator.SetBool(Active_AnimProperty,false);
+        _Vfx.localScale = _vfxBaseScale;
     }
 
     public override void UnEquip()
     {
         //reset anim
         _animator.SetBool(Active_AnimProperty,false);
-        _Vfx.transform.position = Vector3.one;
+        _Vfx.localScale = _vfxBaseScale;
         
         //unlink events
         hand.animatorEventListener.OnSpellCast -= OnSpellCast;

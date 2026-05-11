@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class Cons_BookBase : Consummable
 {
-    private static readonly int Activate_AnimProperty = Animator.StringToHash("Activate");
+    private static readonly int Active_AnimProperty = Animator.StringToHash("Active");
     
     protected bool _spellAnimationIsPlaying { get; private set; } = false;
     [SerializeField] Animator _animator;
@@ -14,7 +14,6 @@ public abstract class Cons_BookBase : Consummable
     public override void Equip()
     {
         base.Equip();
-        _Vfx.transform.position = Vector3.one;
         _spellAnimationIsPlaying = false;
         hand.animatorEventListener.OnSpellCast += OnSpellCast;
         hand.animatorEventListener.OnAnimationFinished += OnAnimationFinished;
@@ -22,9 +21,15 @@ public abstract class Cons_BookBase : Consummable
 
     public override void UnEquip()
     {
-        base.UnEquip();
+        //reset anim
+        _animator.SetBool(Active_AnimProperty,false);
+        _Vfx.transform.position = Vector3.one;
+        
+        //unlink events
         hand.animatorEventListener.OnSpellCast -= OnSpellCast;
         hand.animatorEventListener.OnAnimationFinished -= OnAnimationFinished;
+        
+        base.UnEquip();
     }
 
     protected void StartCastAnimation()
@@ -33,7 +38,7 @@ public abstract class Cons_BookBase : Consummable
         
         _spellAnimationIsPlaying = true;
         hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.book_use);
-        _animator.SetTrigger(Activate_AnimProperty);
+        _animator.SetBool(Active_AnimProperty,true);
         _Vfx.DOScale(0,.5f).SetEase(Ease.OutQuad);
         
     }

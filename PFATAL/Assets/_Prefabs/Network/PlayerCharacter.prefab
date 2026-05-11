@@ -10799,9 +10799,12 @@ MonoBehaviour:
   s_GroundSlam:
     _updatePoint: 1
     _passThrough: 1
-    _upForce: 10
+    _airSpeed: 9
+    _acceleration: 5
+    _upForce: 5
     _preSlamDuration: 0.3
-    _slamGravitiMultiplier: 5
+    _velocityMultiplier: 2
+    _slamGravitiMultiplier: 4
     _radius: 1
     _baseDamage: 2
     _maxDamage: 7
@@ -10850,9 +10853,12 @@ MonoBehaviour:
   _maxCollisionSteps: 10
   bounciness: 0
   autoUpdate: 0
-  _layerMask:
+  _groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  _bumperLayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
   col: {fileID: 6943353650538722316}
 --- !u!114 &5179025732980103323
 MonoBehaviour:

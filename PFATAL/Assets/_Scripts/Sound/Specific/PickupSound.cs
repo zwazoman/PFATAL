@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class PickupSound : SoundComponent<Pickup>
 {
-    protected override async void Awake()
-    {
-        await Awaitable.NextFrameAsync();
-        base.Awake();
-    }
+    //protected override async void Awake()
+    //{
+    //    await Awaitable.NextFrameAsync();
+    //    base.Awake();
+    //}
 
     protected override void LinkEvents()
     {

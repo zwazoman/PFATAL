@@ -149,7 +149,7 @@ public class DataCollector : MonoBehaviour
                 IdPlayerSet = gameId,
                 HeatMap = Convert.ToBase64String(heatmapData),
                 GameMode = (int)GameManager.Instance.gameSetting.GameMode,
-                MapName = SceneManager.GetActiveScene().name,
+                MapName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name,
                 Duration = GameManager.Instance.gameSetting.GameDuration
             };
 

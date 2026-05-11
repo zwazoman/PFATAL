@@ -1,6 +1,7 @@
 using NetworkTime;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ProjectileWeapon : Item
 {
@@ -13,7 +14,7 @@ public class ProjectileWeapon : Item
     [Header("Weapon Settings")]
     [SerializeField] protected GameObject projectile;
     [SerializeField] protected GameObject visualProjectile;
-    [SerializeField] float shootDelay;
+    [FormerlySerializedAs("shootDelay")] public float delayBetweenShots;
 
     [SerializeField] protected float shootSocketDownPosMult = .1f;
 
@@ -36,7 +37,7 @@ public class ProjectileWeapon : Item
     {
         canShoot = false;
 
-        await Awaitable.WaitForSecondsAsync(shootDelay);
+        await Awaitable.WaitForSecondsAsync(delayBetweenShots);
 
         OnShootDelayEnd?.Invoke();
         canShoot = true;

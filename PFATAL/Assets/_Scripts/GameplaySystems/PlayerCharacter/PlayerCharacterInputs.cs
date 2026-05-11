@@ -26,8 +26,13 @@ public class PlayerCharacterInputs : NetworkBehaviour
     private bool _paused = false;
 
     private Gamepad _gamepad;
+    private PlayerInput _playerInput;
     [HideInInspector] public bool UsingGamePad = false;
 
+    private void Awake()
+    {
+        _playerInput = GetComponent<PlayerInput>();
+    }
     public bool TryConsumeJumpKeyPress()
     {
         bool wasBuffered = _jumpKeyBuffered;
@@ -43,18 +48,6 @@ public class PlayerCharacterInputs : NetworkBehaviour
     {
         _gamepad = Gamepad.current;
         movementInput = context.ReadValue<Vector2>();
-
-        if (_gamepad != null)
-        {
-            if (context.action.activeControl.device.name == _gamepad.name)
-            {
-                UsingGamePad = true;
-                if (context.canceled)
-                {
-                    UsingGamePad = false;
-                }
-            }
-        }
     }
 
     public void Look(InputAction.CallbackContext context)
@@ -62,24 +55,17 @@ public class PlayerCharacterInputs : NetworkBehaviour
         _gamepad = Gamepad.current;
         if (_gamepad != null)
         {
-            if (context.action.activeControl.device.name == _gamepad.name)
+            if (context.action.activeControl.device.name == _gamepad.name && UsingGamePad == true)
             {
                 aimInput = context.ReadValue<Vector2>() * 6.5f;
-                UsingGamePad = true;
-                if (context.canceled) 
-                { 
-                    UsingGamePad = false;
-                }
             }
             else
             {
-                UsingGamePad = false;
                 aimInput = context.ReadValue<Vector2>();
             }
         }
         else
         {
-            UsingGamePad = false;
             aimInput = context.ReadValue<Vector2>();
         }
     }
@@ -92,25 +78,12 @@ public class PlayerCharacterInputs : NetworkBehaviour
         {
             _jumpKeyBuffered = true;
             _lastJumpKeyPressTime = Time.time;
-            print(TimeStamp.Now);
         }
         _jumpKeyBuffered &= Time.time - _lastJumpKeyPressTime <= _jumpBufferingDuration && IsHoldingJumpKey;
         if (context.canceled)
         {
             IsHoldingJumpKey = false;
             _jumpKeyBuffered = false;
-        }
-
-        if (_gamepad != null)
-        {
-            if (context.action.activeControl.device.name == _gamepad.name)
-            {
-                UsingGamePad = true;
-                if (context.canceled)
-                {
-                    UsingGamePad = false;
-                }
-            }
         }
     }
 
@@ -135,7 +108,17 @@ public class PlayerCharacterInputs : NetworkBehaviour
     {
         if (IsSpawned && !IsOwner) return;
         if (_paused) return;
-        
+
+        if (_playerInput.currentControlScheme.Contains("Gamepad"))
+        {
+            UsingGamePad = true;
+        }
+        else
+        {
+            UsingGamePad = false;
+        }
+
+        //Needs to be changed
         if (Input.GetKeyDown(KeyCode.T))
         {
             GameChat.Instance.Show();
@@ -143,7 +126,6 @@ public class PlayerCharacterInputs : NetworkBehaviour
             _paused = true;
         }
 
-        //aim, needs fixing with diagonals
         if (UsingGamePad == false)
         {
             aimInput = Vector2.SmoothDamp(
@@ -152,15 +134,16 @@ public class PlayerCharacterInputs : NetworkBehaviour
             ref aimVel,
             _aimSmoothingTime);
         }
+        /*
         else
         {
+            
             aimInput = Vector2.SmoothDamp(
             new Vector2(aimInput.x, aimInput.y),
             new Vector2(Input.mousePositionDelta.x / (float)Screen.height, Input.mousePositionDelta.y / (float)Screen.height),
             ref aimVel,
             _aimSmoothingTime);
-        }
-        
+        }*/
         /*
         aimInput = Vector2.SmoothDamp(
             new Vector2(aimInput.x, -aimInput.y),

@@ -226,6 +226,10 @@ public class PlayerPhysics : MonoBehaviour
         }
     }
     
+    public float GetGravityStrength()
+    {
+        return _gravityStrength;
+    }
 
     public void ChangeGravityStrenght(float newForce)
     {

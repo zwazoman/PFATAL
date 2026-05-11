@@ -1,39 +1,10 @@
 using GameplaySystems.PlayerCharacter;
 using UnityEngine;
 
-public class Cons_Heal : Consummable
+public class Cons_Heal : Cons_RuneBase
 {
     [SerializeField] private float _heal = 5f;
-
-    private bool _isPlayingBreakAnimation = false;
-    public override void Equip()
-    {
-        base.Equip();
-        _isPlayingBreakAnimation = false;
-        
-        //link events
-        hand.animatorEventListener.OnGemBroken += BreakGem;
-        hand.animatorEventListener.OnAnimationFinished+= OnAnimationFinished;
-    }
-
-    public override void UnEquip()
-    {
-        base.UnEquip();
-        //unlink events
-        hand.animatorEventListener.OnGemBroken -= BreakGem;
-        hand.animatorEventListener.OnAnimationFinished -= OnAnimationFinished;
-    }
-
-    //appelé par un event de l'animation
-    void OnAnimationFinished()
-    {
-        if (_isPlayingBreakAnimation)
-        {
-            _isPlayingBreakAnimation = false;
-            BreakItem();
-        }
-    }
-
+    
     //appelé par un event de l'animation
     void BreakGem()
     {
@@ -49,8 +20,6 @@ public class Cons_Heal : Consummable
         base.StartUsing();
 
         //lance l'anim de break
-        if(_isPlayingBreakAnimation) return; 
-        _isPlayingBreakAnimation = true;
-        hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.gem_break);
+        StartBreakingAnimation();
     }
 }

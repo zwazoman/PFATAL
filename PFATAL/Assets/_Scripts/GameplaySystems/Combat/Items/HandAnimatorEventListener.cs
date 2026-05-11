@@ -17,6 +17,7 @@ public class HandAnimatorEventListener : MonoBehaviour
     public event Action OnSwordHitboxDeactivated;
     public event Action OnGrapplePulled;
     public event Action OnTomahawkShot;
+    public event Action OnGemBroken;
     
 
     
@@ -34,4 +35,6 @@ public class HandAnimatorEventListener : MonoBehaviour
     public void TriggerOnGrapplePulled(){print("TriggerOnGrapplePulled");OnGrapplePulled?.Invoke();}
     public void TriggerOnTomahawkShot(){print("TriggerOnTomahawkShot");OnTomahawkShot?.Invoke();}
     
+    //items
+    public void TriggerOnGemBreak() { print("TriggerOnGemBreak"); OnGemBroken?.Invoke(); }
 }

@@ -12,19 +12,20 @@ public class Cons_TP : Consummable
     GameObject marker;
     Vector3 tpDestination;
 
-    private bool animationIsPlaying = false;
+    private bool breakAnimationIsPlaying = false;
 
     public override void Equip()
     {
         base.Equip();
-        animationIsPlaying = false;
+        breakAnimationIsPlaying = false;
         hand.animatorEventListener.OnGemBroken += BreakGem;
+        hand.animatorEventListener.OnAnimationFinished += OnAnimationFinished;
     }
 
     //quand on appuie sur la touche
     public override void StartUsing()
     {
-        if (animationIsPlaying)return;
+        if (breakAnimationIsPlaying)return;
         
         //afficher le marker de TP
         marker = Instantiate(_markerPrefab);
@@ -34,21 +35,30 @@ public class Cons_TP : Consummable
     //quand on relache la touche
     public override void StopUsing()
     {
-        if (animationIsPlaying) return;
+        if (breakAnimationIsPlaying) return;
         
         //lancer l'animation de break
-        animationIsPlaying = true;
+        breakAnimationIsPlaying = true;
         hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.gem_break);
         base.StopUsing();
     }
 
-    //appelée par l'animation event
+    //appelée par un animation event
     void BreakGem()
     {
         playerCharacter.physics.SetPosition(tpDestination);
         //hand.animatorEventListener.OnGemBroken -= BreakGem;
         HideMarker();
-        BreakItem();
+    }
+
+    //appelé par un animation event
+    void OnAnimationFinished()
+    {
+        if (breakAnimationIsPlaying)
+        {
+            breakAnimationIsPlaying = false;
+            BreakItem();
+        }
     }
 
     protected virtual void Update()
@@ -75,6 +85,7 @@ public class Cons_TP : Consummable
         base.UnEquip();
         HideMarker();
         hand.animatorEventListener.OnGemBroken -= BreakGem;
+        hand.animatorEventListener.OnAnimationFinished -= OnAnimationFinished;
     }
 
     void HideMarker()

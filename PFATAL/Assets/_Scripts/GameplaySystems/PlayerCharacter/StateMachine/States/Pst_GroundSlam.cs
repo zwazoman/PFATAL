@@ -8,14 +8,15 @@ namespace _scripts.PlayerCharacter.StateMachine.States
     /// ActivateState est appelé quand le joueur utilise Cons_GroundSlam
     /// </summary>
     [Serializable]
-    public class Pst_GroundSlam : Pst_Alive
+    public class Pst_GroundSlam : Pst_Airborne
     {
         private static Collider[] buffer = new Collider[20];
 
 
         [Header("Ground Slam Settings")]
-        [SerializeField] private float _upForce = 10f;
+        [SerializeField] private float _upForce = 2.5f;
         [SerializeField] private float _preSlamDuration = 0.3f;
+        [SerializeField] private float _velocityMultiplier = 2.5f;
         [SerializeField] private float _slamGravitiMultiplier = 5f;
         [SerializeField] float _radius = 1f;
         [SerializeField] int _baseDamage = 2;
@@ -33,6 +34,12 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             Sm.TransitionTo(this);
         }
 
+        public override void Behave(PlayerCharacter ctx, UpdatePoint updatePoint)
+        {
+            ApplyAirControls(ctx);
+            base.Behave(ctx, updatePoint);
+        }
+
         public override void SetUp(StateMachine<PlayerCharacter> playerStateMachine)
         {
             base.SetUp(playerStateMachine);
@@ -46,7 +53,8 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             playerCharacter.movement.enabled = false;
 
             // Phase pre-slam : petite impulsion vers le haut
-            playerCharacter.physics.SetVelocity(Vector3.zero);
+            Vector3 playerVelocity = playerCharacter.physics.Velocity;
+            playerCharacter.physics.SetVelocity(new Vector3(playerVelocity.x * _velocityMultiplier, 0, playerVelocity.z * _velocityMultiplier));
             playerCharacter.physics.AddImpulse(Vector3.up * _upForce);
 
             await Awaitable.WaitForSecondsAsync(_preSlamDuration);
@@ -105,7 +113,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             var nextState = base.FindNextState(playerCharacter);
             if (nextState != this) return nextState;
 
-            if (slamPhaseStarted && playerCharacter.physics.ComputeIsGrounded())
+            if (slamPhaseStarted && (playerCharacter.physics.ComputeIsGrounded() || playerCharacter.physics.ComputeIsBumpered()))
                 return Sm.s_Idle;
 
             return this;

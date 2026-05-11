@@ -26,17 +26,22 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         private float _startY;
         private float gravityScaleBeforeSlam;
+        private bool slamPhaseStarted = false;
 
         public void ActivateState()
         {
             Sm.TransitionTo(this);
         }
 
+        public override void SetUp(StateMachine<PlayerCharacter> playerStateMachine)
+        {
+            base.SetUp(playerStateMachine);
+            gravityScaleBeforeSlam = playerStateMachine.GetComponent<PlayerPhysics>().GetGravityStrength();
+        }
+
         protected override async void OnEntered(PlayerCharacter playerCharacter)
         {
             base.OnEntered(playerCharacter);
-
-            gravityScaleBeforeSlam = playerCharacter.physics.GetGravityStrength();
 
             playerCharacter.movement.enabled = false;
 
@@ -47,15 +52,18 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             await Awaitable.WaitForSecondsAsync(_preSlamDuration);
 
             // Transition vers la phase slam : annule la vélocité et change la gravité
-            playerCharacter.physics.SetVelocity(Vector3.zero);
+            //playerCharacter.physics.SetVelocity(Vector3.zero);
             playerCharacter.physics.ChangeGravityStrenght(gravityScaleBeforeSlam * _slamGravitiMultiplier);
 
             _startY = playerCharacter.transform.position.y;
+            slamPhaseStarted = true;
         }
 
         protected override void OnExited(PlayerCharacter playerCharacter)
         {
             base.OnExited(playerCharacter);
+
+            slamPhaseStarted = false;
 
             // Restaure la gravité normale
             playerCharacter.physics.ChangeGravityStrenght(gravityScaleBeforeSlam);
@@ -97,7 +105,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             var nextState = base.FindNextState(playerCharacter);
             if (nextState != this) return nextState;
 
-            if (playerCharacter.physics.ComputeIsGrounded())
+            if (slamPhaseStarted && playerCharacter.physics.ComputeIsGrounded())
                 return Sm.s_Idle;
 
             return this;

@@ -43,17 +43,7 @@ public class Cons_GroundSlam : Consummable
     //appelé par un event de l'animation
     void OnGemBroken()
     {
-        PlayerPhysics physics = playerCharacter.physics;
-
-        //todo : "faites mieux"
-        physics.SetVelocity(Vector3.zero);
-        physics.AddImpulse(Vector3.up * _upForce);
-        //await Awaitable.WaitForSecondsAsync(_duration);
-        physics.SetVelocity(Vector3.zero);
-        physics.AddImpulse(Vector3.down * _downForce);
-
-        playerCharacter.stateMachine.s_GroundSlam.ActivateState();
-        
+        playerCharacter.stateMachine.s_GroundSlam.ActivateState();   
     }
 
     //appelé par un event de l'animation

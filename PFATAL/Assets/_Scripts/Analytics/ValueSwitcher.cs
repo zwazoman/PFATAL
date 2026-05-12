@@ -125,7 +125,7 @@ public class ValueSwitcher : NetworkBehaviour
         Debug.LogError("Switching Gravity");
         foreach (PlayerCharacter character in characters)
         {
-            character.physics.ChangeGravityStrenght(float.Parse(gravityText.text));
+            character.physics.SetGravityStrength(float.Parse(gravityText.text));
         }
     }
 

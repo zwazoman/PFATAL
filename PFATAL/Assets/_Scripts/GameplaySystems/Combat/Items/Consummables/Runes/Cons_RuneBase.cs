@@ -58,7 +58,7 @@ public abstract class Cons_RuneBase : Consummable
         //feedbacks
         _gemstoneRenderer.enabled = false;
         print("Gemstone Destroyed");
-        EditorApplication.isPaused = true;
+        
         //gameplay effect
         ApplyGemEffect();
     }

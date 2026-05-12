@@ -41,7 +41,6 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         public override void Behave(PlayerCharacter playerCharacter, UpdatePoint updatePoint)
         {
-            if (updatePoint != UpdatePoint.Update) return;
             base.Behave(playerCharacter, updatePoint);
             playerCharacter.physics.SetVelocity(Vector3.zero);
         }

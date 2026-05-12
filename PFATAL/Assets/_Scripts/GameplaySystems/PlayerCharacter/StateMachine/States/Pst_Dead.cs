@@ -56,7 +56,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         public override void Behave(PlayerCharacter ctx, UpdatePoint updatePoint)
         {
             base.Behave(ctx, updatePoint);
-            ctx.physics.SetVelocity(Vector3.zero);
+            ctx.physics.SetVelocity(Vector3.zero); //todo : "faites mieux"
         }
 
         void Respawn()

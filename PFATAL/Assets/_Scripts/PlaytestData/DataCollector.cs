@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -51,6 +49,7 @@ public class DataCollector : MonoBehaviour
         _onHeatmapSaved = (heatmap) =>
         {
             heatmapData = heatmap;
+            Debug.Log($"[DataCollector] Heatmap reçue, taille : {heatmap.Length} bytes. Enregistrement de la partie en cours.");
             OnGameEnded(gameResult);
         };
 
@@ -149,7 +148,7 @@ public class DataCollector : MonoBehaviour
                 IdPlayerSet = gameId,
                 HeatMap = Convert.ToBase64String(heatmapData),
                 GameMode = (int)GameManager.Instance.gameSetting.GameMode,
-                MapName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name,
+                MapName = SceneManager.GetActiveScene().name,
                 Duration = GameManager.Instance.gameSetting.GameDuration
             };
 

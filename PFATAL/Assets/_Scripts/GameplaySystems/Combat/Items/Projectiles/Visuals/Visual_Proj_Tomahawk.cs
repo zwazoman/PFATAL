@@ -57,7 +57,7 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         base.Update();
 
         //update magic rope visuals
-        _lineRenderer.enabled = _isLastThrowTomahawk && _weapon.CanDash;
+        _lineRenderer.enabled = _isLastThrowTomahawk && _weapon.CanDash && _playerCharacter.playerHands.rightHand.equippedItem == _weapon;
         if(_lineRenderer.enabled)
             UpdateLineRenderer();
     }
@@ -75,11 +75,11 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         
         for (int i = 0; i < _lineRenderer.positionCount; i++)
         {
-            float alpha = i / (float)(_lineRenderer.positionCount-1);
-            float parabola = (alpha * (1 - alpha)) * 4 * invertAnimAlpha;
-            float sineWave = Mathf.Sin(Time.time * _sineScrollSpeed + alpha * _sineFrequency) * _sineMagnitude * invertAnimAlpha * (1f-alpha);
+            float positionAlpha = i / (float)(_lineRenderer.positionCount-1);
+            float parabola = (positionAlpha * (1 - positionAlpha)) * 4 * invertAnimAlpha;
+            float sineWave = Mathf.Sin(Time.time * _sineScrollSpeed + positionAlpha * _sineFrequency) * _sineMagnitude * invertAnimAlpha *(positionAlpha * (1f-positionAlpha)*-4);
             
-            _lineRenderer.SetPosition(i,Vector3.Lerp(a, b, alpha) + Vector3.down * parabola + transform.right * sineWave  );
+            _lineRenderer.SetPosition(i,Vector3.Lerp(a, b, positionAlpha) + Vector3.down * parabola + transform.right * sineWave  );
         }
     }
 }

@@ -1,24 +1,28 @@
 using _Scripts.StateMachine;
 using System;
+using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace _scripts.PlayerCharacter.StateMachine.States
 {
     /// <summary>
-    /// ActivateState est appelé quand le joueur utilise Cons_GroundSlam
+    /// ActivateState est appelï¿½ quand le joueur utilise Cons_GroundSlam
     /// </summary>
     [Serializable]
     public class Pst_GroundSlam : Pst_Airborne
     {
         private static Collider[] buffer = new Collider[20];
-
-
-        [Header("Ground Slam Settings")]
-        [SerializeField] private float _upForce = 2.5f;
+        
+        [Header("Ground Slam movement Settings")]
         [SerializeField] private float _preSlamDuration = 0.3f;
+        [SerializeField] private float _upForce = 2.5f;
         [SerializeField] private float _velocityMultiplier = 2.5f;
         [SerializeField] private float _slamGravitiMultiplier = 5f;
-        [SerializeField] float _radius = 1f;
+        [SerializeField] float FovOffsetStrength = 10;
+        
+        [Header("Ground Slam impact Settings")]
+        [SerializeField] float _radius = 4f;
         [SerializeField] int _baseDamage = 2;
         [SerializeField] int _maxDamage = 7;
         [SerializeField] float _damageMultiplier = 1.5f;
@@ -29,6 +33,9 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         private float gravityScaleBeforeSlam;
         private bool slamPhaseStarted = false;
 
+        private float _fovOffset;
+        
+        
         public void ActivateState()
         {
             Sm.TransitionTo(this);
@@ -36,7 +43,17 @@ namespace _scripts.PlayerCharacter.StateMachine.States
 
         public override void Behave(PlayerCharacter ctx, UpdatePoint updatePoint)
         {
-            ApplyAirControls(ctx);
+            if (updatePoint == UpdatePoint.FixedUpdate)
+            {
+                //dÃ©placements
+                ApplyAirControls(ctx);
+            }
+            else if (updatePoint == UpdatePoint.Update)
+            {
+                //gestion de la FOV dans update
+                ctx.cameraBehaviour.AddTemporaryFovOffset(_fovOffset);
+            }
+            
             base.Behave(ctx, updatePoint);
         }
 
@@ -46,22 +63,33 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             gravityScaleBeforeSlam = playerStateMachine.GetComponent<PlayerPhysics>().GetGravityStrength();
         }
 
-        protected override async void OnEntered(PlayerCharacter playerCharacter)
+        protected override void OnEntered(PlayerCharacter playerCharacter)
         {
             base.OnEntered(playerCharacter);
 
             playerCharacter.movement.enabled = false;
 
+            //animation de la fov de la camera
+             DOTween.To(
+                 () => _fovOffset,
+                 v =>
+                 {
+                     _fovOffset = v;
+                     //PlayerCharacter.LocalPlayerCharacter.cameraBehaviour.AddTemporaryFovOffset(v);
+                 },
+                 FovOffsetStrength, .2f
+             ).SetEase(Ease.InOutSine);
+             
             // Phase pre-slam : petite impulsion vers le haut
             Vector3 playerVelocity = playerCharacter.physics.Velocity;
             playerCharacter.physics.SetVelocity(new Vector3(playerVelocity.x * _velocityMultiplier, 0, playerVelocity.z * _velocityMultiplier));
             playerCharacter.physics.AddImpulse(Vector3.up * _upForce);
 
-            await Awaitable.WaitForSecondsAsync(_preSlamDuration);
+            //await Awaitable.WaitForSecondsAsync(_preSlamDuration);
 
-            // Transition vers la phase slam : annule la vélocité et change la gravité
+            // Transition vers la phase slam : annule la vï¿½locitï¿½ et change la gravitï¿½
             //playerCharacter.physics.SetVelocity(Vector3.zero);
-            playerCharacter.physics.ChangeGravityStrenght(gravityScaleBeforeSlam * _slamGravitiMultiplier);
+            playerCharacter.physics.SetGravityStrength(gravityScaleBeforeSlam * _slamGravitiMultiplier);
 
             _startY = playerCharacter.transform.position.y;
             slamPhaseStarted = true;
@@ -70,13 +98,27 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         protected override void OnExited(PlayerCharacter playerCharacter)
         {
             base.OnExited(playerCharacter);
-
+            
+            Print("slam exited");
+            
             slamPhaseStarted = false;
 
-            // Restaure la gravité normale
-            playerCharacter.physics.ChangeGravityStrenght(gravityScaleBeforeSlam);
+            //animation de la fov de la camera
+            DOTween.To(
+                () => _fovOffset,
+                v =>
+                {
+                    _fovOffset = v;
+                    PlayerCharacter.LocalPlayerCharacter.cameraBehaviour.AddTemporaryFovOffset(v);
+                },
+                0, .2f
+            ).SetEase(Ease.InOutSine);
+            
+            // Restaure la gravitï¿½ normale
+            playerCharacter.physics.SetGravityStrength(gravityScaleBeforeSlam);
             playerCharacter.movement.enabled = true;
-
+            
+            //applique les degats aux joueurs autour
             float fallHeight = _startY - playerCharacter.transform.position.y;
             float rawDamage = _baseDamage + (fallHeight * _damageMultiplier);
             int finalDamage = Mathf.Clamp(Mathf.RoundToInt(rawDamage), _baseDamage, _maxDamage);
@@ -113,7 +155,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             var nextState = base.FindNextState(playerCharacter);
             if (nextState != this) return nextState;
 
-            if (slamPhaseStarted && (playerCharacter.physics.ComputeIsGrounded() || playerCharacter.physics.ComputeIsBumpered()))
+            if (slamPhaseStarted && playerCharacter.physics.Velocity.y<0 && (playerCharacter.physics.ComputeIsGrounded() || playerCharacter.physics.ComputeIsBumpered()))
                 return Sm.s_Idle;
 
             return this;

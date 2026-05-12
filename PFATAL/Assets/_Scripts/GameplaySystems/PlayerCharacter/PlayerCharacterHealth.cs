@@ -14,9 +14,17 @@ public class PlayerCharacterHealth : DamageableObject
     float _regenTickTimer;
     float _regenCooldownTimer;
 
+    [Header("Damage Visual")]
+    [SerializeField] Renderer[] _characterRenderers;
+
+    MaterialPropertyBlock _mpb;
+    int _healthID;
+
     private void Start()
     {
         OnDamageTaken += (_) => StopHealing();
+        _mpb = new MaterialPropertyBlock();
+        _healthID = Shader.PropertyToID("_Health");
     }
 
     void StartHealing()
@@ -71,6 +79,16 @@ public class PlayerCharacterHealth : DamageableObject
                 StartHealing();
             }
         }
-    }
 
+        if (MaxHP > 0)
+        {
+            float health = HP / MaxHP;
+            foreach (var r in _characterRenderers)
+            {
+                r.GetPropertyBlock(_mpb);
+                _mpb.SetFloat(_healthID, health);
+                r.SetPropertyBlock(_mpb);
+            }
+        }
+    }
 }

@@ -10767,44 +10767,45 @@ MonoBehaviour:
   s_Idle:
     _updatePoint: 4
     _passThrough: 1
-    _groundFriction: 10
+    _groundFriction: 20
   s_Walking:
     _updatePoint: 4
     _passThrough: 1
     _walkSpeed: 5
-    _acceleration: 10
-    _brakeStrength: 2
+    _acceleration: 20
+    _brakeStrengthMultiplier: 2
   s_Falling:
     _updatePoint: 4
     _passThrough: 1
     _airSpeed: 4
-    _acceleration: 4
+    _acceleration: 8
     _coyoteJumpDuration: 0.2
   s_Jumping:
     _updatePoint: 4
     _passThrough: 0
     _airSpeed: 4
-    _acceleration: 6
+    _acceleration: 12
     _jumpDuration: 0.35
     _initialImpulseStrength: 3.5
     _jumpDirectionResponsivness: 0.32
-    _thrustPower: 1
+    _thrustPower: 3
   s_dead:
-    _updatePoint: 1
+    _updatePoint: 4
     _passThrough: 0
   s_Frozen:
-    _updatePoint: 1
+    _updatePoint: 4
     _passThrough: 0
-    duration: 2
+    duration: 1.5
   s_GroundSlam:
-    _updatePoint: 1
+    _updatePoint: 5
     _passThrough: 1
-    _airSpeed: 9
-    _acceleration: 5
-    _upForce: 5
-    _preSlamDuration: 0.3
-    _velocityMultiplier: 2
-    _slamGravitiMultiplier: 4
+    _airSpeed: 6
+    _acceleration: 10
+    _preSlamDuration: 0
+    _upForce: 8
+    _velocityMultiplier: 2.5
+    _slamGravitiMultiplier: 3
+    FovOffsetStrength: 10
     _radius: 1
     _baseDamage: 2
     _maxDamage: 7
@@ -10814,13 +10815,13 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 256
   s_PropulseInAir:
-    _updatePoint: 1
+    _updatePoint: 4
     _passThrough: 1
     _airSpeed: 4
-    _acceleration: 1
+    _acceleration: 2
     _damage: 2
   s_GameOver:
-    _updatePoint: 1
+    _updatePoint: 0
     _passThrough: 0
 --- !u!114 &771093519833283276
 MonoBehaviour:
@@ -11044,6 +11045,10 @@ MonoBehaviour:
   _regenStrength: 0.5
   _regenCooldown: 6
   _deathYLimit: -25
+  _characterRenderers:
+  - {fileID: 376630363583327551}
+  - {fileID: 4515941377858711370}
+  - {fileID: 334675122001509177}
 --- !u!114 &9073655823701373496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11643,6 +11648,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c8705e9469c12141953976868350a23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!137 &4515941377858711370 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4567570517485013813, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+  m_PrefabInstance: {fileID: 128526235729683583}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4979204821146748320 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4958794732565242335, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
@@ -12230,6 +12240,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1560660781872837391}
   m_SourcePrefab: {fileID: 100100000, guid: 4d9bf200d09c5674183952478e4dcd31, type: 3}
+--- !u!137 &376630363583327551 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -6625670233272749717, guid: 4d9bf200d09c5674183952478e4dcd31, type: 3}
+  m_PrefabInstance: {fileID: 2393359011088391252}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &700869960131821557 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2922579786809303969, guid: 4d9bf200d09c5674183952478e4dcd31, type: 3}
@@ -12811,6 +12826,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+--- !u!137 &334675122001509177 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4567570517485013813, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+  m_PrefabInstance: {fileID: 4307205339695198220}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1871171297071789684 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}

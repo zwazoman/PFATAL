@@ -165,6 +165,7 @@ GameObject:
   - component: {fileID: 2509224348126569089}
   - component: {fileID: 3269829353930291782}
   - component: {fileID: 520835576147571097}
+  - component: {fileID: -5338386324980571596}
   m_Layer: 0
   m_Name: Proj_Bomb
   m_TagString: Untagged
@@ -280,6 +281,7 @@ MonoBehaviour:
   _explosion: {fileID: 759900834859649130}
   _fuseTime: 3
   _throwStrength: 45
+  fuseTimer: 0
 --- !u!114 &3269829353930291782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,6 +345,20 @@ MonoBehaviour:
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
+--- !u!114 &-5338386324980571596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4084173529431785421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19afbd8d7721f2040987977fc64d24a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BombProjSound
+  main: {fileID: 2509224348126569089}
+  _soundDuration: 17.254
 --- !u!1001 &5137307615337726126
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -35,6 +35,10 @@ public class PlayerCharacterNetworkStateMachineCallback : NetworkBehaviour
     [SerializeField] PlayerStateMachine _stateMachine;
     
     //synced variables and events
+    
+    /// <summary>
+    /// old state, new state
+    /// </summary>
     public event Action<PlayerStateEnum,PlayerStateEnum> OnStateChanged;
     public PlayerStateEnum CurrentState { get;private set; }
     public PlayerStateEnum OldState{ get;private set; }

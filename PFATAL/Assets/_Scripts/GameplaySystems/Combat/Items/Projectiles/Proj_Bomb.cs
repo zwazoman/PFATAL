@@ -1,8 +1,11 @@
 using _Scripts.Exceptions;
+using System;
 using UnityEngine;
 
 public class Proj_Bomb : Projectile
 {
+    public event Action OnExplode;
+
     [Header("scene references")]
     [SerializeField] Rigidbody _rb;
     [SerializeField] Explosion _explosion;
@@ -11,7 +14,9 @@ public class Proj_Bomb : Projectile
     [SerializeField] float _fuseTime = 3f;
 
     [SerializeField] private float _throwStrength = 25;
-    float _fuseTimer;
+    
+    public float fuseTimer;
+
     private bool _isExploding = false;
 
 
@@ -25,8 +30,10 @@ public class Proj_Bomb : Projectile
         base.OnNetworkSpawn();
         if (!IsServer) return;
 
+        fuseTimer = spawnContext.Value.floatData;
+
+
         _isExploding = false;
-        _fuseTimer = spawnContext.Value.floatData;
         _rb.isKinematic = false;
         Vector3 force = transform.forward * 5 + transform.up * 3;
         _rb.AddForce(force.normalized * _throwStrength, ForceMode.Impulse);
@@ -37,8 +44,8 @@ public class Proj_Bomb : Projectile
         if (!IsSpawned) return;
         if (!IsServer) return;
         
-        _fuseTimer += Time.deltaTime;
-        if(_fuseTimer >= _fuseTime&& !_isExploding)
+        fuseTimer += Time.deltaTime;
+        if(fuseTimer >= _fuseTime&& !_isExploding)
         {
             ExplodeAndDespawn();
         }
@@ -46,13 +53,15 @@ public class Proj_Bomb : Projectile
 
     async Awaitable ExplodeAndDespawn()
     {
+        OnExplode?.Invoke();
+
         if (!IsServer) throw new NetworkAuthorityException();
         _isExploding = true;
         _rb.isKinematic = true;
 
         await _explosion.Explode(spawnContext.Value.spawnerClientID, (int)spawnContext.Value.floatData2);
-        
-        NetworkObject.Despawn();
+
+        Despawn();
     }
 
     

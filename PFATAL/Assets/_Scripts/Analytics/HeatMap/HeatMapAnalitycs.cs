@@ -275,22 +275,21 @@ public class HeatMapAnalitycs : NetworkBehaviour
             //Debug.Log("NTM la fin de game, j'envoie le heatmap au serveur");
         }
 
-        if (!character.IsServer && !triggerByServer) return;
+        if (character.IsServer && triggerByServer)
+        {
+            //File.WriteAllText(_filePath, JsonUtility.ToJson(_theRealHeatMap));
 
-        //File.WriteAllText(_filePath, JsonUtility.ToJson(_theRealHeatMap));
+            //to do : get heapMap from DB to set correct gameId and version
 
-        //to do : get heapMap from DB to set correct gameId and version
+            //HeatMapData map = HeatMapUtility.CombineHeatMap(heatMapsToCombine);
 
-        //HeatMapData map = HeatMapUtility.CombineHeatMap(heatMapsToCombine);
+            byte[] _byteHeatmap = HeatMapUtility.ConvertMapToByte(_theRealHeatMap);
 
+            //File.WriteAllBytes(_filePath, _byteHeatmap);
+            HeatMapServerAnalitics.instance.RealHeatMapSave();
 
-
-        byte[] _byteHeatmap = HeatMapUtility.ConvertMapToByte(_theRealHeatMap);
-
-        //File.WriteAllBytes(_filePath, _byteHeatmap);
-        HeatMapServerAnalitics.instance.RealHeatMapSave();
-
-        //UnityEngine.Debug.Log("Heatmap data saved to: " + _filePath);
+            //UnityEngine.Debug.Log("Heatmap data saved to: " + _filePath);
+        }
     }
 
     #region Debug

@@ -1,5 +1,7 @@
-﻿using Unity.VisualScripting;
+﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using State = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
 namespace GameplaySystems.PlayerCharacter
 {
@@ -37,11 +39,15 @@ namespace GameplaySystems.PlayerCharacter
             bomb_use = 601,
         }
         
-        
+        //animator properties ids
         private static readonly int MainAnim_AnimatorProperty = Animator.StringToHash("mainAnim");
+        private static readonly int AdditiveAnim_AnimatorProperty = Animator.StringToHash("AdditiveAnim");
         private static readonly int CrossbowShootAnimationSpeedMultiplier_AnimatorProperty = Animator.StringToHash("crossbowShootAnimationSpeedMultiplier");
         private static readonly int TomahawkThrowAnimationSpeedMultiplier_AnimatorProperty = Animator.StringToHash("TomahawkThrowAnimationSpeedMultiplier");
         private static readonly int PlayMainAnimation_AnimatorProperty = Animator.StringToHash("PlayMainAnimation");
+        private static readonly int PlayAdditiveAnim_AnimatorProperty = Animator.StringToHash("PlayAdditiveAnim");
+        private static readonly int IsRunning_AnimatorProperty = Animator.StringToHash("isRunning");
+        private static readonly int PlayPickupAnimation_AnimatorProperty = Animator.StringToHash("PlayPickupAnimation");
 
         [Header("Scene references")]
         [SerializeField] Hand _hand;
@@ -52,15 +58,28 @@ namespace GameplaySystems.PlayerCharacter
         void Awake()
         {
             _hand.OnEquipItem += OnNewItemEquipped;
+            //_hand.OnSwapItem += OnSwapItem;
             _hand.OnUnequipItem += OnItemUnequipped;
             _hand.OnDeleteItem += PlayCurrentDefaultIdlePoseAnimation;
             _hand.OnDropItem += OnItemUnequipped;
             _hand.animatorEventListener.OnAnimationFinished += PlayCurrentDefaultIdlePoseAnimation;
-
         }
-        
+
+        private void Update()
+        {
+            _animator.SetBool(IsRunning_AnimatorProperty, _hand.playerCharacter.physics.Velocity.sqrMagnitude>.25f);
+        }
+
+        private void OnSwapItem()
+        {
+            print("received event swap item");
+            OnItemUnequipped(_hand.equippedItem);
+        }
+
         private void OnNewItemEquipped(Item equippedItem)
         {
+            print("received event equipped item : "+equippedItem.GetType());
+            
             //set idle pose
             currentDefaultIdlePose = equippedItem switch
             {
@@ -81,9 +100,14 @@ namespace GameplaySystems.PlayerCharacter
                 
                 _ => AnimationID.unknown
             };
+            
+            //play idle animation
             PlayAnimation(currentDefaultIdlePose);
             
-            //link events
+            //play additive pickup animation
+            _animator.SetTrigger(PlayPickupAnimation_AnimatorProperty);
+            
+            //link item-specific events
             switch (equippedItem)
             {
                 case Crossbow crossbow:
@@ -103,7 +127,9 @@ namespace GameplaySystems.PlayerCharacter
         
         void OnItemUnequipped(Item item)
         {
-            //unlink events
+            print("received event unequipped item : "+item.GetType());
+            
+            //unlink item-specific events
             switch (item)
             {
                 case Crossbow crossbow:
@@ -149,6 +175,6 @@ namespace GameplaySystems.PlayerCharacter
         {
             PlayAnimation(AnimationID.crossbow_shootAndReload);
         }
-
+        
     }
 }

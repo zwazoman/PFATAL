@@ -84,16 +84,15 @@ public class Hand : MonoBehaviour
             print("item not pickedUp");
             return;
         }
-
-        OnEquipItem?.Invoke(item);
         
         if (equippedItem != null)
         {
             print(equippedItem.name);
             UnEquipItem();
         }
-
+        
         equippedItem = item;
+        OnEquipItem?.Invoke(item);
         itemVisuals.ShowItemRpc(item.gameObject.name, _isLeft);
 
         equippedItem.Equip();
@@ -125,8 +124,8 @@ public class Hand : MonoBehaviour
 
         OnSwapItem?.Invoke();
 
-        Item oldHeldItem = equippedItem;
-
+        //Item oldHeldItem = equippedItem;
+        
         if (isPrevious)
             EquipItem(itemInventory.GetPreviousObjectWrapped(equippedItem)); // previous Item
         else

@@ -25,21 +25,21 @@ namespace _Scripts.StateMachine
         protected virtual void Update()
         {
             Assert.IsNotNull(currentState, "This state machine has no active state !");
-            if ((currentState._updatePoint & ~UpdatePoint.Update) != 0)
+            if ((currentState._updatePoint & UpdatePoint.Update) == UpdatePoint.Update)
                 currentState.Update(context,UpdatePoint.Update);
         }
 
         void LateUpdate()
         {
             Assert.IsNotNull(currentState, "This state machine has no active state !");
-            if ((currentState._updatePoint & ~UpdatePoint.LateUpdate) != 0) 
+            if ((currentState._updatePoint & UpdatePoint.LateUpdate) == UpdatePoint.LateUpdate) 
                 currentState.Update(context,UpdatePoint.LateUpdate);
         }
         
         public virtual void FixedUpdate()
         {
             Assert.IsNotNull(currentState, "This state machine has no active state !");
-            if ((currentState._updatePoint & ~UpdatePoint.FixedUpdate) != 0)
+            if ((currentState._updatePoint & UpdatePoint.FixedUpdate) == UpdatePoint.FixedUpdate)
                 currentState.Update(context,UpdatePoint.FixedUpdate);
         }
 

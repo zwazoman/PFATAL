@@ -866,7 +866,10 @@ MonoBehaviour:
   _maxCollisionSteps: 5
   bounciness: 0
   autoUpdate: 0
-  _layerMask:
+  _groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _bumperLayerMask:
     serializedVersion: 2
     m_Bits: 0
   col: {fileID: 0}
@@ -2218,10 +2221,6 @@ PrefabInstance:
       value: AudioManager
       objectReference: {fileID: 0}
     - target: {fileID: 7858065211963215684, guid: 525b849eafd220549a6f24ca5f9e5c44, type: 3}
-      propertyPath: playSounds
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7858065211963215684, guid: 525b849eafd220549a6f24ca5f9e5c44, type: 3}
       propertyPath: reverbManager
       value: 
       objectReference: {fileID: 0}
@@ -3041,7 +3040,10 @@ MonoBehaviour:
   _maxCollisionSteps: 5
   bounciness: 0
   autoUpdate: 0
-  _layerMask:
+  _groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _bumperLayerMask:
     serializedVersion: 2
     m_Bits: 0
   col: {fileID: 0}

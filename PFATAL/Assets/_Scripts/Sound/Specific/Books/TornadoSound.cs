@@ -8,6 +8,6 @@ public class TornadoSound : MovingSoundComponent<Proj_Tornado>
     protected override async void LinkEvents()
     {
         main.OnSpawn += () => StartSound(Sounds.TornadoLaunch3D);
-        main.OnDespawn += StopSound;
+        main.OnDespawn += () => StopSound();
     }
 }

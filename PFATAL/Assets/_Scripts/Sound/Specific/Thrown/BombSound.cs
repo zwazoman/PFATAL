@@ -1,0 +1,23 @@
+using UnityEngine;
+
+public class BombSound : MovingSoundComponent<Cons_Bomb>
+{
+    protected override void LinkEvents()
+    {
+        print(gameObject.name);
+
+        main.OnStartUsing += () => StartSound(Sounds.Fuse3D);
+
+
+        main.OnEquip += EquipLink;
+
+        main.OnUnEquip += UnEquipLink;
+        main.OnUnEquip += () => StopSound();
+    }
+
+    void EquipLink() => main.hand.animatorEventListener.OnObjectThrown += PlaySound;
+
+    void UnEquipLink() => main.hand.animatorEventListener.OnObjectThrown -= PlaySound;
+
+    void PlaySound() => AudioManager.Instance.PlayOnlineOneShots(Sounds.TomahawkShoot, Sounds.TomahawkShoot3D, transform.position);
+}

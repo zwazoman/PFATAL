@@ -69,8 +69,6 @@ public abstract class Cons_RuneBase : Consummable
         po.GoBackIntoPool_Delayed(1f);
         _gemstoneRenderer.enabled = false;
 
-        AudioManager.Instance.PlayOneShot(Sounds.BreakRune);
-
         print("Gemstone Destroyed");
         
         //gameplay effect

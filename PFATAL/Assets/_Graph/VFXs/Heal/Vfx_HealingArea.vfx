@@ -850,22 +850,6 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: expandSpeed
-    path: expandSpeed
-    tooltip: 
-    space: -1
-    spaceable: 0
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
   - name: ParticleDensity
     path: ParticleDensity
     tooltip: 
@@ -878,6 +862,22 @@ MonoBehaviour:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
       m_SerializableObject: 0.1
+    min: -Infinity
+    max: Infinity
+    enumValues: []
+    descendantCount: 0
+  - name: expandSpeed
+    path: expandSpeed
+    tooltip: 
+    space: -1
+    spaceable: 0
+    sheetType: m_Float
+    realType: Single
+    defaultValue:
+      m_Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 1
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -945,18 +945,18 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: SparksIntensity
-    path: SparksIntensity
+  - name: UpwardSparkMotion
+    path: UpwardSparkMotion
     tooltip: 
     space: -1
     spaceable: 0
-    sheetType: m_Float
-    realType: Single
+    sheetType: m_Bool
+    realType: Boolean
     defaultValue:
       m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.2
+      m_SerializableObject: True
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -977,18 +977,18 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: UpwardSparkMotion
-    path: UpwardSparkMotion
+  - name: SparksIntensity
+    path: SparksIntensity
     tooltip: 
     space: -1
     spaceable: 0
-    sheetType: m_Bool
-    realType: Boolean
+    sheetType: m_Float
+    realType: Single
     defaultValue:
       m_Type:
-        m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: True
+      m_SerializableObject: 0.2
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -2568,7 +2568,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615147}
   m_ExposedName: ParticleDensity
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 1
   m_Category: 
   m_Min:
     m_Type:
@@ -3690,7 +3690,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615397}
   m_ExposedName: expandSpeed
   m_Exposed: 1
-  m_Order: 1
+  m_Order: 2
   m_Category: 
   m_Min:
     m_Type:
@@ -4053,7 +4053,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615439}
   m_ExposedName: Color
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 3
   m_Category: 
   m_Min:
     m_Type:
@@ -8425,8 +8425,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615831}
   m_OutputSlots:
   - {fileID: 8926484042661615835}
-  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667,
-    type: 3}
+  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667, type: 3}
 --- !u!114 &8926484042661615822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20164,7 +20163,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616693}
   m_ExposedName: UpwardSparkMotion
   m_Exposed: 1
-  m_Order: 6
+  m_Order: 4
   m_Category: Sparks
   m_Min:
     m_Type:
@@ -20245,7 +20244,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616695}
   m_ExposedName: SparkRepartition
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 5
   m_Category: Sparks
   m_Min:
     m_Type:
@@ -23703,8 +23702,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616993}
   m_OutputSlots:
   - {fileID: 8926484042661616997}
-  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667,
-    type: 3}
+  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667, type: 3}
 --- !u!114 &8926484042661616984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25766,8 +25764,7 @@ MonoBehaviour:
   - {fileID: 8926484042661617123}
   m_OutputSlots:
   - {fileID: 8926484042661617127}
-  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667,
-    type: 3}
+  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667, type: 3}
 --- !u!114 &8926484042661617114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26514,8 +26511,7 @@ MonoBehaviour:
   - {fileID: 8926484042661617147}
   m_OutputSlots:
   - {fileID: 8926484042661617151}
-  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667,
-    type: 3}
+  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667, type: 3}
 --- !u!114 &8926484042661617138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27259,8 +27255,7 @@ MonoBehaviour:
   - {fileID: 8926484042661617171}
   m_OutputSlots:
   - {fileID: 8926484042661617175}
-  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667,
-    type: 3}
+  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667, type: 3}
 --- !u!114 &8926484042661617162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28000,7 +27995,7 @@ MonoBehaviour:
   - {fileID: 8926484042661617186}
   m_ExposedName: SparksIntensity
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 6
   m_Category: Sparks
   m_Min:
     m_Type:
@@ -32435,8 +32430,7 @@ MonoBehaviour:
   - {fileID: 8926484042661617555}
   m_OutputSlots:
   - {fileID: 8926484042661617559}
-  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667,
-    type: 3}
+  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667, type: 3}
 --- !u!114 &8926484042661617546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34498,8 +34492,7 @@ MonoBehaviour:
   - {fileID: 8926484042661617676}
   m_OutputSlots:
   - {fileID: 8926484042661617680}
-  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667,
-    type: 3}
+  m_Subgraph: {fileID: 5371698745253816930, guid: 54a068f189f44e347abf42e183740667, type: 3}
 --- !u!114 &8926484042661617667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39100,8 +39093,7 @@ MonoBehaviour:
     - rid: 8641741777761468449
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: 958697d834f02e847899bb412ea12090,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: 958697d834f02e847899bb412ea12090, type: 3}
         materialSettings:
           m_PropertyNames:
           - _ZWriteControl
@@ -40973,8 +40965,7 @@ MonoBehaviour:
     - rid: 8641741777761468451
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: d619129b00961d247b2ef3eb8c895b8f,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: d619129b00961d247b2ef3eb8c895b8f, type: 3}
         materialSettings:
           m_PropertyNames:
           - _Blend
@@ -43065,8 +43056,7 @@ MonoBehaviour:
     - rid: 8641741777761468453
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: d619129b00961d247b2ef3eb8c895b8f,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: d619129b00961d247b2ef3eb8c895b8f, type: 3}
         materialSettings:
           m_PropertyNames:
           - _Blend
@@ -44741,8 +44731,7 @@ MonoBehaviour:
     - rid: 8641741777761468455
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: d619129b00961d247b2ef3eb8c895b8f,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: d619129b00961d247b2ef3eb8c895b8f, type: 3}
         materialSettings:
           m_PropertyNames:
           - _Blend
@@ -45880,8 +45869,7 @@ MonoBehaviour:
     - rid: 8641741777761468457
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: d619129b00961d247b2ef3eb8c895b8f,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: d619129b00961d247b2ef3eb8c895b8f, type: 3}
         materialSettings:
           m_PropertyNames:
           - _Blend
@@ -48746,8 +48734,7 @@ MonoBehaviour:
     - rid: 8641741777761468459
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: d619129b00961d247b2ef3eb8c895b8f,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: d619129b00961d247b2ef3eb8c895b8f, type: 3}
         materialSettings:
           m_PropertyNames:
           - _Blend
@@ -50631,8 +50618,7 @@ MonoBehaviour:
     - rid: 8641741777761468461
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: 32c98b538fd9ac94cb56319fdefd3348,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: 32c98b538fd9ac94cb56319fdefd3348, type: 3}
         materialSettings:
           m_PropertyNames:
           - _Blend
@@ -53028,8 +53014,7 @@ MonoBehaviour:
     - rid: 8641741777761468463
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: ce1c4ad690e7a9e46a7419d8feb8f4d0,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: ce1c4ad690e7a9e46a7419d8feb8f4d0, type: 3}
         materialSettings:
           m_PropertyNames:
           - _ZWriteControl

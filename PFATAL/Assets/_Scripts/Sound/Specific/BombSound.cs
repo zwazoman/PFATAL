@@ -8,4 +8,6 @@ public class BombSound : MovingSoundComponent<Cons_Bomb>
         main.OnStopUsing += StopSound;
         main.OnUnEquip += StopSound;
     }
+
+
 }

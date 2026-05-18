@@ -11,6 +11,7 @@ public class Cons_Heal : Cons_RuneBase
         if (playerCharacter.TryGetComponent(out DamageableObject health))
         {
             health.Heal(_heal);
+            hand.playerCharacter.visuals.PlayHealingVFX();
         }
     }
     

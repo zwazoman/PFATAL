@@ -8,6 +8,7 @@ public class Sword : MeleeWeapon
     public event Action OnStartCharging;
     public event Action OnDashStarted;
     public event Action OnSmallAttackStarted;
+    public event Action OnAttackEnded;
     
     [Header("Sword Settings")]
     [SerializeField] float _knockbackStrength = 10;
@@ -101,7 +102,14 @@ public class Sword : MeleeWeapon
     void AllowNextAttack()
     {
         print("Attack ended.");
+        OnAttackEnded?.Invoke();
         _isAttacking = false;
+
+        if (_isDashing)
+        {
+            _isDashing = false;
+            StartDashCooldown();
+        }
     }
 
     public override void StopUsing()
@@ -143,10 +151,9 @@ public class Sword : MeleeWeapon
         if (dot <= _dashDotThreshold)
             playerCharacter.physics.SetVelocity(Vector3.zero);
         playerCharacter.physics.AddImpulse(playerCharacter.playerCamera.transform.forward * _dashStrength);
-        
-        WaitForDashToCoolDown();
+       
     }
-    async void WaitForDashToCoolDown()
+    async void StartDashCooldown()
     {
         _canDash = false;
         

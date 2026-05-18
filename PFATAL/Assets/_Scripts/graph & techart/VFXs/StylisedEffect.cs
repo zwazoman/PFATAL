@@ -63,6 +63,7 @@ namespace SimpleVFXs
         {
             if (vfx == null) TryGetComponent(out vfx);
             vfx.playRate = _playRate;
+            vfx.Stop();
             vfx.Play();
         }
 

@@ -16,6 +16,9 @@ public class PlayerMovement : MonoBehaviour
     
     public void Move(Vector3 targetVelocity,float acceleration, bool xzOnly)
     {
+        if (!enabled)
+            return;
+
         Vector3 currentVelocity = _playerCharacter.physics.Velocity;
         Vector3 velocity = currentVelocity;
         
@@ -28,5 +31,18 @@ public class PlayerMovement : MonoBehaviour
         _playerCharacter.physics.SetVelocity(velocity);
     }
 
+    public async void TemporaryMoveSpeedChange(float speedMultiplyer, float duration)
+    {
+        globalMovespeedMultiplyer = speedMultiplyer;
+        float t = 0;
+
+        while (globalMovespeedMultiplyer != 1)
+        {
+             t += Time.deltaTime / duration;
+
+            globalMovespeedMultiplyer = Mathf.Lerp(speedMultiplyer, 1, t);
+            await Awaitable.NextFrameAsync();
+        }
+    }
     
 }

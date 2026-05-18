@@ -63,7 +63,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             gravityScaleBeforeSlam = playerStateMachine.GetComponent<PlayerPhysics>().GetGravityStrength();
         }
 
-        protected override void OnEntered(PlayerCharacter playerCharacter)
+        protected override async void OnEntered(PlayerCharacter playerCharacter)
         {
             base.OnEntered(playerCharacter);
 
@@ -85,10 +85,10 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             playerCharacter.physics.SetVelocity(new Vector3(playerVelocity.x * _velocityMultiplier, 0, playerVelocity.z * _velocityMultiplier));
             playerCharacter.physics.AddImpulse(Vector3.up * _upForce);
 
-            //await Awaitable.WaitForSecondsAsync(_preSlamDuration);
+            await Awaitable.WaitForSecondsAsync(_preSlamDuration);
 
             // Transition vers la phase slam : annule la v�locit� et change la gravit�
-            //playerCharacter.physics.SetVelocity(Vector3.zero);
+            playerCharacter.physics.SetVelocity(Vector3.zero);
             playerCharacter.physics.SetGravityStrength(gravityScaleBeforeSlam * _slamGravitiMultiplier);
 
             _startY = playerCharacter.transform.position.y;

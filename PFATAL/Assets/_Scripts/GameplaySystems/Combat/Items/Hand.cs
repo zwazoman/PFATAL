@@ -1,28 +1,30 @@
 using _scripts.PlayerCharacter;
 using System;
 using System.Collections.Generic;
+using GameplaySystems.PlayerCharacter;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Hand : MonoBehaviour
 {
+    //events, pas repliqués
     public event Action<Item> OnPickUpItem;
     public event Action<Item> OnDropItem;
     public event Action OnDeleteItem;
-
     public event Action<Item> OnEquipItem;
     public event Action<Item> OnUnequipItem;
-
     public event Action<Crossbow> OnEquipCrossbow;
     public event Action<Tomahawk> OnEquipTomahawk;
     public event Action<Sword> OnEquipHammer;
-
     public event Action OnSwapItem;
 
     [Header("References")]
-    [SerializeField] PlayerCharacter _main;
-    [SerializeField] HandsItemVisuals handsItemVisuals;
-    [SerializeField] public Transform _itemSocket;
+    [FormerlySerializedAs("_main")] public  PlayerCharacter playerCharacter;
+    public HandsItemVisuals itemVisuals;
+    public PlayerHandVisuals visuals;
+    public HandAnimatorEventListener animatorEventListener;
+    public Transform _itemSocket;
 
     [Header("Parameters")]
 
@@ -44,12 +46,12 @@ public class Hand : MonoBehaviour
     /// <returns></returns>
     public bool TryPickupItem(ItemInfo itemInfo)
     {
-        Item item = handsItemVisuals.GetItemInstance(itemInfo.itemPrefab.name);
+        Item item = itemVisuals.GetItemInstance(itemInfo.itemPrefab.name);
 
         if (itemInventory.Count < _inventorySize)
         {
             itemInventory.Add(item);
-            item.Pickup(_main, this);
+            item.Pickup(playerCharacter, this);
             EquipItem(item);
 
             OnPickUpItem?.Invoke(item);
@@ -60,7 +62,7 @@ public class Hand : MonoBehaviour
             DeleteEquippedItem();
 
             itemInventory.Add(item);
-            item.Pickup(_main, this);
+            item.Pickup(playerCharacter, this);
 
             EquipItem(item);
 
@@ -82,17 +84,16 @@ public class Hand : MonoBehaviour
             print("item not pickedUp");
             return;
         }
-
-        OnEquipItem?.Invoke(item);
         
         if (equippedItem != null)
         {
             print(equippedItem.name);
             UnEquipItem();
         }
-
+        
         equippedItem = item;
-        handsItemVisuals.ShowItemRpc(item.gameObject.name, _isLeft);
+        OnEquipItem?.Invoke(item);
+        itemVisuals.ShowItemRpc(item.gameObject.name, _isLeft);
 
         equippedItem.Equip();
     }
@@ -123,8 +124,8 @@ public class Hand : MonoBehaviour
 
         OnSwapItem?.Invoke();
 
-        Item oldHeldItem = equippedItem;
-
+        //Item oldHeldItem = equippedItem;
+        
         if (isPrevious)
             EquipItem(itemInventory.GetPreviousObjectWrapped(equippedItem)); // previous Item
         else
@@ -142,7 +143,7 @@ public class Hand : MonoBehaviour
         OnUnequipItem?.Invoke(equippedItem);
 
         equippedItem.UnEquip();
-        handsItemVisuals.HideEquippedItemRpc(_isLeft);
+        itemVisuals.HideEquippedItemRpc(_isLeft);
         equippedItem = null;
     }
 

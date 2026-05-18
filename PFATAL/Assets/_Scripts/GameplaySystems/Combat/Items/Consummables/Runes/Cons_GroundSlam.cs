@@ -1,6 +1,7 @@
+using GameplaySystems.PlayerCharacter;
 using UnityEngine;
 
-public class Cons_GroundSlam : Consummable
+public class Cons_GroundSlam : Cons_RuneBase
 {
     [SerializeField] private float _downForce = 30f;
 
@@ -8,22 +9,20 @@ public class Cons_GroundSlam : Consummable
     [SerializeField] float _upForce = 10f;
     [SerializeField] float _duration = .3f;
 
-    public override async void StopUsing()
+    public override void StopUsing()
     {
         base.StopUsing();
 
-        PlayerPhysics physics = playerCharacter.physics;
-
-        physics.SetVelocity(Vector3.zero);
-        physics.AddImpulse(Vector3.up * _upForce);
-
-        await Awaitable.WaitForSecondsAsync(_duration);
-
-        physics.SetVelocity(Vector3.zero);
-        physics.AddImpulse(Vector3.down * _downForce);
-
-        playerCharacter.stateMachine.s_GroundSlam.ActivateState();
-
-        BreakItem();
+        if (!_breakAnimationIsPlaying)
+        {
+            StartBreakingAnimation();
+        }
     }
+
+    //appelé par un event de l'animation
+    protected override void ApplyGemEffect()
+    {
+        playerCharacter.stateMachine.s_GroundSlam.ActivateState();   
+    }
+
 }

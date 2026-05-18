@@ -1,11 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class DataCollector : MonoBehaviour
 {
@@ -15,8 +14,14 @@ public class DataCollector : MonoBehaviour
     private List<Score> scores = new();
     private List<Death> deaths = new();
     private int gameId = 0;
+    private byte[] heatmapData;
+    private GameRulesBase.GameResult gameResult;
     private string apiBaseUrl = "http://localhost:5000";
+
     [SerializeField] private DatabaseRequest _databaseRequest;
+
+    private System.Action<GameRulesBase.GameResult> _onGameEnded;
+    private System.Action<byte[]> _onHeatmapSaved;
 
     private void Awake()
     {
@@ -33,14 +38,36 @@ public class DataCollector : MonoBehaviour
     void Start()
     {
         GameManager.Instance.EventOnGameStarted += RecordPlayers;
-        GameManager.Instance.EventOnGameEnded += OnGameEnded;
+
+        _onGameEnded = (result) =>
+        {
+            gameResult = result;
+        };
+
+        GameManager.Instance.EventOnGameEnded += _onGameEnded;
+
+        _onHeatmapSaved = (heatmap) =>
+        {
+            heatmapData = heatmap;
+            Debug.Log($"[DataCollector] Heatmap reçue, taille : {heatmap.Length} bytes. Enregistrement de la partie en cours.");
+            OnGameEnded(gameResult);
+        };
+
+        HeatMapServerAnalitics.instance.OnHeatMapSaved += _onHeatmapSaved;
     }
 
     void OnDestroy()
     {
-        if (GameManager.Instance != null) GameManager.Instance.EventOnGameStarted -= RecordPlayers;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.EventOnGameStarted -= RecordPlayers;
+            GameManager.Instance.EventOnGameEnded -= _onGameEnded;
+        }
 
-        if (GameManager.Instance != null) GameManager.Instance.EventOnGameEnded -= OnGameEnded;
+        if (HeatMapServerAnalitics.instance != null)
+        {
+            HeatMapServerAnalitics.instance.OnHeatMapSaved -= _onHeatmapSaved;
+        }
     }
 
     private void OnGameEnded(GameRulesBase.GameResult result)
@@ -119,9 +146,9 @@ public class DataCollector : MonoBehaviour
             {
                 Version = int.Parse(Application.version.Replace(".", "")),
                 IdPlayerSet = gameId,
-                HeatMap = "heatmap_data",
+                HeatMap = Convert.ToBase64String(heatmapData),
                 GameMode = (int)GameManager.Instance.gameSetting.GameMode,
-                MapName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name,
+                MapName = SceneManager.GetActiveScene().name,
                 Duration = GameManager.Instance.gameSetting.GameDuration
             };
 
@@ -200,7 +227,7 @@ public class DataCollector : MonoBehaviour
             });
         }
 
-        StartCoroutine(_databaseRequest.SendScore(scores));
+        yield return StartCoroutine(_databaseRequest.SendScore(scores));
 
         yield return StartCoroutine(RecordDeath());
     }

@@ -29,8 +29,10 @@ public class PlayerPhysics : MonoBehaviour
     [SerializeField] private byte _maxCollisionSteps = 5;
     [SerializeField] [Tooltip("0 -> glisse, 1 -> rebondit parfaitement")] [Range(0, 1)] public float bounciness = 0;
     [SerializeField] private bool autoUpdate = false;
-    [SerializeField] private LayerMask _layerMask;
-    
+    [SerializeField] private LayerMask _groundLayerMask;
+    [SerializeField] private LayerMask _bumperLayerMask;
+
+
     //scene references
     [Header("Scene References")]
     [SerializeField] private SphereCollider col;
@@ -90,13 +92,13 @@ public class PlayerPhysics : MonoBehaviour
                     rayDirection,
                     out hit,
                     velocityMagnitude * Time.deltaTime,
-                    _layerMask) 
+                    _groundLayerMask)
                 || (raycast = Physics.Raycast(
                     Position,
                     rayDirection,
                     out hit,
                     velocityMagnitude * Time.deltaTime + col.radius,
-                    _layerMask)))
+                    _groundLayerMask)))
                 && i < _maxCollisionSteps)
             {
                 //Vector3 toHit = hit.point - _rb.position;
@@ -138,7 +140,7 @@ public class PlayerPhysics : MonoBehaviour
                 ,Vector3.down,
                 out RaycastHit _
                 ,.02f
-                , _layerMask) )
+                , _groundLayerMask) )
             return true;
         
         if (Physics.Raycast(
@@ -146,12 +148,34 @@ public class PlayerPhysics : MonoBehaviour
                 Vector3.down,
                 out RaycastHit hit,
                 0.02f + col.radius,
-                _layerMask))
+                _groundLayerMask))
                 return true;
         
         return false;
     }
-    
+
+    public bool ComputeIsBumpered()
+    {
+        if (Physics.SphereCast(
+                Position,
+                col.radius*.4f
+                ,Vector3.up,
+                out RaycastHit _
+                ,.02f
+                , _bumperLayerMask) )
+            return true;
+        
+        if (Physics.Raycast(
+                Position,
+                Vector3.up,
+                out RaycastHit hit,
+                0.02f + col.radius,
+                _bumperLayerMask))
+            return true;
+        
+        return false;
+    }
+
     public void SmoothDampToward(Vector2 target, float smoothTime)
     {
         Vector3.SmoothDamp(transform.position, target, ref velocity, smoothTime);
@@ -226,8 +250,12 @@ public class PlayerPhysics : MonoBehaviour
         }
     }
     
+    public float GetGravityStrength()
+    {
+        return _gravityStrength;
+    }
 
-    public void ChangeGravityStrenght(float newForce)
+    public void SetGravityStrength(float newForce)
     {
         _gravityStrength = newForce;
     }

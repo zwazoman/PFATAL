@@ -11,14 +11,15 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 83cffc6361f92824181987f2c858fae6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _ALPHATEST_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 2450
   stringTagMap:
-    RenderType: Opaque
+    RenderType: TransparentCutout
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -27,6 +28,10 @@ Material:
     m_TexEnvs:
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 030375c61638f3249a6c40e6d7cf3d6e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BreakTex:
+        m_Texture: {fileID: 2800000, guid: 1c52b5d3bb15e1847951b68f7c8efd9b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -50,7 +55,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emissive:
-        m_Texture: {fileID: 2800000, guid: b7ee533d1b7ecac4f843d2a319e85ab7, type: 3}
+        m_Texture: {fileID: 2800000, guid: b0cf11ee97d404143bef7f73a06784e3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissiveMasks:
+        m_Texture: {fileID: 2800000, guid: 85b9480cd33dd5840a2b5bce190f74ff, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -88,15 +97,15 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
-    - _AlphaClip: 0
-    - _AlphaToMask: 0
+    - _AlphaClip: 1
+    - _AlphaToMask: 1
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Cull: 2
+    - _Cull: 0
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -106,6 +115,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Health: 1
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -123,14 +133,16 @@ Material:
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
-    - _exposure: 2
+    - _exposure: 1.3
     - _objectRandomHueOffsetMagnitude: 0
-    - _topShadingStrength: 0
+    - _topShadingStrength: 0.44
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissiveTint: {r: 0, g: 13.900184, b: 21.981672, a: 1}
+    - _EmissiveTint: {r: 43.963337, g: 5.089464, b: 0, a: 1}
+    - _EmissiveTint0: {r: 51.98414, g: 6.7863636, b: 0, a: 1}
+    - _EmissiveTint1: {r: 0, g: 32.334965, b: 25.582998, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _tint: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

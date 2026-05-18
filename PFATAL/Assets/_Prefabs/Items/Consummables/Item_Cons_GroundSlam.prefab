@@ -95,6 +95,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Cons_GroundSlam
   playerCharacter: {fileID: 0}
   _pickup: {fileID: 7861026024044232566, guid: 0a9ce694c3125f2439edc60721b0202c, type: 3}
+  isUsing: 0
+  _gemstoneRenderer: {fileID: 6580839919117107328}
+  _vfxColor: {r: 3.2111173, g: 0.35305473, b: 1.391552, a: 1}
   _downForce: 20
   _upForce: 5
   _duration: 0.2
@@ -112,7 +115,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0594741cb4904d44dac0b96fa84ef963, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.18799996
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0594741cb4904d44dac0b96fa84ef963, type: 3}
       propertyPath: m_LocalPosition.z
@@ -158,5 +161,10 @@ PrefabInstance:
 --- !u!4 &5411351851154045935 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0594741cb4904d44dac0b96fa84ef963, type: 3}
+  m_PrefabInstance: {fileID: 5517545799783619588}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6580839919117107328 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 0594741cb4904d44dac0b96fa84ef963, type: 3}
   m_PrefabInstance: {fileID: 5517545799783619588}
   m_PrefabAsset: {fileID: 0}

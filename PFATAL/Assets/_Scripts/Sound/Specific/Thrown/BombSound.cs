@@ -12,12 +12,15 @@ public class BombSound : MovingSoundComponent<Cons_Bomb>
         main.OnEquip += EquipLink;
 
         main.OnUnEquip += UnEquipLink;
-        main.OnUnEquip += () => StopSound();
     }
 
     void EquipLink() => main.hand.animatorEventListener.OnObjectThrown += PlaySound;
 
-    void UnEquipLink() => main.hand.animatorEventListener.OnObjectThrown -= PlaySound;
+    void UnEquipLink() 
+    {
+        main.hand.animatorEventListener.OnObjectThrown -= PlaySound;
+        StopSound();
+    } 
 
     void PlaySound() => AudioManager.Instance.PlayOnlineOneShots(Sounds.TomahawkShoot, Sounds.TomahawkShoot3D, transform.position);
 }

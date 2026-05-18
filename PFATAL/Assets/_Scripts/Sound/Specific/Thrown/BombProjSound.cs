@@ -12,6 +12,9 @@ public class BombProjSound : MovingSoundComponent<Proj_Bomb>
 
     void Spawn_Callback()
     {
+        if (main.fuseTimer >= main.fuseTime)
+            return;
+
         float offsetValue = (main.fuseTimer / _soundDuration);
 
         print(offsetValue);

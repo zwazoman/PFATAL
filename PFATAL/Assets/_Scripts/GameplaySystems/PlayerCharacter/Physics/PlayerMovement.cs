@@ -35,12 +35,14 @@ public class PlayerMovement : MonoBehaviour
     {
         globalMovespeedMultiplyer = speedMultiplyer;
         float t = 0;
+        float _cameraFovOffset = 0;
 
         while (globalMovespeedMultiplyer != 1)
         {
              t += Time.deltaTime / duration;
 
             globalMovespeedMultiplyer = Mathf.Lerp(speedMultiplyer, 1, t);
+
             await Awaitable.NextFrameAsync();
         }
     }

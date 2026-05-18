@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8689209501163083321}
   - component: {fileID: 6787370163149181121}
   - component: {fileID: 539140258009288829}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: vfx_pentacle_tornado (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 794122792737784591}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.013, y: 0.06600003, z: 0.01}
+  m_LocalPosition: {x: 0.013, y: 0.095, z: 0.01}
   m_LocalScale: {x: 0.13, y: 0.13, z: 0.13}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -41,7 +41,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 794122792737784591}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 1eb7a261c7b260e4a9451f5e690da375, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 1925b10fc77c1414c829591f78a1a2d0, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -50,7 +50,10 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 0.4
+        m_Name: HueShift
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -68,7 +71,10 @@ VisualEffect:
     m_Gradient:
       m_Array: []
     m_NamedObject:
-      m_Array: []
+      m_Array:
+      - m_Value: {fileID: 2800000, guid: 02e96834ad7cc8841a99357c2b076af4, type: 3}
+        m_Name: symbole
+        m_Overridden: 1
     m_Bool:
       m_Array: []
 --- !u!73398921 &539140258009288829
@@ -187,6 +193,10 @@ PrefabInstance:
       value: vfx_tornado
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3e04926bcecea0e4ab97e0bcb8976aaa, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3e04926bcecea0e4ab97e0bcb8976aaa, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -214,15 +224,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.278329
+      value: -4.376887
       objectReference: {fileID: 0}
     - target: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.000000009480004
+      value: 0.31032872
       objectReference: {fileID: 0}
     - target: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.714727
+      value: 1.1286094
       objectReference: {fileID: 0}
     - target: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -306,7 +316,7 @@ MonoBehaviour:
   _pickup: {fileID: 7861026024044232566, guid: 830f0c0e962f38840bdf57b0f0812a7a, type: 3}
   isUsing: 0
   _animator: {fileID: 2241389691576616700}
-  _Vfx: {fileID: 17180787228645383}
+  _Vfx: {fileID: 8689209501163083321}
   _tornadoProjectilePrefab: {fileID: 5604889624952730010, guid: 02037c95d101bcd428a252996c2a9e87, type: 3}
 --- !u!4 &7171063974548638414 stripped
 Transform:
@@ -471,6 +481,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.00046389704
       objectReference: {fileID: 0}
+    - target: {fileID: -6240833659756564265, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -5988719775781873164, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -9.05532
@@ -482,6 +496,14 @@ PrefabInstance:
     - target: {fileID: -5988719775781873164, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.011895553
+      objectReference: {fileID: 0}
+    - target: {fileID: -5731445282814193178, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -3688295370314111600, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -3371018157464660812, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -534,6 +556,30 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
       propertyPath: m_Name
       value: SMSH_RIG_Book
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2740211004038582356, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2787185324487237977, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2996678850426350756, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8672405876568743311, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9151342653818061198, guid: 2fa98db9d4566cd42b87f04e27709750, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

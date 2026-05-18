@@ -70,6 +70,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8950850324888477521}
+    - targetCorrespondingSourceObject: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8922098966670234193}
   m_SourcePrefab: {fileID: 100100000, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
 --- !u!4 &1734705611953190009 stripped
 Transform:
@@ -97,9 +100,23 @@ MonoBehaviour:
   _pickup: {fileID: 7861026024044232566, guid: 0a9ce694c3125f2439edc60721b0202c, type: 3}
   isUsing: 0
   _gemstoneRenderer: {fileID: 6580839919117107328}
+  _vfxColor: {r: 3.2111173, g: 0.35305473, b: 1.391552, a: 1}
   _downForce: 20
   _upForce: 5
   _duration: 0.2
+--- !u!114 &8922098966670234193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5786053781384723269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563d65365aa08a64fa1092cd25773438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GroundSlamSound
+  main: {fileID: 8950850324888477521}
 --- !u!1001 &5517545799783619588
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -7,11 +7,14 @@ public class BombProjSound : MovingSoundComponent<Proj_Bomb>
     protected override void LinkEvents()
     {
         main.OnSpawn += Spawn_Callback;
-        main.OnExplode += StopSound;
+        main.OnExplode += () => StopSound(false);
     }
 
     void Spawn_Callback()
     {
+        if (main.fuseTimer >= main.fuseTime)
+            return;
+
         float offsetValue = (main.fuseTimer / _soundDuration);
 
         print(offsetValue);

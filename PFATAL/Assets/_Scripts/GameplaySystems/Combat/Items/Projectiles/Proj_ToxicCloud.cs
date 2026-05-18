@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Proj_ToxicCloud : Proj_Falling
 {
-    [SerializeField] float _throwStrength = 5f;
     [SerializeField] GameObject _cloudPrefab;
     private bool _hasHit = false;
 
@@ -12,8 +11,6 @@ public class Proj_ToxicCloud : Proj_Falling
         base.OnNetworkSpawn();
 
         transform.forward = transform.forward + Vector3.up * 0.2f;
-
-        speed = _throwStrength;
     }
 
     public override void Despawn()

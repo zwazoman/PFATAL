@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6348938646961421281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2847942785415624343}
+  m_Layer: 0
+  m_Name: ShootSocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2847942785415624343
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6348938646961421281}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7171063974548638414}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8293459879242472538
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +209,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5597273581839671288}
+    - targetCorrespondingSourceObject: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2847942785415624343}
     - targetCorrespondingSourceObject: {fileID: 4290852872638469156, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3779191662674161383}
@@ -213,7 +247,12 @@ MonoBehaviour:
   isUsing: 0
   _animator: {fileID: 4821050949599864560}
   _Vfx: {fileID: 5597273581839671288}
-  _projToxicCloudPrefab: {fileID: 4084173529431785421, guid: e4e8315bf0df8eb4895b982b2af239b4, type: 3}
+  shootSocket: {fileID: 2847942785415624343}
+  projectile: {fileID: 4084173529431785421, guid: e4e8315bf0df8eb4895b982b2af239b4, type: 3}
+  visualProjectile: {fileID: 7434778369061191528, guid: 71d4c2ab03baa8f488002d634cfb6965, type: 3}
+  shootRayLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &7171063974548638414 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}

@@ -39,12 +39,12 @@ public class Proj_BigLaserBeam : Projectile
             Debug.Log("[Proj_BigLaserBeam] Aucun hit.");
         }
 
-        DespawnNextFrame();
+        DespawnAsync();
     }
 
-    private async void DespawnNextFrame()
+    private async void DespawnAsync()
     {
-        await Awaitable.WaitForSecondsAsync(1f);
+        await Awaitable.WaitForSecondsAsync(4f);
         Despawn();
     }
 }

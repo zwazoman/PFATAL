@@ -65,6 +65,8 @@ public class Cons_Bomb : Cons_ThrowableBase
     void Explode()
     {
         //todo => explose dans tes mains - fait spawn une explosion sur le joueur
+        _fuseValue = _fuseDuration;
+
         ThrowObject();
         BreakItem();
     }

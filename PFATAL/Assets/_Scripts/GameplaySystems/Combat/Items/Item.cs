@@ -15,7 +15,7 @@ public class Item : MonoBehaviour
     public event Action OnPickup;
 
     [HideInInspector] public PlayerCharacter playerCharacter;
-    [HideInInspector] protected Hand hand;
+    public Hand hand { get; private set; }
 
     [SerializeField] GameObject _pickup;
 
@@ -92,10 +92,10 @@ public class Item : MonoBehaviour
 
     public virtual void Pickup(PlayerCharacter main, Hand hand)
     {
-        OnPickup?.Invoke();
-
         playerCharacter = main;
         this.hand = hand;
+
+        OnPickup?.Invoke();
     }
 
     /// <summary>

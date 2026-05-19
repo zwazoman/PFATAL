@@ -11,7 +11,7 @@ public class Proj_Bomb : Projectile
     [SerializeField] Explosion _explosion;
 
     [Header("Settings")]
-    [SerializeField] float _fuseTime = 3f;
+    [SerializeField] public float fuseTime = 3f;
 
     [SerializeField] private float _throwStrength = 25;
     
@@ -45,7 +45,7 @@ public class Proj_Bomb : Projectile
         if (!IsServer) return;
         
         fuseTimer += Time.deltaTime;
-        if(fuseTimer >= _fuseTime&& !_isExploding)
+        if(fuseTimer >= fuseTime&& !_isExploding)
         {
             ExplodeAndDespawn();
         }

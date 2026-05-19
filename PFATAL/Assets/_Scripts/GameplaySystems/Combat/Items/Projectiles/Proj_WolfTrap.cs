@@ -58,7 +58,7 @@ public class Proj_WolfTrap : Projectile
             HandlePlayers();
         }
 
-        if (timer >= _duringTime)
+        if (timer >= _duringTime || GetComponent<DamageableObject>().IsDead)
         {
             Despawn();
         }
@@ -89,13 +89,13 @@ public class Proj_WolfTrap : Projectile
                 Radius = _radius,
                 WeaponID = (int)spawnContext.Value.floatData2
             };
-            hitObject.TakeDamage(damageData);
-
+            
             if (hitObject.isPlayer)
             {
                 // RPC vers le client ciblé
                 ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
                 ApplyFreezeRPC(_freezeDuration, RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
+                hitObject.TakeDamage(damageData);
             }
 
             OnTrapPlayer?.Invoke();

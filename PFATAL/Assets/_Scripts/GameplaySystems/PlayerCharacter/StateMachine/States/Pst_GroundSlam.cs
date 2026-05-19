@@ -1,6 +1,8 @@
 using _Scripts.StateMachine;
 using System;
+using _Scripts.Pooling;
 using DG.Tweening;
+using SimpleVFXs;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -114,6 +116,11 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 0, .2f
             ).SetEase(Ease.InOutSine);
             
+            //vfx
+            PooledObject vfx = LocalPoolManager.Instance.Pool_VFX_GroundSlam.PullObjectFromPool(transform.position+Vector3.down*.5f);
+            vfx.GetComponent<StylisedEffect>().TriggerMainEvent();
+            vfx.GoBackIntoPool_Delayed(3);
+            
             // Restaure la gravit� normale
             playerCharacter.physics.SetGravityStrength(gravityScaleBeforeSlam);
             playerCharacter.movement.enabled = true;
@@ -148,6 +155,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                     Debug.Log($"Ground Slam hit {hit.name} for {damageData.Amount}");
                 }
             }
+            
         }
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter playerCharacter)

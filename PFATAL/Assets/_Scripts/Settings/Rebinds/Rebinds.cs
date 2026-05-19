@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using TMPro;
 using _scripts.PlayerCharacter;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Settings
 {
@@ -10,6 +11,8 @@ namespace Settings
     {
         public InputActionAsset InputActions;
         public InputActionReference InputReference;
+        [SerializeField] private EventSystem _system;
+        [SerializeField] private GameObject _controlsButton;
 
         private InputActionRebindingExtensions.RebindingOperation _rebindingOperation;
 
@@ -31,7 +34,6 @@ namespace Settings
             _moveAction = InputReference;
         }
 
-        //needs to be somewhere else.
         public void OpenClose(InputAction.CallbackContext context)
         {
             if (Input.GetJoystickNames().Length > 0)
@@ -40,19 +42,27 @@ namespace Settings
                 //For testing and to know what type of controller we have.
                 if (context.action.activeControl.device.name == _gamepad.name)
                 {
+                    _system.SetSelectedGameObject(_controlsButton);
                     _inputHandler.GetControllerType();
                 }
             }
-            //Why does it not work?
+
             if (context.performed && _menu.activeInHierarchy == true)
             {
                 CloseAndSwapAction();
             }
-            else
+            else if (context.performed && _menu.activeInHierarchy == false)
             {
                 _menu.SetActive(true);
                 _playerCharacter.SwapActionMapToUI();
-                Cursor.lockState = CursorLockMode.None;
+                if (_playerCharacter.inputs.UsingGamePad == true)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                }
             }
         }
 

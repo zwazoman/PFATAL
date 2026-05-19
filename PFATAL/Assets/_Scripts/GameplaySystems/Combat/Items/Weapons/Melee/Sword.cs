@@ -24,7 +24,7 @@ public class Sword : MeleeWeapon
 
     bool _charged;
     bool _isAttacking;
-    bool _isDashing;
+    public bool isDashing;
     bool _canDash = true;
 
     public override void Equip()
@@ -34,7 +34,7 @@ public class Sword : MeleeWeapon
 
         _charged = false;
         _isAttacking = false;
-        _isDashing = false;
+        isDashing = false;
         hitboxIsActive = false;
         _canDash = true;
 
@@ -72,7 +72,7 @@ public class Sword : MeleeWeapon
         data.Point = hitSocket.position;
         data.Direction = hitSocket.transform.forward;
         data.SourcePos = playerCharacter.transform.position;
-        data.Amount = damageAmount * (_isDashing ? 1f : _dashDmgMult);
+        data.Amount = damageAmount * (isDashing ? 1f : _dashDmgMult);
         data.Radius = hitSphereRadius;
         data.SourcePlayerClientID = playerCharacter.OwnerClientId;
         data.KnockbackForce = playerCharacter.transform.forward * _knockbackStrength;
@@ -105,9 +105,9 @@ public class Sword : MeleeWeapon
         OnAttackEnded?.Invoke();
         _isAttacking = false;
 
-        if (_isDashing)
+        if (isDashing)
         {
-            _isDashing = false;
+            isDashing = false;
             StartDashCooldown();
         }
     }
@@ -140,7 +140,7 @@ public class Sword : MeleeWeapon
     
     void Dash()
     {
-        _isDashing = true;
+        isDashing = true;
         //event & anim
         hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.sword_charge_release);
         OnDashStarted?.Invoke();
@@ -167,7 +167,7 @@ public class Sword : MeleeWeapon
 
         OnDashCooledUp?.Invoke();
         _canDash = true;
-        _isDashing = false;
+        isDashing = false;
         _isAttacking = false;
     }
 

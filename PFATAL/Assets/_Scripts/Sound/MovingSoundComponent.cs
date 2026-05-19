@@ -28,12 +28,16 @@ public abstract class MovingSoundComponent<T> : SoundComponent<T> where T: Compo
         AudioManager.Instance.Trigger3dSoundPlayed(_soundInstance);
     }
 
-    protected virtual void StopSound()
+    protected virtual void StopSound(bool fadeOut = true)
     {
         if (!_soundInstance.isValid())
             return;
 
-        _soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        if (fadeOut)
+            _soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        else
+            _soundInstance.stop(STOP_MODE.IMMEDIATE);
+
         _soundInstance.release();
     }
 }

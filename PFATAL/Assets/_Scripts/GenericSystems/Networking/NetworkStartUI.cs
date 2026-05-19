@@ -5,8 +5,13 @@ public class NetworkStartUI : MonoBehaviour
 {
     [SerializeField] PlayerCharacterSpawner _playerSpawner ;
 
+    [SerializeField] bool _showButtons = true;
+
     private async void OnGUI()
     {
+        if (!_showButtons)
+            return;
+
         float w = 200f, h = 40f;
         float x = 10f, y = 10f;
 

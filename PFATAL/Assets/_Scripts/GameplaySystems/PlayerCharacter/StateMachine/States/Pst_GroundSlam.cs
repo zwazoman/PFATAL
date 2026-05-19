@@ -1,6 +1,8 @@
 using _Scripts.StateMachine;
 using System;
+using _Scripts.Pooling;
 using DG.Tweening;
+using SimpleVFXs;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -63,7 +65,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             gravityScaleBeforeSlam = playerStateMachine.GetComponent<PlayerPhysics>().GetGravityStrength();
         }
 
-        protected override void OnEntered(PlayerCharacter playerCharacter)
+        protected override async void OnEntered(PlayerCharacter playerCharacter)
         {
             base.OnEntered(playerCharacter);
 
@@ -85,10 +87,10 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             playerCharacter.physics.SetVelocity(new Vector3(playerVelocity.x * _velocityMultiplier, 0, playerVelocity.z * _velocityMultiplier));
             playerCharacter.physics.AddImpulse(Vector3.up * _upForce);
 
-            //await Awaitable.WaitForSecondsAsync(_preSlamDuration);
+            await Awaitable.WaitForSecondsAsync(_preSlamDuration);
 
             // Transition vers la phase slam : annule la v�locit� et change la gravit�
-            //playerCharacter.physics.SetVelocity(Vector3.zero);
+            playerCharacter.physics.SetVelocity(Vector3.zero);
             playerCharacter.physics.SetGravityStrength(gravityScaleBeforeSlam * _slamGravitiMultiplier);
 
             _startY = playerCharacter.transform.position.y;
@@ -113,6 +115,11 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 },
                 0, .2f
             ).SetEase(Ease.InOutSine);
+            
+            //vfx
+            PooledObject vfx = LocalPoolManager.Instance.Pool_VFX_GroundSlam.PullObjectFromPool(transform.position+Vector3.down*.5f);
+            vfx.GetComponent<StylisedEffect>().TriggerMainEvent();
+            vfx.GoBackIntoPool_Delayed(3);
             
             // Restaure la gravit� normale
             playerCharacter.physics.SetGravityStrength(gravityScaleBeforeSlam);
@@ -148,6 +155,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                     Debug.Log($"Ground Slam hit {hit.name} for {damageData.Amount}");
                 }
             }
+            
         }
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter playerCharacter)

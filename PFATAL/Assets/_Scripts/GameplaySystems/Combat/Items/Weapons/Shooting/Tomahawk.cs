@@ -126,6 +126,8 @@ public class Tomahawk : ProjectileWeapon
 
     void DashTowardsProj()
     {
+        if (!CanDash)
+            return;
 
         OnDash?.Invoke();
         

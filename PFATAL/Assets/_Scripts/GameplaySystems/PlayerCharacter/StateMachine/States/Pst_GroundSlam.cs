@@ -1,6 +1,9 @@
 using _Scripts.StateMachine;
 using System;
+using _Scripts.Extensions;
+using _Scripts.Pooling;
 using DG.Tweening;
+using SimpleVFXs;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -77,18 +80,22 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                      _fovOffset = v;
                      //PlayerCharacter.LocalPlayerCharacter.cameraBehaviour.AddTemporaryFovOffset(v);
                  },
-                 FovOffsetStrength, .2f
+                 FovOffsetStrength * 
+                 playerCharacter.physics.Velocity.XZ().magnitude
+                 /playerCharacter.stateMachine.s_Walking._walkSpeed, .2f
              ).SetEase(Ease.InOutSine);
              
             // Phase pre-slam : petite impulsion vers le haut
             Vector3 playerVelocity = playerCharacter.physics.Velocity;
-            playerCharacter.physics.SetVelocity(new Vector3(playerVelocity.x * _velocityMultiplier, 0, playerVelocity.z * _velocityMultiplier));
-            playerCharacter.physics.AddImpulse(Vector3.up * _upForce);
+            playerCharacter.physics.SetVelocity(new Vector3(playerVelocity.x * _velocityMultiplier, _upForce, playerVelocity.z * _velocityMultiplier)+playerCharacter.transform.forward * (_upForce * .6f));
 
             await Awaitable.WaitForSecondsAsync(_preSlamDuration);
 
             // Transition vers la phase slam : annule la v�locit� et change la gravit�
-            playerCharacter.physics.SetVelocity(Vector3.zero);
+            playerCharacter.physics.SetVelocity(new Vector3(
+                playerCharacter.physics.Velocity.x*.6f,
+                playerCharacter.physics.Velocity.x*.3f,
+                playerCharacter.physics.Velocity.z)*.6f);
             playerCharacter.physics.SetGravityStrength(gravityScaleBeforeSlam * _slamGravitiMultiplier);
 
             _startY = playerCharacter.transform.position.y;
@@ -114,6 +121,11 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 0, .2f
             ).SetEase(Ease.InOutSine);
             
+            //vfx
+            PooledObject vfx = LocalPoolManager.Instance.Pool_VFX_GroundSlam.PullObjectFromPool(transform.position+Vector3.down*.5f);
+            vfx.GetComponent<StylisedEffect>().TriggerMainEvent();
+            vfx.GoBackIntoPool_Delayed(3);
+            
             // Restaure la gravit� normale
             playerCharacter.physics.SetGravityStrength(gravityScaleBeforeSlam);
             playerCharacter.movement.enabled = true;
@@ -132,15 +144,17 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 if (buffer[i].TryGetComponent(out DamageableObject hit))
                 {
                     if (hit.gameObject == playerCharacter.gameObject) continue; // fix: return -> continue
-
+                    
+                    Vector3 knockbackDirection = Vector3.Slerp(Vector3.up,(hit.transform.position-playerCharacter.transform.position).normalized,.4f);
+                    
                     DamageData damageData = new DamageData
                     {
                         Amount = finalDamage,
                         SourcePlayerClientID = playerCharacter.OwnerClientId,
                         Point = hit.transform.position,
                         SourcePos = playerCharacter.transform.position,
-                        Direction = Vector3.up,
-                        KnockbackForce = new Vector3(0, _knockback, 0),
+                        Direction = knockbackDirection,
+                        KnockbackForce = knockbackDirection * _knockback,
                         Radius = radius
                     };
 
@@ -148,6 +162,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                     Debug.Log($"Ground Slam hit {hit.name} for {damageData.Amount}");
                 }
             }
+            
         }
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter playerCharacter)

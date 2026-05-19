@@ -37,6 +37,19 @@ public class PostGameManager : MonoBehaviour
             timer -= 1f;
         }
 
+        // Détruire les player objects sur le réseau avant de changer de scène
+        foreach (GameObject obj in FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            if (obj.layer == 8)
+            {
+                NetworkObject netObj = obj.GetComponent<NetworkObject>();
+                if (netObj != null)
+                    netObj.Despawn(true);
+                else
+                    Destroy(obj);
+            }
+        }
+        
         Debug.Log($"Calling LoadScene: {lobbyName}");
         NetworkManager.Singleton.SceneManager.LoadScene(lobbyName, LoadSceneMode.Single);
     }

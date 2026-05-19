@@ -84,13 +84,12 @@ namespace _scripts.PlayerCharacter.StateMachine.States
              
             // Phase pre-slam : petite impulsion vers le haut
             Vector3 playerVelocity = playerCharacter.physics.Velocity;
-            playerCharacter.physics.SetVelocity(new Vector3(playerVelocity.x * _velocityMultiplier, 0, playerVelocity.z * _velocityMultiplier));
-            playerCharacter.physics.AddImpulse(Vector3.up * _upForce);
+            playerCharacter.physics.SetVelocity(new Vector3(playerVelocity.x * _velocityMultiplier, _upForce, playerVelocity.z * _velocityMultiplier)+playerCharacter.transform.forward * (_upForce * .35f));
 
             await Awaitable.WaitForSecondsAsync(_preSlamDuration);
 
             // Transition vers la phase slam : annule la v�locit� et change la gravit�
-            playerCharacter.physics.SetVelocity(Vector3.zero);
+            playerCharacter.physics.SetVelocity(new Vector3(playerCharacter.physics.Velocity.x*.6f, playerCharacter.physics.Velocity.x*.3f, playerCharacter.physics.Velocity.z)*.6f);
             playerCharacter.physics.SetGravityStrength(gravityScaleBeforeSlam * _slamGravitiMultiplier);
 
             _startY = playerCharacter.transform.position.y;

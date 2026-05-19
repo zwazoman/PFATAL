@@ -206,6 +206,7 @@ public class PlayerPhysics : MonoBehaviour
     public void SetPosition(Vector3 newPosition)
     {
         _rb.position = newPosition;
+        transform.position = newPosition;
     }
     
     [Conditional("UNITY_EDITOR")]

@@ -4,6 +4,7 @@ public class Cons_BigLaserBeam : Consummable
 {
     [Header("Laser Settings")]
     [SerializeField] private float _maxChargeTime = 2f;
+    [SerializeField] private float _recoilForce = 2f;
 
     [Header("Network")]
     [SerializeField] private GameObject _laserProjectilePrefab;
@@ -28,7 +29,7 @@ public class Cons_BigLaserBeam : Consummable
         SpawnContext context = new SpawnContext(playerCharacter.OwnerClientId)
         {
             floatData = chargeRatio,
-            floatData2 = playerCharacter.OwnerClientId
+            floatData2 = ItemID
         };
 
         Summoner.Instance.SpawnObject(
@@ -38,6 +39,8 @@ public class Cons_BigLaserBeam : Consummable
             false,
             context
         );
+
+        playerCharacter.physics.AddImpulse(-playerCharacter.cameraBehaviour.transform.forward * _recoilForce);
 
         base.StopUsing();
         BreakItem();

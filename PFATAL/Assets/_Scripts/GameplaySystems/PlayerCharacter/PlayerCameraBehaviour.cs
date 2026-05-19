@@ -92,7 +92,7 @@ public class PlayerCameraBehaviour : MonoBehaviour
             Mathf.Pow(_playerCharacter.physics.Velocity.magnitude / _playerCharacter.stateMachine.s_Walking._walkSpeed, _playerVelocityToFovScalingCurveExponent));
         
         _fov = Mathf.SmoothDamp(_fov,targetFOV,ref _fovVel,_fovSmoothTime) ;
-        _cam.fieldOfView = _fov + +_tempFovOffset;
+        _cam.fieldOfView = _fov + _tempFovOffset;
         _tempFovOffset = 0;
         
         //recoil stabilisation

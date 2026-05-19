@@ -98,6 +98,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Cons_TP
   playerCharacter: {fileID: 0}
   _pickup: {fileID: 7861026024044232566, guid: 5365d796a2733234b987fbb37253afe0, type: 3}
+  isUsing: 0
+  _gemstoneRenderer: {fileID: 7468258917541630971}
+  _vfxColor: {r: 0.35305473, g: 1.8119028, b: 3.2111173, a: 1}
   _range: 8
   _wallOffsetRange: 0.5
   _markerPrefab: {fileID: 4011540210805963396, guid: a720fb22d944281459af44d15cdcdc59, type: 3}
@@ -131,7 +134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0799224ae2c15a14e8170b5d159b2d86, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.19299996
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0799224ae2c15a14e8170b5d159b2d86, type: 3}
       propertyPath: m_LocalPosition.z
@@ -174,6 +177,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0799224ae2c15a14e8170b5d159b2d86, type: 3}
+--- !u!23 &7468258917541630971 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 0799224ae2c15a14e8170b5d159b2d86, type: 3}
+  m_PrefabInstance: {fileID: 8098879828831555455}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8642329851839752340 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0799224ae2c15a14e8170b5d159b2d86, type: 3}

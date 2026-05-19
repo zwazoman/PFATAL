@@ -30,35 +30,65 @@ public class GameLobby : NetworkBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        Init();
     }
 
-    private void Init()
+    public override void OnNetworkSpawn()
     {
-        print("NetworkSpawn");
+        print("OnNetworkSpawn");
         LocalLobbyPlayerData = new LobbyPlayerData("_", 0, PlayerStatus.Waiting);
-        if (NetworkManager.Singleton.IsServer)
+
+        if (IsServer)
         {
             print("=link events=");
-            NetworkManager.Singleton.OnClientConnectedCallback += (ulong id) =>
-            {
-                print("OnClientConnected");
-                int assignedLobbyID = _lobbyIDCounter++;
-                _allPlayersInLobby.dictionnary[id] = new LobbyPlayerData("_", assignedLobbyID, PlayerStatus.Waiting);
-                SyncPlayerListRPC(_allPlayersInLobby);
-            };
-
-            NetworkManager.Singleton.OnClientDisconnectCallback += (ulong id) =>
-            {
-                print("OnClientDisconnected");
-                _allPlayersInLobby.dictionnary.Remove(id);
-                SyncPlayerListRPC(_allPlayersInLobby);
-            };
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
 
             int hostLobbyID = _lobbyIDCounter++;
             _allPlayersInLobby.dictionnary[NetworkManager.Singleton.LocalClientId] = new LobbyPlayerData("_", hostLobbyID, PlayerStatus.Waiting);
+            
+            if (NetworkManager.Singleton.ConnectedClientsIds != null)
+            {
+                foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+                {
+                    int lobbyID = _lobbyIDCounter++;
+                    _allPlayersInLobby.dictionnary[clientId] = new LobbyPlayerData("_", lobbyID, PlayerStatus.Waiting);
+                }
+            }
+            
+            if (SteamPlayerList.Instance != null)
+            {
+                foreach (var player in SteamPlayerList.Instance.Players)
+                {
+                    OnSteamPlayerRegistered(player.tempNetworkClientId, player.name, player.platformID);
+                }
+            }
+
             EventOnLobbyUpdated?.Invoke(_allPlayersInLobby);
         }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+        }
+    }
+
+    private void OnClientConnected(ulong id)
+    {
+        print("OnClientConnected : " + id);
+        int assignedLobbyID = _lobbyIDCounter++;
+        _allPlayersInLobby.dictionnary[id] = new LobbyPlayerData("_", assignedLobbyID, PlayerStatus.Waiting);
+        SyncPlayerListRPC(_allPlayersInLobby);
+    }
+
+    private void OnClientDisconnected(ulong id)
+    {
+        print("OnClientDisconnected : " + id);
+        _allPlayersInLobby.dictionnary.Remove(id);
+        SyncPlayerListRPC(_allPlayersInLobby);
     }
 
     /// <summary>

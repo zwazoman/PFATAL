@@ -71,7 +71,7 @@ public class PlayerHands : MonoBehaviour
 
         if (ctx.started)
             rightHand.equippedItem.StartUsing();
-        if (ctx.canceled)
+        if (ctx.canceled && rightHand.equippedItem.isUsing)
             rightHand.equippedItem.StopUsing();
     }
 
@@ -82,7 +82,7 @@ public class PlayerHands : MonoBehaviour
 
         if (ctx.started)
             leftHand.equippedItem.StartUsing();
-        if (ctx.canceled)
+        if (ctx.canceled && leftHand.equippedItem.isUsing)
             leftHand.equippedItem.StopUsing();
     }
 

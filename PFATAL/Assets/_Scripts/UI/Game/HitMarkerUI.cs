@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class HitMarkerUI : MonoBehaviour
 {
     public event Action OnShowHitMarker;
+    public event Action OnShowKillMarker;
 
     [Header("References")]
     [SerializeField] HUDManager _hud;
@@ -16,19 +17,34 @@ public class HitMarkerUI : MonoBehaviour
     [SerializeField] float _duration = .3f;
     [SerializeField] float _scalePunchIntensity = 3;
     [SerializeField] float _rotationOffset = 20;
+    [SerializeField] Color32 _baseColor, _killColor;
 
     Vector3 _initialScale;
+
+    bool _playing = false;
 
     private void Start()
     {
         _hud.OnTriggerHitFeedback += ShowHitMarker;
         _initialScale = _hitmarkerImage.transform.localScale;
+        _hitmarkerImage.color = _baseColor;
     }
 
-    public void ShowHitMarker()
+    public void ShowHitMarker(bool killed)
     {
+        if (_playing)
+            return;
+
+        _playing = true;
+
         OnShowHitMarker?.Invoke();
 
+        if (killed)
+        {
+            _hitmarkerImage.color = _killColor;
+            OnShowKillMarker?.Invoke();
+        }
+            
         _hitmarkerImage.gameObject.SetActive(true);
         _hitmarkerImage.transform.localScale = _initialScale;
 
@@ -39,7 +55,9 @@ public class HitMarkerUI : MonoBehaviour
 
     void OnPunchScale_Callback()
     {
+        _playing = false;
         _hitmarkerImage.gameObject.SetActive(false);
+        _hitmarkerImage.color = _baseColor;
     }
 
 }

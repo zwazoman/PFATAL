@@ -1,4 +1,3 @@
-using Steamworks;
 using UnityEngine;
 
 public class DiscordUpdater : MonoBehaviour

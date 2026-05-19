@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
@@ -17,10 +18,10 @@ public class AudioManager : NetworkBehaviour
     {
         get
         {
-            if (instance == null)
-            {
-                Debug.LogError("no audiomanager in the scene");
-            }
+            //if (instance == null)
+            //{
+            //    Debug.LogError("no audiomanager in the scene");
+            //}
             return instance;
         }
     }
@@ -32,28 +33,25 @@ public class AudioManager : NetworkBehaviour
         else
             Destroy(this);
 
-        DontDestroyOnLoad(this);
-        SceneManager.activeSceneChanged += (_, _) => CleanUp();
+        DontDestroyOnLoad(gameObject);
+        UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (_, _) => CleanUp();
     }
     #endregion
 
+    public const float TIME_BETWEEN_REVERB_OCCLUSION_CHECKS = .2f;
+
     public event Action<EventInstance> On3DSoundPlayed;
-
-    public bool playSounds = false;
-
     public List<EventInstance> EventInstances3D = new();
 
+
+    [Header("Settings")]
+    public bool playSounds = false;
+
+    [Header("Sounds")]
     [SerializeField] List<EventReference> _eventReferences;
     List<EventInstance> _eventInstances = new();
 
     string _soundsEnumFilePath = "Assets/_Scripts/Sound/FmodEventsEnum.cs";
-
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-
-        //PlayOneShot(Sounds.Music);
-    }
 
     public void PlayOnlineOneShots(Sounds sound2D, Sounds sound3D, Vector3 pos = default, string parameter = null, float parameterValue = 0)
     {
@@ -68,6 +66,9 @@ public class AudioManager : NetworkBehaviour
 
     public EventInstance PlayOneShot(Sounds sound, Vector3 pos, string parameter = null, float parameterValue = 0)
     {
+        if (!playSounds)
+            return default;
+
         EventInstance newInstance = CreateInstance(sound, true);
 
         if (parameter != null)
@@ -81,9 +82,6 @@ public class AudioManager : NetworkBehaviour
         if(pos  != default)
         {
             newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(pos));
-
-            //if (attachedObject != null)
-            //    RuntimeManager.AttachInstanceToGameObject(newInstance, attachedObject);
 
             On3DSoundPlayed?.Invoke(newInstance);
         }
@@ -115,6 +113,11 @@ public class AudioManager : NetworkBehaviour
             Debug.LogError($"sound {sound.ToString()} does not exist");
 
         return _eventReferences[(int)sound];
+    }
+
+    public void Trigger3dSoundPlayed(EventInstance instance)
+    {
+        On3DSoundPlayed(instance);
     }
 
     public void CleanUp()

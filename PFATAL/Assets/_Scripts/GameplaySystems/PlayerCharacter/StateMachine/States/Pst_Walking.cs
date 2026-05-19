@@ -1,6 +1,7 @@
 using System;
 using _Scripts.StateMachine;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _scripts.PlayerCharacter.StateMachine.States
 {
@@ -10,7 +11,8 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         [Header("Movement Settings")]
         [SerializeField] public float _walkSpeed;
         [SerializeField] private float _acceleration;
-        [SerializeField] private float _brakeStrength = 2;
+        [FormerlySerializedAs("_brakeStrength")]
+        [SerializeField] private float _brakeStrengthMultiplier = 2;
         
         public override StateBase<global::_scripts.PlayerCharacter.PlayerCharacter> FindNextState(global::_scripts.PlayerCharacter.PlayerCharacter ctx)
         {
@@ -27,7 +29,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             
             //compute acceleration
             float accelerationScale = Vector3.Dot(ctx.physics.Velocity.normalized, targetVelocity.normalized);
-            accelerationScale = Mathf.Abs(accelerationScale) * accelerationScale<0 ? _brakeStrength:1;
+            accelerationScale = Mathf.Abs(accelerationScale) * accelerationScale<0 ? _brakeStrengthMultiplier:1;
             
             //apply movement
             ctx.movement.Move(targetVelocity,_acceleration * accelerationScale * Time.deltaTime,true);

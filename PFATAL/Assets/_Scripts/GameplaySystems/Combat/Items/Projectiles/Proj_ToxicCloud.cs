@@ -33,7 +33,7 @@ public class Proj_ToxicCloud : Proj_Falling
         //todo : POOL !!!
         GameObject obj = Instantiate(_cloudPrefab, transform.position, Quaternion.identity);
         if (obj.TryGetComponent(out ToxicCloud cloud))
-            cloud.Init(spawnContext.Value.spawnerClientID);
+            cloud.Init(spawnContext.Value.spawnerClientID, (int)spawnContext.Value.floatData2);
         
         if (obj.TryGetComponent(out NetworkObject netObj)) netObj.Spawn();
     }

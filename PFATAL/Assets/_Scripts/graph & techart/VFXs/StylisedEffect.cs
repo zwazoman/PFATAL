@@ -11,7 +11,7 @@ namespace SimpleVFXs
         [SerializeField] UnityEvent MainEvent;
         [SerializeField] float _playRate =1f;
 
-        VisualEffect vfx;
+        public VisualEffect vfx;
 
         void OnPulledFromPool()
         {
@@ -63,6 +63,7 @@ namespace SimpleVFXs
         {
             if (vfx == null) TryGetComponent(out vfx);
             vfx.playRate = _playRate;
+            vfx.Stop();
             vfx.Play();
         }
 

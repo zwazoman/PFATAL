@@ -158,8 +158,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4780256059296488756}
   - component: {fileID: 5216083582751250880}
+  - component: {fileID: 343893204093478058}
   - component: {fileID: 1805177375244899946}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bumper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,6 +196,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bumper
   strength: 10
+--- !u!114 &343893204093478058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225522866795410712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34dd7a04ff65c36409f82886d10e99d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BumperSound
+  main: {fileID: 5216083582751250880}
 --- !u!65 &1805177375244899946
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -15,11 +15,11 @@ public class Item : MonoBehaviour
     public event Action OnPickup;
 
     [HideInInspector] public PlayerCharacter playerCharacter;
-    [HideInInspector] protected Hand hand;
+    public Hand hand { get; private set; }
 
     [SerializeField] GameObject _pickup;
 
-    protected bool isUsing;
+    public bool isUsing;
     protected float holdDuration;
 
     public int ItemID => this switch
@@ -61,7 +61,7 @@ public class Item : MonoBehaviour
     }
 
     /// <summary>
-    /// appel� lorsque le joueur relache la touche d'action de l'item
+    /// appel� lorsque le joueur relache la touche d'action de l'item si le joueur a d'abord "startusing" l'item
     /// </summary>
     public virtual void StopUsing()
     {
@@ -92,12 +92,15 @@ public class Item : MonoBehaviour
 
     public virtual void Pickup(PlayerCharacter main, Hand hand)
     {
-        OnPickup?.Invoke();
-
         playerCharacter = main;
         this.hand = hand;
+
+        OnPickup?.Invoke();
     }
 
+    /// <summary>
+    /// appelé quand la main equipe l'item
+    /// </summary>
     public virtual void Equip() { OnEquip?.Invoke(); }
 
     public virtual void UnEquip()

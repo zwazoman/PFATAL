@@ -33,6 +33,8 @@ namespace _Scripts.Pooling
         public Pool Pool_VFX_Hit_crit;
         public Pool Pool_VFX_Explosion_big;
         public Pool Pool_VFX_Explosion_small;
+        public Pool Pool_VFX_GemBreak;
+        public Pool Pool_VFX_GroundSlam;
 
     }
 }

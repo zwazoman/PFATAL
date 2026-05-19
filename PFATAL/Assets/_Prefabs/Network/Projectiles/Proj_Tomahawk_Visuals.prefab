@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 278924860730801397, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5432440452121122712, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2321450413
@@ -19,6 +23,14 @@ PrefabInstance:
     - target: {fileID: 6108366534233470843, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
       propertyPath: m_Parameters.textureScale.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6205428169592578490, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 6205428169592578490, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.034
       objectReference: {fileID: 0}
     - target: {fileID: 8635965709692271921, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -73,6 +85,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5604889624952730010, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8747623157744662825}
+    - targetCorrespondingSourceObject: {fileID: 5604889624952730010, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4568315897436198154}
   m_SourcePrefab: {fileID: 100100000, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
 --- !u!1 &2184216496434257578 stripped
 GameObject:
@@ -99,7 +114,7 @@ MonoBehaviour:
   speed: 15
   gravity: 12
   visuals: {fileID: 2184216496434257578}
-  _mirrorProjectile: {fileID: 0}
+  trueProjectile: {fileID: 0}
   _spinSpeed: 750
   _lineRenderer: {fileID: 8747623157744662825}
   _sineScrollSpeed: 4
@@ -131,7 +146,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 02053d3a363aa6a4d87e3e811660cfe2, type: 2}
+  - {fileID: 2100000, guid: 34e8bb7be1e18ba47b13bc5001f6203d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -155,7 +170,7 @@ LineRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Positions:
-  - {x: 0, y: 0, z: 0}
+  - {x: -1.47, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
@@ -178,7 +193,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.041123047
+        value: 0.1659393
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -228,3 +243,16 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &4568315897436198154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4712206728071598508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e0631dcd4a9c7c4da70bca3f65c0f3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TomahawkProjSound
+  main: {fileID: 3192510437221217826}

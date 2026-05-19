@@ -1,20 +1,28 @@
+using GameplaySystems.PlayerCharacter;
 using UnityEngine;
 
-public class Cons_GroundSlam : Consummable
+public class Cons_GroundSlam : Cons_RuneBase
 {
     [SerializeField] private float _downForce = 30f;
 
-    public override void StartUsing()
+    [Header("Preslam Settings")]
+    [SerializeField] float _upForce = 10f;
+    [SerializeField] float _duration = .3f;
+
+    public override void StopUsing()
     {
-        base.StartUsing();
+        base.StopUsing();
 
-        if (playerCharacter.TryGetComponent(out PlayerPhysics physics))
+        if (!_breakAnimationIsPlaying)
         {
-            physics.AddImpulse(Vector3.down * _downForce);
+            StartBreakingAnimation();
         }
-
-        playerCharacter.stateMachine.s_GroundSlam.ActivateState();
-
-        BreakItem();
     }
+
+    //appelé par un event de l'animation
+    protected override void ApplyGemEffect()
+    {
+        playerCharacter.stateMachine.s_GroundSlam.ActivateState();   
+    }
+
 }

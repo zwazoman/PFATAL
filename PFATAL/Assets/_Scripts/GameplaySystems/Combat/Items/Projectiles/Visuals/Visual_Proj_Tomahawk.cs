@@ -23,14 +23,13 @@ public class Visual_Proj_Tomahawk : Proj_Visual
     protected override void Start()
     {
         base.Start();
-        
+
         //fetch references
-        _playerCharacter = PlayerCharacter.LocalPlayerCharacter;
+        _playerCharacter = GameManager.Instance.localPlayerCharacter;
         _anchorTransform = _playerCharacter.transform;
 
-        //print(_playerCharacter.playerHands);
-
         _weapon = ((Tomahawk)_playerCharacter.playerHands.rightHand.equippedItem);
+        print(_weapon.name);
         
         //disable the rope line renderer when the player shoots another tomahawk
         _weapon.OnShoot += DisableLineRenderer;

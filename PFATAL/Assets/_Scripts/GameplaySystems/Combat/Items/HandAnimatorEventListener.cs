@@ -15,6 +15,7 @@ public class HandAnimatorEventListener : MonoBehaviour
     public event Action OnAnimationFinished;
     public event Action OnSwordHitboxActivated;
     public event Action OnSwordHitboxDeactivated;
+    public event Action OnSwordAttackStart;
     public event Action OnGrapplePulled;
     public event Action OnTomahawkShot;
     public event Action OnGemBroken;

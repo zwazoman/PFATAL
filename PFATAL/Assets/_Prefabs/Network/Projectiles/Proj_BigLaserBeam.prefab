@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4930437910517706514}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.00000058114523}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 3267045659351027770}
   - {fileID: 7012757597834772428}
   m_Father: {fileID: 2384553606446222199}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!114 &9152854611531203258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52,9 +52,9 @@ MonoBehaviour:
   MainEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9152854611531203258}
-        m_TargetAssemblyTypeName: SimpleVFXs.StylisedEffect, Assembly-CSharp
-        m_MethodName: playVFX
+      - m_Target: {fileID: 8807834871561196850}
+        m_TargetAssemblyTypeName: SimpleVFXs.LightAnimation, Assembly-CSharp
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -76,9 +76,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8807834871561196850}
-        m_TargetAssemblyTypeName: SimpleVFXs.LightAnimation, Assembly-CSharp
-        m_MethodName: Play
+      - m_Target: {fileID: 9152854611531203258}
+        m_TargetAssemblyTypeName: SimpleVFXs.StylisedEffect, Assembly-CSharp
+        m_MethodName: playVFX
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -621,6 +621,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4396312740547020931}
+  - {fileID: 1906083636397336973}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8879583177335633558
@@ -661,10 +662,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Proj_BigLaserBeam
   ShowTopMostFoldoutHeaderGroup: 1
-  visuals: {fileID: 4930437910517706514}
+  visuals: {fileID: 7418938323979553703}
   _sphereRadius: 1
   _maxRange: 50
   _maxDamage: 7
   _hitLayer:
     serializedVersion: 2
     m_Bits: 256
+--- !u!1 &7418938323979553703
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1906083636397336973}
+  m_Layer: 0
+  m_Name: MesCouilles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1906083636397336973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7418938323979553703}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2384553606446222199}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

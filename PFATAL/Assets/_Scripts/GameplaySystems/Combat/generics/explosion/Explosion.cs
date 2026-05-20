@@ -66,7 +66,7 @@ public class Explosion : NetworkBehaviour
                 normalizedDistance = Mathf.Clamp(normalizedDistance, 0f, 1f);
                 damageData.Amount = Damage 
                                     //* (1.0f - normalizedDistance * normalizedDistance) 
-                                    * ((hitObject.OwnerClientId == damageData.SourcePlayerClientID && hitObject.isPlayer) ? 0.5f : 1);
+                                    * (((hitObject.OwnerClientId == damageData.SourcePlayerClientID) && hitObject.isPlayer) ? 0.3f : 1);
 
                 //knockBack
                 damageData.KnockbackForce = (hitObject.transform.position - damageData.Point).normalized * KnockBackStrength;

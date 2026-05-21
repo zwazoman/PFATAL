@@ -52,9 +52,9 @@ public class Cons_TP : Cons_RuneBase
         {
             RaycastHit hit;
 
-            if(Physics.SphereCast(playerCharacter.playerCamera.transform.position,.3f, playerCharacter.playerCamera.transform.forward,out hit, _range, _layermask))
+            if(Physics.SphereCast(playerCharacter.playerCamera.transform.position,.45f, playerCharacter.playerCamera.transform.forward,out hit, _range, _layermask))
             {
-                tpDestination = hit.point - playerCharacter.playerCamera.transform.forward * _wallOffsetRange;
+                tpDestination = hit.point + hit.normal * _wallOffsetRange;
             }
             else
                 tpDestination = playerCharacter.playerCamera.transform.position + playerCharacter.playerCamera.transform.forward * _range;

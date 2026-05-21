@@ -23,10 +23,34 @@ public class InputHandler : MonoBehaviour
     [SerializeField] private List<Texture2D> XboxControllsUI;
     [SerializeField] private List<Texture2D> PCControllsUI;
 
+    [SerializeField] private Toggle _switchHandsToggle;
+    [SerializeField] private Button _jumpRebind;
+    [SerializeField] private List<GameObject> _controllerUINav;
+    private Navigation _oldNavToggle = new Navigation();
+    private Navigation _oldNavJump = new Navigation();
+    private Navigation _newNavToggle = new Navigation();
+    private Navigation _newNavJump = new Navigation();
+
 
     private void Start()
     {
         //CurrentControlsUI = SwitchControlls;
+
+        _oldNavToggle.mode = Navigation.Mode.Explicit;
+        _oldNavJump.mode = Navigation.Mode.Explicit;
+        _oldNavToggle = _switchHandsToggle.navigation;
+        _oldNavJump = _jumpRebind.navigation;
+
+        _newNavToggle.mode = Navigation.Mode.Explicit;
+        _newNavJump.mode = Navigation.Mode.Explicit;
+
+        _newNavToggle.selectOnUp = _controllerUINav[0].GetComponent<Slider>();
+        _newNavToggle.selectOnRight = _controllerUINav[1].GetComponent<Scrollbar>();
+        _newNavToggle.selectOnDown = _controllerUINav[2].GetComponent<Button>();
+
+        _newNavJump.selectOnUp = _controllerUINav[3].GetComponent<Toggle>();
+        _newNavJump.selectOnRight = _controllerUINav[1].GetComponent<Scrollbar>();
+        _newNavJump.selectOnDown = _controllerUINav[4].GetComponent<Button>();
     }
 
     private void FixedUpdate()
@@ -35,6 +59,11 @@ public class InputHandler : MonoBehaviour
         {
             _wichType = "Computer";
             CurrentControlsUI = PCControllsUI;
+
+            _switchHandsToggle.navigation = _oldNavToggle;
+            _jumpRebind.navigation = _oldNavJump;
+
+            ChangeUI("keyboard");
         }
         else
         {
@@ -47,20 +76,32 @@ public class InputHandler : MonoBehaviour
                         case "Computer":
                             CurrentControlsUI = PCControllsUI;
 
+                            _switchHandsToggle.navigation = _oldNavToggle;
+                            _jumpRebind.navigation = _oldNavJump;
+
                             ChangeUI("keyboard");
                             break;
                         case "Xbox":
                             CurrentControlsUI = XboxControllsUI;
+
+                            _switchHandsToggle.navigation = _newNavToggle;
+                            _jumpRebind.navigation = _newNavJump;
 
                             ChangeUI("xbox");
                             break;
                         case "PlayStation":
                             CurrentControlsUI = PlaystationControllsUI;
 
+                            _switchHandsToggle.navigation = _newNavToggle;
+                            _jumpRebind.navigation = _newNavJump;
+
                             ChangeUI("playstation");
                             break;
                         case "Switch":
                             CurrentControlsUI = SwitchControllsUI;
+
+                            _switchHandsToggle.navigation = _newNavToggle;
+                            _jumpRebind.navigation = _newNavJump;
 
                             ChangeUI("switch");
                             break;
@@ -108,7 +149,7 @@ public class InputHandler : MonoBehaviour
 
         foreach (Texture2D texture in GeneralControllerUI)
         {
-            if (_PCMovementsButtons.Count < i)
+            if (_PCMovementsButtons.Count > i)
             {
                 _PCMovementsButtons[i].SetActive(false);
             }

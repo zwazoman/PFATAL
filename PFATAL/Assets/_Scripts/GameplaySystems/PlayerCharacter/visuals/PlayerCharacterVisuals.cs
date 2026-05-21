@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _scripts.PlayerCharacter;
 using _Scripts.Pooling;
+using SimpleVFXs;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -12,8 +13,12 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     public bool IsProxy => !IsOwner;
     public bool IsInFpsView => IsOwner;
     
+    public static int fpsLayerMask;
+    public static int defaultLayerMask;
+    
     [Header("scene references")]
     [SerializeField] PlayerCharacter _playerCharacter;
+    [SerializeField] StylisedEffect _healVFX;
     [SerializeField] Transform _cameraRoot;
     
     [Header("FPS visuals")]
@@ -33,9 +38,15 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     private Vector3 _measuredVelocity;
     
     //public methods
-
+    
     [SerializeField] List<GameObject> _visualObjects;
 
+    public void PlayHealingVFX()
+    {
+        _healVFX.vfx.SetFloat("Radius", IsInFpsView ? 1 : .5f);
+        _healVFX.TriggerMainEvent();
+    }
+    
     [Rpc(SendTo.Everyone)]
     public void HideRpc()
     {
@@ -78,6 +89,9 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     
     void Awake()
     {
+        fpsLayerMask = LayerMask.NameToLayer("FpsViewOnly");
+        defaultLayerMask = LayerMask.NameToLayer("Default");
+        
         //enable fps view by default
         SetFPSViewEnabled(true);
         
@@ -104,8 +118,8 @@ public class PlayerCharacterVisuals : NetworkBehaviour
                 SetLayerRecursive(child, layer);
             }
         }
-        SetLayerRecursive(_playerCharacter.playerHands.leftHand.transform,IsInFpsView ? LayerMask.NameToLayer("FpsViewOnly") : LayerMask.NameToLayer("Default"));
-        SetLayerRecursive(_playerCharacter.playerHands.rightHand.transform,IsInFpsView ? LayerMask.NameToLayer("FpsViewOnly") : LayerMask.NameToLayer("Default"));
+        SetLayerRecursive(_playerCharacter.playerHands.leftHand.transform,IsInFpsView ? fpsLayerMask : defaultLayerMask);
+        SetLayerRecursive(_playerCharacter.playerHands.rightHand.transform,IsInFpsView ? fpsLayerMask :defaultLayerMask);
         
         //update hands position
         _playerCharacter.playerHands.leftHand.transform.localPosition = enabled ?

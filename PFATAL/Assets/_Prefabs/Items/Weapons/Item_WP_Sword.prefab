@@ -120,6 +120,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8492910160190451158}
+    - targetCorrespondingSourceObject: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4397536837939559528}
   m_SourcePrefab: {fileID: 100100000, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
 --- !u!4 &4400400638968211366 stripped
 Transform:
@@ -150,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sword
   playerCharacter: {fileID: 0}
   _pickup: {fileID: 8646866019681496794, guid: 9dbbfe26db967984788ffaac38ae8306, type: 3}
+  isUsing: 0
   hitSocket: {fileID: 312709263419611719}
   hitSphereRadius: 1
   damageAmount: 4
@@ -163,6 +167,19 @@ MonoBehaviour:
   _dashDmgMult: 0.8
   _dashDotThreshold: 0
   currentDashCooldown: 0
+--- !u!114 &4397536837939559528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8453122098565441690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb439faf57d4e164fb0de95312ce323d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SwordSound
+  main: {fileID: 0}
 --- !u!1001 &8392829366872443326
 PrefabInstance:
   m_ObjectHideFlags: 0

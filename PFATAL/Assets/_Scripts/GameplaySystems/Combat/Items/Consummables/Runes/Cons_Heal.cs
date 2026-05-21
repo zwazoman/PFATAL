@@ -4,16 +4,18 @@ using UnityEngine;
 public class Cons_Heal : Cons_RuneBase
 {
     [SerializeField] private float _heal = 5f;
-    
+    [SerializeField] float _moveSpeedBoostMultiplyer = 10f;
+    [SerializeField] float _moveSpeedBoostDuration = 5;
+
     //appelé par un event de l'animation
     protected override void ApplyGemEffect()
     {
-        if (playerCharacter.TryGetComponent(out DamageableObject health))
-        {
-            health.Heal(_heal);
-        }
+        playerCharacter.health.Heal(_heal);
+        playerCharacter.movement.TemporaryMoveSpeedChange(_moveSpeedBoostMultiplyer, _moveSpeedBoostDuration);
+
+        hand.playerCharacter.visuals.PlayHealingVFX();
     }
-    
+
     //quand on click
     public override void StartUsing()
     {
@@ -22,5 +24,5 @@ public class Cons_Heal : Cons_RuneBase
         //lance l'anim de break
         StartBreakingAnimation();
     }
-    
+
 }

@@ -63,14 +63,22 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 4290852872638469156, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2512579992186122182}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2456484931988580689}
+    - targetCorrespondingSourceObject: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4171196377264853669}
   m_SourcePrefab: {fileID: 100100000, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+--- !u!4 &1734705611953190009 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4290852872638469156, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+  m_PrefabInstance: {fileID: 2566702572522709085}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5786053781384723269 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
@@ -92,19 +100,30 @@ MonoBehaviour:
   _pickup: {fileID: 7861026024044232566, guid: 325a5ff714e3bee4fb032783b833980d, type: 3}
   isUsing: 0
   _gemstoneRenderer: {fileID: 3644915047120901289}
+  _vfxColor: {r: 1.1134773, g: 3.2111168, b: 0.35305467, a: 1}
   _heal: 5
---- !u!4 &7171063974548638414 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
-  m_PrefabInstance: {fileID: 2566702572522709085}
+  _moveSpeedBoostMultiplyer: 2
+  _moveSpeedBoostDuration: 2
+--- !u!114 &4171196377264853669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5786053781384723269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44447012a292546419557b9e620945aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealSound
+  main: {fileID: 2456484931988580689}
 --- !u!1001 &2689989615858518061
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 7171063974548638414}
+    m_TransformParent: {fileID: 1734705611953190009}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9b0ffe5abdba8f14e898c981a539e4e2, type: 3}
       propertyPath: m_LocalPosition.x

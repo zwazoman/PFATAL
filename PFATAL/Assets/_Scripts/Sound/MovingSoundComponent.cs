@@ -3,25 +3,41 @@ using FMODUnity;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 using UnityEngine;
 
-public class MovingSoundComponent<T> : SoundComponent<T> where T: Component
+public abstract class MovingSoundComponent<T> : SoundComponent<T> where T: Component
 {
     EventInstance _soundInstance;
 
-    protected override void LinkEvents()
-    {
-    }
+    abstract protected override void LinkEvents();
 
-    protected virtual void StartSound(Sounds sound)
+    protected virtual void StartSound(Sounds sound, GameObject go = null, string parameterName = null, float parameterValue = 100)
     {
+        GameObject currentGO = null;
+
+        if (go == null)
+            currentGO = gameObject;
+        else
+            currentGO = go;
+
         _soundInstance = AudioManager.Instance.CreateInstance(sound, true);
-        RuntimeManager.AttachInstanceToGameObject(_soundInstance, gameObject);
+
+        if(parameterName != null && parameterValue !=100)
+            _soundInstance.setParameterByName(parameterName, parameterValue);
+
+        RuntimeManager.AttachInstanceToGameObject(_soundInstance, currentGO);
         _soundInstance.start();
         AudioManager.Instance.Trigger3dSoundPlayed(_soundInstance);
     }
 
-    protected virtual void StopSound()
+    protected virtual void StopSound(bool fadeOut = true)
     {
-        _soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        if (!_soundInstance.isValid())
+            return;
+
+        if (fadeOut)
+            _soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        else
+            _soundInstance.stop(STOP_MODE.IMMEDIATE);
+
         _soundInstance.release();
     }
 }

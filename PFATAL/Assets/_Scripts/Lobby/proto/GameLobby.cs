@@ -46,6 +46,15 @@ public class GameLobby : NetworkBehaviour
             int hostLobbyID = _lobbyIDCounter++;
             _allPlayersInLobby.dictionnary[NetworkManager.Singleton.LocalClientId] = new LobbyPlayerData("_", hostLobbyID, PlayerStatus.Waiting);
             
+            if (NetworkManager.Singleton.ConnectedClientsIds != null)
+            {
+                foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+                {
+                    int lobbyID = _lobbyIDCounter++;
+                    _allPlayersInLobby.dictionnary[clientId] = new LobbyPlayerData("_", lobbyID, PlayerStatus.Waiting);
+                }
+            }
+            
             if (SteamPlayerList.Instance != null)
             {
                 foreach (var player in SteamPlayerList.Instance.Players)

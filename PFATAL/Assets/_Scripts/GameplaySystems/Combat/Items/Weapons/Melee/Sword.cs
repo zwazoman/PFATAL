@@ -8,6 +8,7 @@ public class Sword : MeleeWeapon
     public event Action OnStartCharging;
     public event Action OnDashStarted;
     public event Action OnSmallAttackStarted;
+    public event Action OnAttackEnded;
     
     [Header("Sword Settings")]
     [SerializeField] float _knockbackStrength = 10;
@@ -23,7 +24,7 @@ public class Sword : MeleeWeapon
 
     bool _charged;
     bool _isAttacking;
-    bool _isDashing;
+    public bool isDashing;
     bool _canDash = true;
 
     public override void Equip()
@@ -33,7 +34,7 @@ public class Sword : MeleeWeapon
 
         _charged = false;
         _isAttacking = false;
-        _isDashing = false;
+        isDashing = false;
         hitboxIsActive = false;
         _canDash = true;
 
@@ -71,7 +72,7 @@ public class Sword : MeleeWeapon
         data.Point = hitSocket.position;
         data.Direction = hitSocket.transform.forward;
         data.SourcePos = playerCharacter.transform.position;
-        data.Amount = damageAmount * (_isDashing ? 1f : _dashDmgMult);
+        data.Amount = damageAmount * (isDashing ? 1f : _dashDmgMult);
         data.Radius = hitSphereRadius;
         data.SourcePlayerClientID = playerCharacter.OwnerClientId;
         data.KnockbackForce = playerCharacter.transform.forward * _knockbackStrength;
@@ -101,7 +102,14 @@ public class Sword : MeleeWeapon
     void AllowNextAttack()
     {
         print("Attack ended.");
+        OnAttackEnded?.Invoke();
         _isAttacking = false;
+
+        if (isDashing)
+        {
+            isDashing = false;
+            StartDashCooldown();
+        }
     }
 
     public override void StopUsing()
@@ -132,7 +140,7 @@ public class Sword : MeleeWeapon
     
     void Dash()
     {
-        _isDashing = true;
+        isDashing = true;
         //event & anim
         hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.sword_charge_release);
         OnDashStarted?.Invoke();
@@ -143,10 +151,9 @@ public class Sword : MeleeWeapon
         if (dot <= _dashDotThreshold)
             playerCharacter.physics.SetVelocity(Vector3.zero);
         playerCharacter.physics.AddImpulse(playerCharacter.playerCamera.transform.forward * _dashStrength);
-        
-        WaitForDashToCoolDown();
+       
     }
-    async void WaitForDashToCoolDown()
+    async void StartDashCooldown()
     {
         _canDash = false;
         
@@ -160,7 +167,7 @@ public class Sword : MeleeWeapon
 
         OnDashCooledUp?.Invoke();
         _canDash = true;
-        _isDashing = false;
+        isDashing = false;
         _isAttacking = false;
     }
 

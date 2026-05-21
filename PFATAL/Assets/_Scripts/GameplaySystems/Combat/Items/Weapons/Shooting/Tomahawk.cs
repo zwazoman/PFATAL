@@ -7,7 +7,7 @@ using state = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
 public class Tomahawk : ProjectileWeapon
 {
-    public event Action OnDash;
+    public event Action OnStartGrapple;
 
     public event Action<Projectile> OnTomahawkShoot;
 
@@ -80,6 +80,8 @@ public class Tomahawk : ProjectileWeapon
         if (holdDuration >= _dashHoldDuration && _currentProjectile != null && !_dashed && CanDash)
         {
             //play dash animation
+            OnStartGrapple?.Invoke();
+
             _dashed = true;
             _dashDirection = (_currentProjectile.transform.position - playerCharacter.transform.position).normalized;
             hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.tomahawk_grapple);
@@ -126,8 +128,8 @@ public class Tomahawk : ProjectileWeapon
 
     void DashTowardsProj()
     {
-
-        OnDash?.Invoke();
+        if (!CanDash)
+            return;
         
         playerCharacter.physics.SetVelocity(Vector3.zero);
         playerCharacter.physics.AddImpulse(_dashDirection * _dashStrength);

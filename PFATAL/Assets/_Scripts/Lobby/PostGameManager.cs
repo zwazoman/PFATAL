@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,9 +36,18 @@ public class PostGameManager : MonoBehaviour
             timer -= 1f;
         }
 
-        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
-            if (client.PlayerObject != null && client.PlayerObject.gameObject.layer == 8)
-                client.PlayerObject.Despawn(true);
+        // Snapshot de la liste AVANT d'itérer
+        var objectsToDespawn = new List<NetworkObject>(
+            NetworkManager.Singleton.SpawnManager.SpawnedObjectsList
+        );
+
+        foreach (NetworkObject netObj in objectsToDespawn)
+        {
+            if (netObj == null) continue;
+            int layer = netObj.gameObject.layer;
+            if (layer == 8 || layer == 7)
+                netObj.Despawn(true);
+        }   
         
         restartButton.interactable = true;
         NetworkManager.Singleton.SceneManager.LoadScene(lobbyName, LoadSceneMode.Single);

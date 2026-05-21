@@ -118,6 +118,37 @@ VFXRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
+--- !u!1 &8518215408150335738
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6796261610919326161}
+  m_Layer: 0
+  m_Name: ShootSocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6796261610919326161
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8518215408150335738}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.32002, y: 0, z: -0.08749}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5457597291891569944}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &839702556170657675
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -181,6 +212,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6796261610919326161}
     - targetCorrespondingSourceObject: {fileID: 4290852872638469156, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2434962915543616303}
@@ -195,6 +229,11 @@ PrefabInstance:
 --- !u!4 &3470888770702576559 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4290852872638469156, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+  m_PrefabInstance: {fileID: 839702556170657675}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5457597291891569944 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
   m_PrefabInstance: {fileID: 839702556170657675}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8680066097836967059 stripped
@@ -217,6 +256,13 @@ MonoBehaviour:
   playerCharacter: {fileID: 0}
   _pickup: {fileID: 8566600280833463079, guid: 7bb4b9bce164bfd48a1a36e7cb13e493, type: 3}
   isUsing: 0
+  shootSocket: {fileID: 6796261610919326161}
+  projectile: {fileID: 4084173529431785421, guid: bbb5a5fb5efcb8b44804ec8d0869dc6f, type: 3}
+  visualProjectile: {fileID: 3656956466209749683, guid: 51ce5d6a1ba1bb14f9cd0e9b16062635, type: 3}
+  rotationMode: 0
+  shootRayLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
   _bombPrefab: {fileID: 4084173529431785421, guid: bbb5a5fb5efcb8b44804ec8d0869dc6f, type: 3}
   _fuseDuration: 3
   _fuseVFX: {fileID: 2330239214042681067}

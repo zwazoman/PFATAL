@@ -34,7 +34,7 @@ public class Ragdolll : MonoBehaviour
 
         parentRb.GetComponent<PlayerCharacterNetworkStateMachineCallback>().OnStateChanged += (oldState, newState) =>
         {
-            if (newState == PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum.Idle /*HasFlag(PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum.Alive)*/)
+            if (oldState == PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum.Dead /*HasFlag(PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum.Alive)*/)
             {
 //                Debug.LogError($"Test IDLE {parentRb.gameObject.name}, {oldState} -> {newState}");
                 Reset();

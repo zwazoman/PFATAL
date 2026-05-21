@@ -5,7 +5,6 @@ using _scripts.PlayerCharacter;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using Unity.Netcode.Editor.Configuration;
 
 namespace Settings
 {

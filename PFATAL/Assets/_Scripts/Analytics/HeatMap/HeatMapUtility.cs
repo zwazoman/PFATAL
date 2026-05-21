@@ -366,7 +366,7 @@ public class HeatMapUtility
         );
 
         index += 6; // Move past the first 4 shorts
-
+         
         int pointsCount = BitConverter.ToInt32(bytes, index); //4 - 10
         index += 4; // Move past the points count, now index is at 10
 

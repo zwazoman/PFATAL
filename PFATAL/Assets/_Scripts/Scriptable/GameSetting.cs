@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "new Game Settings", menuName = "Game Settings")]
+[CreateAssetMenu(fileName = "new GameSettings", menuName = "Scriptable Objects/GameSettings")]
 public class GameSetting : ScriptableObject
 {
     public float GameDuration = 60*4;

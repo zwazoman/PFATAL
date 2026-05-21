@@ -1,9 +1,7 @@
 using UnityEngine;
 
 public class Cons_ToxicCloud : Cons_BookBase
-{
-    [SerializeField] private GameObject _projToxicCloudPrefab;
-    
+{    
     public override void StopUsing()
     {
         base.StopUsing();
@@ -15,10 +13,13 @@ public class Cons_ToxicCloud : Cons_BookBase
         //spawn poison projectile
         SpawnContext context = new(playerCharacter.OwnerClientId);
         context.floatData2 = ItemID;
-        _ = Summoner.Instance.SpawnObject(
+
+        base.SpawnSpell(context, Quaternion.identity, playerCharacter.playerCamera.transform.position);
+
+        /*_ = Summoner.Instance.SpawnObject(
             _projToxicCloudPrefab,
             hand._itemSocket.position,
             playerCharacter.cameraBehaviour.transform.rotation,
-            false, context);
+            false, context);*/
     }
 }

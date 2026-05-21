@@ -3,29 +3,23 @@ using UnityEngine;
 public class Visual_Proj_Tornado : Proj_Visual
 {
     [SerializeField] float _duringTime = 5f;
+    private Vector3 _tornadoSpawnPosition;
+    private float _tornadoSpawnTime;
 
-    private Vector3 _spawnPosition;
-    private float _spawnTime;
-
-    protected override void Start()
+    protected override async void Start()
     {
-        _spawnPosition = transform.position;
-        _spawnTime = Time.time;
+        base.Start();
 
-        StartCoroutine(WaitForProjectile());
-    }
-
-    System.Collections.IEnumerator WaitForProjectile()
-    {
         while (trueProjectile == null)
-            yield return null;
+            await Awaitable.NextFrameAsync();
 
-        trueProjectile.OnDespawn += () => Destroy(gameObject);
+        spawnPosition = trueProjectile.transform.position;
+        spawnTime = Time.time;
     }
 
     protected override void Update()
     {
-        float elapsed = Time.time - _spawnTime;
+        float elapsed = Time.time - spawnTime;
         float halfTime = _duringTime / 2f;
         float distanceTravelled;
 
@@ -34,6 +28,6 @@ public class Visual_Proj_Tornado : Proj_Visual
         else
             distanceTravelled = speed * halfTime + (speed / 2f) * (elapsed - halfTime);
 
-        transform.position = _spawnPosition + transform.forward * distanceTravelled;
+        transform.position = spawnPosition + transform.forward * distanceTravelled;
     }
 }

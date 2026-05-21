@@ -97,10 +97,9 @@ public abstract class Cons_BookBase : Consummable
         Vector3 newPos = playerCharacter.playerCamera.ScreenToWorldPoint(new Vector3(playerCharacter.handsCamera.WorldToScreenPoint(shootSocket.position).x, playerCharacter.handsCamera.WorldToScreenPoint(shootSocket.position).y, .3f));
         mirorPos = newPos;
 
-        //fait spawn un projectile "miroir" imitant les déplacements du vrai projectile sans délai chez le client
         if (visualProjectile != null)
         {
-            Instantiate(visualProjectile, mirorPos, ComputeProjectileRotation(mirorPos) * rotationOffset).TryGetComponent(out visual);
+            Instantiate(visualProjectile, mirorPos, ComputeProjectileRotation(mirorPos) * rotationOffset).TryGetComponent(out visual); ;
             visual.context = spawnContext;
         }
 

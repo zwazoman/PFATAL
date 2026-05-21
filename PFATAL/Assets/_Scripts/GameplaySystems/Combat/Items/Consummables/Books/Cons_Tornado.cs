@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Cons_Tornado : Cons_BookBase
 {
+    [Header("Network")]
+    [SerializeField] private GameObject _tornadoProjectilePrefab;
+
     public override void StopUsing()
     {
         base.StopUsing();

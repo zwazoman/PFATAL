@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5419033521065560844
 RectTransform:
   m_ObjectHideFlags: 0
@@ -107,9 +107,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c8623db2b8f8344cb53ecc3653dc5d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PostGameManager
-  ShowTopMostFoldoutHeaderGroup: 1
   messageText: {fileID: 958303447358600420}
   delayBeforeLoad: 3
+  restartButton: {fileID: 0}
 --- !u!1 &2470069618566508120
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,7 +419,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -449}
+  m_AnchoredPosition: {x: 0, y: -466.3}
   m_SizeDelta: {x: 499.4305, y: 71.0867}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5781652449640770722
@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2354447691
+  GlobalObjectIdHash: 1036499564
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -698,7 +698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &648213905223534461
 RectTransform:
   m_ObjectHideFlags: 0
@@ -821,38 +821,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5419033521065560844}
     m_Modifications:
-    - target: {fileID: -8568778234219448651, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
-      propertyPath: IsScoreboardEndGamePanel
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1374131255993762957, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.100097656
-      objectReference: {fileID: 0}
-    - target: {fileID: 1559439157463965998, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 10.5998535
-      objectReference: {fileID: 0}
-    - target: {fileID: 1627031064583831567, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
-      propertyPath: m_fontSize
-      value: 40.95
-      objectReference: {fileID: 0}
-    - target: {fileID: 2000985360327168151, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.2000122
-      objectReference: {fileID: 0}
-    - target: {fileID: 2349272115483460472, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
-      propertyPath: m_fontSize
-      value: 34.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723291931533472350, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.000015258789
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723291931533472350, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.49998474
-      objectReference: {fileID: 0}
     - target: {fileID: 3995512712433874195, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_Name
       value: ScoreBoardPanel
@@ -867,27 +835,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.8088791
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.78236794
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.194
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.2101645
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -3
+      value: 1179
       objectReference: {fileID: 0}
     - target: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 31.7985
+      value: 763
       objectReference: {fileID: 0}
     - target: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_LocalPosition.x
@@ -919,11 +887,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -33.434357
+      value: -30.434357
       objectReference: {fileID: 0}
     - target: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -23.489609
+      value: 27.6
       objectReference: {fileID: 0}
     - target: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -936,18 +904,6 @@ PrefabInstance:
     - target: {fileID: 6488024825349265201, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8414309471141203622, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
-      propertyPath: m_fontSize
-      value: 35.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8904019309007672302, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
-      propertyPath: m_fontSize
-      value: 45.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 9164617143844678758, guid: 69bf64b15bfd0014fb5d4f9dd95eac42, type: 3}
-      propertyPath: m_fontSize
-      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

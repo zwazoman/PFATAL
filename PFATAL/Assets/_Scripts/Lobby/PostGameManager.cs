@@ -1,28 +1,27 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class PostGameManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private float delayBeforeLoad = 3f;
-
-    [Rpc(SendTo.Everyone)]
-    private void ShowReturnMessageRpc(string message)
+    [SerializeField] private Button restartButton;
+    
+    private void Start()
     {
         if (messageText != null)
-            messageText.text = message;
+            messageText.text = "Waiting for the host...";
     }
 
     public void OnHostWantToReturnLobby(string lobbyName)
     {
-        Debug.Log($"OnHostWantToReturnLobby called. IsHost={NetworkManager.Singleton.IsHost}, IsSpawned={NetworkManager.Singleton.IsHost}");
-    
         if (!NetworkManager.Singleton.IsHost) return;
-    
-        Debug.Log("Starting coroutine...");
+        restartButton.interactable = false;
         StartCoroutine(ReturnToLobbyWithDelay(lobbyName));
     }
 
@@ -31,26 +30,26 @@ public class PostGameManager : MonoBehaviour
         float timer = delayBeforeLoad;
         while (timer > 0f)
         {
-            Debug.Log($"Countdown: {Mathf.CeilToInt(timer)}");
-            ShowReturnMessageRpc($"Retour au lobby dans {Mathf.CeilToInt(timer)}s...");
+            if (messageText != null)
+                messageText.text = $"Back to the lobby in {Mathf.CeilToInt(timer)}s...";
             yield return new WaitForSeconds(1f);
             timer -= 1f;
         }
 
-        // Détruire les player objects sur le réseau avant de changer de scène
-        foreach (GameObject obj in FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        // Snapshot de la liste AVANT d'itérer
+        var objectsToDespawn = new List<NetworkObject>(
+            NetworkManager.Singleton.SpawnManager.SpawnedObjectsList
+        );
+
+        foreach (NetworkObject netObj in objectsToDespawn)
         {
-            if (obj.layer == 8)
-            {
-                NetworkObject netObj = obj.GetComponent<NetworkObject>();
-                if (netObj != null)
-                    netObj.Despawn(true);
-                else
-                    Destroy(obj);
-            }
-        }
+            if (netObj == null) continue;
+            int layer = netObj.gameObject.layer;
+            if (layer == 8 || layer == 7)
+                netObj.Despawn(true);
+        }   
         
-        Debug.Log($"Calling LoadScene: {lobbyName}");
+        restartButton.interactable = true;
         NetworkManager.Singleton.SceneManager.LoadScene(lobbyName, LoadSceneMode.Single);
     }
 }

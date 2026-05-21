@@ -27,7 +27,7 @@ public class Ragdolll : MonoBehaviour
         {
             if (newState == PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum.Dead /*HasFlag(PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum.Dead)*/)
             {
-                Debug.LogError($"Test DEAD {parentRb.gameObject.name}, {oldState} -> {newState}");
+                // Debug.LogError($"Test DEAD {parentRb.gameObject.name}, {oldState} -> {newState}");
                 ActiveRagdoll();
             }
         };
@@ -36,7 +36,7 @@ public class Ragdolll : MonoBehaviour
         {
             if (oldState == PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum.Dead /*HasFlag(PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum.Alive)*/)
             {
-                Debug.LogError($"Test IDLE {parentRb.gameObject.name}, {oldState} -> {newState}");
+//                Debug.LogError($"Test IDLE {parentRb.gameObject.name}, {oldState} -> {newState}");
                 Reset();
             }
         };
@@ -49,7 +49,7 @@ public class Ragdolll : MonoBehaviour
     [Button("Activate Ragdoll", EButtonEnableMode.Playmode)]
     public void ActiveRagdoll()
     {
-        Debug.LogError($"Test EXPLOSE {parentRb.gameObject.name}");
+//        Debug.LogError($"Test EXPLOSE {parentRb.gameObject.name}");
 
         foreach (GameObject bodyPart in body)
         {
@@ -81,7 +81,7 @@ public class Ragdolll : MonoBehaviour
             part.transform.localRotation = initialRotations[RagdollParts.IndexOf(part)];
         }*/
 
-        Debug.LogError($"Test Reset {parentRb.gameObject.name}");
+        // Debug.LogError($"Test Reset {parentRb.gameObject.name}");
 
         transform.localPosition = Vector3.zero;
 

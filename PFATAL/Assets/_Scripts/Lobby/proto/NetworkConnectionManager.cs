@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +11,9 @@ public class NetworkConnectionManager : MonoBehaviour
 
     [Header("Scenes")]
     [SerializeField] private string gameSceneName = "GameScene";
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject networkManagerPrefab;
 
     private void Awake()
     {
@@ -24,10 +28,25 @@ public class NetworkConnectionManager : MonoBehaviour
 
     public async Task<bool> StartHost(string lobbyName = "MyGame")
     {
+        // ✅ Désactive le NetworkObject de l'AudioManager pour éviter le conflit de hash
+        var audioNetObj = FindObjectOfType<AudioManager>()?.GetComponent<NetworkObject>();
+        if (audioNetObj != null) audioNetObj.enabled = false;
+
+        // ✅ Recrée le NetworkManager à chaque session
+        if (NetworkManager.Singleton != null)
+        {
+            Destroy(NetworkManager.Singleton.gameObject);
+            await Task.Yield();
+        }
+        var nmGO = Instantiate(networkManagerPrefab);
+        DontDestroyOnLoad(nmGO);
+        await Task.Delay(500);
+
         bool servicesInitialized = await UnityServicesManager.Instance.InitializeUnityServices();
         if (!servicesInitialized)
         {
             Debug.LogError("[Network] Impossible d'initialiser Unity Services");
+            if (audioNetObj != null) audioNetObj.enabled = true;
             return false;
         }
 
@@ -35,6 +54,7 @@ public class NetworkConnectionManager : MonoBehaviour
         if (string.IsNullOrEmpty(lobbyCode))
         {
             Debug.LogError("[Network] Impossible de créer le lobby");
+            if (audioNetObj != null) audioNetObj.enabled = true;
             return false;
         }
 
@@ -43,6 +63,7 @@ public class NetworkConnectionManager : MonoBehaviour
         {
             Debug.LogError("[Network] Impossible de créer l'allocation Relay");
             await LobbyManager.Instance.DeleteLobby();
+            if (audioNetObj != null) audioNetObj.enabled = true;
             return false;
         }
 
@@ -51,6 +72,7 @@ public class NetworkConnectionManager : MonoBehaviour
         {
             Debug.LogError("[Network] Impossible de mettre à jour le lobby avec le code Relay");
             await LobbyManager.Instance.DeleteLobby();
+            if (audioNetObj != null) audioNetObj.enabled = true;
             return false;
         }
 
@@ -59,11 +81,13 @@ public class NetworkConnectionManager : MonoBehaviour
         {
             Debug.LogError("[Network] Impossible de démarrer Netcode en mode host");
             await LobbyManager.Instance.DeleteLobby();
+            if (audioNetObj != null) audioNetObj.enabled = true;
             return false;
         }
 
-        NetworkManager.Singleton.SceneManager.LoadScene(gameSceneName, LoadSceneMode.Single);
+        if (audioNetObj != null) audioNetObj.enabled = true;
 
+        NetworkManager.Singleton.SceneManager.LoadScene(gameSceneName, LoadSceneMode.Single);
         return true;
     }
 
@@ -145,7 +169,7 @@ public class NetworkConnectionManager : MonoBehaviour
 
         return true;
     }
-    
+
     public async Task SetLobbyLocked(bool locked)
     {
         try
@@ -161,20 +185,22 @@ public class NetworkConnectionManager : MonoBehaviour
 
     public async Task Disconnect()
     {
-        if (NetworkManager.Singleton != null)
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
         {
             NetworkManager.Singleton.Shutdown();
-            Debug.Log("[Network] Netcode arrêté");
+
+            while (NetworkManager.Singleton.IsListening)
+                await Task.Yield();
         }
 
         if (LobbyManager.Instance.IsHost())
-        {
             await LobbyManager.Instance.DeleteLobby();
-        }
         else
-        {
             await LobbyManager.Instance.LeaveLobby();
-        }
+
+        // ✅ Détruit le NetworkManager — recréé au prochain StartHost
+        if (NetworkManager.Singleton != null)
+            Destroy(NetworkManager.Singleton.gameObject);
 
         Debug.Log("[Network] Déconnexion terminée");
     }

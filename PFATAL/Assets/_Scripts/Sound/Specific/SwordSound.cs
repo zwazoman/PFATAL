@@ -12,6 +12,7 @@ public class SwordSound : ItemSound<Sword>
         main.hand.animatorEventListener.OnSwordHitboxActivated += PlayAttackSound;
         main.OnDashStarted += PLayDashSound;
         main.OnSmallAttackStarted += PlayAnticipationSound;
+        main.OnStartCharging += PlayChargeSound;
     }
 
     protected override void UnEquipLink()
@@ -21,6 +22,7 @@ public class SwordSound : ItemSound<Sword>
         main.hand.animatorEventListener.OnSwordHitboxActivated -= PlayAttackSound;
         main.OnDashStarted -= PLayDashSound;
         main.OnSmallAttackStarted -= PlayAnticipationSound;
+        main.OnStartCharging -= PlayChargeSound;
     }
 
     void PlayAttackSound()
@@ -30,13 +32,20 @@ public class SwordSound : ItemSound<Sword>
             return;
         }
 
+        int whooshValue;
+
         if (attack1)
-            AudioManager.Instance.PlayOneShot(Sounds.SwordWhoosh);
+            whooshValue = 0;
         else
-            AudioManager.Instance.PlayOneShot(Sounds.SwordWhoosh2);
+            whooshValue = 1;
+
+        AudioManager.Instance.PlayOnlineOneShots(Sounds.SwordWhoosh, Sounds.SwordWhoosh3D, transform.position, "SwordWhooshes", whooshValue);
+
 
         attack1 = !attack1;
     }
     void PlayAnticipationSound() { if (!main.isDashing) AudioManager.Instance.PlayOneShot(Sounds.SwordAnticipation); }
     void PLayDashSound() => AudioManager.Instance.PlayOneShot(Sounds.SwordDash);
+
+    void PlayChargeSound() => AudioManager.Instance.PlayOneShot(Sounds.SwordCharge);
 }

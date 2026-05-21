@@ -61,7 +61,7 @@ MonoBehaviour:
       JOIN Player ON Player.Id = Death.KillerId
 
       WHERE Death.IdGame
-      = 1
+      = 11
 
       GROUP BY Player.Id
 
@@ -74,7 +74,7 @@ MonoBehaviour:
       Death d\r\nLEFT JOIN Player killer ON d.KillerId = killer.Id\r\nLEFT JOIN Player
       victim ON d.VictimId = victim.Id\r\nLEFT JOIN Game g ON d.IdGame = g.Id\r\nORDER
       BY d.Distance DESC\r\nLIMIT 3;"
-  - isOpen: 1
+  - isOpen: 0
     Name: Avoir toute les heatmap d'une verion du jeu
     Command: 'SELECT
 
@@ -82,5 +82,27 @@ MonoBehaviour:
 
       FROM Game
 
-      WHERE Game.Version
-      = 10'
+      WHERE Game.Version =
+      10'
+  - isOpen: 0
+    Name: moyenne de distance de kill sans X
+    Command: "SELECT\n    AVG(Distance) AS AverageKillDistance\nFROM Death\nWHERE
+      Weapon <> 1;"
+  - isOpen: 0
+    Name: Moyenne de distance de kill de chaque arme
+    Command: "SELECT\r\n    Weapon,\r\n    AVG(Distance) AS AverageKillDistance\r\nFROM
+      Death\r\nGROUP BY Weapon;"
+  - isOpen: 0
+    Name: Les 3 plus grosse victime
+    Command: "SELECT\r\n    p.Name,\r\n    COUNT(*) AS DeathCount\r\nFROM Death d\r\nJOIN
+      Player p ON p.Id = d.VictimId\r\nGROUP BY p.Name\r\nORDER BY DeathCount DESC\r\nLIMIT
+      3;"
+  - isOpen: 0
+    Name: Les 3 qui se sont le plus self destruct
+    Command: "SELECT\r\n    p.Name,\r\n    COUNT(*) AS SelfDestructCount\r\nFROM
+      Death d\r\nJOIN Player p ON p.Id = d.VictimId\r\nWHERE d.VictimId = d.KillerId\r\nGROUP
+      BY p.Id, p.Name\r\nORDER BY SelfDestructCount DESC\r\nLIMIT 3;"
+  - isOpen: 0
+    Name: Moyenne de distance de kill de chaque arme sans les auto destruction
+    Command: "SELECT\n    Weapon,\n    AVG(Distance) AS AverageKillDistance\nFROM
+      Death\nWHERE VictimId <> KillerId\nGROUP BY Weapon;"

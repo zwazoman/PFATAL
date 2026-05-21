@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "new Command", menuName = "CommandSQL")]
+[CreateAssetMenu(fileName = "new Command", menuName = "Scriptable Objects/CommandSQL")]
 public class Command : ScriptableObject
 {
     public List<CommandSQL> CommandData;

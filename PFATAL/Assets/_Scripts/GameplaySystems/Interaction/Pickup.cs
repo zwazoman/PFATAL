@@ -29,6 +29,11 @@ public class Pickup : Interactable
 
     float _timer;
 
+    protected virtual void Update()
+    {
+        _visuals.transform.Rotate(new Vector3(0,180*Time.deltaTime,0));
+    }
+
     public override void Interact(PlayerInteraction interaction)
     {
         base.Interact(interaction);

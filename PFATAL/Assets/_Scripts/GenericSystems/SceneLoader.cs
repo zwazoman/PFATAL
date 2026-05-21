@@ -51,10 +51,9 @@ public class SceneLoader : MonoBehaviour
         _loadingScreen.DOFade(0, _fadeDuration).onComplete += FadeOutEnded_Callback;
     }
 
-
     async void Load(string sceneName)
     {
-        await SceneManager.LoadSceneAsync(sceneName,LoadSceneMode.Single);
+        await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         OnSceneLoaded?.Invoke();
     }
 
@@ -63,16 +62,14 @@ public class SceneLoader : MonoBehaviour
         Application.Quit();
     }
 
-    public void LeaveLobby(string sceneName)
+    public async void LeaveLobby(string sceneName)
     {
         try
         {
-            Debug.Log("Leaving lobby...");
-            LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.GetCurrentLobby().Id, UnityServicesManager.Instance.GetPlayerId());
-            _ = NetworkConnectionManager.Instance.Disconnect();
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+            await NetworkConnectionManager.Instance.Disconnect();
+            SceneManager.LoadScene(sceneName);
         }
-        catch (LobbyServiceException e)
+        catch (Exception e)
         {
             Debug.Log(e);
         }

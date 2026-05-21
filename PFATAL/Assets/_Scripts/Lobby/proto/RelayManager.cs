@@ -10,7 +10,7 @@ public class RelayManager : MonoBehaviour
 {
     public static RelayManager Instance { get; private set; }
 
-    private const int MAX_CONNECTIONS = 7; // 8 joueurs max = 1 host + 7 clients
+    private const int MAX_CONNECTIONS = 7;
 
     private void Awake()
     {
@@ -28,10 +28,10 @@ public class RelayManager : MonoBehaviour
         try
         {
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(MAX_CONNECTIONS);
-            Debug.Log($"[Relay] Allocation créée. Region: {allocation.Region}");
+            Debug.Log($"[Relay] Allocation crÃ©Ã©e. Region: {allocation.Region}");
 
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            Debug.Log($"[Relay] Code de jointure généré: {joinCode}");
+            Debug.Log($"[Relay] Code de jointure gÃ©nÃ©rÃ©: {joinCode}");
 
             SetupHostTransport(allocation);
 
@@ -39,7 +39,7 @@ public class RelayManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Relay] Erreur lors de la création de l'allocation: {e.Message}");
+            Debug.LogError($"[Relay] Erreur lors de la crÃ©ation de l'allocation: {e.Message}");
             return null;
         }
     }
@@ -64,7 +64,7 @@ public class RelayManager : MonoBehaviour
 
     private void SetupHostTransport(Allocation allocation)
     {
-        UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        UnityTransport transport = NetworkManager.Singleton.NetworkConfig.NetworkTransport as UnityTransport;
 
         transport.SetHostRelayData(
             allocation.RelayServer.IpV4,
@@ -74,11 +74,12 @@ public class RelayManager : MonoBehaviour
             allocation.ConnectionData
         );
 
-        Debug.Log("[Relay] Transport configuré pour l'host");
+        Debug.Log("[Relay] Transport configurÃ© pour l'host");
     }
+
     private void SetupClientTransport(JoinAllocation allocation)
     {
-        UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        UnityTransport transport = NetworkManager.Singleton.NetworkConfig.NetworkTransport as UnityTransport;
 
         transport.SetClientRelayData(
             allocation.RelayServer.IpV4,
@@ -89,6 +90,6 @@ public class RelayManager : MonoBehaviour
             allocation.HostConnectionData
         );
 
-        Debug.Log("[Relay] Transport configuré pour le client");
+        Debug.Log("[Relay] Transport configurÃ© pour le client");
     }
 }

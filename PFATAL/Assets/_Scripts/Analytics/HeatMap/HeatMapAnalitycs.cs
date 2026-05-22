@@ -56,6 +56,13 @@ public class HeatMapAnalitycs : NetworkBehaviour
             if (!character.IsServer) return;
         }
 
+        if (MapBounds.instance == null)
+        {
+            //UnityEngine.Debug.LogError("No MapBounds object found in the scene. Please add one to use HeatMapAnalitycs.");
+            this.enabled = false;
+            return;
+        }
+
         mapBoundsObject = MapBounds.instance;
 
         HeatMapServerAnalitics.instance.Players.Add(gameObject);

@@ -161,22 +161,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Tomahawk
   playerCharacter: {fileID: 0}
   _pickup: {fileID: 8646866019681496794, guid: 72000dcd8dc467c42b4489189c2b51c1, type: 3}
-  isUsing: 0
   shootSocket: {fileID: 5082039714644498705}
   projectile: {fileID: 5604889624952730010, guid: eb539e3648b8a1249a1e260b56bcfbe2, type: 3}
   visualProjectile: {fileID: 4712206728071598508, guid: e7592c01c08cf0d4191b101e26700cc5, type: 3}
-  delayBetweenShots: 0.4
+  delayBetweenShots: 0.1
   shootSocketDownPosMult: 0.1
   shootRayLayerMask:
     serializedVersion: 2
     m_Bits: 320
   maxAmmoAmount: 3
   _projXOffset: 15
-  _reloadTime: 1.5
-  _dashHoldDuration: 0.3
-  _dashStrength: 12
-  dashCooldown: 3
-  currentDashCooldown: 0
+  _reloadTime: 1
+  _dashStrength: 10
+  _dashDelay: 0.1
 --- !u!114 &8413565607503895234
 MonoBehaviour:
   m_ObjectHideFlags: 0

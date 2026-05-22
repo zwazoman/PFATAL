@@ -47,9 +47,11 @@ public class PlayerCharacterSpawner : MonoBehaviour
     public void ReSpawnPlayer(PlayerCharacter player)
     {
         Transform spawnSocket = SelectSpawnSocket();
-
-        player.physics.SetPosition(spawnSocket.position);
+        
+        //player.physics.SetPosition(spawnSocket.position);
+        player.transform.position = spawnSocket.position;
         player.transform.rotation = spawnSocket.rotation;
+
     }
 
     Transform SelectSpawnSocket()

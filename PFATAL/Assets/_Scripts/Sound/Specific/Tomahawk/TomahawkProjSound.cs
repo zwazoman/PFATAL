@@ -8,6 +8,6 @@ public class TomahawkProjSound : MovingSoundComponent<Visual_Proj_Tomahawk>
     protected override async void LinkEvents()
     {
         main.OnSpawn += () => StartSound(Sounds.TomahawkSpin3D);
-        main.OnDespawn += StopSound;
+        main.OnDespawn += () => StopSound();
     }
 }

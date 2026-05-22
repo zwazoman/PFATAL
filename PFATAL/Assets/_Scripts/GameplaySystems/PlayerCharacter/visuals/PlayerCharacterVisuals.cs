@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _scripts.PlayerCharacter;
 using _Scripts.Pooling;
+using SimpleVFXs;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     
     [Header("scene references")]
     [SerializeField] PlayerCharacter _playerCharacter;
+    [SerializeField] StylisedEffect _healVFX;
     [SerializeField] Transform _cameraRoot;
     
     [Header("FPS visuals")]
@@ -36,9 +38,15 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     private Vector3 _measuredVelocity;
     
     //public methods
-
+    
     [SerializeField] List<GameObject> _visualObjects;
 
+    public void PlayHealingVFX()
+    {
+        _healVFX.vfx.SetFloat("Radius", IsInFpsView ? 1 : .5f);
+        _healVFX.TriggerMainEvent();
+    }
+    
     [Rpc(SendTo.Everyone)]
     public void HideRpc()
     {

@@ -9,26 +9,28 @@ public class SwordCrosshair : Crosshair<Sword>
 
     public override void Activate(Sword weapon)
     {
+        print(weapon);
+
         base.Activate(weapon);
 
-        weapon.OnStartCharging += SwapCrosshairState;
-        weapon.OnDashStarted += SwapCrosshairState;
+        weapon.OnStartCharging += ActivateDashCrosshair;
+        weapon.OnAttackEnded += DeactivateDashCrosshair;
     }
 
     protected override void Deactivate()
     {
-        weapon.OnStartCharging -= SwapCrosshairState;
-        weapon.OnDashStarted -= SwapCrosshairState;
+        weapon.OnStartCharging -= ActivateDashCrosshair;
+        weapon.OnAttackEnded -= DeactivateDashCrosshair;
 
         _dashCH.SetActive(false);
 
         base.Deactivate();
     }
 
-    void SwapCrosshairState()
-    {
-        _dashCH.SetActive(!_dashCH.activeSelf);
-    }
+    void ActivateDashCrosshair() => _dashCH.SetActive(true);
+
+    void DeactivateDashCrosshair() => _dashCH.SetActive(false);
+
 
     private void Update()
     {

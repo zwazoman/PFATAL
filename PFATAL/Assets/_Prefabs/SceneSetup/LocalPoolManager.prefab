@@ -221,6 +221,7 @@ Transform:
   - {fileID: 9059638603579921642}
   - {fileID: 3966660402882201146}
   - {fileID: 4274482674660024169}
+  - {fileID: 1835205460063664647}
   m_Father: {fileID: 1406014691294916543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4407685690260219969
@@ -270,6 +271,53 @@ MonoBehaviour:
   _prefab: {fileID: 2675441252597198849, guid: 9e5cc94b0c3822347bc5724f0dc2cb9b, type: 3}
   BaseSize: 15
   GrowRateWhenEmpty: 5
+--- !u!1 &4451477007499937250
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1835205460063664647}
+  - component: {fileID: 803936561276291545}
+  m_Layer: 0
+  m_Name: groundslam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1835205460063664647
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4451477007499937250}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8787378877497911397}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &803936561276291545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4451477007499937250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32bd68b8c2fb4744b83a76006a47f944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Pooling.Pool
+  _prefab: {fileID: 7433187660289328953, guid: 96ebe9343fdd3884d8d558c5e6ac11d8, type: 3}
+  BaseSize: 5
+  GrowRateWhenEmpty: 3
 --- !u!1 &5162206439842516277
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,6 +369,7 @@ MonoBehaviour:
   Pool_VFX_Explosion_big: {fileID: 900679118607610856}
   Pool_VFX_Explosion_small: {fileID: 690653188899277433}
   Pool_VFX_GemBreak: {fileID: 5828878690166291268}
+  Pool_VFX_GroundSlam: {fileID: 803936561276291545}
 --- !u!1 &5676857051342966911
 GameObject:
   m_ObjectHideFlags: 0

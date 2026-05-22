@@ -53,7 +53,7 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         //hit feedback
         if (damageData.SourcePlayerClientID != DamageData.NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID && (damageData.SourcePlayerClientID != OwnerClientId || !isPlayer))
         {
-                ApplyDamageInflictedFeedbacksRpc(IsDead, RpcTarget.Single(damageData.SourcePlayerClientID, RpcTargetUse.Temp));
+                ApplyDamageInflictedFeedbacksRpc(IsDead && isPlayer, RpcTarget.Single(damageData.SourcePlayerClientID, RpcTargetUse.Temp));
         }
 
         //knockback

@@ -124,6 +124,37 @@ VFXRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
+--- !u!1 &9121392669027839365
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1736553830689441513}
+  m_Layer: 0
+  m_Name: ShootSocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1736553830689441513
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9121392669027839365}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7171063974548638414}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &556107317842870252
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -279,6 +310,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 17180787228645383}
+    - targetCorrespondingSourceObject: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1736553830689441513}
     - targetCorrespondingSourceObject: {fileID: 4290852872638469156, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9186676869448053100}
@@ -317,6 +351,13 @@ MonoBehaviour:
   isUsing: 0
   _animator: {fileID: 2241389691576616700}
   _Vfx: {fileID: 8689209501163083321}
+  shootSocket: {fileID: 1736553830689441513}
+  projectile: {fileID: 5604889624952730010, guid: 02037c95d101bcd428a252996c2a9e87, type: 3}
+  visualProjectile: {fileID: 7728757240235872879, guid: f30bd7f05c022cd4fb3962f4deaca542, type: 3}
+  rotationMode: 1
+  shootRayLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   _tornadoProjectilePrefab: {fileID: 5604889624952730010, guid: 02037c95d101bcd428a252996c2a9e87, type: 3}
 --- !u!4 &7171063974548638414 stripped
 Transform:

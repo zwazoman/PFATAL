@@ -15,19 +15,21 @@ public class Proj_Visual : MonoBehaviour
     [HideInInspector] public Projectile trueProjectile;
 
     protected float spawnTime;
-    Vector3 _spawnPosition;
+    protected Vector3 spawnPosition;
 
     protected virtual async void Start()
     {
         OnSpawn?.Invoke();
 
         spawnTime = Time.time;
-        _spawnPosition = transform.position;
+        spawnPosition = transform.position;
 
-        while (trueProjectile == null)
+        if (trueProjectile == null)
         {
-            await Awaitable.NextFrameAsync();
+            while (trueProjectile == null)
+                await Awaitable.NextFrameAsync();
         }
+
         trueProjectile.OnDespawn += () => Destroy(gameObject);
     }
 
@@ -35,7 +37,7 @@ public class Proj_Visual : MonoBehaviour
     {
         float timeSinceSpawn = Time.time - spawnTime;
 
-        transform.position = _spawnPosition
+        transform.position = spawnPosition
                      + transform.forward * (speed * timeSinceSpawn)
                      + Vector3.up * (timeSinceSpawn * timeSinceSpawn * -.5f * gravity);
     }

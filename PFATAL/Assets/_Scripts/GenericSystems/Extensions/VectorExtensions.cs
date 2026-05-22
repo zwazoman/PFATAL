@@ -101,6 +101,11 @@ namespace _Scripts.Extensions
             return new Vector2(v.x, v.y);
         }
         
+        public static Vector2 XZ(this Vector3 v)
+        {
+            return new Vector2(v.x, v.z);
+        }
+        
         public static Vector3 Flattened(this Vector3 v)
         {
             v.y = 0;

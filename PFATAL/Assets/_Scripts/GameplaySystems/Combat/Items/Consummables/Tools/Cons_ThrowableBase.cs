@@ -9,7 +9,6 @@ using UnityEngine;
 /// </summary>
 public abstract class Cons_ThrowableBase : Consummable
 {
-    
     protected bool _throwAnimationIsPlaying { get; private set; } = false;
     
     public override void Equip()
@@ -57,5 +56,4 @@ public abstract class Cons_ThrowableBase : Consummable
     {
         ThrowObject();
     }
-    
 }

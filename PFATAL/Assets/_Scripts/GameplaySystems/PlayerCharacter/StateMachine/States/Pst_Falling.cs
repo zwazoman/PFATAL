@@ -41,6 +41,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         
         public override void Behave(PlayerCharacter ctx, UpdatePoint updatePoint)
         {
+            base.Behave(ctx, updatePoint);
             ApplyAirControls(ctx);
         }
 

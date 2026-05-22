@@ -26,7 +26,6 @@ public class FinitePeriodicBursts : VFXSpawnerCallbacks
 
     public sealed override void OnUpdate(VFXSpawnerState state, VFXExpressionValues vfxValues, VisualEffect vfxComponent)
     {
-        Debug.Log(state.loopState);
         if(state.loopState == VFXSpawnerLoopState.Looping)
         {
             state.spawnCount+= vfxValues.GetInt(particlesPerBurstID);

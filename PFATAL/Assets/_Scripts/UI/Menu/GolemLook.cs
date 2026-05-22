@@ -2,7 +2,7 @@ using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class LobbyGame : MonoBehaviour
+public class GolemLook : MonoBehaviour
 {
     [SerializeField] Transform _golemHead;
     [SerializeField] Camera _cam;

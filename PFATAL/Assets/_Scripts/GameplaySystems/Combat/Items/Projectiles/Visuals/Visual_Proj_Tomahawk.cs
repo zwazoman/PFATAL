@@ -56,7 +56,7 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         base.Update();
 
         //update magic rope visuals
-        _lineRenderer.enabled = _isLastThrowTomahawk && _weapon.CanDash && _playerCharacter.playerHands.rightHand.equippedItem == _weapon;
+        _lineRenderer.enabled = _isLastThrowTomahawk && _playerCharacter.playerHands.rightHand.equippedItem == _weapon;
         if(_lineRenderer.enabled)
             UpdateLineRenderer();
     }

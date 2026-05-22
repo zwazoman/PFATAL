@@ -178,7 +178,7 @@ public class LobbyManager : MonoBehaviour
         {
             var lobbyId = currentLobby.Id;
             var playerId = UnityServicesManager.Instance.GetPlayerId();
-            currentLobby = null; // ✅ null AVANT le await
+            currentLobby = null;
             await LobbyService.Instance.RemovePlayerAsync(lobbyId, playerId);
         }
         catch (Exception e)
@@ -193,7 +193,7 @@ public class LobbyManager : MonoBehaviour
         try
         {
             var lobbyId = currentLobby.Id;
-            currentLobby = null; // ✅ null AVANT le await
+            currentLobby = null;
             await LobbyService.Instance.DeleteLobbyAsync(lobbyId);
         }
         catch (Exception e)
@@ -207,7 +207,7 @@ public class LobbyManager : MonoBehaviour
         return currentLobby != null && currentLobby.HostId == UnityServicesManager.Instance.GetPlayerId();
     }
 
-    public Unity.Services.Lobbies.Models.Lobby GetCurrentLobby()
+    public Lobby GetCurrentLobby()
     {
         return currentLobby;
     }

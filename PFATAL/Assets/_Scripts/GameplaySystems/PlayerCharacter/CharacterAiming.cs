@@ -115,7 +115,7 @@ public class CharacterAiming : NetworkBehaviour
     IEnumerator Accelerate()
     {
         Gamepad gamepad = Gamepad.current;
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.3f);
         if (_character.inputs.UsingGamePad == true)
         {
             if ((gamepad.rightStick.ReadValue().x > 0.7f) || (gamepad.rightStick.ReadValue().y > 0.7f) ||

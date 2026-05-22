@@ -77,6 +77,8 @@ public class HeatMapAnalitycs : NetworkBehaviour
     {
         //if (!isFixed) return;
 
+        return;
+
         if ((_timer += Time.deltaTime) >= interval)
         {
             _timer = 0f;

@@ -57,6 +57,23 @@ public class PlayerDetector : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (_input.UsingGamePad == true)
+        {
+            if (Physics.SphereCast(_cameraTransform.position, 1f, _cameraTransform.forward, out _hitInfo, 100f, _mask))
+            {
+                AimAssist();
+                /*
+                if (_canDecrease == true)
+                {
+                    //_characterAiming.Sensitivity = 90;
+                    _canDecrease = false;
+                }*/
+            }
+        }
+    }
+
     private void AimAssist()
     {
         foreach(RaycastHit target in Physics.SphereCastAll(_cameraTransform.position, 1f, _cameraTransform.forward, 100f, _mask))

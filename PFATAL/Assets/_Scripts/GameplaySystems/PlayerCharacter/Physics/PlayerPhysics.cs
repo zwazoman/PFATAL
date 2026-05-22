@@ -59,14 +59,15 @@ public class PlayerPhysics : MonoBehaviour
         if (!enabled) return;
         
         //gravity
-        AddForce(Vector3.down * _gravityStrength);
+        //if(!ComputeIsGrounded())
+        // ApplyGravity();
         
         //Apply forces
         Velocity += _sumOfForces * Time.deltaTime;
         _sumOfForces = Vector3.zero;
 
         //check for collisions
-        CheckForCollisions();
+        HandleCollisions();
 
         //Apply Velocity
         Acceleration = Velocity - _lastVelocity;
@@ -75,7 +76,7 @@ public class PlayerPhysics : MonoBehaviour
     }
     
 //collisions
-    void CheckForCollisions() 
+    void HandleCollisions() 
     {
         int i = 0;
 
@@ -102,17 +103,19 @@ public class PlayerPhysics : MonoBehaviour
                 && i < _maxCollisionSteps)
             {
                 //Vector3 toHit = hit.point - _rb.position;
-                if (true|| Vector2.Dot(hit.normal, Velocity) <= 0)
+                Vector3 normal = hit.normal;
+                //normal.y = Mathf.SmoothStep(-1, 1, normal.y*.5f * +.5f);
+                if (true||Vector2.Dot(hit.normal, Velocity) <= 0)
                 {
                     hasBounced |= bounciness > 0;
 
-                    float DistanceToImpactPoint = hit.distance- (raycast? 0.5f : .001f);
+                    float DistanceToImpactPoint = hit.distance- (raycast? 0.5f : .000f)-.0015f;
 
                     Vector3 travelVector = Velocity * Time.deltaTime;
                     Vector3 TravelToImpactPoint = (rayDirection * DistanceToImpactPoint);
 
                     Vector3 remainingTravel = travelVector - TravelToImpactPoint;
-                    Vector3 RemainingProjectedTravel = Vector3.ProjectOnPlane(remainingTravel,hit.normal);//(remainingTravel) - (1f + bounciness) * Vector3.Dot(remainingTravel, hit.normal) * hit.normal;
+                    Vector3 RemainingProjectedTravel = Vector3.ProjectOnPlane(remainingTravel,normal);//(remainingTravel) - (1f + bounciness) * Vector3.Dot(remainingTravel, hit.normal) * hit.normal;
                     Velocity = (TravelToImpactPoint + RemainingProjectedTravel) / Time.deltaTime;
                     velocityMagnitude = Velocity.magnitude;
                     rayDirection = Velocity / velocityMagnitude;
@@ -136,17 +139,17 @@ public class PlayerPhysics : MonoBehaviour
     {
         if (Physics.SphereCast(
                 Position,
-                col.radius*.4f
+                col.radius*.95f
                 ,Vector3.down,
                 out RaycastHit _
-                ,.02f
+                ,.05f
                 , _groundLayerMask) )
             return true;
         
         if (Physics.Raycast(
                 Position,
                 Vector3.down,
-                out RaycastHit hit,
+                out RaycastHit _,
                 0.02f + col.radius,
                 _groundLayerMask))
                 return true;
@@ -191,6 +194,11 @@ public class PlayerPhysics : MonoBehaviour
     public void AddForce(Vector3 force)
     {
         _sumOfForces += force;
+    }
+
+    public void ApplyGravity()
+    {
+        AddForce(Vector3.down * _gravityStrength);
     }
 
     public void AddImpulse(Vector3 impulse)

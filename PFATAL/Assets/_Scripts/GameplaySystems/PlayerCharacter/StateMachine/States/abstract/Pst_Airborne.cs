@@ -14,6 +14,12 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             return base.FindNextState(ctx);
         }
 
+        public override void Behave(PlayerCharacter ctx, UpdatePoint updatePoint)
+        {
+            base.Behave(ctx, updatePoint);
+            ctx.physics.ApplyGravity();
+        }
+
         protected void ApplyAirControls(PlayerCharacter ctx)
         {
             //compute target velocity

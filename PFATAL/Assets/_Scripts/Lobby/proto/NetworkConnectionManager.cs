@@ -28,11 +28,9 @@ public class NetworkConnectionManager : MonoBehaviour
 
     public async Task<bool> StartHost(string lobbyName = "MyGame")
     {
-        // ✅ Désactive le NetworkObject de l'AudioManager pour éviter le conflit de hash
-        var audioNetObj = FindObjectOfType<AudioManager>()?.GetComponent<NetworkObject>();
+        var audioNetObj = FindFirstObjectByType<AudioManager>()?.GetComponent<NetworkObject>();
         if (audioNetObj != null) audioNetObj.enabled = false;
 
-        // ✅ Recrée le NetworkManager à chaque session
         if (NetworkManager.Singleton != null)
         {
             Destroy(NetworkManager.Singleton.gameObject);
@@ -93,6 +91,15 @@ public class NetworkConnectionManager : MonoBehaviour
 
     public async Task<bool> StartClient(string lobbyCode)
     {
+        if (NetworkManager.Singleton != null)
+        {
+            Destroy(NetworkManager.Singleton.gameObject);
+            await Task.Yield();
+        }
+        var nmGO = Instantiate(networkManagerPrefab);
+        DontDestroyOnLoad(nmGO);
+        await Task.Delay(500);
+
         bool servicesInitialized = await UnityServicesManager.Instance.InitializeUnityServices();
         if (!servicesInitialized)
         {
@@ -144,6 +151,15 @@ public class NetworkConnectionManager : MonoBehaviour
 
     public async Task<bool> StartClientById(string lobbyId)
     {
+        if (NetworkManager.Singleton != null)
+        {
+            Destroy(NetworkManager.Singleton.gameObject);
+            await Task.Yield();
+        }
+        var nmGO = Instantiate(networkManagerPrefab);
+        DontDestroyOnLoad(nmGO);
+        await Task.Delay(500);
+
         while (!UnityServicesManager.Instance.IsInitialized)
             await Task.Delay(100);
 
@@ -198,7 +214,6 @@ public class NetworkConnectionManager : MonoBehaviour
         else
             await LobbyManager.Instance.LeaveLobby();
 
-        // ✅ Détruit le NetworkManager — recréé au prochain StartHost
         if (NetworkManager.Singleton != null)
             Destroy(NetworkManager.Singleton.gameObject);
 

@@ -2,6 +2,7 @@ using _scripts.PlayerCharacter;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using state = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
 public class PlayerHands : MonoBehaviour
 {
@@ -16,6 +17,23 @@ public class PlayerHands : MonoBehaviour
     {
         hands[0] = leftHand;
         hands[1] = rightHand;
+    }
+
+    private void Start()
+    {
+        _playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += StateChanged_Callback;
+    }
+
+    void StateChanged_Callback(state previousState, state nextState)
+    {
+        print(previousState.ToString());
+        print(nextState.ToString());
+
+        if ((previousState == state.Dead && (nextState & state.Alive) == state.Alive) || (previousState == state.Unknown && (nextState & state.Alive) == state.Alive))
+        {
+            print("equip random weapon");
+            TryEquipRandomWeapon();
+        }
     }
 
     public bool TryEquipItem(ItemInfo itemInfo)

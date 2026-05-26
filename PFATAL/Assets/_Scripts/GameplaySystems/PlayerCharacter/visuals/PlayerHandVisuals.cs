@@ -77,9 +77,7 @@ namespace GameplaySystems.PlayerCharacter
         }
 
         private void OnNewItemEquipped(Item equippedItem)
-        {
-            print("received event equipped item : "+equippedItem.GetType());
-            
+        {   
             //set idle pose
             currentDefaultIdlePose = equippedItem switch
             {

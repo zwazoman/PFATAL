@@ -43,7 +43,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 ctx.HUD.HideDeathUI();
                 ctx.playerInteraction.canInteract = true;
                 ctx.health.Heal();
-                ctx.playerHands.TryEquipRandomWeapon();
+                //ctx.playerHands.TryEquipRandomWeapon();
                 ctx.visuals.ShowRpc();
                 PlayerCharacterSpawner.Instance.ReSpawnPlayer(ctx);
                 if (ctx.deathCamera == null) return;

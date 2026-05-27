@@ -39,6 +39,11 @@ public class Tomahawk : ProjectileWeapon
     {
         base.Equip();
 
+        canShoot = true;
+        _isShooting = false;
+        _canGrapple = true;
+        _canReload = true;
+
         _currentAmmoCount = maxAmmoAmount;
 
         try
@@ -94,12 +99,15 @@ public class Tomahawk : ProjectileWeapon
 
         print(canShoot);
         print(_canGrapple);
+        print(_currentProjectile);
+        print(_isShooting);
 
         if(canShoot && _currentProjectile == null && _currentAmmoCount > 0 && !_isShooting)
         {
+            print("shoot");
             Shoot();
         }
-        else if (_canGrapple && _currentProjectile != null)
+        else if (_canGrapple && _currentProjectile != null && !_isShooting)
         {
             _canGrapple = false;
 
@@ -123,6 +131,8 @@ public class Tomahawk : ProjectileWeapon
 
     void DashTowardsProj()
     {
+        StartShootDelay();
+
         _canReload = false;
 
         playerCharacter.physics.SetVelocity(Vector3.zero);
@@ -135,7 +145,7 @@ public class Tomahawk : ProjectileWeapon
             tomahawk.Despawn();
         }
     }
-    
+
     void Shoot()
     {
         _isShooting = true;

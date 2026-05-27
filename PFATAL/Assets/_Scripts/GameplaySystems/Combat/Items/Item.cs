@@ -16,10 +16,11 @@ public class Item : MonoBehaviour
 
     [HideInInspector] public PlayerCharacter playerCharacter;
     public Hand hand { get; private set; }
+    public bool isUsing { get; private set; }
+
 
     [SerializeField] GameObject _pickup;
 
-    public bool isUsing;
     protected float holdDuration;
 
     public int ItemID => this switch

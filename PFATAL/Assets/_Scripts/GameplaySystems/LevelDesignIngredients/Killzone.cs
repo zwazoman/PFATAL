@@ -14,6 +14,9 @@ public class Killzone : NetworkBehaviour
         {
             DamageData data = new();
             data.Amount = _damages;
+            data.SourcePos = transform.position;
+            data.Point = transform.position;
+            data.KnockbackForce = Vector3.up * 10;
             damageable.TakeDamage(data);
         }
     }

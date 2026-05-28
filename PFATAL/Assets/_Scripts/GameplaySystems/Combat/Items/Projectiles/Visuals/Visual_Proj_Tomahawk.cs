@@ -29,7 +29,6 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         _anchorTransform = _playerCharacter.transform;
 
         _weapon = ((Tomahawk)_playerCharacter.playerHands.rightHand.equippedItem);
-        print(_weapon.name);
         
         //disable the rope line renderer when the player shoots another tomahawk
         _weapon.OnShoot += DisableLineRenderer;

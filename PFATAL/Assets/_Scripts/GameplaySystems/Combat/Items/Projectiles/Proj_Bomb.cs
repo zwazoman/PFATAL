@@ -15,7 +15,7 @@ public class Proj_Bomb : Projectile
 
     [SerializeField] private float _throwStrength = 25;
     
-    public float fuseTimer;
+    [HideInInspector] public float fuseTimer;
 
     private bool _isExploding = false;
 

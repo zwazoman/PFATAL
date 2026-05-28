@@ -1,4 +1,6 @@
 using _scripts.PlayerCharacter;
+using _scripts.PlayerCharacter.StateMachine.States;
+using _Scripts.StateMachine;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -21,15 +23,12 @@ public class PlayerHands : MonoBehaviour
 
     private void Start()
     {
-        _playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += StateChanged_Callback;
+        _playerCharacter.stateMachine.OnStateChanged += StateChanged_Callback;
     }
 
-    void StateChanged_Callback(state previousState, state nextState)
+    void StateChanged_Callback(StateBase<PlayerCharacter> previousState, StateBase<PlayerCharacter> nextState)
     {
-        print(previousState.ToString());
-        print(nextState.ToString());
-
-        if ((previousState == state.Dead && (nextState & state.Alive) == state.Alive) || (previousState == state.Unknown && (nextState & state.Alive) == state.Alive))
+        if (previousState is Pst_Dead && nextState is Pst_Alive)
         {
             print("equip random weapon");
             TryEquipRandomWeapon();

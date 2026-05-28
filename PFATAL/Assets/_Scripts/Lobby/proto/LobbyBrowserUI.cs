@@ -3,6 +3,7 @@ using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Gère l'affichage de la liste des lobbies disponibles et les interactions UI associées.
@@ -24,6 +25,10 @@ public class LobbyBrowserUI : MonoBehaviour
 
     [Header("Dépendances")]
     [SerializeField] private LobbyBrowser lobbyBrowser;
+
+    [Header("Controlleur")]
+    [SerializeField] private EventSystem _eventSystem;
+    [SerializeField] private GameObject _wichObject;
 
     private void Awake()
     {
@@ -54,6 +59,7 @@ public class LobbyBrowserUI : MonoBehaviour
         if (lobbies == null || lobbies.Count == 0)
         {
             statusText.text = "Aucun lobby disponible.";
+            _eventSystem.SetSelectedGameObject(_wichObject.gameObject);
             return;
         }
 
@@ -69,6 +75,7 @@ public class LobbyBrowserUI : MonoBehaviour
             if (cardScript != null)
                 cardScript.Setup(lobby, this);
         }
+        _eventSystem.SetSelectedGameObject(_wichObject.gameObject);
     }
 
     public async void JoinLobby(Lobby lobby)

@@ -29,8 +29,6 @@ public class AudioSettings : MonoBehaviour
         _musicBus.getVolume(out musicVolume);
         _sfxBus.getVolume(out sfxVolume);
 
-        print($"{masterVolume} {musicVolume} {sfxVolume}");
-
         return;
 
         _masterSlider.value = masterVolume;

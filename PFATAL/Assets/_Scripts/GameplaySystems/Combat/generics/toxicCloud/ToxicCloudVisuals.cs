@@ -15,7 +15,7 @@ public class ToxicCloudVisuals : MonoBehaviour
     
     private void Update()
     {
-        Camera cam = PlayerCharacter.LocalPlayerCharacter.cameraBehaviour._cam;
+        Camera cam = GameManager.Instance.localPlayerCharacter.cameraBehaviour._cam;
         if ((transform.position - cam.transform.position).sqrMagnitude < _cloud.radius * _cloud.radius)
         {
             _quad.gameObject.SetActive(true);

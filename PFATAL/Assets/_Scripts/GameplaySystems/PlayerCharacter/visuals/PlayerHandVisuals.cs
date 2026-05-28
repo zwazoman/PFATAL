@@ -31,7 +31,8 @@ namespace GameplaySystems.PlayerCharacter
             
             book_idle = 400,
             book_use = 401,
-            
+            book_charge_idle = 402,
+
             gem_idle = 500,
             gem_break = 501,
             

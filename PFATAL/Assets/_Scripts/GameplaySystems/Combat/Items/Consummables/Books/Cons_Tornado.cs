@@ -6,14 +6,10 @@ public class Cons_Tornado : Cons_BookBase
     [Header("Network")]
     [SerializeField] private GameObject _tornadoProjectilePrefab;
 
-    public override void StopUsing()
-    {
-        base.StopUsing();
-        StartCastAnimation();
-    }
-
     protected override void ApplySpellEffect()
     {
+        print("spell");
+
         //spawn tornado
         SpawnContext context = new(playerCharacter.OwnerClientId);
         context.floatData2 = ItemID;

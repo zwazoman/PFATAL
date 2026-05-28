@@ -153,7 +153,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sword
   playerCharacter: {fileID: 0}
   _pickup: {fileID: 8646866019681496794, guid: 9dbbfe26db967984788ffaac38ae8306, type: 3}
-  isUsing: 0
   hitSocket: {fileID: 312709263419611719}
   hitSphereRadius: 1
   damageAmount: 4
@@ -161,12 +160,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   _knockbackStrength: 10
-  dashCooldown: 1.5
+  dashCooldown: 0.75
   _dashChargedDuration: 0.3
-  _dashStrength: 7
+  _dashStrength: 10
   _dashDmgMult: 0.8
   _dashDotThreshold: 0
   currentDashCooldown: 0
+  isDashing: 0
 --- !u!114 &4397536837939559528
 MonoBehaviour:
   m_ObjectHideFlags: 0

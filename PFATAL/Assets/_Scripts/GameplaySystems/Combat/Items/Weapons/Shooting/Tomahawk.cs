@@ -23,15 +23,14 @@ public class Tomahawk : ProjectileWeapon
     [SerializeField] float _reloadTime = .7f;
 
     [Header("Tomahawk Dash Settings")]
-    [SerializeField] float _dashHoldDuration = .3f;
     [SerializeField] float _dashStrength = 10;
-    [SerializeField] public float dashCooldown = 3;
+    [SerializeField] float _dashDelay = .2f;
 
-    [HideInInspector] public float currentDashCooldown;
     int _currentAmmoCount;
 
-    bool _dashed = false;
-    public bool CanDash { get; private set; }= true;
+    bool _isShooting;
+    bool _canGrapple;
+    bool _canReload;
 
     float _reloadTimer;
     private Vector3 _dashDirection;
@@ -40,12 +39,12 @@ public class Tomahawk : ProjectileWeapon
     {
         base.Equip();
 
-        currentDashCooldown = dashCooldown;
-        _currentAmmoCount = maxAmmoAmount;
-        _dashed = false;
-        CanDash = true;
+        canShoot = true;
+        _isShooting = false;
+        _canGrapple = true;
+        _canReload = true;
 
-        playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += ResetDash;
+        _currentAmmoCount = maxAmmoAmount;
 
         try
         {
@@ -55,7 +54,9 @@ public class Tomahawk : ProjectileWeapon
         {
             Debug.LogException(e);
         }
-        
+
+        playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += StateChanged_Callback;
+
         //link animation events
         hand.animatorEventListener.OnGrapplePulled += DashTowardsProj;
         hand.animatorEventListener.OnTomahawkShot += SpawnProjectile;
@@ -64,59 +65,61 @@ public class Tomahawk : ProjectileWeapon
     public override void UnEquip()
     {
         base.UnEquip();
-
-        currentDashCooldown = dashCooldown;
         
         //unlink animation events
         hand.animatorEventListener.OnGrapplePulled -= DashTowardsProj;
         hand.animatorEventListener.OnTomahawkShot -= SpawnProjectile;
     }
 
-    public override void UseUpdate()
+    void StateChanged_Callback(state previousState, state newState)
     {
-        base.UseUpdate();
-        
-        //quand on reste appuyé longtemps
-        if (holdDuration >= _dashHoldDuration && _currentProjectile != null && !_dashed && CanDash)
+        if((newState & state.Grounded) == state.Grounded)
         {
-            //play dash animation
-            OnStartGrapple?.Invoke();
-
-            _dashed = true;
-            _dashDirection = (_currentProjectile.transform.position - playerCharacter.transform.position).normalized;
-            hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.tomahawk_grapple);
+            _canReload = true;
         }
     }
 
     private void Update()
     {
-        //reload progressif des 3 munitions
-        if (_currentAmmoCount < maxAmmoAmount)
+        if (_currentAmmoCount < maxAmmoAmount && _canReload)
         {
             _reloadTimer += Time.deltaTime;
 
             if (_reloadTimer >= _reloadTime)
             {
-                LoadAmmo();
+                LoadSingleAmmo();
                 _reloadTimer = 0;
             }
         }
     }
 
-    public override void StopUsing()
+    public override void StartUsing()
     {
-        base.StopUsing();
-        
-        //quand on relache
-        if (canShoot && !_dashed && _currentAmmoCount > 0)
+        base.StartUsing();
+
+        print(canShoot);
+        print(_canGrapple);
+        print(_currentProjectile);
+        print(_isShooting);
+
+        if(canShoot && _currentProjectile == null && _currentAmmoCount > 0 && !_isShooting)
         {
+            print("shoot");
             Shoot();
         }
+        else if (_canGrapple && _currentProjectile != null && !_isShooting)
+        {
+            _canGrapple = false;
 
-        _dashed = false;
+            //play dash animation
+            OnStartGrapple?.Invoke();
+
+            _dashDirection = (_currentProjectile.transform.position - playerCharacter.transform.position).normalized;
+            hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.tomahawk_grapple);
+        }
     }
 
-    void LoadAmmo()
+    void LoadSingleAmmo()
     {
         _currentAmmoCount++;
 
@@ -128,46 +131,26 @@ public class Tomahawk : ProjectileWeapon
 
     void DashTowardsProj()
     {
-        if (!CanDash)
-            return;
-        
+        StartShootDelay();
+
+        _canReload = false;
+
         playerCharacter.physics.SetVelocity(Vector3.zero);
         playerCharacter.physics.AddImpulse(_dashDirection * _dashStrength);
 
-        if(_currentProjectile!=null) _currentProjectile.Despawn();
-
-        CanDash = false;
-        //HandleDashDelay();
-    }
-
-    void ResetDash(state previousState, state newState)
-    {
-        if ((previousState == state.Falling) && ((newState & state.Grounded) == state.Grounded))
-            CanDash = true;
-    }
-
-    async void HandleDashDelay()
-    {
-        //todo link au crosshair
-
-        CanDash = false;
-
-        currentDashCooldown = 0;
-
-        while(currentDashCooldown < dashCooldown)
+        if (_currentProjectile != null)
         {
-            currentDashCooldown += Time.deltaTime;
-            await Awaitable.NextFrameAsync();
+            Proj_Tomahawk tomahawk = _currentProjectile as Proj_Tomahawk;
+            tomahawk.Explode();
+            tomahawk.Despawn();
         }
-
-        currentDashCooldown = dashCooldown;
-
-        CanDash = true;
     }
-    
+
     void Shoot()
     {
+        _isShooting = true;
         //diminish ammo
+
         _currentAmmoCount--;
         OnConsumeAmmo?.Invoke(_currentAmmoCount);
         if (_currentAmmoCount == 0)
@@ -180,11 +163,30 @@ public class Tomahawk : ProjectileWeapon
     //appelé par le callback de l'animator
     async void SpawnProjectile()
     {
+        _isShooting = false;
+
         print("Spawn Projectile");
         SpawnContext context = new(playerCharacter.OwnerClientId);
         context.floatData2 = ItemID;
-        await Shoot(context, Quaternion.Euler(-_projXOffset, 0, 0), shootSocket.position);
+        await Shoot(context, Quaternion.Euler(-_projXOffset, 0, 0), playerCharacter.playerCamera.transform.position);
+        StartDashDelay();
         OnTomahawkShoot?.Invoke(_currentProjectile);
+
+        _currentProjectile.OnDespawn += TomahawkDespawn_Callback;
     }
-    
+
+    void TomahawkDespawn_Callback()
+    {
+        StartShootDelay();
+
+        if(_currentProjectile != null)
+            _currentProjectile.OnDespawn -= TomahawkDespawn_Callback;
+    }
+
+    async void StartDashDelay()
+    {
+        await Awaitable.WaitForSecondsAsync(_dashDelay);
+
+        _canGrapple = true;
+    }
 }

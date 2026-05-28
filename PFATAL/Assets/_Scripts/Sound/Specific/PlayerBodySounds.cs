@@ -1,5 +1,8 @@
 using _scripts.PlayerCharacter;
+using _scripts.PlayerCharacter.StateMachine.States;
+using _Scripts.StateMachine;
 using NetworkTime;
+using Unity.VisualScripting;
 using UnityEngine;
 using state = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
@@ -32,9 +35,10 @@ public class PlayerBodySounds : SoundComponent<PlayerAnimationEventsListener>
             main.OnFootstep += Play3DFootstepSound;
         }
 
-        _playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += StateChanged_Callback;
+        _playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += ReplicatedStateChanged_Callback;
+        _playerCharacter.stateMachine.OnStateChanged += LocalStateCHanged_Callback;
 
-        _playerCharacter.health.OnDamageTaken += (_) => PlayDamageSound();
+        _playerCharacter.health.OnLocalDamageTaken += PlayDamageSound;
     }
 
     private void Update()
@@ -51,10 +55,9 @@ public class PlayerBodySounds : SoundComponent<PlayerAnimationEventsListener>
         }
     }
 
-
-    void StateChanged_Callback(state previousState, state newState)
+    void LocalStateCHanged_Callback(StateBase<PlayerCharacter> previousState, StateBase<PlayerCharacter> newState)
     {
-        if (newState == state.Walking)
+        if (newState is Pst_Walking)
         {
             _isWalking = true;
             PlayFootstepSound();
@@ -65,14 +68,20 @@ public class PlayerBodySounds : SoundComponent<PlayerAnimationEventsListener>
             _footstepsTimer = 0;
         }
 
-        if ((previousState == state.Falling) && ((newState & state.Grounded) == state.Grounded))
+        if ((previousState is Pst_Falling) && newState is Pst_Grounded)
             PlayLandSound();
 
-        if (newState == state.Jumping)
+        if (newState is Pst_Jumping)
             PlayJumpSound();
 
-        if ((previousState == state.GroundSlam))
+        if (previousState is Pst_GroundSlam)
             PlayGroundSlamSound();
+    }
+
+
+    void ReplicatedStateChanged_Callback(state previousState, state newState)
+    {
+
     }
 
     void PlayFootstepSound()

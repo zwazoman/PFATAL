@@ -29,7 +29,6 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         _anchorTransform = _playerCharacter.transform;
 
         _weapon = ((Tomahawk)_playerCharacter.playerHands.rightHand.equippedItem);
-        print(_weapon.name);
         
         //disable the rope line renderer when the player shoots another tomahawk
         _weapon.OnShoot += DisableLineRenderer;
@@ -56,7 +55,7 @@ public class Visual_Proj_Tomahawk : Proj_Visual
         base.Update();
 
         //update magic rope visuals
-        _lineRenderer.enabled = _isLastThrowTomahawk && _weapon.CanDash && _playerCharacter.playerHands.rightHand.equippedItem == _weapon;
+        _lineRenderer.enabled = _isLastThrowTomahawk && _playerCharacter.playerHands.rightHand.equippedItem == _weapon;
         if(_lineRenderer.enabled)
             UpdateLineRenderer();
     }

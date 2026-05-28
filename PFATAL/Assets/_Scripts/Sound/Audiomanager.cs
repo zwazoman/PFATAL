@@ -31,7 +31,7 @@ public class AudioManager : NetworkBehaviour
         if (instance == null || instance == this)
             instance = this;
         else
-            Destroy(this);
+            Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
         UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (_, _) => CleanUp();
@@ -117,7 +117,7 @@ public class AudioManager : NetworkBehaviour
 
     public void Trigger3dSoundPlayed(EventInstance instance)
     {
-        On3DSoundPlayed(instance);
+        On3DSoundPlayed?.Invoke(instance);
     }
 
     public void CleanUp()

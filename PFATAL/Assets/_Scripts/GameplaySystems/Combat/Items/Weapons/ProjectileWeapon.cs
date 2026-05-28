@@ -54,9 +54,7 @@ public class ProjectileWeapon : Item
 
         Proj_Visual visual = null;
 
-        Vector3 mirorPos;
-        Vector3 newPos = playerCharacter.playerCamera.ScreenToWorldPoint(new Vector3(playerCharacter.handsCamera.WorldToScreenPoint(shootSocket.position).x, playerCharacter.handsCamera.WorldToScreenPoint(shootSocket.position).y, .3f));
-        mirorPos = newPos;
+        Vector3 mirorPos = playerCharacter.playerCamera.ScreenToWorldPoint(new Vector3(playerCharacter.handsCamera.WorldToScreenPoint(shootSocket.position).x, playerCharacter.handsCamera.WorldToScreenPoint(shootSocket.position).y, .3f));
 
         //fait spawn un projectile "miroir" imitant les déplacements du vrai projectile sans délai chez le client
         if (visualProjectile != null)

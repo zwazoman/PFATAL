@@ -27,7 +27,9 @@ public class Cons_Bomb : Cons_ThrowableBase
     public override void Equip()
     {
         base.Equip();
-        
+
+        _fuseIgniteTime = 0;
+
         //reset visuals
         _fuseVFX.Stop();
         _bombRenderer.enabled = true;

@@ -2,12 +2,6 @@ using UnityEngine;
 
 public class Cons_ToxicCloud : Cons_BookBase
 {    
-    public override void StopUsing()
-    {
-        base.StopUsing();
-        StartCastAnimation();
-    }
-
     protected override void ApplySpellEffect()
     {
         //spawn poison projectile

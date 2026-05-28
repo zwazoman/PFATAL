@@ -1,7 +1,10 @@
 using _scripts.PlayerCharacter;
+using _scripts.PlayerCharacter.StateMachine.States;
+using _Scripts.StateMachine;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using state = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
 public class PlayerHands : MonoBehaviour
 {
@@ -16,6 +19,20 @@ public class PlayerHands : MonoBehaviour
     {
         hands[0] = leftHand;
         hands[1] = rightHand;
+    }
+
+    private void Start()
+    {
+        _playerCharacter.stateMachine.OnStateChanged += StateChanged_Callback;
+    }
+
+    void StateChanged_Callback(StateBase<PlayerCharacter> previousState, StateBase<PlayerCharacter> nextState)
+    {
+        if (previousState is Pst_Dead && nextState is Pst_Alive)
+        {
+            print("equip random weapon");
+            TryEquipRandomWeapon();
+        }
     }
 
     public bool TryEquipItem(ItemInfo itemInfo)

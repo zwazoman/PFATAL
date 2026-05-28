@@ -1,3 +1,4 @@
+using _Scripts.Pooling;
 using UnityEngine;
 
 public class Proj_Crossbow : Proj_Falling
@@ -23,8 +24,16 @@ public class Proj_Crossbow : Proj_Falling
     {
         speed = _initialSpeed;
         damageAmount = _initialDamage;
-
+        
         base.Despawn();
     }
 
+    protected override void OnContact(RaycastHit hit)
+    {
+        print("OnContact !!!");
+        PooledObject vfx = LocalPoolManager.Instance.Pool_VFX_Hit_Crossbow.PullObjectFromPool(hit.point);
+        vfx.transform.up = hit.normal;
+        vfx.GoBackIntoPool_Delayed(2);
+        base.OnContact(hit);
+    }
 }

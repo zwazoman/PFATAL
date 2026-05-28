@@ -440,34 +440,18 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: spikeCount
-    path: spikeCount
+  - name: SpikesScale
+    path: SpikesScale
     tooltip: 
     space: -1
     spaceable: 0
-    sheetType: m_Int
-    realType: Int32
+    sheetType: m_Vector3f
+    realType: Vector3
     defaultValue:
       m_Type:
-        m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 10
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: ShowSpikeMeshes
-    path: ShowSpikeMeshes
-    tooltip: 
-    space: -1
-    spaceable: 0
-    sheetType: m_Bool
-    realType: Boolean
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: True
+        m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      m_SerializableObject: '{"x":1.0,"y":1.0,"z":1.0}'
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -488,18 +472,34 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: SpikesScale
-    path: SpikesScale
+  - name: ShowSpikeMeshes
+    path: ShowSpikeMeshes
     tooltip: 
     space: -1
     spaceable: 0
-    sheetType: m_Vector3f
-    realType: Vector3
+    sheetType: m_Bool
+    realType: Boolean
     defaultValue:
       m_Type:
-        m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"x":1.0,"y":1.0,"z":1.0}'
+        m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: True
+    min: -Infinity
+    max: Infinity
+    enumValues: []
+    descendantCount: 0
+  - name: spikeCount
+    path: spikeCount
+    tooltip: 
+    space: -1
+    spaceable: 0
+    sheetType: m_Int
+    realType: Int32
+    defaultValue:
+      m_Type:
+        m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 10
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -7367,8 +7367,7 @@ MonoBehaviour:
   m_OutputSlots: []
   m_Disabled: 0
   m_ActivationSlot: {fileID: 8926484042661615978}
-  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340,
-    type: 3}
+  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340, type: 3}
 --- !u!114 &8926484042661615977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7611,8 +7610,7 @@ MonoBehaviour:
   m_OutputSlots: []
   m_Disabled: 0
   m_ActivationSlot: {fileID: 8926484042661615999}
-  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340,
-    type: 3}
+  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340, type: 3}
 --- !u!114 &8926484042661615998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7705,7 +7703,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616004}
   m_ExposedName: SpikesScale
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 1
   m_Category: Spikes
   m_Min:
     m_Type:
@@ -7897,7 +7895,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616009}
   m_ExposedName: BaseRingScale
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 2
   m_Category: Spikes
   m_Min:
     m_Type:
@@ -8504,7 +8502,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616052}
   m_ExposedName: ColorIntensity
   m_Exposed: 1
-  m_Order: 6
+  m_Order: 3
   m_Category: Color
   m_Min:
     m_Type:
@@ -8630,7 +8628,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616090}
   m_ExposedName: ShowSpikeMeshes
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 4
   m_Category: Spikes
   m_Min:
     m_Type:
@@ -9895,8 +9893,7 @@ MonoBehaviour:
   m_OutputSlots: []
   m_Disabled: 0
   m_ActivationSlot: {fileID: 8926484042661616164}
-  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340,
-    type: 3}
+  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340, type: 3}
 --- !u!114 &8926484042661616163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9989,8 +9986,7 @@ MonoBehaviour:
   m_OutputSlots: []
   m_Disabled: 0
   m_ActivationSlot: {fileID: 8926484042661616167}
-  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340,
-    type: 3}
+  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340, type: 3}
 --- !u!114 &8926484042661616166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10673,7 +10669,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616231}
   m_ExposedName: Sparks
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 5
   m_Category: Sparks
   m_Min:
     m_Type:
@@ -10817,8 +10813,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616242}
   m_OutputSlots:
   - {fileID: 8926484042661616243}
-  m_Subgraph: {fileID: 5371698745253816930, guid: 87573e560427ae24abaa6c67d3fcbd66,
-    type: 3}
+  m_Subgraph: {fileID: 5371698745253816930, guid: 87573e560427ae24abaa6c67d3fcbd66, type: 3}
 --- !u!114 &8926484042661616240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12368,7 +12363,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616302}
   m_ExposedName: SparksMaxLifeTime
   m_Exposed: 1
-  m_Order: 7
+  m_Order: 6
   m_Category: Sparks
   m_Min:
     m_Type:
@@ -12449,7 +12444,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616304}
   m_ExposedName: SparksMaxVelocity
   m_Exposed: 1
-  m_Order: 8
+  m_Order: 7
   m_Category: Sparks
   m_Min:
     m_Type:
@@ -12903,7 +12898,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616321}
   m_ExposedName: spikeCount
   m_Exposed: 1
-  m_Order: 1
+  m_Order: 8
   m_Category: Spikes
   m_Min:
     m_Type:
@@ -14145,8 +14140,7 @@ MonoBehaviour:
   m_OutputSlots: []
   m_Disabled: 0
   m_ActivationSlot: {fileID: 8926484042661616399}
-  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340,
-    type: 3}
+  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340, type: 3}
 --- !u!114 &8926484042661616398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14959,8 +14953,7 @@ MonoBehaviour:
     - rid: 1001
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: 32c98b538fd9ac94cb56319fdefd3348,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: 32c98b538fd9ac94cb56319fdefd3348, type: 3}
         materialSettings:
           m_PropertyNames:
           - _ZWriteControl
@@ -15088,8 +15081,7 @@ MonoBehaviour:
   m_OutputSlots: []
   m_Disabled: 0
   m_ActivationSlot: {fileID: 8926484042661616431}
-  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340,
-    type: 3}
+  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340, type: 3}
 --- !u!114 &8926484042661616430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17843,8 +17835,7 @@ MonoBehaviour:
     - rid: 1001
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: 340e2130f7e90ae4ba330527ab5c203a,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: 340e2130f7e90ae4ba330527ab5c203a, type: 3}
         materialSettings:
           m_PropertyNames:
           - _CastShadows
@@ -17986,8 +17977,7 @@ MonoBehaviour:
   m_OutputSlots: []
   m_Disabled: 0
   m_ActivationSlot: {fileID: 8926484042661616528}
-  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340,
-    type: 3}
+  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340, type: 3}
 --- !u!114 &8926484042661616527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19172,8 +19162,7 @@ MonoBehaviour:
     - rid: 1001
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: 340e2130f7e90ae4ba330527ab5c203a,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: 340e2130f7e90ae4ba330527ab5c203a, type: 3}
         materialSettings:
           m_PropertyNames:
           - _CastShadows
@@ -19375,8 +19364,7 @@ MonoBehaviour:
   m_OutputSlots: []
   m_Disabled: 0
   m_ActivationSlot: {fileID: 8926484042661616576}
-  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340,
-    type: 3}
+  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340, type: 3}
 --- !u!114 &8926484042661616575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20699,8 +20687,7 @@ MonoBehaviour:
     - rid: 1001
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: 340e2130f7e90ae4ba330527ab5c203a,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: 340e2130f7e90ae4ba330527ab5c203a, type: 3}
         materialSettings:
           m_PropertyNames:
           - _CastShadows
@@ -20840,8 +20827,7 @@ MonoBehaviour:
   m_OutputSlots: []
   m_Disabled: 0
   m_ActivationSlot: {fileID: 8926484042661616622}
-  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340,
-    type: 3}
+  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340, type: 3}
 --- !u!114 &8926484042661616621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22881,8 +22867,7 @@ MonoBehaviour:
     - rid: 1001
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: d0ad3ad82d7b2164890221b976dbe06f,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: d0ad3ad82d7b2164890221b976dbe06f, type: 3}
         materialSettings:
           m_PropertyNames:
           - _Surface
@@ -23175,8 +23160,7 @@ MonoBehaviour:
   m_OutputSlots: []
   m_Disabled: 0
   m_ActivationSlot: {fileID: 8926484042661616698}
-  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340,
-    type: 3}
+  m_Subgraph: {fileID: 5371698748595113096, guid: aaa79ab3b256a0b449d39d9beafb1340, type: 3}
 --- !u!114 &8926484042661616697
 MonoBehaviour:
   m_ObjectHideFlags: 0

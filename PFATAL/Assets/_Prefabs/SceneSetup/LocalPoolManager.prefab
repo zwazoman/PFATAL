@@ -188,6 +188,53 @@ MonoBehaviour:
   _prefab: {fileID: 1425785110876254368, guid: 46ea7ea2d006eb841802a7d485244c99, type: 3}
   BaseSize: 10
   GrowRateWhenEmpty: 5
+--- !u!1 &2633838656855891680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8964156173885745640}
+  - component: {fileID: 712730347157462779}
+  m_Layer: 0
+  m_Name: hit_crossbow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8964156173885745640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633838656855891680}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8787378877497911397}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &712730347157462779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633838656855891680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32bd68b8c2fb4744b83a76006a47f944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Pooling.Pool
+  _prefab: {fileID: 7048944608565756418, guid: 36d7105663812104c830a02aa07fc81a, type: 3}
+  BaseSize: 10
+  GrowRateWhenEmpty: 5
 --- !u!1 &3177229797513358144
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,6 +265,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2488427978633147323}
+  - {fileID: 8964156173885745640}
   - {fileID: 9059638603579921642}
   - {fileID: 3966660402882201146}
   - {fileID: 4274482674660024169}
@@ -366,6 +414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Pooling.PoolManager
   Pool_UI_DamageIndicator: {fileID: 6793180025563575035}
   Pool_VFX_Hit_crit: {fileID: 8546058373381736001}
+  Pool_VFX_Hit_Crossbow: {fileID: 712730347157462779}
   Pool_VFX_Explosion_big: {fileID: 900679118607610856}
   Pool_VFX_Explosion_small: {fileID: 690653188899277433}
   Pool_VFX_GemBreak: {fileID: 5828878690166291268}

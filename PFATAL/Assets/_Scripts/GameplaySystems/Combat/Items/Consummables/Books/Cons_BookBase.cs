@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class Cons_BookBase : Consummable
 {
     private static readonly int Active_AnimProperty = Animator.StringToHash("Active");
+    private static readonly int Charge_AnimProperty = Animator.StringToHash("Charge");
 
     protected bool _spellAnimationIsPlaying { get; private set; } = false;
     [SerializeField] Animator _animator;
@@ -34,6 +35,7 @@ public abstract class Cons_BookBase : Consummable
     {
         _vfxBaseScale = _Vfx.localScale;
     }
+
     public override void Equip()
     {
         base.Equip();
@@ -59,6 +61,12 @@ public abstract class Cons_BookBase : Consummable
         base.UnEquip();
     }
 
+    protected void StartChargeIdle()
+    {
+        hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.book_charge_idle);
+        _animator.SetTrigger(Charge_AnimProperty);
+    }
+
     protected void StartCastAnimation()
     {
         if (_spellAnimationIsPlaying) return;
@@ -68,6 +76,18 @@ public abstract class Cons_BookBase : Consummable
         _animator.SetBool(Active_AnimProperty, true);
         _Vfx.DOScale(0, .5f).SetEase(Ease.OutQuad);
 
+    }
+
+    public override void StartUsing()
+    {
+        base.StartUsing();
+        StartChargeIdle();
+    }
+
+    public override void StopUsing()
+    {
+        base.StopUsing();
+        StartCastAnimation();
     }
 
     /// <summary>
@@ -84,6 +104,7 @@ public abstract class Cons_BookBase : Consummable
             BreakItem();
         }
     }
+
     void OnSpellCast()
     {
         ApplySpellEffect();

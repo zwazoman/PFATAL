@@ -28,6 +28,7 @@ public class PlayerCharacterInputs : NetworkBehaviour
     private Gamepad _gamepad;
     private PlayerInput _playerInput;
     [HideInInspector] public bool UsingGamePad = false;
+    public bool UseProjectileSnapping;
 
     private void Awake()
     {

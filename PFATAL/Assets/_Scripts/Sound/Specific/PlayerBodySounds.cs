@@ -1,5 +1,8 @@
 using _scripts.PlayerCharacter;
+using _scripts.PlayerCharacter.StateMachine.States;
+using _Scripts.StateMachine;
 using NetworkTime;
+using Unity.VisualScripting;
 using UnityEngine;
 using state = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
@@ -16,51 +19,89 @@ public class PlayerBodySounds : SoundComponent<PlayerAnimationEventsListener>
     [SerializeField] Material _grassMaterial;
     [SerializeField] Material _woodMaterial;
 
+    [Header("FootSteps Settings")]
+    float _footstepsDelay = .4f;
+
     GroundType _currentGroundType;
 
-    bool _autoPlayTest = false;
+    bool _isWalking = false;
     float _timer;
+    float _footstepsTimer;
 
     protected override void LinkEvents()
     {
         if (!_playerCharacter.IsOwner)
         {
-            main.OnFootstep += PlayFootstepSound;
+            main.OnFootstep += Play3DFootstepSound;
         }
 
-        _playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += StateChanged_Callback;
+        _playerCharacter.replicatedStateMachineCallbacks.OnStateChanged += ReplicatedStateChanged_Callback;
+        _playerCharacter.stateMachine.OnStateChanged += LocalStateCHanged_Callback;
 
-        _playerCharacter.health.OnDamageTaken += (_) => PlayDamageSound();
+        _playerCharacter.health.OnLocalDamageTaken += PlayDamageSound;
     }
 
-
-    void StateChanged_Callback(state previousState, state newState)
+    private void Update()
     {
-        if ((previousState == state.Falling) && ((newState & state.Grounded) == state.Grounded))
+        if (!_isWalking || !AudioManager.Instance.playSounds)
+            return;
+            
+        _footstepsTimer += Time.deltaTime;
+
+        if (_footstepsTimer >= _footstepsDelay)
+        {
+            PlayFootstepSound();
+            _footstepsTimer = Random.Range(-0.1f, 0.1f);
+        }
+    }
+
+    void LocalStateCHanged_Callback(StateBase<PlayerCharacter> previousState, StateBase<PlayerCharacter> newState)
+    {
+        if (newState is Pst_Walking)
+        {
+            _isWalking = true;
+            PlayFootstepSound();
+        }
+        else
+        {
+            _isWalking = false;
+            _footstepsTimer = 0;
+        }
+
+        if ((previousState is Pst_Falling) && newState is Pst_Grounded)
             PlayLandSound();
 
-        if (newState == state.Jumping)
+        if (newState is Pst_Jumping)
             PlayJumpSound();
 
-        if ((previousState == state.GroundSlam) && (newState == state.Idle))
+        if (previousState is Pst_GroundSlam)
             PlayGroundSlamSound();
     }
 
-    void PlayGroundSlamSound() => AudioManager.Instance.PlayOnlineOneShots(Sounds.GroundSlamHit, Sounds.GroundSlamHit3D, transform.position);
+
+    void ReplicatedStateChanged_Callback(state previousState, state newState)
+    {
+
+    }
 
     void PlayFootstepSound()
     {
         SwapGroundType();
+        AudioManager.Instance.PlayOnlineOneShots(Sounds.Footsteps, Sounds.Footsteps3D, transform.position, "GroundType", (int)_currentGroundType);
+    }
 
+    void PlayGroundSlamSound() => AudioManager.Instance.PlayOnlineOneShots(Sounds.GroundSlamHit, Sounds.GroundSlamHit3D, transform.position);
+
+    void Play3DFootstepSound()
+    {
+        SwapGroundType();
         AudioManager.Instance.PlayOneShot(Sounds.Footsteps3D, transform.position, "GroundType", (int)_currentGroundType);
     }
 
     void PlayLandSound()
     {
         SwapGroundType() ;
-
         AudioManager.Instance.PlayOnlineOneShots(Sounds.Footsteps, Sounds.Footsteps3D, transform.position, "GroundType", (int)_currentGroundType);
-        //AudioManager.Instance.PlayOneShot(Sounds.Footsteps3D, transform.position, "GroundType", (int)_currentGroundType);
     }
 
     void PlayJumpSound() => AudioManager.Instance.PlayOneShot(Sounds.Jump);

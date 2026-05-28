@@ -49,7 +49,7 @@ MonoBehaviour:
       AVG(Distance) AS AverageKillDistance
 
       FROM Death'
-  - isOpen: 0
+  - isOpen: 1
     Name: "Joueurs avec plus de X kills sur une partie donn\xE9e"
     Command: 'SELECT Player.Id, Player.Name,
 
@@ -61,12 +61,12 @@ MonoBehaviour:
       JOIN Player ON Player.Id = Death.KillerId
 
       WHERE Death.IdGame
-      = 1
+      = 11
 
       GROUP BY Player.Id
 
       HAVING Kills > 1'
-  - isOpen: 0
+  - isOpen: 1
     Name: "Top 3 des kills les plus \xE9loign\xE9s"
     Command: "SELECT \r\n    d.Id AS DeathId,\r\n    killer.Name AS KillerName,\r\n   
       victim.Name AS VictimName,\r\n    d.Distance,\r\n    d.Weapon,\r\n    d.Time,\r\n   
@@ -74,7 +74,7 @@ MonoBehaviour:
       Death d\r\nLEFT JOIN Player killer ON d.KillerId = killer.Id\r\nLEFT JOIN Player
       victim ON d.VictimId = victim.Id\r\nLEFT JOIN Game g ON d.IdGame = g.Id\r\nORDER
       BY d.Distance DESC\r\nLIMIT 3;"
-  - isOpen: 1
+  - isOpen: 0
     Name: Avoir toute les heatmap d'une verion du jeu
     Command: 'SELECT
 
@@ -82,5 +82,40 @@ MonoBehaviour:
 
       FROM Game
 
-      WHERE Game.Version
-      = 10'
+      WHERE Game.Version =
+      10'
+  - isOpen: 0
+    Name: moyenne de distance de kill sans X
+    Command: "SELECT\n    AVG(Distance) AS AverageKillDistance\nFROM Death\nWHERE
+      Weapon <> 1;"
+  - isOpen: 0
+    Name: Moyenne de distance de kill de chaque arme
+    Command: "SELECT\r\n    Weapon,\r\n    AVG(Distance) AS AverageKillDistance\r\nFROM
+      Death\r\nGROUP BY Weapon;"
+  - isOpen: 0
+    Name: Les 3 plus grosse victime
+    Command: "SELECT\r\n    p.Name,\r\n    COUNT(*) AS DeathCount\r\nFROM Death d\r\nJOIN
+      Player p ON p.Id = d.VictimId\r\nGROUP BY p.Name\r\nORDER BY DeathCount DESC\r\nLIMIT
+      3;"
+  - isOpen: 0
+    Name: Les 3 qui se sont le plus self destruct
+    Command: "SELECT\r\n    p.Name,\r\n    COUNT(*) AS SelfDestructCount\r\nFROM
+      Death d\r\nJOIN Player p ON p.Id = d.VictimId\r\nWHERE d.VictimId = d.KillerId\r\nGROUP
+      BY p.Id, p.Name\r\nORDER BY SelfDestructCount DESC\r\nLIMIT 3;"
+  - isOpen: 0
+    Name: Moyenne de distance de kill de chaque arme sans les auto destruction
+    Command: "SELECT\n    Weapon,\n    AVG(Distance) AS AverageKillDistance\nFROM
+      Death\nWHERE VictimId <> KillerId\nGROUP BY Weapon;"
+  - isOpen: 0
+    Name: "Les 3 plus grosse victim sur une partie donn\xE9e"
+    Command: "SELECT\n    p.Name,\n    COUNT(*) AS DeathCount\nFROM Death d\nJOIN
+      Player p ON p.Id = d.VictimId\nWHERE d.IdGame = 11\nGROUP BY p.Name\nORDER
+      BY DeathCount DESC\nLIMIT 3;"
+  - isOpen: 1
+    Name: "Les 3 kills les plus \xE9loign\xE9 sur une partie donn\xE9e"
+    Command: "SELECT \n    d.Id AS DeathId,\n    killer.Name AS KillerName,\n   
+      victim.Name AS VictimName,\n    d.Distance,\n    d.Weapon,\n    d.Time,\n   
+      g.Id AS GameId,\n    g.MapName,\n    g.Gamemode,\n    g.Duration\nFROM Death
+      d\nLEFT JOIN Player killer ON d.KillerId = killer.Id\nLEFT JOIN Player victim
+      ON d.VictimId = victim.Id\nLEFT JOIN Game g ON d.IdGame = g.Id\nWHERE d.IdGame
+      = 11\nORDER BY d.Distance DESC\nLIMIT 3;"

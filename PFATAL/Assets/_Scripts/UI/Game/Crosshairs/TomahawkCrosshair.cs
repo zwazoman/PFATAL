@@ -6,7 +6,6 @@ public class TomahawkCrosshair : Crosshair<Tomahawk>
 {
     [Header("Crosshair settings")]
     [SerializeField] DirectionIndicator _indicator;
-    [SerializeField] Slider _dashCooldoawnSlider;
     [SerializeField] List<GameObject> _ammunitions;
 
     GameObject _tomahawkProj;
@@ -50,15 +49,15 @@ public class TomahawkCrosshair : Crosshair<Tomahawk>
     void SetProj(Projectile proj)
     {
         _tomahawkProj = proj.gameObject;
-        _indicator.gameObject.SetActive(true);
         _indicator.Setup(_tomahawkProj.transform.position, manager.hud.playerCharacter);
     }
 
     private void Update()
     {
-        if (_tomahawkProj != null && weapon.CanDash)
+        if (_tomahawkProj != null)
         {
             _indicator.SetTargetpos(_tomahawkProj.transform.position);
+            _indicator.gameObject.SetActive(true);
         }
         else
         {

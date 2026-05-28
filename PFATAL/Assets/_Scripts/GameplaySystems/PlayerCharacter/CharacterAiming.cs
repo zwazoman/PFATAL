@@ -28,6 +28,7 @@ public class CharacterAiming : NetworkBehaviour
     [SerializeField][Range(0.5f,3f)] private float _aimAssistYStrength = 1f;
     private float _previousControllerSensitivity;
     [SerializeField] private float _controllerSensitivityMaxAcceleration;
+    [SerializeField][Range(0.001f,0.5f)] private float _startAcceleration;
     
     private void Start()
     {
@@ -115,7 +116,7 @@ public class CharacterAiming : NetworkBehaviour
     IEnumerator Accelerate()
     {
         Gamepad gamepad = Gamepad.current;
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(_startAcceleration);
         if (_character.inputs.UsingGamePad == true)
         {
             if ((gamepad.rightStick.ReadValue().x > 0.7f) || (gamepad.rightStick.ReadValue().y > 0.7f) ||

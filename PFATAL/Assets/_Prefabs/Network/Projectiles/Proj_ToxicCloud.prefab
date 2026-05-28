@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1246500142201000903}
   - component: {fileID: 6173769356752648167}
   - component: {fileID: -5296505575945512679}
-  - component: {fileID: 3269829353930291782}
   m_Layer: 0
   m_Name: Proj_ToxicCloud
   m_TagString: Untagged
@@ -73,9 +72,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Proj_ToxicCloud
   ShowTopMostFoldoutHeaderGroup: 1
-  visuals: {fileID: 0}
+  visuals: {fileID: 5834434209730610804}
   <CollisionRadius>k__BackingField: 0.1
-  speed: 50
+  speed: 10
   gravity: 10
   damageAmount: 0
   _maxLifetime: 10
@@ -84,52 +83,6 @@ MonoBehaviour:
     m_Bits: 64
   _throwStrength: 10
   _cloudPrefab: {fileID: 472210993572836467, guid: c7d79f121b3d1df4a87c32ca3590345d, type: 3}
---- !u!114 &3269829353930291782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4084173529431785421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkTransform
-  ShowTopMostFoldoutHeaderGroup: 1
-  NetworkTransformExpanded: 0
-  AutoOwnerAuthorityTickOffset: 1
-  PositionInterpolationType: 0
-  RotationInterpolationType: 0
-  ScaleInterpolationType: 0
-  PositionLerpSmoothing: 1
-  PositionMaxInterpolationTime: 0.1
-  RotationLerpSmoothing: 1
-  RotationMaxInterpolationTime: 0.1
-  ScaleLerpSmoothing: 1
-  ScaleMaxInterpolationTime: 0.1
-  AuthorityMode: 0
-  TickSyncChildren: 0
-  UseUnreliableDeltas: 0
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 0
-  SwitchTransformSpaceWhenParented: 0
-  Interpolate: 1
-  SlerpPosition: 0
 --- !u!1 &5834434209730610804
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +95,7 @@ GameObject:
   - component: {fileID: 2684162805941186531}
   - component: {fileID: 2809250282954361734}
   m_Layer: 0
-  m_Name: Sphere (4)
+  m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

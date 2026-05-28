@@ -129,7 +129,7 @@ public class LobbyManager : MonoBehaviour
             return null;
         }
     }
-    
+
     public async Task SetLobbyLocked(bool locked)
     {
         if (currentLobby == null || !IsHost()) return;
@@ -174,11 +174,12 @@ public class LobbyManager : MonoBehaviour
     public async Task LeaveLobby()
     {
         if (currentLobby == null) return;
-
         try
         {
-            await LobbyService.Instance.RemovePlayerAsync(currentLobby.Id, UnityServicesManager.Instance.GetPlayerId());
+            var lobbyId = currentLobby.Id;
+            var playerId = UnityServicesManager.Instance.GetPlayerId();
             currentLobby = null;
+            await LobbyService.Instance.RemovePlayerAsync(lobbyId, playerId);
         }
         catch (Exception e)
         {
@@ -189,11 +190,11 @@ public class LobbyManager : MonoBehaviour
     public async Task DeleteLobby()
     {
         if (currentLobby == null || !IsHost()) return;
-
         try
         {
-            await LobbyService.Instance.DeleteLobbyAsync(currentLobby.Id);
+            var lobbyId = currentLobby.Id;
             currentLobby = null;
+            await LobbyService.Instance.DeleteLobbyAsync(lobbyId);
         }
         catch (Exception e)
         {
@@ -206,7 +207,7 @@ public class LobbyManager : MonoBehaviour
         return currentLobby != null && currentLobby.HostId == UnityServicesManager.Instance.GetPlayerId();
     }
 
-    public Unity.Services.Lobbies.Models.Lobby GetCurrentLobby()
+    public Lobby GetCurrentLobby()
     {
         return currentLobby;
     }

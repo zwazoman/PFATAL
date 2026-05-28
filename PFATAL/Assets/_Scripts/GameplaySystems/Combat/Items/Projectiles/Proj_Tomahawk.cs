@@ -33,7 +33,7 @@ public class Proj_Tomahawk : Proj_Falling
         base.Update();
     }
 
-    void Explode()
+    public void Explode()
     {
         _explosion.Explode(spawnContext.Value.spawnerClientID, (int)spawnContext.Value.floatData2);
     }

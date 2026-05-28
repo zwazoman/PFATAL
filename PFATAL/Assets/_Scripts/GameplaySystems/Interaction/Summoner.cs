@@ -63,10 +63,16 @@ public class Summoner : NetworkBehaviour
         if (gameObjectToSpawn == null)
             throw new ArgumentNullException(nameof(gameObjectToSpawn));
 
+        _currentObject = null;
+
         SpawnRpc(context.Value, gameObjectToSpawn.name, spawnPos, spawnRot, futureOwner, sendBack);
-        while (_currentObject == null && sendBack)
+
+        if (sendBack && _currentObject == null)
         {
-            await Awaitable.NextFrameAsync();
+            while (_currentObject == null)
+            {
+                await Awaitable.NextFrameAsync();
+            }
         }
 
         GameObject newObject = _currentObject;

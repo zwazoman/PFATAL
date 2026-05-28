@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4850595235145736011}
   - component: {fileID: 7858065211963215684}
   - component: {fileID: 3020583874071806366}
-  - component: {fileID: 5618638444868702506}
+  - component: {fileID: 6775250332201398471}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -250,12 +250,6 @@ MonoBehaviour:
       Data4: -140392739
     Path: event:/UI/ButtonClick
   - Guid:
-      Data1: 1127256286
-      Data2: 1300386080
-      Data3: 288429443
-      Data4: 1349832683
-    Path: event:/SFX/Items/Smoke3D
-  - Guid:
       Data1: 1169339876
       Data2: 1286471567
       Data3: 2112674745
@@ -273,6 +267,84 @@ MonoBehaviour:
       Data3: -62442086
       Data4: 1907490436
     Path: event:/SFX/Items/Bomb/Fuse3D
+  - Guid:
+      Data1: -1928178680
+      Data2: 1341301775
+      Data3: -624538203
+      Data4: 1108726977
+    Path: event:/SFX/Items/Smoke/SmokeLaunch
+  - Guid:
+      Data1: 1127256286
+      Data2: 1300386080
+      Data3: 288429443
+      Data4: 1349832683
+    Path: event:/SFX/Items/Smoke/Smoke3D
+  - Guid:
+      Data1: -1237446994
+      Data2: 1281397669
+      Data3: -756970846
+      Data4: -1583855103
+    Path: event:/SFX/Items/Heal
+  - Guid:
+      Data1: 1215085610
+      Data2: 1318807663
+      Data3: 2123944835
+      Data4: 1219644621
+    Path: event:/SFX/Items/Sword/SwordAnticipation
+  - Guid:
+      Data1: 463631419
+      Data2: 1135278734
+      Data3: 461425041
+      Data4: 1715288943
+    Path: event:/SFX/Items/Sword/SwordWhoosh
+  - Guid:
+      Data1: 2098865813
+      Data2: 1269669237
+      Data3: -761664854
+      Data4: -174351977
+    Path: event:/SFX/Items/Sword/SwordDash
+  - Guid:
+      Data1: 2063987627
+      Data2: 1197430214
+      Data3: 1996475549
+      Data4: 1184319987
+    Path: event:/SFX/Player/Land
+  - Guid:
+      Data1: 985687481
+      Data2: 1076466146
+      Data3: -1649182310
+      Data4: 171470861
+    Path: event:/SFX/Player/Land3D
+  - Guid:
+      Data1: -1957514946
+      Data2: 1294131280
+      Data3: -873157963
+      Data4: 134942633
+    Path: event:/SFX/Items/Tomahawk/TomahawkGrapple
+  - Guid:
+      Data1: 1158277938
+      Data2: 1224601883
+      Data3: 1179267772
+      Data4: 558791802
+    Path: event:/SFX/Items/Tomahawk/TomahawkGrappleStart
+  - Guid:
+      Data1: 570734701
+      Data2: 1273479543
+      Data3: -1500043077
+      Data4: 1702998406
+    Path: event:/SFX/Items/Sword/SwordCharge
+  - Guid:
+      Data1: 1907787003
+      Data2: 1130078001
+      Data3: 1762773412
+      Data4: -1763524318
+    Path: event:/SFX/Items/Tomahawk/TomahawkGrapple3D
+  - Guid:
+      Data1: -1157150944
+      Data2: 1247208359
+      Data3: 697295008
+      Data4: -1724477931
+    Path: event:/SFX/Items/Sword/SwordWhoosh3D
 --- !u!114 &3020583874071806366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,7 +370,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   _listener: {fileID: 0}
---- !u!114 &5618638444868702506
+--- !u!114 &6775250332201398471
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -307,11 +379,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7214205587860227118}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d718ac04c74dac42a554e1b76e0d087, type: 3}
+  m_Script: {fileID: 11500000, guid: a774e8addcb8fc3408b9f0768ae3a2d2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ReverbManager
-  _audioManager: {fileID: 7858065211963215684}
-  _reverbZoneLayerMask:
-    serializedVersion: 2
-    m_Bits: 512
-  _sphereRadius: 0.1
+  m_EditorClassIdentifier: Assembly-CSharp::MusicManager

@@ -19,6 +19,7 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     [SerializeField] public bool isPlayer = true;
     //events
     public event Action<DamageData> OnDamageTaken;
+    public event Action OnLocalDamageTaken;
     public event Action OnDie;
     
     /// <summary>
@@ -43,7 +44,9 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     public void TakeDamage(DamageData damageData)
     {
         if (IsDead) return;
-        
+
+        OnLocalDamageTaken?.Invoke();
+
         LastDamageSourceClientID = damageData.SourcePlayerClientID;
         LastDamageWeaponID = damageData.WeaponID;
         SourcePos = damageData.SourcePos;
@@ -53,7 +56,7 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         //hit feedback
         if (damageData.SourcePlayerClientID != DamageData.NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID && (damageData.SourcePlayerClientID != OwnerClientId || !isPlayer))
         {
-                ApplyDamageInflictedFeedbacksRpc(IsDead, RpcTarget.Single(damageData.SourcePlayerClientID, RpcTargetUse.Temp));
+                ApplyDamageInflictedFeedbacksRpc(IsDead && isPlayer, RpcTarget.Single(damageData.SourcePlayerClientID, RpcTargetUse.Temp));
         }
 
         //knockback

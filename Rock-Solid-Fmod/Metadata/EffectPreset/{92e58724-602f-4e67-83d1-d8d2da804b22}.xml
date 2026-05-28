@@ -38,7 +38,14 @@
 			<destination>{aa9ae4ae-b293-431a-afff-86b937add13b}</destination>
 		</relationship>
 	</object>
-	<object class="SpatialiserEffect" id="{138eb5da-9a2d-4740-8e4f-713568723d8a}" />
+	<object class="SpatialiserEffect" id="{138eb5da-9a2d-4740-8e4f-713568723d8a}">
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
+		<property name="maximumDistance">
+			<value>7</value>
+		</property>
+	</object>
 	<object class="Automator" id="{5d983fb4-af3c-4d29-a4db-1e5556a8174f}">
 		<property name="nameOfPropertyBeingAutomated">
 			<value>level</value>

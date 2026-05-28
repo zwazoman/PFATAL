@@ -12,6 +12,7 @@ public class GameRulesDeathMatch : GameRulesBase
 
     int GetPlayerScore(int deaths, int kills)
     {
+        //(voir excel nathan)
         const float deathPenaltyWeight = .5f;
         return Mathf.CeilToInt(kills-deaths * ((float)(kills-deaths)/(kills+deaths)*0.5f+0.5f)*deathPenaltyWeight);
     }

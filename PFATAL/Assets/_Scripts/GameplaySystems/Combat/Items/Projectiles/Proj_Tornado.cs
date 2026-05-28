@@ -29,6 +29,10 @@ public class Proj_Tornado : Projectile
 
         _startPos = transform.position;
 
+        DamageableObject spawnPlayer = GameManager.Instance.GetPlayerCharacter(spawnContext.Value.spawnerClientID).GetComponent<DamageableObject>();
+        blackList.Add(spawnPlayer);
+        StartCoroutine(RemoveObjectFromBlackList_Delayed(spawnPlayer));
+
         if (!IsServer) return;
     }
 
@@ -42,19 +46,17 @@ public class Proj_Tornado : Projectile
 
         _timer += Time.deltaTime;
 
-        if (_timer >= 1f)
-        {
-            CheckForCollisionsAgainstPlayers();
 
-            if (_timer >= _duringTime/2 && !_halfTimeReached)
-            {
-                _speed /= 2;
-                _halfTimeReached = true;
-            }
-            if (_timer >= _duringTime)
-            {
-                Despawn();
-            }
+        CheckForCollisionsAgainstPlayers();
+
+        if (_timer >= _duringTime/2 && !_halfTimeReached)
+        {
+            _speed /= 2;
+            _halfTimeReached = true;
+        }
+        if (_timer >= _duringTime)
+        {
+            Despawn();
         }
     }
 
@@ -80,8 +82,9 @@ public class Proj_Tornado : Projectile
                     DamageData damageData = new DamageData
                     {
                         Amount = 0,
-                        SourcePlayerClientID = OwnerClientId,
+                        SourcePlayerClientID = spawnContext.Value.spawnerClientID,
                         Point = hitObject.transform.position,
+                        SourcePos = GameManager.Instance.GetPlayerCharacter(spawnContext.Value.spawnerClientID).transform.position,
                         Direction = dir.normalized,
                         KnockbackForce = knockback,
                         Radius = _ejectionRadius,
@@ -121,6 +124,6 @@ public class Proj_Tornado : Projectile
         }
 
         Debug.Log($"[Tornado RPC] APPLY PROPULSION sur client {NetworkManager.Singleton.LocalClientId}");
-        player.stateMachine.s_PropulseInAir.ActivateState(OwnerClientId, _startPos);
+        player.stateMachine.s_PropulseInAir.ActivateState(spawnContext.Value.spawnerClientID, _startPos);
     }
 }

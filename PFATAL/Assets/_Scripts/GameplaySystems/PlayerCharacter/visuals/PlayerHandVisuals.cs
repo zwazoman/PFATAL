@@ -6,7 +6,7 @@ using State = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
 namespace GameplaySystems.PlayerCharacter
 {
-    public class PlayerHandVisuals : NetworkBehaviour
+    public class PlayerHandVisuals : MonoBehaviour
     {
         public static float CrossbowAnimationSpeedMultiplier = 1;
         public enum AnimationID
@@ -160,8 +160,11 @@ namespace GameplaySystems.PlayerCharacter
             DoPlayAnimationRPC(currentDefaultIdlePose);
         }
         
-        [Rpc(SendTo.Everyone)]
-        private void DoPlayAnimationRPC(AnimationID id)
+        //[Rpc(SendTo.Everyone)]
+        // bug : ça marchait pas à cause de cette erreur : 
+        // "NetworkBehaviour index 11 was out of bounds for player character_0."
+        // je l'ai remis en monobehaviour du coup
+        private void DoPlayAnimationRPC(AnimationID id) 
         {
             _animator.SetInteger(MainAnim_AnimatorProperty, (int)id);
             _animator.SetTrigger(PlayMainAnimation_AnimatorProperty);

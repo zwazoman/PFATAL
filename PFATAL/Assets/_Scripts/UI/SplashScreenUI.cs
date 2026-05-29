@@ -8,6 +8,7 @@ public class SplashScreenUI : MonoBehaviour
     [SerializeField] GameObject _anim;
     [SerializeField] TMP_Text _text;
     [SerializeField] float _opacitySpeed = .3f;
+    [SerializeField] RandomCameraImpulse _cameraShake;
 
     bool _animPlaying;
 
@@ -31,6 +32,7 @@ public class SplashScreenUI : MonoBehaviour
         if (Input.anyKeyDown && !_animPlaying)
         {
             _anim.GetComponent<Animator>().SetTrigger("GrabHat");
+            _cameraShake.enabled = false;
             AudioManager.Instance.PlayOneShot(Sounds.SplashScreenStinger);
             _animPlaying = true;
         }

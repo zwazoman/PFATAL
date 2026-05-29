@@ -22,7 +22,7 @@ public class Explosion : NetworkBehaviour
     /// </summary>
     public async Awaitable Explode(ulong askerClientID, int itemID = -1)
     {
-        //if(!IsServer) throw new NetworkAuthorityException();
+        if(!IsServer) throw new NetworkAuthorityException();
         
         CallExplosionEventRPC();
 

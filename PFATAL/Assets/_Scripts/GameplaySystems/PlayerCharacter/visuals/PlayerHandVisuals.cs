@@ -161,9 +161,10 @@ namespace GameplaySystems.PlayerCharacter
         }
         
         //[Rpc(SendTo.Everyone)]
-        // bug : ça marchait pas à cause de cette erreur : 
+        // todo : ça marchait pas à cause de cette erreur : 
         // "NetworkBehaviour index 11 was out of bounds for player character_0."
-        // je l'ai remis en monobehaviour du coup
+        // je l'ai remis en monobehaviour du coup, mais faudrait arriver à
+        // trouver d'où ça vient pour pouvoir repliquer les anims
         private void DoPlayAnimationRPC(AnimationID id) 
         {
             _animator.SetInteger(MainAnim_AnimatorProperty, (int)id);

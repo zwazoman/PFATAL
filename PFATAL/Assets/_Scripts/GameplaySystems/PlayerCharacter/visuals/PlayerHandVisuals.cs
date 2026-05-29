@@ -1,11 +1,12 @@
 ﻿using System;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using State = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
 namespace GameplaySystems.PlayerCharacter
 {
-    public class PlayerHandVisuals : MonoBehaviour
+    public class PlayerHandVisuals : NetworkBehaviour
     {
         public static float CrossbowAnimationSpeedMultiplier = 1;
         public enum AnimationID
@@ -150,14 +151,19 @@ namespace GameplaySystems.PlayerCharacter
             }
             else if (id == AnimationID.currentDefaultIdlePose)
                 id = currentDefaultIdlePose;
-            
-            _animator.SetInteger(MainAnim_AnimatorProperty, (int)id);
-            _animator.SetTrigger(PlayMainAnimation_AnimatorProperty);
+
+            DoPlayAnimationRPC(id);
         }
 
-        void PlayCurrentDefaultIdlePoseAnimation()
+        private void PlayCurrentDefaultIdlePoseAnimation()
         {
-            _animator.SetInteger(MainAnim_AnimatorProperty, (int)currentDefaultIdlePose);
+            DoPlayAnimationRPC(currentDefaultIdlePose);
+        }
+        
+        [Rpc(SendTo.Everyone)]
+        private void DoPlayAnimationRPC(AnimationID id)
+        {
+            _animator.SetInteger(MainAnim_AnimatorProperty, (int)id);
             _animator.SetTrigger(PlayMainAnimation_AnimatorProperty);
         }
         

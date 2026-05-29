@@ -2,24 +2,18 @@ using UnityEngine;
 
 public class TutoPanel : MonoBehaviour
 {
-    [SerializeField] private GameObject panel;
-
-    private void Start()
+    private void Awake()
     {
-        panel.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void ShowPanel()
     {
-        panel.SetActive(true);
-
-        Time.timeScale = 0f;
+        gameObject.SetActive(true);
     }
 
     public void ClosePanel()
     {
-        panel.SetActive(false);
-
-        Time.timeScale = 1f;
+        gameObject.SetActive(false);
     }
 }

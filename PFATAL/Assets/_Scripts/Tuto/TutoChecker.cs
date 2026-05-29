@@ -6,20 +6,20 @@ public class TutoChecker : MonoBehaviour
     [SerializeField] private Hand hand;
     [SerializeField] private TutoPanel crossbowPanel;
     [SerializeField] private TutoPanel tomahawkPanel;
-    [SerializeField] private TutoPanel hammerPanel;
+    [SerializeField] private TutoPanel swordPanel;
 
     private void Start()
     {
         hand.OnEquipCrossbow += CheckCrossbow;
         hand.OnEquipTomahawk += CheckTomahawk;
-        hand.OnEquipHammer += CheckHammer;
+        hand.OnEquipHammer += CheckSword;
     }
 
     private void OnDestroy()
     {
         hand.OnEquipCrossbow -= CheckCrossbow;
         hand.OnEquipTomahawk -= CheckTomahawk;
-        hand.OnEquipHammer -= CheckHammer;
+        hand.OnEquipHammer -= CheckSword;
     }
 
     void CheckCrossbow(Crossbow crossbow)
@@ -38,11 +38,11 @@ public class TutoChecker : MonoBehaviour
         );
     }
 
-    void CheckHammer(Sword hammer)
+    void CheckSword(Sword sword)
     {
         CheckAndShowTutorial(
-            "TUTO_HAMMER",
-            hammerPanel
+            "TUTO_SWORD",
+            swordPanel
         );
     }
 

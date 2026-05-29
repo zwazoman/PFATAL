@@ -2,6 +2,7 @@ using _scripts.PlayerCharacter;
 using _scripts.PlayerCharacter.StateMachine.States;
 using _Scripts.StateMachine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using state = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
@@ -29,6 +30,11 @@ public class PlayerHands : MonoBehaviour
     void StateChanged_Callback(StateBase<PlayerCharacter> previousState, StateBase<PlayerCharacter> nextState)
     {
         if (previousState is Pst_Dead && nextState is Pst_Alive)
+        {
+            print("equip random weapon");
+            TryEquipRandomWeapon();
+        }
+        if (nextState is Pst_Alive && rightHand.equippedItem == null)
         {
             print("equip random weapon");
             TryEquipRandomWeapon();

@@ -10824,7 +10824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1627020838
+  GlobalObjectIdHash: 1942307190
   InScenePlacedSourceGlobalObjectIdHash: 287215609
   DeferredDespawnTick: 0
   Ownership: 1
@@ -11661,6 +11661,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+      propertyPath: visuals
+      value: 
+      objectReference: {fileID: 4593995219431254224}
+    - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
       propertyPath: _itemSocket
       value: 
       objectReference: {fileID: 4979204821146748320}
@@ -11792,17 +11796,41 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7603030828234390209, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 108080550792618393, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4593995219431254224}
   m_SourcePrefab: {fileID: 100100000, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+--- !u!1 &51623574261401062 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 108080550792618393, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+  m_PrefabInstance: {fileID: 128526235729683583}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4593995219431254224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51623574261401062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: babead3756ee4e9b9fe252aff32e189a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameplaySystems.PlayerCharacter.PlayerHandsVisuals
+  ShowTopMostFoldoutHeaderGroup: 1
+  _hand: {fileID: 2592215076967555591}
+  _animator: {fileID: 8266966660422423727}
 --- !u!114 &2592215076967555591 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
   m_PrefabInstance: {fileID: 128526235729683583}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 51623574261401062}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c8705e9469c12141953976868350a23, type: 3}
@@ -11821,6 +11849,11 @@ Transform:
 --- !u!4 &5665109112033728311 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5716791234918691656, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+  m_PrefabInstance: {fileID: 128526235729683583}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8266966660422423727 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8318913285114409168, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
   m_PrefabInstance: {fileID: 128526235729683583}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1074624455979785061
@@ -13128,6 +13161,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+      propertyPath: visuals
+      value: 
+      objectReference: {fileID: 668963814459927027}
+    - target: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
       propertyPath: itemVisuals
       value: 
       objectReference: {fileID: 3860378255616416739}
@@ -13426,10 +13463,14 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
+    - {fileID: 7603030828234390209, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
     m_RemovedGameObjects:
     - {fileID: 5135419055213138278, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 108080550792618393, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 668963814459927027}
   m_SourcePrefab: {fileID: 100100000, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
 --- !u!137 &334675122001509177 stripped
 SkinnedMeshRenderer:
@@ -13441,12 +13482,37 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2464023214136510072, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
   m_PrefabInstance: {fileID: 4307205339695198220}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 4231623192599187861}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c8705e9469c12141953976868350a23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4231623192599187861 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 108080550792618393, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+  m_PrefabInstance: {fileID: 4307205339695198220}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &668963814459927027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4231623192599187861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: babead3756ee4e9b9fe252aff32e189a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameplaySystems.PlayerCharacter.PlayerHandsVisuals
+  ShowTopMostFoldoutHeaderGroup: 1
+  _hand: {fileID: 1871171297071789684}
+  _animator: {fileID: 5239080415233769692}
+--- !u!95 &5239080415233769692 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8318913285114409168, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}
+  m_PrefabInstance: {fileID: 4307205339695198220}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8399313606681264964 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5716791234918691656, guid: d58de8a150bb8b34aa5376ea8cc13497, type: 3}

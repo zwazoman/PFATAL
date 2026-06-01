@@ -5443,7 +5443,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerCharacter: {fileID: 1068121725211319751}
-  _cam: {fileID: 1123145624008692130}
+  worldCam: {fileID: 1123145624008692130}
+  fpsCam: {fileID: 5203756890567801947}
   _recoilTarget: {fileID: 2290735421138584810}
   _aimPuchBodyCenterReference: {fileID: 1087602607502998304}
   FOVVelocityOffset: 8
@@ -10778,11 +10779,11 @@ GameObject:
   - component: {fileID: 3860378255616416739}
   - component: {fileID: 6108046155153365623}
   - component: {fileID: 9073655823701373496}
-  - component: {fileID: 3898847388129945752}
   - component: {fileID: 6077973829030890437}
   - component: {fileID: 3718568392821401935}
   - component: {fileID: -6261384678717647340}
   - component: {fileID: 8654703381458756738}
+  - component: {fileID: 3898847388129945752}
   - component: {fileID: 9173803931921782257}
   m_Layer: 8
   m_Name: PlayerCharacter
@@ -11010,6 +11011,7 @@ MonoBehaviour:
   _aimSmoothingTime: 0.05
   _jumpBufferingDuration: 0.35
   UsingGamePad: 0
+  UseProjectileSnapping: 0
 --- !u!114 &4888209787928335878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11433,6 +11435,93 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &6077973829030890437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8535136328113993408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483f265be2e04c5b8627dafbf5804d9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCharacterVisuals
+  ShowTopMostFoldoutHeaderGroup: 1
+  _playerCharacter: {fileID: 1068121725211319751}
+  _healVFX: {fileID: 5695316245447416375}
+  _cameraRoot: {fileID: 8942696625020924298}
+  _fpsVisuals: []
+  _proxyVisuals:
+  - {fileID: 6505035719227605672}
+  _proxyAnimator: {fileID: 6109815968382572435}
+  _proxyTorsoSocket: {fileID: 700869960131821557}
+  _proxyFeetSocket: {fileID: 969162016277442504}
+  _walkVFX: {fileID: 8970345736180648800}
+  _jumpVFX: {fileID: 6659027350354054958}
+  TorsoPitchAmplitude: 75
+  _visualObjects:
+  - {fileID: 4179012326148749122}
+--- !u!114 &3718568392821401935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8535136328113993408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec7383acfd0a864a9812f33a08c746c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDetector
+  _cameraTransform: {fileID: 3747001941619547642}
+  _mask:
+    serializedVersion: 2
+    m_Bits: 256
+  _input: {fileID: 2069463516094485431}
+  _characterAiming: {fileID: 4888209787928335878}
+  _minimumDecrease: 5
+  _canDecrease: 1
+  _assistVersions: {fileID: 11400000, guid: 7dcdc7ecaadfe2f48bf2ad9fa4563e9b, type: 2}
+--- !u!114 &-6261384678717647340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8535136328113993408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38b1a4c372b55034b9f9a1bd2d8d62ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeatMapAnalitycs
+  ShowTopMostFoldoutHeaderGroup: 1
+  character: {fileID: 1068121725211319751}
+  playerWeaponSocket: {fileID: 0}
+  isOnCapsule: 0
+  Players: []
+  heatMapsToCombine: []
+  interval: 0.1
+  gridSize: 1
+  mapBoundsObject: {fileID: 0}
+  show: 0
+  isPlaying: 0
+  isFixed: 0
+  tktPllayer: 
+--- !u!114 &8654703381458756738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8535136328113993408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b931ce5cfc5118b4984b23f0a752cdad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenFeedbacks
+  _playerCharacter: {fileID: 1068121725211319751}
+  _damageOverlayMaterial: {fileID: 2100000, guid: 067d6ae1bd3e1f845aeaa49c317eced5, type: 2}
 --- !u!114 &3898847388129945752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11479,91 +11568,6 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &6077973829030890437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8535136328113993408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 483f265be2e04c5b8627dafbf5804d9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerCharacterVisuals
-  ShowTopMostFoldoutHeaderGroup: 1
-  _playerCharacter: {fileID: 1068121725211319751}
-  _healVFX: {fileID: 5695316245447416375}
-  _cameraRoot: {fileID: 8942696625020924298}
-  _fpsVisuals: []
-  _proxyVisuals:
-  - {fileID: 6505035719227605672}
-  _proxyAnimator: {fileID: 6109815968382572435}
-  _proxyTorsoSocket: {fileID: 700869960131821557}
-  _proxyFeetSocket: {fileID: 969162016277442504}
-  _walkVFX: {fileID: 8970345736180648800}
-  _jumpVFX: {fileID: 6659027350354054958}
-  TorsoPitchAmplitude: 75
-  _visualObjects:
-  - {fileID: 4179012326148749122}
---- !u!114 &3718568392821401935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8535136328113993408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec7383acfd0a864a9812f33a08c746c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerDetector
-  _cameraTransform: {fileID: 3747001941619547642}
-  _mask:
-    serializedVersion: 2
-    m_Bits: 256
-  _input: {fileID: 2069463516094485431}
-  _characterAiming: {fileID: 4888209787928335878}
-  _assistVersions: {fileID: 11400000, guid: 7dcdc7ecaadfe2f48bf2ad9fa4563e9b, type: 2}
---- !u!114 &-6261384678717647340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8535136328113993408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38b1a4c372b55034b9f9a1bd2d8d62ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HeatMapAnalitycs
-  ShowTopMostFoldoutHeaderGroup: 1
-  character: {fileID: 1068121725211319751}
-  playerWeaponSocket: {fileID: 0}
-  isOnCapsule: 0
-  Players: []
-  heatMapsToCombine: []
-  interval: 0.1
-  gridSize: 1
-  mapBoundsObject: {fileID: 0}
-  show: 0
-  isPlaying: 0
-  isFixed: 0
-  tktPllayer: 
---- !u!114 &8654703381458756738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8535136328113993408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b931ce5cfc5118b4984b23f0a752cdad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ScreenFeedbacks
-  _playerCharacter: {fileID: 1068121725211319751}
-  _damageOverlayMaterial: {fileID: 2100000, guid: 067d6ae1bd3e1f845aeaa49c317eced5, type: 2}
 --- !u!114 &9173803931921782257
 MonoBehaviour:
   m_ObjectHideFlags: 0

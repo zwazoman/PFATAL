@@ -39,10 +39,6 @@ public class Hand : MonoBehaviour
 
     public Vector3 fpsPosition, tpsPosition;
 
-    private bool swordsUsed = false;
-    private bool tomahawksUsed = false;
-    private bool crossbowsUsed = false;
-
     /// <summary>
     /// v�rifie si un item est ramassable en fonction de l'item info. si il est bien ramassable : le ramasse
     /// </summary>
@@ -100,24 +96,6 @@ public class Hand : MonoBehaviour
         itemVisuals.ShowItemRpc(item.gameObject.name, _isLeft);
 
         equippedItem.Equip();
-
-        if (item is Sword sword)
-        {
-            EquipSpecific(sword);
-            swordsUsed = true;
-        }
-
-        if (item is Tomahawk tomahawk)
-        {
-            EquipSpecific(tomahawk);
-            tomahawksUsed = true;
-        }
-
-        if (item is Crossbow crossbow)
-        {
-            EquipSpecific(crossbow);
-            crossbowsUsed = true;
-        }
     }
 
     /// <summary>

@@ -1,19 +1,16 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class TutoPanel : MonoBehaviour
 {
-    private void Awake()
-    {
-        gameObject.SetActive(false);
-    }
-
     public void ShowPanel()
     {
         gameObject.SetActive(true);
+        transform.DOMoveX(200, 0.5f).SetEase(Ease.OutBack);
     }
 
     public void ClosePanel()
     {
-        gameObject.SetActive(false);
+        transform.DOMoveX(-500, 0.5f).SetEase(Ease.InBack).OnComplete(() => gameObject.SetActive(false));
     }
 }

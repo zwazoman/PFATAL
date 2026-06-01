@@ -119,8 +119,8 @@ public class CharacterAiming : NetworkBehaviour
         yield return new WaitForSeconds(_startAcceleration);
         if (_character.inputs.UsingGamePad == true)
         {
-            if ((gamepad.rightStick.ReadValue().x > 0.7f) || (gamepad.rightStick.ReadValue().y > 0.7f) ||
-                (gamepad.rightStick.ReadValue().x < -0.7f) || (gamepad.rightStick.ReadValue().y < -0.7f))
+            if (((gamepad.rightStick.ReadValue().x > 0.7f) || (gamepad.rightStick.ReadValue().y > 0.7f) ||
+                (gamepad.rightStick.ReadValue().x < -0.7f) || (gamepad.rightStick.ReadValue().y < -0.7f)) && GetComponent<PlayerDetector>()._canDecrease == true)
             {
                 while (ControllerSensitivity < _controllerSensitivityMaxAcceleration)
                 {
@@ -128,9 +128,13 @@ public class CharacterAiming : NetworkBehaviour
                     yield return new WaitForSeconds(0.01f);
                 }
             }
-            else
+            else if (GetComponent<PlayerDetector>()._canDecrease)
             {
                 ControllerSensitivity = _previousControllerSensitivity;
+                StopAllCoroutines();
+            }
+            else
+            {
                 StopAllCoroutines();
             }
         }

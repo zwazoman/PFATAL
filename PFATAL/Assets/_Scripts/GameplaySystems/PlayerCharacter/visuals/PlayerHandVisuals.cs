@@ -1,46 +1,46 @@
 ﻿using System;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using Unity.VisualScripting;
 using UnityEngine;
-using State = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
 namespace GameplaySystems.PlayerCharacter
 {
-    public class PlayerHandVisuals : MonoBehaviour
+    public class PlayerHandVisuals : NetworkBehaviour
     {
         public static float CrossbowAnimationSpeedMultiplier = 1;
         public enum AnimationID
         {
             //voir _Graph/Meshes/Chara/AC_HandCharacter.controller
-            
+
             unknown = -1,
             currentDefaultIdlePose = 0,
             freeHands_idle = 1,
-            
+
             crossbow_idle = 100,
             crossbow_shootAndReload = 101,
-            
+
             tomahawk_idle = 200,
             tomahawk_throw = 201,
             tomahawk_grapple = 202,
-            
+
             sword_idle = 300,
             sword_attack_small_0 = 301,
             sword_attack_small_1 = 302,
             sword_charge_release = 303,
             sword_charge_idle = 304,
-            
+
             book_idle = 400,
             book_use = 401,
             book_charge_idle = 402,
 
             gem_idle = 500,
             gem_break = 501,
-            
+
             bomb_idle = 600,
             bomb_use = 601,
         }
-        
+
         //animator properties ids
         private static readonly int MainAnim_AnimatorProperty = Animator.StringToHash("mainAnim");
         private static readonly int AdditiveAnim_AnimatorProperty = Animator.StringToHash("AdditiveAnim");
@@ -56,7 +56,9 @@ namespace GameplaySystems.PlayerCharacter
         [SerializeField] Animator _animator;
 
         private AnimationID currentDefaultIdlePose;
-        
+
+        NetworkBehaviour[] behaviours;
+
         void Awake()
         {
             _hand.OnEquipItem += OnNewItemEquipped;
@@ -65,11 +67,28 @@ namespace GameplaySystems.PlayerCharacter
             _hand.OnDeleteItem += PlayCurrentDefaultIdlePoseAnimation;
             _hand.OnDropItem += OnItemUnequipped;
             _hand.animatorEventListener.OnAnimationFinished += PlayCurrentDefaultIdlePoseAnimation;
+
+            behaviours = _hand.playerCharacter.GetComponentsInChildren<NetworkBehaviour>();
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+
+            print(NetworkBehaviourId);
+
+            TestRPC();
+        }
+
+        [Rpc(SendTo.Everyone)]
+        void TestRPC()
+        {
+            print("hello");
         }
 
         private void Update()
         {
-            _animator.SetBool(IsRunning_AnimatorProperty, _hand.playerCharacter.physics.Velocity.sqrMagnitude>.25f);
+            _animator.SetBool(IsRunning_AnimatorProperty, _hand.playerCharacter.physics.Velocity.sqrMagnitude > .25f);
         }
 
         private void OnSwapItem()
@@ -79,56 +98,56 @@ namespace GameplaySystems.PlayerCharacter
         }
 
         private void OnNewItemEquipped(Item equippedItem)
-        {   
+        {
             //set idle pose
             currentDefaultIdlePose = equippedItem switch
             {
                 Crossbow => AnimationID.crossbow_idle,
                 Tomahawk => AnimationID.tomahawk_idle,
                 Sword => AnimationID.sword_idle,
-                
+
                 Cons_Tornado => AnimationID.book_idle,
                 Cons_BigLaserBeam => AnimationID.book_idle,
                 Cons_ToxicCloud => AnimationID.book_idle,
-                
+
                 Cons_Heal => AnimationID.gem_idle,
                 Cons_TP => AnimationID.gem_idle,
                 Cons_GroundSlam => AnimationID.gem_idle,
-                
+
                 Cons_Bomb => AnimationID.bomb_idle,
                 //todo : Cons_WolfTrap ,
-                
+
                 _ => AnimationID.unknown
             };
-            
+
             //play idle animation
             PlayAnimation(currentDefaultIdlePose);
-            
+
             //play additive pickup animation
             _animator.SetTrigger(PlayPickupAnimation_AnimatorProperty);
-            
+
             //link item-specific events
             switch (equippedItem)
             {
                 case Crossbow crossbow:
                     const float crossbowShootAnimClipLength = .542f;
                     CrossbowAnimationSpeedMultiplier = crossbowShootAnimClipLength / (crossbow.delayBetweenShots - .05f);
-                    _animator.SetFloat(CrossbowShootAnimationSpeedMultiplier_AnimatorProperty,CrossbowAnimationSpeedMultiplier);
+                    _animator.SetFloat(CrossbowShootAnimationSpeedMultiplier_AnimatorProperty, CrossbowAnimationSpeedMultiplier);
                     crossbow.OnCrossbowShoot += PlayCrossbowShootAnimation;
                     break;
-                // case Tomahawk tomahawk:
-                //     const float tomahawkThrowAnimClipLength = 1.083f;
-                //     float tomahawkAnimationSpeedMultiplier = tomahawkThrowAnimClipLength / (tomahawk.delayBetweenShots - .05f);
-                //     _animator.SetFloat(TomahawkThrowAnimationSpeedMultiplier_AnimatorProperty,tomahawkAnimationSpeedMultiplier);
-                //     break;
+                    // case Tomahawk tomahawk:
+                    //     const float tomahawkThrowAnimClipLength = 1.083f;
+                    //     float tomahawkAnimationSpeedMultiplier = tomahawkThrowAnimClipLength / (tomahawk.delayBetweenShots - .05f);
+                    //     _animator.SetFloat(TomahawkThrowAnimationSpeedMultiplier_AnimatorProperty,tomahawkAnimationSpeedMultiplier);
+                    //     break;
             }
-            
+
         }
-        
+
         void OnItemUnequipped(Item item)
         {
-            print("received event unequipped item : "+item.GetType());
-            
+            print("received event unequipped item : " + item.GetType());
+
             //unlink item-specific events
             switch (item)
             {
@@ -140,7 +159,7 @@ namespace GameplaySystems.PlayerCharacter
             currentDefaultIdlePose = AnimationID.freeHands_idle;
             PlayCurrentDefaultIdlePoseAnimation();
         }
-        
+
         //helper functions
         public void PlayAnimation(AnimationID id)
         {
@@ -152,25 +171,35 @@ namespace GameplaySystems.PlayerCharacter
             else if (id == AnimationID.currentDefaultIdlePose)
                 id = currentDefaultIdlePose;
 
-            DoPlayAnimationRPC(id);
+            PlayAnimationRPC((int)id);
         }
 
         private void PlayCurrentDefaultIdlePoseAnimation()
         {
-            DoPlayAnimationRPC(currentDefaultIdlePose);
+            PlayAnimationRPC((int)currentDefaultIdlePose);
         }
-        
-        //[Rpc(SendTo.Everyone)]
+
+        [Rpc(SendTo.Everyone)]
         // todo : ça marchait pas à cause de cette erreur : 
         // "NetworkBehaviour index 11 was out of bounds for player character_0."
         // je l'ai remis en monobehaviour du coup, mais faudrait arriver à
         // trouver d'où ça vient pour pouvoir repliquer les anims
-        private void DoPlayAnimationRPC(AnimationID id) 
+        private void PlayAnimationRPC(int id)
         {
-            _animator.SetInteger(MainAnim_AnimatorProperty, (int)id);
+            for (int i = 0; i < behaviours.Length; i++)
+            {
+                Debug.Log($"{i} : {behaviours[i].GetType().Name}");
+            }
+
+            Debug.Log($"NetworkObjectId = {NetworkObjectId}");
+            Debug.Log($"IsSpawned = {IsSpawned}");
+            Debug.Log($"Behaviour = {GetType().Name}");
+            Debug.Log($"Owner = {OwnerClientId}");
+
+            _animator.SetInteger(MainAnim_AnimatorProperty, id);
             _animator.SetTrigger(PlayMainAnimation_AnimatorProperty);
         }
-        
+
         //sword animation
         private bool _swordAnimFlipFlop;
         public void PlaySwordAttackAnimation()
@@ -178,12 +207,12 @@ namespace GameplaySystems.PlayerCharacter
             PlayAnimation(_swordAnimFlipFlop ? AnimationID.sword_attack_small_0 : AnimationID.sword_attack_small_1);
             _swordAnimFlipFlop = !_swordAnimFlipFlop;
         }
-        
+
         //crossbow animation
         private void PlayCrossbowShootAnimation(float chargeLevel)
         {
             PlayAnimation(AnimationID.crossbow_shootAndReload);
         }
-        
+
     }
 }

@@ -158,13 +158,22 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         //jump particles
         if ((newState & State.Jumping) == State.Jumping)
             _jumpVFX.Play();
+        
+        //death particles
+        if ((newState & State.Dead) == State.Dead)
+            LocalPoolManager.Instance.Pool_VFX_RockBurst_Big.
+                PullObjectFromPool(transform.position)
+                .GoBackIntoPool_Delayed(2);
     }
 
     private void OnDamageTaken(DamageData damageData)
     {
-        //hit vfx
+        //hit vfxs
         LocalPoolManager.Instance.Pool_VFX_Hit_crit.
             PullObjectFromPool(damageData.Point, Quaternion.LookRotation(-damageData.Direction))
             .GoBackIntoPool_Delayed(1.5f);
+        LocalPoolManager.Instance.Pool_VFX_RockBurst_Small.
+            PullObjectFromPool(damageData.Point, Quaternion.LookRotation(-damageData.Direction,Vector3.up))
+            .GoBackIntoPool_Delayed(2f);
     }
 }

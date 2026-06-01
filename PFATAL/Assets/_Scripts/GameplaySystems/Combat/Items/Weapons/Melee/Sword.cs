@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using _Scripts.Extensions;
 using GameplaySystems.PlayerCharacter;
 
 public class Sword : MeleeWeapon
@@ -34,7 +35,7 @@ public class Sword : MeleeWeapon
         _trailRenderer.transform.position =  
             playerCharacter.cameraBehaviour.worldCam.ScreenToWorldPoint(
             playerCharacter.cameraBehaviour.fpsCam.WorldToScreenPoint(
-                _trailRendererSocket.position));
+                _trailRendererSocket.position).WithZ(.3f));
         _trailRenderer.gameObject.layer = LayerMask.NameToLayer("Default");
     }
     
@@ -194,6 +195,7 @@ public class Sword : MeleeWeapon
     public void EnableHitbox()
     {
         hitboxIsActive = true;
+        _trailRenderer.emitting = true;
     }
 
     /// <summary>
@@ -202,6 +204,7 @@ public class Sword : MeleeWeapon
     public void DisableHitBox()
     {
         hitboxIsActive = false;
+        _trailRenderer.emitting = false;
     }
 
     

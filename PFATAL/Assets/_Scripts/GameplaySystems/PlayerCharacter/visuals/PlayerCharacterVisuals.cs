@@ -1,21 +1,24 @@
 ﻿using System.Collections.Generic;
 using _scripts.PlayerCharacter;
 using _Scripts.Pooling;
+using DG.Tweening;
 using SimpleVFXs;
 using Unity.Netcode;
 using UnityEngine;
-
+using UnityEngine.UIElements.Experimental;
 using State = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 
 public class PlayerCharacterVisuals : NetworkBehaviour
 {
     private static readonly int StateAnimatorPropertyIndex = Animator.StringToHash("State");
+    private static readonly int StrengthAnimatorPropertyIndex = Shader.PropertyToID("_strength");
+
     public bool IsProxy => !IsOwner;
     public bool IsInFpsView => IsOwner;
     
     public static int fpsLayerMask;
     public static int defaultLayerMask;
-    
+
     [Header("scene references")]
     [SerializeField] PlayerCharacter _playerCharacter;
     [SerializeField] StylisedEffect _healVFX;
@@ -23,6 +26,8 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     
     [Header("FPS visuals")]
     [SerializeField] List<GameObject> _fpsVisuals;
+    [SerializeField] MeshRenderer _swordSlash0;
+    [SerializeField] MeshRenderer _swordSlash1;
     
     [Header("Third person Proxy visuals")]
     [SerializeField] List<GameObject> _proxyVisuals;
@@ -41,6 +46,25 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     
     [SerializeField] List<GameObject> _visualObjects;
 
+    public async void PlaySwordSlashAnimationVFX(bool animFlipFlop)
+    {
+        await Awaitable.WaitForSecondsAsync(.22f);
+        MaterialPropertyBlock materialPropertyBlock = new MaterialPropertyBlock();
+        float strength = .5f;
+        Renderer renderer = animFlipFlop ? _swordSlash0 : _swordSlash1;
+        renderer.enabled = true;
+        DOTween.To(
+            () => strength,
+            (float x) =>
+            {
+                strength = x;
+                materialPropertyBlock.SetFloat(StrengthAnimatorPropertyIndex, x);
+                renderer.SetPropertyBlock(materialPropertyBlock);
+            },
+            0f, .25f).SetEase(Ease.OutQuad)
+            .onComplete = () => renderer.enabled = false;
+    }
+    
     public void PlayHealingVFX()
     {
         _healVFX.vfx.SetFloat("Radius", IsInFpsView ? 1 : .5f);

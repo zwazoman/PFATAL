@@ -205,6 +205,7 @@ namespace GameplaySystems.PlayerCharacter
         public void PlaySwordAttackAnimation()
         {
             PlayAnimation(_swordAnimFlipFlop ? AnimationID.sword_attack_small_0 : AnimationID.sword_attack_small_1);
+            _hand.playerCharacter.visuals.PlaySwordSlashAnimationVFX(_swordAnimFlipFlop);
             _swordAnimFlipFlop = !_swordAnimFlipFlop;
         }
 

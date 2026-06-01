@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerDetector : MonoBehaviour
 {
@@ -6,10 +7,17 @@ public class PlayerDetector : MonoBehaviour
     [SerializeField] private LayerMask _mask;
     [SerializeField] private PlayerCharacterInputs _input;
     [SerializeField] private CharacterAiming _characterAiming;
-    private bool _canDecrease = true;
+    [SerializeField] private float _minimumDecrease;
+    [HideInInspector] public bool _canDecrease = true;
+    private float _previousSensititvity;
     private RaycastHit _hitInfo;
 
     [SerializeField] private AimAssistVersions _assistVersions;
+
+    private void Start()
+    {
+        _previousSensititvity = _characterAiming.ControllerSensitivity;
+    }
 
     private void OnDrawGizmos()
     {
@@ -27,49 +35,35 @@ public class PlayerDetector : MonoBehaviour
                 Gizmos.DrawWireSphere(sphereCastMidpoint, 1f);
                 Gizmos.DrawSphere(_hitInfo.point, 0.1f);
                 Debug.DrawLine(transform.position, sphereCastMidpoint, Color.green);
-                AimAssist();
-                if (_canDecrease == true)
-                {
-                    //_characterAiming.Sensitivity = 90;
-                    _canDecrease = false;
-                }
+                //AimAssist();
+                
             }
-            else
-            {
-                //For seeing in debug mode if it works
-                /*
-                Gizmos.color = Color.red;
-                Vector3 sphereCastMidpoint = transform.position + (transform.forward * (100f - 1f));
-                Gizmos.DrawWireSphere(sphereCastMidpoint, 1f);
-                Debug.DrawLine(transform.position, sphereCastMidpoint, Color.red);*/
-
-                if (_canDecrease == false)
-                {
-                    //_characterAiming.Sensitivity = 100;
-                    _canDecrease = true;
-                }
-            }
-        }
-        else
-        {
-            //Will need some change after the change of sensitivity with the crossbow.
-            //_characterAiming.Sensitivity = 100;
         }
     }
 
     private void Update()
     {
+        Debug.Log(_canDecrease);
         if (_input.UsingGamePad == true)
         {
             if (Physics.SphereCast(_cameraTransform.position, 1f, _cameraTransform.forward, out _hitInfo, 100f, _mask))
             {
                 AimAssist();
-                /*
-                if (_canDecrease == true)
+                if (_canDecrease)
                 {
-                    //_characterAiming.Sensitivity = 90;
+                    _characterAiming.ControllerSensitivity = _minimumDecrease;
                     _canDecrease = false;
-                }*/
+                    //StartCoroutine(Deceleration());
+                }
+            }
+            else
+            {
+                if (!_canDecrease)
+                {
+                    StopAllCoroutines();
+                    _characterAiming.ControllerSensitivity = _previousSensititvity;
+                    _canDecrease = true;
+                }
             }
         }
     }
@@ -103,4 +97,18 @@ public class PlayerDetector : MonoBehaviour
             }
         }
     }
+    /*
+    IEnumerator Deceleration()
+    {
+        /* Seems to break everything.
+        while (_canDecrease == false)
+        {
+            if (_characterAiming.ControllerSensitivity > _minimumDecrease)
+            {
+                _characterAiming.ControllerSensitivity -= 0.1f;
+                yield return new WaitForSeconds(0.01f);
+            }
+        }
+        yield return new WaitForSeconds(0.01f);
+    }*/
 }

@@ -6,7 +6,8 @@ public class PlayerCameraBehaviour : MonoBehaviour
     public static float BaseFov = 70;
     [Header("sceneReferences")]
     [SerializeField] PlayerCharacter _playerCharacter;
-    [SerializeField] public Camera _cam;
+    [SerializeField] public Camera worldCam;
+    [SerializeField] public Camera fpsCam;
     [SerializeField] private Transform _recoilTarget;
     [SerializeField] private Transform _aimPuchBodyCenterReference;
 
@@ -33,18 +34,16 @@ public class PlayerCameraBehaviour : MonoBehaviour
     private float _fov;
     private float _tempFovOffset = 0;
     
-    public static PlayerCameraBehaviour Current;
-    
     void Awake()
     {
         _playerCharacter.health.OnDamageTaken += ApplyAimPuchRecoil;
-        _fov = _cam.fieldOfView;
+        _fov = worldCam.fieldOfView;
     }
     
     private void ApplyAimPuchRecoil(DamageData damageData)
     {
         Vector3 worldVector = (_aimPuchBodyCenterReference.position - damageData.Point).normalized;
-        Vector2 cameraVector = _cam.worldToCameraMatrix* worldVector * damageData.Amount/_playerCharacter.health.MaxHP;
+        Vector2 cameraVector = worldCam.worldToCameraMatrix* worldVector * damageData.Amount/_playerCharacter.health.MaxHP;
         AddRecoil(Vector2.Scale(cameraVector+_aimPunchDirectionOffset,_aimPunchMultiplier));
     }
     
@@ -92,7 +91,7 @@ public class PlayerCameraBehaviour : MonoBehaviour
             Mathf.Pow(_playerCharacter.physics.Velocity.magnitude / _playerCharacter.stateMachine.s_Walking._walkSpeed, _playerVelocityToFovScalingCurveExponent));
         
         _fov = Mathf.SmoothDamp(_fov,targetFOV,ref _fovVel,_fovSmoothTime) ;
-        _cam.fieldOfView = _fov + _tempFovOffset;
+        worldCam.fieldOfView = _fov + _tempFovOffset;
         _tempFovOffset = 0;
         
         //recoil stabilisation

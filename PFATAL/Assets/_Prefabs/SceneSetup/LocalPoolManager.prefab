@@ -188,6 +188,53 @@ MonoBehaviour:
   _prefab: {fileID: 1425785110876254368, guid: 46ea7ea2d006eb841802a7d485244c99, type: 3}
   BaseSize: 10
   GrowRateWhenEmpty: 5
+--- !u!1 &2596385590765808831
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3173399245158775299}
+  - component: {fileID: 3995934219138406213}
+  m_Layer: 0
+  m_Name: rockBurst_small
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3173399245158775299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2596385590765808831}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8787378877497911397}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3995934219138406213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2596385590765808831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32bd68b8c2fb4744b83a76006a47f944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Pooling.Pool
+  _prefab: {fileID: 7545747332366929345, guid: 8905fc15d62023d43a523a00398ca856, type: 3}
+  BaseSize: 8
+  GrowRateWhenEmpty: 4
 --- !u!1 &2633838656855891680
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +317,8 @@ Transform:
   - {fileID: 3966660402882201146}
   - {fileID: 4274482674660024169}
   - {fileID: 1835205460063664647}
+  - {fileID: 3173399245158775299}
+  - {fileID: 8465751719492320512}
   m_Father: {fileID: 1406014691294916543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4407685690260219969
@@ -366,6 +415,53 @@ MonoBehaviour:
   _prefab: {fileID: 7433187660289328953, guid: 96ebe9343fdd3884d8d558c5e6ac11d8, type: 3}
   BaseSize: 5
   GrowRateWhenEmpty: 3
+--- !u!1 &4651014960436227334
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8465751719492320512}
+  - component: {fileID: 4728972987516851919}
+  m_Layer: 0
+  m_Name: rockBurst_big
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8465751719492320512
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4651014960436227334}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8787378877497911397}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4728972987516851919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4651014960436227334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32bd68b8c2fb4744b83a76006a47f944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Pooling.Pool
+  _prefab: {fileID: 6301892263644317039, guid: b74dce1041b201c448f20696191424d3, type: 3}
+  BaseSize: 4
+  GrowRateWhenEmpty: 2
 --- !u!1 &5162206439842516277
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,6 +515,8 @@ MonoBehaviour:
   Pool_VFX_Explosion_small: {fileID: 690653188899277433}
   Pool_VFX_GemBreak: {fileID: 5828878690166291268}
   Pool_VFX_GroundSlam: {fileID: 803936561276291545}
+  Pool_VFX_RockBurst_Small: {fileID: 3995934219138406213}
+  Pool_VFX_RockBurst_Big: {fileID: 4728972987516851919}
 --- !u!1 &5676857051342966911
 GameObject:
   m_ObjectHideFlags: 0

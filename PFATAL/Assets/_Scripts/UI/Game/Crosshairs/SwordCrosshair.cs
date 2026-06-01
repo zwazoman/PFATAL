@@ -9,8 +9,6 @@ public class SwordCrosshair : Crosshair<Sword>
 
     public override void Activate(Sword weapon)
     {
-        print(weapon);
-
         base.Activate(weapon);
 
         weapon.OnStartCharging += ActivateDashCrosshair;

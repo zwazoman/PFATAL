@@ -1,4 +1,5 @@
 using FMOD.Studio;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Proj_Tomahawk : Proj_Falling
@@ -32,7 +33,8 @@ public class Proj_Tomahawk : Proj_Falling
         
         base.Update();
     }
-    
+
+    //[Rpc(SendTo.Server)]
     public void Explode()
     {
         _explosion.Explode(spawnContext.Value.spawnerClientID, (int)spawnContext.Value.floatData2);

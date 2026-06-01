@@ -124,7 +124,7 @@ public class CharacterAiming : NetworkBehaviour
             {
                 while (ControllerSensitivity < _controllerSensitivityMaxAcceleration)
                 {
-                    ControllerSensitivity += 0.01f;
+                    ControllerSensitivity += 0.025f;
                     yield return new WaitForSeconds(0.01f);
                 }
             }

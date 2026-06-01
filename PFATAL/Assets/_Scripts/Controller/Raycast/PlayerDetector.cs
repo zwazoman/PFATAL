@@ -43,24 +43,30 @@ public class PlayerDetector : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(_canDecrease);
         if (_input.UsingGamePad == true)
         {
             if (Physics.SphereCast(_cameraTransform.position, 1f, _cameraTransform.forward, out _hitInfo, 100f, _mask))
             {
-                AimAssist();
-                if (_canDecrease)
+                if (_characterAiming.ControllerSensitivity > 50f) // For the camera not stopping when looking around fast.
                 {
-                    _characterAiming.ControllerSensitivity = _minimumDecrease;
                     _canDecrease = false;
-                    //StartCoroutine(Deceleration());
+                }
+                else
+                {
+                    AimAssist();
+                    if (_canDecrease)
+                    {
+                        _characterAiming.ControllerSensitivity = _minimumDecrease;
+                        _canDecrease = false;
+                        //StartCoroutine(Deceleration());
+                    }
                 }
             }
             else
             {
                 if (!_canDecrease)
                 {
-                    StopAllCoroutines();
+                    //StopAllCoroutines();
                     _characterAiming.ControllerSensitivity = _previousSensititvity;
                     _canDecrease = true;
                 }

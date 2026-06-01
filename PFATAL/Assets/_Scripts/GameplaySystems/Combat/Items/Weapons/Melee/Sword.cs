@@ -21,12 +21,23 @@ public class Sword : MeleeWeapon
     [SerializeField] float _dashDotThreshold = 0f;
 
     [HideInInspector] public float currentDashCooldown;
-
+    [SerializeField] public TrailRenderer _trailRenderer;
+    [SerializeField] public Transform _trailRendererSocket;
+    
     bool _charged;
     bool _isAttacking;
     public bool isDashing;
     bool _canDash = true;
-
+    
+    protected override void Update()
+    {
+        _trailRenderer.transform.position =  
+            playerCharacter.cameraBehaviour.worldCam.ScreenToWorldPoint(
+            playerCharacter.cameraBehaviour.fpsCam.WorldToScreenPoint(
+                _trailRendererSocket.position));
+        _trailRenderer.gameObject.layer = LayerMask.NameToLayer("Default");
+    }
+    
     public override void Equip()
     {
         base.Equip();

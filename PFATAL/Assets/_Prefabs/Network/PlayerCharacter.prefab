@@ -10784,6 +10784,7 @@ GameObject:
   - component: {fileID: 3718568392821401935}
   - component: {fileID: -6261384678717647340}
   - component: {fileID: 8654703381458756738}
+  - component: {fileID: 7665412419486520972}
   - component: {fileID: 3898847388129945752}
   - component: {fileID: 9173803931921782257}
   m_Layer: 8
@@ -11526,6 +11527,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScreenFeedbacks
   _playerCharacter: {fileID: 1068121725211319751}
   _damageOverlayMaterial: {fileID: 2100000, guid: 067d6ae1bd3e1f845aeaa49c317eced5, type: 2}
+--- !u!114 &7665412419486520972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8535136328113993408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef2544b16337ae49b1c750e59d78ca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutoChecker
+  hand: {fileID: 1871171297071789684}
+  crossbowPanel: {fileID: 4382693976598205054}
+  tomahawkPanel: {fileID: 7911921147988763806}
+  swordPanel: {fileID: 5337687033849048005}
 --- !u!114 &3898847388129945752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11598,6 +11615,7 @@ MonoBehaviour:
   - {fileID: 7946938467345428475}
   - {fileID: 579787371550923914}
   - {fileID: 8654703381458756738}
+  - {fileID: 7665412419486520972}
 --- !u!1 &8852470855691711139
 GameObject:
   m_ObjectHideFlags: 0
@@ -13150,6 +13168,17 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 3574568073621672535, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
   m_PrefabInstance: {fileID: 4148021087665442525}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4382693976598205054 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 379093743153814691, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
+  m_PrefabInstance: {fileID: 4148021087665442525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1720aa14c0ce7d546a1f5a8592172db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutoPanel
 --- !u!114 &5284614508091506229 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8126186798961111272, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
@@ -13161,11 +13190,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5098448c5b8754fb198dd6af31bc9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDManager
+--- !u!114 &5337687033849048005 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8323774850424841496, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
+  m_PrefabInstance: {fileID: 4148021087665442525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1720aa14c0ce7d546a1f5a8592172db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutoPanel
 --- !u!224 &6073989678505280780 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7916094896053849041, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
   m_PrefabInstance: {fileID: 4148021087665442525}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7911921147988763806 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6078858317925820995, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
+  m_PrefabInstance: {fileID: 4148021087665442525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1720aa14c0ce7d546a1f5a8592172db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutoPanel
 --- !u!1001 &4307205339695198220
 PrefabInstance:
   m_ObjectHideFlags: 0

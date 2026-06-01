@@ -96,15 +96,6 @@ public class Hand : MonoBehaviour
         itemVisuals.ShowItemRpc(item.gameObject.name, _isLeft);
 
         equippedItem.Equip();
-
-        /*if (item is Crossbow crossbow)
-            EquipSpecific(crossbow);
-
-        if (item is Tomahawk tomahawk)
-            EquipSpecific(tomahawk);
-
-        if (item is Sword hammer)
-            EquipSpecific(hammer);*/
     }
 
     /// <summary>

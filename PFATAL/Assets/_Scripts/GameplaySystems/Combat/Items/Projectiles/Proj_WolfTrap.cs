@@ -66,7 +66,7 @@ public class Proj_WolfTrap : Projectile
 
     bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, Vector3.down, 0.35f);
+        return Physics.Raycast(transform.position, Vector3.down, 0.1f);
     }
 
     private void HandlePlayers()

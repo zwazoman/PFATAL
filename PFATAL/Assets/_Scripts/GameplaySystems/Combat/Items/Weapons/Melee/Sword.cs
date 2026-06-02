@@ -155,6 +155,7 @@ public class Sword : MeleeWeapon
         isDashing = true;
         //event & anim
         hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.sword_charge_release);
+        hand.playerCharacter.visuals.PlaySwordDashAnimationVFX();
         OnDashStarted?.Invoke();
         
         //changelent de velocité

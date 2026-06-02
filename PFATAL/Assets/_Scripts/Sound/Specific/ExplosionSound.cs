@@ -8,7 +8,7 @@ public class ExplosionSound : SoundComponent<Explosion>
         main.EventOnExplode += OnExplode_Callback;
     }
 
-    void OnExplode_Callback()
+    void OnExplode_Callback(Vector3 _)
     {
         AudioManager.Instance.PlayOneShot(Sounds.Explosion3D, transform.position);
     }

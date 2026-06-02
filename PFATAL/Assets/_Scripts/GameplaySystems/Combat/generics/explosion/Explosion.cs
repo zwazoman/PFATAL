@@ -15,7 +15,7 @@ public class Explosion : NetworkBehaviour
     private const float HIT_DETECTION_DURATION = .3f;
 
     //synced event
-    public event Action EventOnExplode;
+    public event Action<Vector3> EventOnExplode;
         
     /// <summary>
     /// can only be called from the server
@@ -80,7 +80,7 @@ public class Explosion : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void CallExplosionEventRPC()
     {
-        EventOnExplode?.Invoke();
+        EventOnExplode?.Invoke(transform.position);
     }
     
     private void OnDrawGizmos()

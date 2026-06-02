@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using _Scripts.Extensions;
 using GameplaySystems.PlayerCharacter;
 
 public class Sword : MeleeWeapon
@@ -21,12 +22,23 @@ public class Sword : MeleeWeapon
     [SerializeField] float _dashDotThreshold = 0f;
 
     [HideInInspector] public float currentDashCooldown;
+    // [SerializeField] public TrailRenderer _trailRenderer;
+    // [SerializeField] public Transform _trailRendererSocket;
 
     bool _charged;
     bool _isAttacking;
     public bool isDashing;
     bool _canDash = true;
-
+    
+    protected override void Update()
+    {
+        // _trailRenderer.transform.position =  
+        //     playerCharacter.cameraBehaviour.worldCam.ScreenToWorldPoint(
+        //     playerCharacter.cameraBehaviour.fpsCam.WorldToScreenPoint(
+        //         _trailRendererSocket.position).WithZ(.3f));
+        // _trailRenderer.gameObject.layer = LayerMask.NameToLayer("Default");
+    }
+    
     public override void Equip()
     {
         base.Equip();
@@ -183,6 +195,7 @@ public class Sword : MeleeWeapon
     public void EnableHitbox()
     {
         hitboxIsActive = true;
+        //_trailRenderer.emitting = true;
     }
 
     /// <summary>
@@ -191,6 +204,7 @@ public class Sword : MeleeWeapon
     public void DisableHitBox()
     {
         hitboxIsActive = false;
+        //_trailRenderer.emitting = false;
     }
 
     

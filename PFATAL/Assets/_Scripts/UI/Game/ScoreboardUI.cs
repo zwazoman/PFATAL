@@ -35,7 +35,7 @@ public class ScoreboardUI : MonoBehaviour
 
         foreach (var player in GameManager.Instance.LeaderBoard.entries)
         {
-            AddPlayerCard(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths, 99);
+            AddPlayerCard(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths, player.Rank);
             Debug.LogWarning("Added player card for ClientID: " + player.ClientID);
         }
     }
@@ -47,17 +47,17 @@ public class ScoreboardUI : MonoBehaviour
         foreach (var player in GameManager.Instance.LeaderBoard.entries)
         {
             PlayerCardUI card = playerCards[i];
-            card.SetPlayerInfo(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths, 99);
+            card.SetPlayerInfo(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths,player.Rank);
             card.transform.SetSiblingIndex(i);
             i++;
         }
     }
 
-    public void AddPlayerCard(string playerName = "Player", int score = 0, int kills = 0, int deaths = 0, int ping = 0)
+    public void AddPlayerCard(string playerName, int score, int kills, int deaths, int rank)
     {
         GameObject newCard = Instantiate(playerCardPrefab, contentParent);
         PlayerCardUI cardUI = newCard.GetComponent<PlayerCardUI>();
-        cardUI.SetPlayerInfo(playerName, score, kills, deaths, ping);
+        cardUI.SetPlayerInfo(playerName, score, kills, deaths, rank);
         playerCards.Add(cardUI);
     }
 

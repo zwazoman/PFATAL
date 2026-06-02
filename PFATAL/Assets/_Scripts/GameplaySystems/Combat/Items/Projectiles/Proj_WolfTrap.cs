@@ -75,7 +75,8 @@ public class Proj_WolfTrap : Projectile
 
         for (int i = 0; i < count; i++)
         {
-            if (!buffer[i].TryGetComponent(out DamageableObject hitObject)) continue;
+            if (!buffer[i].TryGetComponent(out DamageableObject hitObject) || !hitObject.isPlayer) continue;
+
 
             // Dégâts côté serveur
             DamageData damageData = new DamageData
@@ -89,14 +90,11 @@ public class Proj_WolfTrap : Projectile
                 Radius = _radius,
                 WeaponID = (int)spawnContext.Value.floatData2
             };
-            
-            if (hitObject.isPlayer)
-            {
-                // RPC vers le client ciblé
-                ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
-                ApplyFreezeRPC(_freezeDuration, RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
-                hitObject.TakeDamage(damageData);
-            }
+
+            // RPC vers le client ciblé
+            ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
+            ApplyFreezeRPC(_freezeDuration, RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
+            hitObject.TakeDamage(damageData);
 
             OnTrapPlayer?.Invoke();
 

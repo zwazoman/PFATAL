@@ -97,14 +97,8 @@ public class Tomahawk : ProjectileWeapon
     {
         base.StartUsing();
 
-        print(canShoot);
-        print(_canGrapple);
-        print(_currentProjectile);
-        print(_isShooting);
-
         if(canShoot && _currentProjectile == null && _currentAmmoCount > 0 && !_isShooting)
         {
-            print("shoot");
             Shoot();
         }
         else if (_canGrapple && _currentProjectile != null && !_isShooting)

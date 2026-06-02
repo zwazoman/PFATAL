@@ -19,6 +19,5 @@ public class NetworkComponentsSort : NetworkBehaviour
                 component.enabled = false;
             }
         }
-        Destroy(this);
     }
 }

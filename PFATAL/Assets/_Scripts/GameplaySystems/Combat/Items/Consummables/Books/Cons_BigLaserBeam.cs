@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Cons_BigLaserBeam : Consummable
+public class Cons_BigLaserBeam : Cons_BookBase
 {
     [Header("Laser Settings")]
     [SerializeField] private float _maxChargeTime = 2f;
@@ -11,18 +11,14 @@ public class Cons_BigLaserBeam : Consummable
 
     public override void StartUsing()
     {
-        if (!playerCharacter.IsOwner) return;
-
         playerCharacter.stateMachine.s_Frozen.Freeze(float.MaxValue);
         base.StartUsing();
     }
 
-    public override void StopUsing()
+    protected override void ApplySpellEffect()
     {
-        if (!playerCharacter.IsOwner) return;
-        
         playerCharacter.stateMachine.s_Frozen.Unfreeze();
-        
+
         Transform cam = playerCharacter.playerCamera.transform;
         float chargeRatio = Mathf.Clamp01(holdDuration / _maxChargeTime);
 
@@ -42,7 +38,6 @@ public class Cons_BigLaserBeam : Consummable
 
         playerCharacter.physics.AddImpulse(-playerCharacter.cameraBehaviour.transform.forward * _recoilForce);
 
-        base.StopUsing();
-        BreakItem();
+        //BreakItem();
     }
 }

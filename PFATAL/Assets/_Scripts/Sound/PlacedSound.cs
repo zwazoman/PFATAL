@@ -1,3 +1,4 @@
+using FMOD;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -12,9 +13,6 @@ public class PlacedSound : MonoBehaviour
 
     private void Start()
     {
-        if (_moving)
-            RuntimeManager.AttachInstanceToGameObject(_currentInstance, gameObject);
-
         if (_playOnStart)
             PlaySound();
     }
@@ -25,6 +23,12 @@ public class PlacedSound : MonoBehaviour
             return;
 
         _currentInstance = AudioManager.Instance.CreateInstance(_sound, true);
+
+        _currentInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+
+        if (_moving)
+            RuntimeManager.AttachInstanceToGameObject(_currentInstance, gameObject);
+
         _currentInstance.start();
     }
 

@@ -88,7 +88,7 @@ public class PlayerCameraBehaviour : MonoBehaviour
     {
         //fov
         float targetFOV = Mathf.Lerp( BaseFov, BaseFov + FOVVelocityOffset,
-            Mathf.Pow(_playerCharacter.physics.Velocity.magnitude / _playerCharacter.stateMachine.s_Walking._walkSpeed, _playerVelocityToFovScalingCurveExponent));
+            Mathf.Pow(_playerCharacter.physics.Velocity.magnitude / _playerCharacter.stateMachine.s_Walking._walkSpeed*2, _playerVelocityToFovScalingCurveExponent));
         
         _fov = Mathf.SmoothDamp(_fov,targetFOV,ref _fovVel,_fovSmoothTime) ;
         worldCam.fieldOfView = _fov + _tempFovOffset;

@@ -28,6 +28,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     [SerializeField] List<GameObject> _fpsVisuals;
     [SerializeField] MeshRenderer _swordSlash0;
     [SerializeField] MeshRenderer _swordSlash1;
+    [SerializeField] MeshRenderer _swordDash;
     
     [Header("Third person Proxy visuals")]
     [SerializeField] List<GameObject> _proxyVisuals;
@@ -62,6 +63,25 @@ public class PlayerCharacterVisuals : NetworkBehaviour
                 renderer.SetPropertyBlock(materialPropertyBlock);
             },
             0f, .25f).SetEase(Ease.OutQuad)
+            .onComplete = () => renderer.enabled = false;
+    }
+    
+    public async void PlaySwordDashAnimationVFX()
+    {
+        await Awaitable.WaitForSecondsAsync(.12f);
+        MaterialPropertyBlock materialPropertyBlock = new MaterialPropertyBlock();
+        float strength = .5f;
+        Renderer renderer = _swordDash;
+        renderer.enabled = true;
+        DOTween.To(
+                () => strength,
+                (float x) =>
+                {
+                    strength = x;
+                    materialPropertyBlock.SetFloat(StrengthAnimatorPropertyIndex, x);
+                    renderer.SetPropertyBlock(materialPropertyBlock);
+                },
+                0f, .55f).SetEase(Ease.OutCubic)
             .onComplete = () => renderer.enabled = false;
     }
     

@@ -49,12 +49,12 @@ public class PlayerDetector : MonoBehaviour
             {
                 if (_characterAiming.ControllerSensitivity > 50f) // For the camera not stopping when looking around fast.
                 {
-                    _canDecrease = false;
+                    _canDecrease = true;
                 }
                 else
                 {
                     AimAssist();
-                    if (_canDecrease)
+                    if (_canDecrease && _characterAiming.ControllerSensitivity > _minimumDecrease)
                     {
                         _characterAiming.ControllerSensitivity = _minimumDecrease;
                         _canDecrease = false;

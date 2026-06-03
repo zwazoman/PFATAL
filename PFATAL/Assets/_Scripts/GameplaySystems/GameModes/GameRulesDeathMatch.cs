@@ -14,7 +14,8 @@ public class GameRulesDeathMatch : GameRulesBase
     {
         //(voir excel nathan : https://eartsup-my.sharepoint.com/:x:/g/personal/nathan_tazi_e-artsup_net/IQDlLZONFxj8TLH2poCxFIdAAbTWHX5GnG7fBTHv6jm3ZIw?e=gYGWjQ) 
         const float deathPenaltyWeight = .5f;
-        return Mathf.CeilToInt(kills-deaths * ((float)(kills-deaths)/(kills+deaths)*0.5f+0.5f)*deathPenaltyWeight);
+        float value = kills - deaths * ((float)(kills - deaths) / (kills + deaths) * 0.5f + 0.5f) * deathPenaltyWeight;
+        return Mathf.CeilToInt(value*100);
     }
     
     protected override void StartGame()

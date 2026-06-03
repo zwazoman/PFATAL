@@ -25,6 +25,9 @@ public abstract class Cons_BookBase : Consummable
 
     protected Projectile _currentProjectile;
 
+    public bool IsSpawningProjectile = false;
+    protected bool used = false;
+
     public enum ProjectileRotationMode
     {
         Camera,   // vise là où la caméra regarde
@@ -58,6 +61,8 @@ public abstract class Cons_BookBase : Consummable
         hand.animatorEventListener.OnSpellCast -= OnSpellCast;
         hand.animatorEventListener.OnAnimationFinished -= OnAnimationFinished;
 
+        used = false;
+
         base.UnEquip();
     }
 
@@ -80,8 +85,11 @@ public abstract class Cons_BookBase : Consummable
 
     public override void StartUsing()
     {
+        if (used) return;
+
         base.StartUsing();
         StartChargeIdle();
+        Throw();
     }
 
     public override void StopUsing()
@@ -101,6 +109,7 @@ public abstract class Cons_BookBase : Consummable
         if (_spellAnimationIsPlaying)
         {
             _spellAnimationIsPlaying = false;
+            StopThrow();
             BreakItem();
         }
     }
@@ -108,6 +117,7 @@ public abstract class Cons_BookBase : Consummable
     void OnSpellCast()
     {
         ApplySpellEffect();
+        IsSpawningProjectile = true;
     }
 
     protected virtual async Awaitable<GameObject> SpawnSpell(SpawnContext spawnContext, Quaternion rotationOffset, Vector3 spawnPos)

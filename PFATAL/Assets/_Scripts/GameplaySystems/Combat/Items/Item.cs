@@ -14,9 +14,13 @@ public class Item : MonoBehaviour
     public event Action OnDrop;
     public event Action OnPickup;
 
+    public event Action OnThrow;
+    public event Action OnStopThrow;
+
     [HideInInspector] public PlayerCharacter playerCharacter;
     public Hand hand { get; private set; }
     public bool isUsing { get; private set; }
+    public bool isThrowing { get; private set; }
 
 
     [SerializeField] GameObject _pickup;
@@ -106,10 +110,25 @@ public class Item : MonoBehaviour
 
     public virtual void UnEquip()
     {
+        if (isThrowing) return;
+
         OnUnEquip?.Invoke();
 
         isUsing = false;
         holdDuration = 0;
+    }
+
+    public virtual void Throw()
+    {
+        OnThrow?.Invoke();
+
+        isThrowing = true;
+    }
+
+    public virtual void StopThrow()
+    {
+        OnStopThrow?.Invoke();
+        isThrowing = false;
     }
 
     async void Use()

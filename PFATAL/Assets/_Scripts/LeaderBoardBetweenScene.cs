@@ -32,6 +32,7 @@ public class LeaderBoardBetweenScene : MonoBehaviour
 
     public LeaderBoardData GetLeaderBoardData()
     {
+        Debug.Log(_leaderBoardData.entries);
         return _leaderBoardData;
     }
 }

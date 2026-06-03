@@ -17,9 +17,16 @@ public class NetworkPool : NetworkBehaviour, INetworkPrefabInstanceHandler
         InitPool();
     }
 
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        
+        NetworkManager.PrefabHandler.RemoveHandler(_prefab);
+    }
+
     public void InitPool()
     {
-        for(int i = 0; i < _poolSize; i++)
+        for (int i = 0; i < _poolSize; i++)
         {
             GameObject newObject = Instantiate(_prefab, transform);
             _pool.Enqueue(newObject);
@@ -29,22 +36,21 @@ public class NetworkPool : NetworkBehaviour, INetworkPrefabInstanceHandler
 
     public void Destroy(NetworkObject networkObject)
     {
+        if (this == null) return;
+
         networkObject.gameObject.SetActive(false);
         networkObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
 
-        //networkObject.transform.parent = transform;
         _pool.Enqueue(networkObject.gameObject);
     }
 
     public NetworkObject Instantiate(ulong ownerClientId, Vector3 position, Quaternion rotation)
     {
-        //print("instantiate via pool");
         GameObject newObject = _pool.Dequeue();
         newObject.transform.SetPositionAndRotation(position, rotation);
         newObject.SetActive(true);
 
         NetworkObject networkBhv = newObject.GetComponent<NetworkObject>();
-        //networkBhv.Spawn();
         return networkBhv;
     }
 }

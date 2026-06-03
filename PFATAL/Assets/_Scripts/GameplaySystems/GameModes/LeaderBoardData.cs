@@ -91,8 +91,20 @@ public struct ScoreEntry : IComparable<ScoreEntry>, INetworkSerializeByMemcpy
 
     public int CompareTo(ScoreEntry other)
     {
-        int result = other.Points.CompareTo(Points);
-        return result != 0 ? result : ClientID.CompareTo(other.ClientID);
+        int comparisonResult = other.Points.CompareTo(Points); //compare les scores
+        if (comparisonResult == 0)
+        {
+            comparisonResult = other.Kills.CompareTo(other.Kills); //puis les kills si le score est egal
+            if (comparisonResult == 0)
+            {
+                comparisonResult = -(other.Deaths.CompareTo(other.Deaths)); //puis les morts si les kills sont egaux
+                
+                if(comparisonResult == 0) 
+                    comparisonResult = other.ClientID.CompareTo(other.ClientID); //puis les clients ids si c'est toujours egal
+            }
+        }
+        
+        return comparisonResult; 
     }
 
     public ScoreEntry(ulong clientID, int rank, int kills, int deaths, int points, string playerName = "")

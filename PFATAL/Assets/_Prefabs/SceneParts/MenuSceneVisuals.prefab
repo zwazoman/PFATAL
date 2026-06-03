@@ -752,6 +752,7 @@ GameObject:
   - component: {fileID: 2972025424002552196}
   - component: {fileID: 4863265942548793163}
   - component: {fileID: 8541823082583629746}
+  - component: {fileID: 5095661373246354181}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -785,7 +786,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 0.81960785, g: 0.5992579, b: 0.48235294, a: 1}
-  m_Intensity: 2
+  m_Intensity: 5.8
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -794,7 +795,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.97
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
@@ -816,7 +817,7 @@ Light:
       e32: 0
       e33: 1
     m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
+  m_Cookie: {fileID: 2800000, guid: 8cc049dc45bfafb49b7ad98dcfed8ff8, type: 3}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
   m_RenderMode: 0
@@ -854,8 +855,8 @@ MonoBehaviour:
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
+  m_LightCookieSize: {x: 8, y: 8}
+  m_LightCookieOffset: {x: 17.001654, y: 85.00827}
   m_SoftShadowQuality: 0
   m_RenderingLayersMask:
     serializedVersion: 0
@@ -868,6 +869,20 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &5095661373246354181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077494609231317725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8403bf0a42b3b4c8ef036ae2f8874b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightCookieAnimation
+  _light: {fileID: 8541823082583629746}
+  scrolling: {x: 0.1, y: 0.5}
 --- !u!1 &1138143672337571793
 GameObject:
   m_ObjectHideFlags: 0

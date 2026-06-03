@@ -115,7 +115,7 @@ namespace GameplaySystems.PlayerCharacter
                 Cons_GroundSlam => AnimationID.gem_idle,
 
                 Cons_Bomb => AnimationID.bomb_idle,
-                //todo : Cons_WolfTrap ,
+                Cons_WolfTrap => AnimationID.bomb_idle,
 
                 _ => AnimationID.unknown
             };

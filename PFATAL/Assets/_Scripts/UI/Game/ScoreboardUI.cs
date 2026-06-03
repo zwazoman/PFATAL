@@ -40,7 +40,7 @@ public class ScoreboardUI : MonoBehaviour
         }
     }
 
-    public void RefreshUI(GameRulesBase.GameResult result)
+    public void RefreshUI()
     {
         int i = 0;
 

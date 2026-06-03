@@ -28,7 +28,7 @@ public class LeaderboardDisplay : MonoBehaviour
         ScoreboardUIEndGamePanel.gameObject.SetActive(true);
 
         result.LeaderBoard.ResolvePlayerNames();
-        LeaderBoardBetweenScene.Instance.SetLeaderBoardData(result);
+        LeaderBoardDataBetweenScene.Instance.SetLeaderBoardData(result);
 
         foreach (var entry in result.LeaderBoard.entries)
         {

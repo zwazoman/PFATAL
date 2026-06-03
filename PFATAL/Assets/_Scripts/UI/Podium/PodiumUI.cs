@@ -13,7 +13,7 @@ public class PodiumUI : MonoBehaviour
 
     private void Awake()
     {
-        leaderBoardData = LeaderBoardBetweenScene.Instance.GetLeaderBoardData();
+        leaderBoardData = LeaderBoardDataBetweenScene.Instance.GetLeaderBoardData();
         Debug.Log("PodiumUI : " +  leaderBoardData.entries);
         foreach (Transform child in playerCharacterParent.transform)
         {

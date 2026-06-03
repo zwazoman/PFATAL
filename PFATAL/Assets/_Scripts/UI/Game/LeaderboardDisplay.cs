@@ -30,11 +30,11 @@ public class LeaderboardDisplay : MonoBehaviour
         result.LeaderBoard.ResolvePlayerNames();
         LeaderBoardBetweenScene.Instance.SetLeaderBoardData(result);
 
-        foreach (var item in result.LeaderBoard.entries)
+        foreach (var entry in result.LeaderBoard.entries)
         {
             Debug.Log("Adding player to end game leaderboard: " + result);
-            Debug.Log("[LeaderBoardDisplay] Player Name : " + item.PlayerName);
-            ScoreboardUIEndGamePanel.AddPlayerCard(item.PlayerName.ToString(), item.Points, item.Kills, item.Deaths, 99);
+            Debug.Log("[LeaderBoardDisplay] Player Name : " + entry.PlayerName);
+            ScoreboardUIEndGamePanel.AddPlayerCard(entry.PlayerName.ToString(), entry.Points, entry.Kills, entry.Deaths, 99);
         }
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

@@ -10,6 +10,8 @@ namespace Settings
 {
     public class Rebinds : MonoBehaviour
     {
+        [SerializeField] private SettingsValues _values;
+
         [Header("Rebinds")]
         public InputActionAsset InputActions;
         public InputActionReference InputReference;

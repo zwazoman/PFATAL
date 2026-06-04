@@ -5,9 +5,9 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LeaderBoardBetweenScene : MonoBehaviour
+public class LeaderBoardDataBetweenScene : MonoBehaviour
 {
-    public static LeaderBoardBetweenScene Instance { get; private set; }
+    public static LeaderBoardDataBetweenScene Instance { get; private set; }
     
     LeaderBoardData _leaderBoardData;
     
@@ -32,6 +32,8 @@ public class LeaderBoardBetweenScene : MonoBehaviour
 
     public LeaderBoardData GetLeaderBoardData()
     {
+        Debug.Log(_leaderBoardData.entries);
         return _leaderBoardData;
     }
+
 }

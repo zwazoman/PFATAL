@@ -29,15 +29,6 @@ public class Sword : MeleeWeapon
     bool _isAttacking;
     public bool isDashing;
     bool _canDash = true;
-
-    protected override void Update()
-    {
-        // _trailRenderer.transform.position =  
-        //     playerCharacter.cameraBehaviour.worldCam.ScreenToWorldPoint(
-        //     playerCharacter.cameraBehaviour.fpsCam.WorldToScreenPoint(
-        //         _trailRendererSocket.position).WithZ(.3f));
-        // _trailRenderer.gameObject.layer = LayerMask.NameToLayer("Default");
-    }
     
     public override void Equip()
     {
@@ -75,29 +66,13 @@ public class Sword : MeleeWeapon
         
         currentDashCooldown = dashCooldown;
     }
-
-    protected override void ApplyHit(DamageableObject damageable, ulong attackerId)
-    {
-        base.ApplyHit(damageable, attackerId);
-
-        DamageData data = new();
-        data.Point = hitSocket.position;
-        data.Direction = hitSocket.transform.forward;
-        data.SourcePos = playerCharacter.transform.position;
-        data.Amount = damageAmount * (isDashing ? 1f : _dashDmgMult);
-        data.Radius = hitSphereRadius;
-        data.SourcePlayerClientID = playerCharacter.OwnerClientId;
-        data.KnockbackForce = playerCharacter.transform.forward * _knockbackStrength;
-        data.WeaponID = ItemID;
-
-        Summoner.Instance.ApplyDamageRpc(damageable, data);
-    }
-
+    
     public override void UseUpdate()
     {
         base.UseUpdate();
 
         //quand on reste appuyé longtemps sur la touche
+        //print("holdDuration >= _dashChargedDuration : "+(holdDuration >= _dashChargedDuration)+", !_charged : "+!_charged+", !_isAttacking : "+!_isAttacking + ", _canDash : "+_canDash);
         if(holdDuration >= _dashChargedDuration && !_charged && !_isAttacking && _canDash)
         {
             //event & anim charge de l'épée
@@ -108,27 +83,11 @@ public class Sword : MeleeWeapon
         }
     }
 
-    /// <summary>
-    /// (appelé à la fin des animations d'attaque)
-    /// </summary>
-    void AllowNextAttack()
-    {
-        print("Attack ended.");
-        OnAttackEnded?.Invoke();
-        _isAttacking = false;
-
-        if (isDashing)
-        {
-            isDashing = false;
-            StartDashCooldown();
-        }
-    }
-
     public override void StopUsing()
     {
         base.StopUsing();
 
-        print("is attacking : "+_isAttacking);
+        print("stop using. is attacking : "+_isAttacking);
         if (_isAttacking)
             return;
         print("charged : "+_charged);
@@ -148,7 +107,41 @@ public class Sword : MeleeWeapon
 
         _isAttacking = true;
     }
+    
+    protected override void ApplyHit(DamageableObject damageable, ulong attackerId)
+    {
+        base.ApplyHit(damageable, attackerId);
 
+        DamageData data = new();
+        data.Point = hitSocket.position;
+        data.Direction = hitSocket.transform.forward;
+        data.SourcePos = playerCharacter.transform.position;
+        data.Amount = damageAmount * (isDashing ? 1f : _dashDmgMult);
+        data.Radius = hitSphereRadius;
+        data.SourcePlayerClientID = playerCharacter.OwnerClientId;
+        data.KnockbackForce = playerCharacter.transform.forward * _knockbackStrength;
+        data.WeaponID = ItemID;
+
+        Summoner.Instance.ApplyDamageRpc(damageable, data);
+    }
+    
+    
+
+    /// <summary>
+    /// (appelé à la fin des animations d'attaque)
+    /// </summary>
+    void AllowNextAttack()
+    {
+        print("Attack ended.");
+        OnAttackEnded?.Invoke();
+        _isAttacking = false;
+
+        if (isDashing)
+        {
+            isDashing = false;
+            StartDashCooldown();
+        }
+    }
     
     void Dash()
     {
@@ -197,6 +190,7 @@ public class Sword : MeleeWeapon
     public void EnableHitbox()
     {
         hitboxIsActive = true;
+        print("sword hitbox activated");
         //_trailRenderer.emitting = true;
     }
 
@@ -206,6 +200,7 @@ public class Sword : MeleeWeapon
     public void DisableHitBox()
     {
         hitboxIsActive = false;
+        print("sword hitbox deactivated");
         //_trailRenderer.emitting = false;
     }
 

@@ -9,11 +9,12 @@ public class PodiumUI : MonoBehaviour
     public Transform playerCharacterParent;
     public Transform namePlayerParent;
     
-    LeaderBoardData leaderBoardData;
+    public LeaderBoardData leaderBoardData;
 
     private void Awake()
     {
-        leaderBoardData = LeaderBoardBetweenScene.Instance.GetLeaderBoardData();
+        leaderBoardData = LeaderBoardDataBetweenScene.Instance.GetLeaderBoardData();
+        Debug.Log("PodiumUI : " +  leaderBoardData.entries);
         foreach (Transform child in playerCharacterParent.transform)
         {
             child.gameObject.SetActive(false);
@@ -21,10 +22,16 @@ public class PodiumUI : MonoBehaviour
         foreach (Transform child in namePlayerParent.transform)
         {
             child.gameObject.SetActive(false);
+            child.GetComponent<GametagUI>().SetPlayerName("");
         }
     }
 
-    public async void Start()
+    public void Start()
+    {
+        NamePlayerDisplay();
+    }
+
+    private async void NamePlayerDisplay()
     {
         await Task.Delay(100);
 

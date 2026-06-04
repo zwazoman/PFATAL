@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd98076f9bcf4644d90486f4d2cf911d, type: 2}
+  - {fileID: -876546973899608171, guid: 48b2f7ebf56e4d84585ab3690851edce, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -136,7 +136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c680f418d1a5a4ea9a7bd86dffbd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterFlow
-  DirectionalWaterLevel: 0
+  directionalWaterLevel: 5
+  minSpeedMultiplier: 0.75
+  maxSpeedMultiplier: 1.1
   flowSpeed: 1.1
 --- !u!65 &304211451255900747
 BoxCollider:

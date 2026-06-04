@@ -9,10 +9,16 @@ public class SettingsValues : ScriptableObject
     [Range(5f, 50f)]public float SensitivityController;
 
     [Header("Rebinds")]
-    public float PlaceHolder;
+    public string MoveUp;
+    public string MoveDown;
+    public string MoveLeft;
+    public string MoveRight;
+    public string Jump;
+    public string Interact;
+    public string Drop;
 
     [Header("Graphics")]
     public float Gamma;
-    public float FramesRates;
+    public int FramesRates;
     public bool VSync;
 }

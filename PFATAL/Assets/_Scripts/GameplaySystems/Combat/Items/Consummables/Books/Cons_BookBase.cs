@@ -25,9 +25,6 @@ public abstract class Cons_BookBase : Consummable
 
     protected Projectile _currentProjectile;
 
-    public bool IsSpawningProjectile = false;
-    protected bool used = false;
-
     public enum ProjectileRotationMode
     {
         Camera,   // vise là où la caméra regarde
@@ -61,8 +58,6 @@ public abstract class Cons_BookBase : Consummable
         hand.animatorEventListener.OnSpellCast -= OnSpellCast;
         hand.animatorEventListener.OnAnimationFinished -= OnAnimationFinished;
 
-        used = false;
-
         base.UnEquip();
     }
 
@@ -74,8 +69,6 @@ public abstract class Cons_BookBase : Consummable
 
     protected void StartCastAnimation()
     {
-        if (_spellAnimationIsPlaying) return;
-
         _spellAnimationIsPlaying = true;
         hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.book_use);
         _animator.SetBool(Active_AnimProperty, true);
@@ -85,17 +78,20 @@ public abstract class Cons_BookBase : Consummable
 
     public override void StartUsing()
     {
-        if (used) return;
-
         base.StartUsing();
-        StartChargeIdle();
-        Throw();
+        if (!_spellAnimationIsPlaying)
+        {
+            StartChargeIdle();
+            StopScrollable();
+        }
+        
     }
 
     public override void StopUsing()
     {
         base.StopUsing();
-        StartCastAnimation();
+        if (!_spellAnimationIsPlaying)
+            StartCastAnimation();
     }
 
     /// <summary>
@@ -109,7 +105,7 @@ public abstract class Cons_BookBase : Consummable
         if (_spellAnimationIsPlaying)
         {
             _spellAnimationIsPlaying = false;
-            StopThrow();
+            Scrollable();
             BreakItem();
         }
     }
@@ -117,7 +113,6 @@ public abstract class Cons_BookBase : Consummable
     void OnSpellCast()
     {
         ApplySpellEffect();
-        IsSpawningProjectile = true;
     }
 
     protected virtual async Awaitable<GameObject> SpawnSpell(SpawnContext spawnContext, Quaternion rotationOffset, Vector3 spawnPos)

@@ -7,6 +7,7 @@ public class Setting : MonoBehaviour
     [SerializeField] private SettingsValues _values;
 
     [Header("GameObjects")]
+    [Tooltip("To change the UI with the modification the player did")]
     [SerializeField] private Slider _sliderFOV;
     [SerializeField] private Slider _sliderSensitivity;
     [SerializeField] private TMP_Text _textMoveUp;
@@ -17,8 +18,12 @@ public class Setting : MonoBehaviour
     [SerializeField] private TMP_Text _textInteract;
     [SerializeField] private TMP_Text _textDrop;
     [SerializeField] private Slider _sliderGamma;
-    [SerializeField] private Dropdown _dropdownFrames;
+    [SerializeField] private TMP_Dropdown _dropdownFrames;
     [SerializeField] private Toggle _toggleVSYnc;
+
+    [Header("Modification")]
+    [Tooltip("We put every values as the modified values right at the start")]
+    [SerializeField] private float something;
 
     void Start()
     {

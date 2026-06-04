@@ -119,7 +119,7 @@ public class Hand : MonoBehaviour
     /// <returns></returns>
     public void ScrollEquippedItem(bool isPrevious)
     {
-        if(equippedItem == null || itemInventory.Count <= 1)
+        if(equippedItem == null || itemInventory.Count <= 1 || !equippedItem.canScrolling)
             return;
 
         OnSwapItem?.Invoke();

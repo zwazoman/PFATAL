@@ -15,13 +15,16 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         private float _endTime;
 
         public void Freeze(float seconds)
-        {
+        { 
+            Print("[BigLaserBeam] Freeze for " + seconds + " seconds");
             duration = seconds;
             Sm.TransitionTo(this);
+           
         }
         
         public void Unfreeze()
         {
+            Print("[BigLaserBeam] Unfreeze");
             _endTime = Time.time;
         }
 
@@ -31,12 +34,14 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             _endTime = Time.time + duration;
             playerCharacter.physics.SetVelocity(Vector3.zero);
             playerCharacter.physics.enabled = false;
+            Print("[BigLaserBeam] Entered Frozen state, will end at " + _endTime);
         }
 
         protected override void OnExited(PlayerCharacter playerCharacter)
         {
             base.OnExited(playerCharacter);
             playerCharacter.physics.enabled = true;
+            Print("[BigLaserBeam] Exited Frozen state");
         }
 
         public override void Behave(PlayerCharacter playerCharacter, UpdatePoint updatePoint)

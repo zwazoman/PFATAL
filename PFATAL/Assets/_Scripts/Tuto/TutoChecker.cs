@@ -13,12 +13,12 @@ public class TutoChecker : MonoBehaviour
     private bool tomahawksUsed = false;
     private bool crossbowsUsed = false;
 
-    private void Awake()
+    /*private void Awake()
     {
         PlayerPrefs.DeleteKey("TUTO_CROSSBOW");
         PlayerPrefs.DeleteKey("TUTO_TOMAHAWK");
         PlayerPrefs.DeleteKey("TUTO_SWORD");
-    }
+    }*/
 
     private void Start()
     {

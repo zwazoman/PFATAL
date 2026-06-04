@@ -149,9 +149,13 @@ public class InputHandler : MonoBehaviour
 
         foreach (Texture2D texture in GeneralControllerUI)
         {
-            if (_PCMovementsButtons.Count > i)
+            if (_PCMovementsButtons.Count > i && controller != "keyboard")
             {
                 _PCMovementsButtons[i].SetActive(false);
+            }
+            if (_PCMovementsButtons.Count > i && controller == "keyboard")
+            {
+                _PCMovementsButtons[i].SetActive(true);
             }
             if (texture.name.Contains(controller))
             {

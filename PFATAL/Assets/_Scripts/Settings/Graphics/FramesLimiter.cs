@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class FramesLimiter : MonoBehaviour
 {
+    [SerializeField] private SettingsValues _values;
     [SerializeField] private TMP_Dropdown _frameDropdown;
     [SerializeField] private TMP_Text _framesText;
     private List<int> _frameList = new List<int>() { 30, 60, 120, 240 };
@@ -48,12 +49,14 @@ public class FramesLimiter : MonoBehaviour
             QualitySettings.vSyncCount = 1;
             Application.targetFrameRate = 0;
             _vsyncToggle.isOn = true;
+            _values.VSync = true;
             _frameDropdown.interactable = false;
         }
         else
         {
             QualitySettings.vSyncCount = 0;
             _vsyncToggle.isOn = false;
+            _values.VSync = false;
             _frameDropdown.interactable = true;
         }
     }
@@ -62,6 +65,7 @@ public class FramesLimiter : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = _frameList[limit];
+        _values.FramesRates = limit;
     }
 
     //Just to see if it does limit the FPS.

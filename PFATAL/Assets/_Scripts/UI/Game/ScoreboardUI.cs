@@ -69,7 +69,7 @@ public class ScoreboardUI : MonoBehaviour
             Destroy(card.gameObject);
         playerCards.Clear();
         
-        leaderBoardData = FindAnyObjectByType<PodiumUI>().leaderBoardData;
+        leaderBoardData = LeaderBoardDataBetweenScene.Instance.GetLeaderBoardData();
         Debug.Log(leaderBoardData.ToString());
         
         foreach (var player in leaderBoardData.entries)

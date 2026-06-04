@@ -73,8 +73,6 @@ public abstract class GameRulesBase
 
     /// <summary>
     /// Retourne le classement des joueurs triés par rank.
-    /// FIXED: utilise une List au lieu d'un SortedSet pour éviter
-    /// la déduplication silencieuse des joueurs avec des scores égaux.
     /// </summary>
     public LeaderBoardData GetLeaderBoard()
     {
@@ -82,10 +80,7 @@ public abstract class GameRulesBase
         string s = "";
         s += "= Get leader board. =";
         s += "   Player count : " + _players.Count;
-
-        // ✅ FIX : List au lieu de SortedSet
-        // SortedSet déduplique via CompareTo() — si deux joueurs ont
-        // les mêmes stats, le second est silencieusement rejeté.
+        
         List<ScoreEntry> tempList = new();
         foreach (PlayerData player in _players.Values)
         {
@@ -93,7 +88,7 @@ public abstract class GameRulesBase
             s += "      added score entry from player : " + player;
         }
 
-        tempList.Sort(); // utilise CompareTo de ScoreEntry, sans déduplication
+        tempList.Sort();
         s += "   temp list count : " + tempList.Count;
 
         int i = 0;

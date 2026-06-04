@@ -29,15 +29,6 @@ public class Sword : MeleeWeapon
     bool _isAttacking;
     public bool isDashing;
     bool _canDash = true;
-
-    protected override void Update()
-    {
-        // _trailRenderer.transform.position =  
-        //     playerCharacter.cameraBehaviour.worldCam.ScreenToWorldPoint(
-        //     playerCharacter.cameraBehaviour.fpsCam.WorldToScreenPoint(
-        //         _trailRendererSocket.position).WithZ(.3f));
-        // _trailRenderer.gameObject.layer = LayerMask.NameToLayer("Default");
-    }
     
     public override void Equip()
     {
@@ -197,6 +188,7 @@ public class Sword : MeleeWeapon
     public void EnableHitbox()
     {
         hitboxIsActive = true;
+        print("sword hitbox activated");
         //_trailRenderer.emitting = true;
     }
 
@@ -206,6 +198,7 @@ public class Sword : MeleeWeapon
     public void DisableHitBox()
     {
         hitboxIsActive = false;
+        print("sword hitbox deactivated");
         //_trailRenderer.emitting = false;
     }
 

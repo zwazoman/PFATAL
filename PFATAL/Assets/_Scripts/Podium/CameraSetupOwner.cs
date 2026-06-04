@@ -1,9 +1,8 @@
-using UnityEngine;
-using Unity.Netcode;
 using Unity.Cinemachine;
+using UnityEngine;
 using System.Collections;
 
-public class CameraSetupOwner : NetworkBehaviour
+public class CameraSetupOwner : MonoBehaviour
 {
     [Header("Cinemachine")]
     [SerializeField] private CinemachineCamera vcam;
@@ -18,41 +17,76 @@ public class CameraSetupOwner : NetworkBehaviour
     [SerializeField] private float zoomDuration = 2f;
     [SerializeField] private AnimationCurve zoomCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
-    public void SetTarget(Transform target)
+    public void SetTarget(Transform target, Transform playerCharacterParent, Transform namePlayerParent)
     {
-        StartCoroutine(FocusOnPlayer(target));
+        StartCoroutine(FocusOnPlayer(target, playerCharacterParent, namePlayerParent));
     }
 
-    private IEnumerator FocusOnPlayer(Transform target)
+    private IEnumerator FocusOnPlayer(Transform target, Transform playerCharacterParent, Transform namePlayerParent)
     {
         yield return new WaitForSeconds(delay);
 
-        cam.enabled = true;
+        if (vcam == null)
+        {
+            yield break;
+        }
+
+        cam.enabled = false;
         vcam.enabled = true;
-        
+
         vcam.Follow = target;
         vcam.LookAt = target;
+
+        HideOthers(target, playerCharacterParent, namePlayerParent);
 
         StartCoroutine(ZoomIn());
     }
 
+    private void HideOthers(Transform target, Transform playerCharacterParent, Transform namePlayerParent)
+    {
+        int localIndex = -1;
+        int i = 0;
+        foreach (Transform child in playerCharacterParent)
+        {
+            if (child == target) { localIndex = i; break; }
+            i++;
+        }
+
+        foreach (Transform child in playerCharacterParent)
+            if (child != target)
+                child.gameObject.SetActive(false);
+
+        i = 0;
+        foreach (Transform child in namePlayerParent)
+        {
+            if (i != localIndex)
+            {
+                child.gameObject.SetActive(false);
+                child.GetComponent<GametagUI>().SetPlayerName("");
+            }
+            i++;
+        }
+    }
+
     private IEnumerator ZoomIn()
     {
-        float elapsed = 0f;
+        var lens = vcam.Lens;
+        lens.FieldOfView = startFOV;
+        vcam.Lens = lens;
 
+        float elapsed = 0f;
         while (elapsed < zoomDuration)
         {
             elapsed += Time.deltaTime;
-
             float t = zoomCurve.Evaluate(elapsed / zoomDuration);
-            
-            var lens = vcam.Lens;
-            lens.FieldOfView = Mathf.Lerp(startFOV, targetFOV, t);
-            vcam.Lens = lens;
+
+            var l = vcam.Lens;
+            l.FieldOfView = Mathf.Lerp(startFOV, targetFOV, t);
+            vcam.Lens = l;
 
             yield return null;
         }
-        
+
         var finalLens = vcam.Lens;
         finalLens.FieldOfView = targetFOV;
         vcam.Lens = finalLens;

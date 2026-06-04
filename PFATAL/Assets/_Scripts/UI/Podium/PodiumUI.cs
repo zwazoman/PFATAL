@@ -60,8 +60,9 @@ public class PodiumUI : MonoBehaviour
         }
 
         if (localCharacter != null)
-            cameraSetupOwner.SetTarget(localCharacter);
+            cameraSetupOwner.SetTarget(localCharacter, playerCharacterParent, namePlayerParent);
         else
             Debug.LogWarning("[PodiumUI] Joueur local non trouvé dans le leaderboard !");
+
     }
 }

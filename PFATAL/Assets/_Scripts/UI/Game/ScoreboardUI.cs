@@ -9,10 +9,12 @@ public class ScoreboardUI : MonoBehaviour
     public bool IsScoreboardEndGamePanel = false;   
 
     private List<PlayerCardUI> playerCards = new List<PlayerCardUI>();
+    
+    LeaderBoardData leaderBoardData;
 
     public void Awake()
     {
-        if (IsScoreboardEndGamePanel) return;
+        if (IsScoreboardEndGamePanel) {CreateLeaderBoard(); return;}
         GameManager.Instance.EventOnGameStarted += InitializeScoreboard;
         Debug.LogWarning("ScoreboardUI subscribed to GameManager's EventOnGameStarted.");
 
@@ -40,7 +42,7 @@ public class ScoreboardUI : MonoBehaviour
         }
     }
 
-    public void RefreshUI()
+    public void RefreshUI(ScoreEntry scoreEntry)
     {
         int i = 0;
 
@@ -59,6 +61,27 @@ public class ScoreboardUI : MonoBehaviour
         PlayerCardUI cardUI = newCard.GetComponent<PlayerCardUI>();
         cardUI.SetPlayerInfo(playerName, score, kills, deaths, rank);
         playerCards.Add(cardUI);
+    }
+
+    public void CreateLeaderBoard()
+    {
+        foreach (var card in playerCards)
+            Destroy(card.gameObject);
+        playerCards.Clear();
+        
+        leaderBoardData = LeaderBoardDataBetweenScene.Instance.GetLeaderBoardData();
+        Debug.Log(leaderBoardData.ToString());
+        
+        foreach (var player in leaderBoardData.entries)
+        {
+            AddPlayerCard(
+                player.PlayerName.ToString(),
+                player.Points,
+                player.Kills,
+                player.Deaths,
+                player.Rank
+            );
+        }
     }
 
 }

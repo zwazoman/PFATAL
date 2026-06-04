@@ -25,7 +25,7 @@ public abstract class GameRulesBase
     /// <summary>
     /// client id, player data
     /// </summary>
-    protected Dictionary<ulong,PlayerData> _players = new ();
+    protected Dictionary<ulong, PlayerData> _players = new();
     
     // == data ==
     protected class PlayerData
@@ -38,8 +38,8 @@ public abstract class GameRulesBase
         {
             return 
                 "client id : " + ClientID
-                + ", character : "+Character
-                + ", score : "+Score;
+                + ", character : " + Character
+                + ", score : " + Score;
         }
     }
     
@@ -62,10 +62,8 @@ public abstract class GameRulesBase
             serializer.SerializeNetworkSerializable(ref LeaderBoard);
         }
     }
-    
 
-    
-    //score
+    // == score ==
     
     protected void UpdateScoreBoard()
     {
@@ -74,37 +72,40 @@ public abstract class GameRulesBase
     }
 
     /// <summary>
-    /// retourne le classement des joeurs trié par rank.
+    /// Retourne le classement des joueurs triés par rank.
     /// </summary>
     public LeaderBoardData GetLeaderBoard()
     {
         LeaderBoardData leaderBoard = new();
         string s = "";
-        s+=("= Get leader board.=");
-        s+=("   Player count : " + _players.Count.ToString());
+        s += "= Get leader board. =";
+        s += "   Player count : " + _players.Count;
         
-        SortedSet<ScoreEntry> sortedEntries = new();
+        List<ScoreEntry> tempList = new();
         foreach (PlayerData player in _players.Values)
         {
-            bool success = sortedEntries.Add(player.Score);
-            s+=("      adding score entry into temp set from player : "+player+". Success : "+success);
+            tempList.Add(player.Score);
+            s += "      added score entry from player : " + player;
         }
-        s+=("   temp set count : "+sortedEntries.Count);
+
+        tempList.Sort();
+        s += "   temp list count : " + tempList.Count;
 
         int i = 0;
-        foreach (var entry in sortedEntries)
+        foreach (var entry in tempList)
         {
-            bool success = leaderBoard.entries.Add(new ScoreEntry(
+            ScoreEntry ranked = new ScoreEntry(
                 entry.ClientID,
                 ++i,
                 entry.Kills,
                 entry.Deaths,
-                entry.Points));
-            
-            s+=("      adding score entry into result set : "+entry+". Success : "+success);
+                entry.Points);
+
+            leaderBoard.entries.Add(ranked);
+            s += "      added ranked entry : " + entry;
         }
-        s+=("   added player scores in the result sorted set.");
-        s+=("   Set count : "+leaderBoard.entries.Count);
+
+        s += "   Final leaderboard count : " + leaderBoard.entries.Count;
         Debug.Log(s);
         
         return leaderBoard;
@@ -116,7 +117,7 @@ public abstract class GameRulesBase
     {
         Debug.Log($"instantiated game rule.");
         
-        if(!NetworkManager.Singleton.IsServer) 
+        if (!NetworkManager.Singleton.IsServer) 
             throw new NetworkAuthorityException("Seul le server peut gérer les regles du jeu.");
         
         foreach (ulong clientID in clientIDs)
@@ -133,7 +134,7 @@ public abstract class GameRulesBase
     /// </summary>
     public async Awaitable TriggerGameStart()
     {
-        if(IsPlaying) throw new Exception("Game has started already.");
+        if (IsPlaying) throw new Exception("Game has started already.");
         Debug.Log("game rule trigger game start");
 
         IsPlaying = true;
@@ -168,7 +169,6 @@ public abstract class GameRulesBase
         {
             Debug.LogError(e);
         }
-        
     }
 
     public PlayerCharacter GetPlayerCharacter(ulong playerClientId)
@@ -183,7 +183,7 @@ public abstract class GameRulesBase
     }
 
     /// <summary>
-    /// doit être appelé par le GameMode quand
+    /// Doit être appelé par le GameMode quand
     /// il veut que la partie se termine.
     /// </summary>
     protected void TriggerGameEnd()
@@ -195,7 +195,6 @@ public abstract class GameRulesBase
 
     protected void RegisterDeath(PlayerData player)
     {
-        // System pour enregistre les morts dans le data collector
         ulong victimClientID = player.ClientID;
         ulong killerClientID = player.Character.health.LastDamageSourceClientID;
 
@@ -215,15 +214,15 @@ public abstract class GameRulesBase
         DataCollector.Instance.RegisterDeath(victimSteamID, killerSteamID, weaponID, distance, timeOfDeath);
     }
 
-    //abstract functions
+    // == abstract ==
     
     /// <summary>
-    /// called before the game starts
+    /// Called before the game starts.
     /// </summary>
     protected abstract void StartGame();
     
     /// <summary>
-    /// called after the game ends.
+    /// Called after the game ends.
     /// </summary>
     protected abstract GameResult EndGame();
 }

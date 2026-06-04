@@ -1,32 +1,38 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.Cinemachine;
+using Unity.Netcode;
 using UnityEngine;
 
 public class PodiumUI : MonoBehaviour
 {
+    [Header("Podium")]
     public Transform playerCharacterParent;
     public Transform namePlayerParent;
-    
-    public LeaderBoardData leaderBoardData;
+
+    [Header("Caméra")]
+    [SerializeField] private CameraSetupOwner cameraSetupOwner;
+
+    private LeaderBoardData leaderBoardData;
 
     private void Awake()
     {
         leaderBoardData = LeaderBoardDataBetweenScene.Instance.GetLeaderBoardData();
-        Debug.Log("PodiumUI : " +  leaderBoardData.entries);
-        foreach (Transform child in playerCharacterParent.transform)
+
+        foreach (Transform child in playerCharacterParent)
         {
             child.gameObject.SetActive(false);
         }
-        foreach (Transform child in namePlayerParent.transform)
+
+        foreach (Transform child in namePlayerParent)
         {
             child.gameObject.SetActive(false);
             child.GetComponent<GametagUI>().SetPlayerName("");
         }
     }
 
-    public void Start()
+    private void Start()
     {
         NamePlayerDisplay();
     }
@@ -36,15 +42,26 @@ public class PodiumUI : MonoBehaviour
         await Task.Delay(100);
 
         int i = 0;
+        ulong localClientId = NetworkManager.Singleton.LocalClientId;
+        Transform localCharacter = null;
 
         foreach (var entry in leaderBoardData.entries)
         {
-            playerCharacterParent.GetChild(i).gameObject.SetActive(true);
+            Transform character = playerCharacterParent.GetChild(i);
+            character.gameObject.SetActive(true);
+
+            if (entry.ClientID == localClientId)
+                localCharacter = character;
 
             var gametag = namePlayerParent.GetChild(i).GetComponent<GametagUI>();
             gametag.gameObject.SetActive(true);
             gametag.SetPlayerName(entry.PlayerName.ToString());
             i++;
         }
+
+        if (localCharacter != null)
+            cameraSetupOwner.SetTarget(localCharacter);
+        else
+            Debug.LogWarning("[PodiumUI] Joueur local non trouvé dans le leaderboard !");
     }
 }

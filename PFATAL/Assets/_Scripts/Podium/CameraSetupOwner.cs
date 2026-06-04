@@ -4,9 +4,10 @@ using System.Collections;
 
 public class CameraSetupOwner : MonoBehaviour
 {
-    [Header("Cinemachine")]
+    [Header("GameObject")]
     [SerializeField] private CinemachineCamera vcam;
     [SerializeField] private CinemachineCamera cam;
+    [SerializeField] private GameObject scoreBoard;
 
     [Header("Délai avant focus")]
     [SerializeField] private float delay = 1f;
@@ -90,5 +91,7 @@ public class CameraSetupOwner : MonoBehaviour
         var finalLens = vcam.Lens;
         finalLens.FieldOfView = targetFOV;
         vcam.Lens = finalLens;
+
+        scoreBoard.gameObject.SetActive(true);
     }
 }

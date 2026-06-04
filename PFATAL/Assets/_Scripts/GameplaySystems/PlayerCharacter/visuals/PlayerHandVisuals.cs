@@ -186,16 +186,6 @@ namespace GameplaySystems.PlayerCharacter
         // trouver d'où ça vient pour pouvoir repliquer les anims
         private void PlayAnimationRPC(int id)
         {
-            for (int i = 0; i < behaviours.Length; i++)
-            {
-                Debug.Log($"{i} : {behaviours[i].GetType().Name}");
-            }
-
-            Debug.Log($"NetworkObjectId = {NetworkObjectId}");
-            Debug.Log($"IsSpawned = {IsSpawned}");
-            Debug.Log($"Behaviour = {GetType().Name}");
-            Debug.Log($"Owner = {OwnerClientId}");
-
             _animator.SetInteger(MainAnim_AnimatorProperty, id);
             _animator.SetTrigger(PlayMainAnimation_AnimatorProperty);
         }

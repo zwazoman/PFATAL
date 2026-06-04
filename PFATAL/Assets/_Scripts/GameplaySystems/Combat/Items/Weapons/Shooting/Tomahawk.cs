@@ -130,7 +130,9 @@ public class Tomahawk : ProjectileWeapon
         _canReload = false;
 
         playerCharacter.physics.SetVelocity(Vector3.zero);
-        playerCharacter.physics.AddImpulse(_dashDirection * _dashStrength);
+
+        if (playerCharacter.stateMachine.currentState != playerCharacter.stateMachine.s_Frozen)
+            playerCharacter.physics.AddImpulse(_dashDirection * _dashStrength);
 
         if (_currentProjectile != null)
         {

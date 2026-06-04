@@ -19,14 +19,14 @@ public class ToxicCloud : NetworkBehaviour
     float _timer;
     float _tickTimer;
 
-    ulong _ownerId;
+    ulong _spawnerId;
     int _itemId;
 
     const float TWEEN_DURATION = .4f;
     private bool _isAboutToDie = false;
-    public void Init(ulong ownerId, int itemId)
+    public void Init(ulong spawnerId, int itemId)
     {
-        _ownerId = ownerId;
+        _spawnerId = spawnerId;
         _itemId = itemId;
     }
 
@@ -87,7 +87,7 @@ public class ToxicCloud : NetworkBehaviour
                 DamageData damage = new DamageData
                 {
                     Amount = _damagePerTick,
-                    SourcePlayerClientID = _ownerId,
+                    SourcePlayerClientID = _spawnerId,
                     Point = hit.transform.position,
                     SourcePos = transform.position,
                     Direction = Vector3.zero,

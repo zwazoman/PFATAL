@@ -1,7 +1,7 @@
-using UnityEngine;
-using System;
 using _Scripts.Extensions;
 using GameplaySystems.PlayerCharacter;
+using System;
+using UnityEngine;
 
 public class Sword : MeleeWeapon
 {
@@ -29,15 +29,6 @@ public class Sword : MeleeWeapon
     bool _isAttacking;
     public bool isDashing;
     bool _canDash = true;
-    
-    protected override void Update()
-    {
-        // _trailRenderer.transform.position =  
-        //     playerCharacter.cameraBehaviour.worldCam.ScreenToWorldPoint(
-        //     playerCharacter.cameraBehaviour.fpsCam.WorldToScreenPoint(
-        //         _trailRendererSocket.position).WithZ(.3f));
-        // _trailRenderer.gameObject.layer = LayerMask.NameToLayer("Default");
-    }
     
     public override void Equip()
     {
@@ -163,8 +154,9 @@ public class Sword : MeleeWeapon
         float dot = Vector3.Dot(playerCharacter.playerCamera.transform.forward, playerCharacter.physics.Velocity.normalized);
         if (dot <= _dashDotThreshold)
             playerCharacter.physics.SetVelocity(Vector3.zero);
-        playerCharacter.physics.AddImpulse(playerCharacter.playerCamera.transform.forward * _dashStrength);
-       
+
+        if (playerCharacter.stateMachine.currentState != playerCharacter.stateMachine.s_Frozen)
+            playerCharacter.physics.AddImpulse(playerCharacter.playerCamera.transform.forward * _dashStrength);
     }
     async void StartDashCooldown()
     {
@@ -196,6 +188,7 @@ public class Sword : MeleeWeapon
     public void EnableHitbox()
     {
         hitboxIsActive = true;
+        print("sword hitbox activated");
         //_trailRenderer.emitting = true;
     }
 
@@ -205,6 +198,7 @@ public class Sword : MeleeWeapon
     public void DisableHitBox()
     {
         hitboxIsActive = false;
+        print("sword hitbox deactivated");
         //_trailRenderer.emitting = false;
     }
 

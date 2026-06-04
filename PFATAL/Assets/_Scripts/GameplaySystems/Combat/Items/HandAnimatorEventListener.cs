@@ -10,7 +10,6 @@ public class HandAnimatorEventListener : MonoBehaviour
     [SerializeField] private Hand _hand;
     [SerializeField] private Animator _animator;
     
-    
     //public event
     public event Action OnAnimationFinished;
     public event Action OnSwordHitboxActivated;

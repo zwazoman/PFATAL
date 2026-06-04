@@ -13,14 +13,14 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         [SerializeField] float _damage = 3f;
 
         private float _startVelocityY;
-        ulong _ownerId;
-        Vector3 _ownerPos;
+        ulong _spawnerId;
+        Vector3 _spawnPosition;
 
-        public void ActivateState(ulong ownerId, Vector3 ownerPos)
+        public void ActivateState(ulong spawnerId, Vector3 spawnPosition)
         {
             Sm.TransitionTo(this);
-            _ownerId = ownerId;
-            _ownerPos = ownerPos;
+            _spawnerId = spawnerId;
+            _spawnPosition = spawnPosition;
         }
 
         protected override void OnEntered(PlayerCharacter ctx)
@@ -44,9 +44,9 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 DamageData damageData = new DamageData
                 {
                     Amount = _damage * (playerCharacter.physics.Velocity.y/_startVelocityY),
-                    SourcePlayerClientID = _ownerId,
+                    SourcePlayerClientID = _spawnerId,
                     Point = transform.position,
-                    SourcePos = _ownerPos,
+                    SourcePos = _spawnPosition,
                     Direction = Vector3.down,
                 };
 

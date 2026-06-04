@@ -32,6 +32,7 @@ namespace Settings
         [Header("Controller changes")]
         [SerializeField] private PlayerCharacter _playerCharacter;
         [SerializeField] private InputHandler _inputHandler;
+        [SerializeField] private PlayerInput _playerInput;
         private Gamepad _gamepad;
 
         private void Awake()
@@ -125,7 +126,7 @@ namespace Settings
         {
             InputActions.FindActionMap("UI").Disable();
 
-            if (_playerCharacter.inputs.UsingGamePad == true)
+            if (_playerInput.currentControlScheme.Contains("Gamepad"))
             {
                 _rebindingOperation = action.action.PerformInteractiveRebinding(1).
                     WithControlsExcluding("<Mouse>").

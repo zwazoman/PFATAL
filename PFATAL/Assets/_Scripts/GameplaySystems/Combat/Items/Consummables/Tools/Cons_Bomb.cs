@@ -42,6 +42,8 @@ public class Cons_Bomb : Cons_ThrowableBase
 
     public override void StartUsing()
     {
+        if (_throwAnimationIsPlaying) return;
+
         base.StartUsing();
 
         _fuseValue = 0;

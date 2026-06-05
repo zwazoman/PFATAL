@@ -17,7 +17,7 @@ public class Item : MonoBehaviour
     [HideInInspector] public PlayerCharacter playerCharacter;
     public Hand hand { get; private set; }
     public bool isUsing { get; private set; }
-    public bool canScrolling { get; private set; }
+    public bool canScrolling { get; private set; } = true;
 
 
     [SerializeField] GameObject _pickup;
@@ -107,8 +107,6 @@ public class Item : MonoBehaviour
 
     public virtual void UnEquip()
     {
-        if (!canScrolling) return;
-
         OnUnEquip?.Invoke();
 
         isUsing = false;
@@ -118,11 +116,13 @@ public class Item : MonoBehaviour
     public virtual void Scrollable()
     {
         canScrolling = true;
+        print("[Item] scrollable");
     }
 
     public virtual void StopScrollable()
     {
         canScrolling = false;
+        print("[Item] not scrollable");
     }
 
     async void Use()

@@ -1,10 +1,15 @@
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class ScoreboardUI : MonoBehaviour
 {
     [SerializeField] private GameObject playerCardPrefab;
     [SerializeField] private Transform contentParent;
+
+    [SerializeField] public Color colorOwner;
+    [SerializeField] public Color colorDefault;
 
     public bool IsScoreboardEndGamePanel = false;   
 
@@ -37,7 +42,8 @@ public class ScoreboardUI : MonoBehaviour
 
         foreach (var player in GameManager.Instance.LeaderBoard.entries)
         {
-            AddPlayerCard(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths, player.Rank);
+            var color = player.ClientID == NetworkManager.Singleton.LocalClientId ? colorOwner : colorDefault;
+            AddPlayerCard(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths, player.Rank, color);
             Debug.LogWarning("Added player card for ClientID: " + player.ClientID);
         }
     }
@@ -49,17 +55,19 @@ public class ScoreboardUI : MonoBehaviour
         foreach (var player in GameManager.Instance.LeaderBoard.entries)
         {
             PlayerCardUI card = playerCards[i];
-            card.SetPlayerInfo(player.ClientID.ToString(), player.Points, player.Kills, player.Deaths,player.Rank);
+            var color = player.ClientID == NetworkManager.Singleton.LocalClientId ? colorOwner : colorDefault;
+            card.SetPlayerInfo(player.PlayerName.ToString(), player.Points, player.Kills, player.Deaths, player.Rank, color);
+
             card.transform.SetSiblingIndex(i);
             i++;
         }
     }
 
-    public void AddPlayerCard(string playerName, int score, int kills, int deaths, int rank)
+    public void AddPlayerCard(string playerName, int score, int kills, int deaths, int rank, Color color)
     {
         GameObject newCard = Instantiate(playerCardPrefab, contentParent);
         PlayerCardUI cardUI = newCard.GetComponent<PlayerCardUI>();
-        cardUI.SetPlayerInfo(playerName, score, kills, deaths, rank);
+        cardUI.SetPlayerInfo(playerName, score, kills, deaths, rank, color);
         playerCards.Add(cardUI);
     }
 
@@ -74,12 +82,15 @@ public class ScoreboardUI : MonoBehaviour
         
         foreach (var player in leaderBoardData.entries)
         {
+            var color = player.ClientID == NetworkManager.Singleton.LocalClientId ? colorOwner : colorDefault;
+
             AddPlayerCard(
                 player.PlayerName.ToString(),
                 player.Points,
                 player.Kills,
                 player.Deaths,
-                player.Rank
+                player.Rank,
+                color
             );
         }
     }

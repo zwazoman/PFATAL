@@ -11,6 +11,7 @@ public class LobbyPanelUI : MonoBehaviour
     [SerializeField] private Transform _playerSlotsParent;
     [SerializeField] private Image _readyImage;
     [SerializeField] private TMP_Text _statusText;
+    [SerializeField] SkinHandler _skinHandler;
     //[SerializeField] private TMP_Text _GameModeText;
     //[SerializeField] private TMP_Text _mapNameText;
     //[SerializeField] private Image _mapImage;
@@ -23,8 +24,16 @@ public class LobbyPanelUI : MonoBehaviour
     {
         gameLobby.EventOnLobbyUpdated += RefreshPlayerList;
         gameLobby.EventOnPlayerStatusChanged += OnPlayerStatusChanged;
+
     }
-    
+
+    private void Start()
+    {
+        _skinHandler.SwapSkin();
+
+        _skinHandler.OnSkinSwapped += OnSkinSwapped_Callback;
+    }
+
     public void RefreshPlayerList(PlayerList newPlayerList)
     {
         print("RefreshPlayerList");
@@ -61,6 +70,11 @@ public class LobbyPanelUI : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
         };
         _statusText.text = status.ToString();
+    }
+
+    public void OnSkinSwapped_Callback(int newSkinID)
+    {
+
     }
 
     // public void OnGameModeChanged()

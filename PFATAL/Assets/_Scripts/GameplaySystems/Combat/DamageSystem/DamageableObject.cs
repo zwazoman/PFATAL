@@ -12,8 +12,8 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     public ulong LastDamageSourceClientID { get; private set; }
     public int LastDamageWeaponID { get; private set; }
     public Vector3 SourcePos { get; private set; }
-    [field:SerializeField] public float HP { get; private set; }
-    [field:SerializeField] public float MaxHP { get; private set; }
+    [field: SerializeField] public float HP { get; private set; }
+    [field: SerializeField] public float MaxHP { get; private set; }
     public bool IsDead => HP == 0;
 
     [SerializeField] public bool isPlayer = true;
@@ -21,7 +21,7 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     public event Action<DamageData> OnDamageTaken;
     public event Action OnLocalDamageTaken;
     public event Action OnDie;
-    
+
     /// <summary>
     /// float new hp
     /// </summary>
@@ -56,7 +56,7 @@ public class DamageableObject : NetworkBehaviour, IDamageable
         //hit feedback
         if (damageData.SourcePlayerClientID != DamageData.NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID && (damageData.SourcePlayerClientID != OwnerClientId || !isPlayer))
         {
-                ApplyDamageInflictedFeedbacksRpc(IsDead && isPlayer, RpcTarget.Single(damageData.SourcePlayerClientID, RpcTargetUse.Temp));
+            ApplyDamageInflictedFeedbacksRpc(IsDead && isPlayer, GameManager.GetPlayerIdentity(NetworkManager.LocalClientId).name, RpcTarget.Single(damageData.SourcePlayerClientID, RpcTargetUse.Temp));
         }
 
         //knockback
@@ -78,7 +78,7 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     {
         SetHpRPC(MaxHP);
     }
-    
+
     /// <summary>
     /// Soigne l'entité. Doit être appelé sur le serveur uniquement.
     /// </summary>
@@ -86,12 +86,12 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     {
         SetHpRPC(HP + amount);
     }
-    
+
     //replication 
     [Rpc(SendTo.Everyone)]
     private void SetHpRPC(float hp)
     {
-        HP = Mathf.Clamp(hp,0,MaxHP);
+        HP = Mathf.Clamp(hp, 0, MaxHP);
         OnHpChanged?.Invoke(HP);
 
         if (HP == 0)
@@ -109,11 +109,11 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
-    void ApplyDamageInflictedFeedbacksRpc(bool isDead, RpcParams rpcParams = default)
+    void ApplyDamageInflictedFeedbacksRpc(bool isDead, string playerName, RpcParams rpcParams = default)
     {
-        GameManager.Instance.localPlayerCharacter.HUD.TriggerHitFeedback(isDead);
+        GameManager.Instance.localPlayerCharacter.HUD.TriggerHitFeedback(isDead, playerName);
     }
-    
+
     [Rpc(SendTo.Everyone)]
     public void InvokeDamageEventRPC(DamageData damageData)
     {
@@ -129,7 +129,7 @@ public class DamageableObjectEditor : Editor
     {
         base.OnInspectorGUI();
         GUILayout.Space(10);
-        GUILayout.Label("HPs : "+((DamageableObject)target).HP);
+        GUILayout.Label("HPs : " + ((DamageableObject)target).HP);
     }
 }
 #endif

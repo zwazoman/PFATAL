@@ -945,6 +945,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageableObject
   ShowTopMostFoldoutHeaderGroup: 1
+  <HP>k__BackingField: 0
   <MaxHP>k__BackingField: 10
   isPlayer: 0
 --- !u!1 &342965803
@@ -2176,6 +2177,66 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 87975519304692645, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_Name
+      value: KillUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 87975519304692645, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191593340593765495, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542794617967045227, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542794617967045227, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542794617967045227, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1644539635849700204, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1644539635849700204, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1644539635849700204, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3187202642597167303, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3187202642597167303, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226998566012471653, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226998566012471653, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226998566012471653, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3879298382841050718, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4314537941643326139, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.6914736
@@ -2220,9 +2281,17 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1942307190
       objectReference: {fileID: 0}
+    - target: {fileID: 7478918289815901495, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7478918289815901495, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7894843588506975711, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8535136328113993408, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
       propertyPath: m_Name
@@ -2230,9 +2299,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8535136328113993408, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2336377788311908714, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3325,6 +3395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageableObject
   ShowTopMostFoldoutHeaderGroup: 1
+  <HP>k__BackingField: 0
   <MaxHP>k__BackingField: 10
   isPlayer: 0
 --- !u!114 &1745425428

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Settings;
 
 public class Setting : MonoBehaviour
 {
@@ -23,10 +24,15 @@ public class Setting : MonoBehaviour
 
     [Header("Modification")]
     [Tooltip("We put every values as the modified values right at the start")]
-    [SerializeField] private float something;
+    [SerializeField] private FieldOfViewSetter _setFOV;
+    [SerializeField] private MouseSensitivitySetter _setSensitivity;
+    [SerializeField] private Rebinds _setRebinds;
+    [SerializeField] private GammaSetter _setGamma;
+    [SerializeField] private FramesLimiter _setFrames;
 
     void Start()
     {
+        // To Update every UI with the previous changes
         _sliderFOV.value = _values.FOV;
         _sliderSensitivity.value = _values.SensitivityMouse;
 
@@ -41,5 +47,12 @@ public class Setting : MonoBehaviour
         _sliderGamma.value = _values.Gamma;
         _dropdownFrames.value = _values.FramesRates;
         _toggleVSYnc.isOn = _values.VSync;
+
+        // To Update the values with the previous changes 
+        _setFOV.FOVSet(_values.FOV);
+        _setSensitivity.AimingSet(_values.SensitivityMouse);
+        _setGamma.SettingGamma(_values.Gamma);
+        _setFrames.SetLimitToFrames(_values.FramesRates);
+
     }
 }

@@ -23,6 +23,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     [SerializeField] PlayerCharacter _playerCharacter;
     [SerializeField] StylisedEffect _healVFX;
     [SerializeField] Transform _cameraRoot;
+    [SerializeField] SkinHandler _skinHandler;
     
     [Header("FPS visuals")]
     [SerializeField] List<GameObject> _fpsVisuals;
@@ -47,12 +48,12 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     
     [SerializeField] List<GameObject> _visualObjects;
 
-    public async void PlaySwordSlashAnimationVFX(bool animFlipFlop)
+    public async void PlaySwordSlashAnimationVFX(float delay,bool firstSlash)
     {
-        await Awaitable.WaitForSecondsAsync(.22f);
+        await Awaitable.WaitForSecondsAsync(delay);
         MaterialPropertyBlock materialPropertyBlock = new MaterialPropertyBlock();
         float strength = .5f;
-        Renderer renderer = animFlipFlop ? _swordSlash0 : _swordSlash1;
+        Renderer renderer = firstSlash ? _swordSlash0 : _swordSlash1;
         renderer.enabled = true;
         DOTween.To(
             () => strength,
@@ -65,6 +66,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
             0f, .25f).SetEase(Ease.OutQuad)
             .onComplete = () => renderer.enabled = false;
     }
+    
     
     public async void PlaySwordDashAnimationVFX()
     {
@@ -103,6 +105,12 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     {
         foreach (var obj in _visualObjects)
             obj.SetActive(true);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    public void SwapSkinRpc()
+    {
+        _skinHandler.SwapSkin();
     }
     
     //events
@@ -181,6 +189,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         base.OnNetworkSpawn();
         
         SetFPSViewEnabled(IsInFpsView);
+        SwapSkinRpc();
     }
 
     private void OnStateChanged(State oldState, State newState)

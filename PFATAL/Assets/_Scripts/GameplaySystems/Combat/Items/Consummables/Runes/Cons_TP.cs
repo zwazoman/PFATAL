@@ -43,6 +43,7 @@ public class Cons_TP : Cons_RuneBase
     protected override void ApplyGemEffect()
     {
         playerCharacter.physics.SetPosition(tpDestination);
+        playerCharacter.physics.AddImpulse(Vector3.up * 7);
         HideMarker();
     }
     protected virtual void Update()
@@ -52,7 +53,7 @@ public class Cons_TP : Cons_RuneBase
         {
             RaycastHit hit;
 
-            if(Physics.SphereCast(playerCharacter.playerCamera.transform.position,.45f, playerCharacter.playerCamera.transform.forward,out hit, _range, _layermask))
+            if(Physics.SphereCast(playerCharacter.playerCamera.transform.position,.4f, playerCharacter.playerCamera.transform.forward,out hit, _range, _layermask))
             {
                 tpDestination = hit.point + hit.normal * _wallOffsetRange;
             }

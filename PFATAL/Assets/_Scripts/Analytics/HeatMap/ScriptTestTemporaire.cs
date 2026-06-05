@@ -1,7 +1,9 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScriptTestTemporaire : MonoBehaviour
 {
@@ -66,5 +68,34 @@ public class ScriptTestTemporaire : MonoBehaviour
         HeatMapData heatMap = JsonUtility.FromJson<HeatMapData>(File.ReadAllText(Path.Combine(Application.persistentDataPath, path)));
 
         HeatMapUtility.MaxVisits(heatMap, weaponType);
+    }
+
+    public List<Sprite> sprites;
+
+    public List<Image> images;
+
+    public List<TextMeshProUGUI> textMeshes;
+    public TMP_FontAsset font;
+    
+    [Button("Test GetSprites")]
+   public void PutSprite()
+    {
+        foreach (var image in images)
+        {
+            
+
+            Image imageLaVrai = image.GetComponent<Image>();
+
+            imageLaVrai.sprite = sprites[Random.Range(0, sprites.Count)];
+            ColorUtility.TryParseHtmlString("#2D2C40", out Color newColor);
+
+            imageLaVrai.color = newColor;
+        }
+
+        foreach (var text in textMeshes)
+        {
+            text.font = font;
+            //text.color = Color.white;
+        }
     }
 }

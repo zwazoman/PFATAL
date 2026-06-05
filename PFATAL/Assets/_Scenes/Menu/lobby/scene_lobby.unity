@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37345fbf916736d4c9c51c2ffb95d45c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LobbyGame
-  _golemHead: {fileID: 833789371}
+  _golemHead: {fileID: 2102254590}
   _cam: {fileID: 446116537}
   _spaceDistance: 6
 --- !u!4 &32610150
@@ -1737,6 +1737,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2839511067825201713, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9981647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839511067825201713, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.00007048249
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839511067825201713, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.0037195173
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839511067825201713, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.06044373
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839511067825201713, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839511067825201713, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0.426
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839511067825201713, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -6.931
+      objectReference: {fileID: 0}
     - target: {fileID: 5845101552992826657, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
       propertyPath: m_Name
       value: MenuSceneVisuals
@@ -2023,11 +2051,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &833789371 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1240552569733280, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
-  m_PrefabInstance: {fileID: 639519014}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &916839089
 GameObject:
   m_ObjectHideFlags: 0
@@ -2679,7 +2702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.1273585, b: 0.69509196, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3460,6 +3483,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 535a2719ca1c90d48b34c83cf8f2ebc5, type: 3}
+--- !u!4 &2102254590 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1455629675242129182, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
+  m_PrefabInstance: {fileID: 639519014}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8067818718785140106
 PrefabInstance:
   m_ObjectHideFlags: 0

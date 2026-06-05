@@ -28,6 +28,7 @@ namespace _Scripts.Pooling
 
         [Header("ui")]
         public Pool Pool_UI_DamageIndicator;
+        public Pool Pool_UI_Kill;
             
         [Header("VFXs")] 
         public Pool Pool_VFX_Hit_crit;

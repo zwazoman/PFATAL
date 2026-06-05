@@ -25,7 +25,7 @@ public class HitMarkerUI : MonoBehaviour
 
     private void Start()
     {
-        _hud.OnTriggerHitFeedback += ShowHitMarker;
+        _hud.OnTriggerHitFeedback += (bool killed,string killedPlayerName) => ShowHitMarker(killed);
         _initialScale = _hitmarkerImage.transform.localScale;
         _hitmarkerImage.color = _baseColor;
     }

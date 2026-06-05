@@ -509,6 +509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Pooling.PoolManager
   Pool_UI_DamageIndicator: {fileID: 6793180025563575035}
+  Pool_UI_Kill: {fileID: 2250417855100352891}
   Pool_VFX_Hit_crit: {fileID: 8546058373381736001}
   Pool_VFX_Hit_Crossbow: {fileID: 712730347157462779}
   Pool_VFX_Explosion_big: {fileID: 900679118607610856}
@@ -547,5 +548,53 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3722155652791055722}
+  - {fileID: 2113863259259251221}
   m_Father: {fileID: 1406014691294916543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9141116130956041098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2113863259259251221}
+  - component: {fileID: 2250417855100352891}
+  m_Layer: 0
+  m_Name: killIndicator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2113863259259251221
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9141116130956041098}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5283435890391715464}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2250417855100352891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9141116130956041098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32bd68b8c2fb4744b83a76006a47f944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Pooling.Pool
+  _prefab: {fileID: 7063634911707098053, guid: 04659e673e2883340b8c103527cbb8fd, type: 3}
+  BaseSize: 10
+  GrowRateWhenEmpty: 5

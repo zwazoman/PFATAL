@@ -190,6 +190,41 @@ namespace Settings
             Debug.Log(newBinding);
             //To change later for the script in wich it will do every changes for the UI.
             _rebindLabel.text = $"{newBinding}";
+            Debug.Log(action.name);
+            if (action.name == "Move")
+            {
+                switch (_bindingIndex)
+                {
+                    case 2:
+                        _values.MoveUp = newBinding;
+                        break;
+                    case 4:
+                        _values.MoveDown = newBinding;
+                        break;
+                    case 6:
+                        _values.MoveLeft = newBinding;
+                        break;
+                    case 8:
+                        _values.MoveRight = newBinding;
+                        break;
+                    default:
+                        Debug.Log("That's not correct");
+                        break;
+                }
+            }
+            else if (action.name == "Jump")
+            {
+                _values.Jump = newBinding;
+            }
+            else if (action.name == "Interact")
+            {
+                _values.Interact = newBinding;
+            }
+            else if (action.name == "Drop")
+            {
+                _values.Drop = newBinding;
+            }
+
             InputActions.FindActionMap("UI").Enable();
         }
 

@@ -34,7 +34,7 @@ public class GameRulesDeathMatch : GameRulesBase
                 {
                     PlayerData killer = _players[player.Character.health.LastDamageSourceClientID];
                     killer.Score.Kills++;
-                    killer.Score.Points = ComputeScore(player.Score.Deaths,player.Score.Kills);
+                    killer.Score.Points = ComputeScore(killer.Score.Deaths, killer.Score.Kills);
                 }
 
                 //puis on update le score board

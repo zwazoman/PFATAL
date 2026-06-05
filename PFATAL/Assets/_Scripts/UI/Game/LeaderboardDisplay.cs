@@ -35,7 +35,9 @@ public class LeaderboardDisplay : MonoBehaviour
         {
             Debug.Log("Adding player to end game leaderboard: " + result);
             Debug.Log("[LeaderBoardDisplay] Player Name : " + entry.PlayerName);
-            ScoreboardUIEndGamePanel.AddPlayerCard(entry.PlayerName.ToString(), entry.Points, entry.Kills, entry.Deaths, 99);
+
+            var color = entry.ClientID == NetworkManager.Singleton.LocalClientId ? ScoreboardUIEndGamePanel.colorOwner : ScoreboardUIEndGamePanel.colorDefault;
+            ScoreboardUIEndGamePanel.AddPlayerCard(entry.PlayerName.ToString(), entry.Points, entry.Kills, entry.Deaths, 99, color);
         }
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

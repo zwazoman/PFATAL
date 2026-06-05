@@ -48,12 +48,12 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     
     [SerializeField] List<GameObject> _visualObjects;
 
-    public async void PlaySwordSlashAnimationVFX(bool animFlipFlop)
+    public async void PlaySwordSlashAnimationVFX(float delay,bool firstSlash)
     {
-        await Awaitable.WaitForSecondsAsync(.22f);
+        await Awaitable.WaitForSecondsAsync(delay);
         MaterialPropertyBlock materialPropertyBlock = new MaterialPropertyBlock();
         float strength = .5f;
-        Renderer renderer = animFlipFlop ? _swordSlash0 : _swordSlash1;
+        Renderer renderer = firstSlash ? _swordSlash0 : _swordSlash1;
         renderer.enabled = true;
         DOTween.To(
             () => strength,
@@ -66,6 +66,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
             0f, .25f).SetEase(Ease.OutQuad)
             .onComplete = () => renderer.enabled = false;
     }
+    
     
     public async void PlaySwordDashAnimationVFX()
     {

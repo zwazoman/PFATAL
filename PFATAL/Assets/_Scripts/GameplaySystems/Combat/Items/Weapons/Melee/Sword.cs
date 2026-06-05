@@ -20,6 +20,7 @@ public class Sword : MeleeWeapon
     [SerializeField] float _dashStrength = 7;
     [SerializeField] float _dashDmgMult = .8f;
     [SerializeField] float _dashDotThreshold = 0f;
+    [SerializeField] private float _vfxDelayAfterFirstSwordAttack;
 
     [HideInInspector] public float currentDashCooldown;
     // [SerializeField] public TrailRenderer _trailRenderer;
@@ -29,6 +30,8 @@ public class Sword : MeleeWeapon
     bool _isAttacking;
     public bool isDashing;
     bool _canDash = true;
+
+    private bool _pressedKeyDuringAttackAnimation = false;
     
     public override void Equip()
     {
@@ -55,6 +58,7 @@ public class Sword : MeleeWeapon
         hand.animatorEventListener.OnSwordHitboxActivated += EnableHitbox;
         hand.animatorEventListener.OnSwordHitboxDeactivated += DisableHitBox;
         hand.animatorEventListener.OnAnimationFinished += AllowNextAttack;
+        hand.animatorEventListener.OnFirstAttackFinished += OnFirstAttackFinished;
     }
 
     public override void UnEquip()
@@ -63,6 +67,7 @@ public class Sword : MeleeWeapon
         hand.animatorEventListener.OnSwordHitboxActivated -= EnableHitbox;
         hand.animatorEventListener.OnSwordHitboxDeactivated -= DisableHitBox;
         hand.animatorEventListener.OnAnimationFinished -= AllowNextAttack;
+        hand.animatorEventListener.OnFirstAttackFinished -= OnFirstAttackFinished;
         
         currentDashCooldown = dashCooldown;
     }
@@ -89,7 +94,10 @@ public class Sword : MeleeWeapon
 
         print("stop using. is attacking : "+_isAttacking);
         if (_isAttacking)
+        {
+            _pressedKeyDuringAttackAnimation = true;
             return;
+        }
         print("charged : "+_charged);
         
         //quand on relache alors qu'on avait appuyé longtemps sur le bouton
@@ -101,7 +109,9 @@ public class Sword : MeleeWeapon
         //quand on relache après avoir appuyé peu longtemps
         else
         {
-            hand.visuals.PlaySwordAttackAnimation();
+            _pressedKeyDuringAttackAnimation = false;
+            hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.sword_attack_small);
+            hand.playerCharacter.visuals.PlaySwordSlashAnimationVFX(.22f,true);
             OnSmallAttackStarted?.Invoke();
         }
 
@@ -124,8 +134,20 @@ public class Sword : MeleeWeapon
 
         Summoner.Instance.ApplyDamageRpc(damageable, data);
     }
-    
-    
+
+    void OnFirstAttackFinished()
+    {
+        if (!_pressedKeyDuringAttackAnimation)
+        {
+            hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.sword_idle);
+            _pressedKeyDuringAttackAnimation = false;
+            AllowNextAttack();
+        }
+        else
+        {
+            hand.playerCharacter.visuals.PlaySwordSlashAnimationVFX(_vfxDelayAfterFirstSwordAttack,false);
+        }
+    }
 
     /// <summary>
     /// (appelé à la fin des animations d'attaque)

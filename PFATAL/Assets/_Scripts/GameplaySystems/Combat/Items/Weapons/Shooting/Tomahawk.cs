@@ -60,6 +60,7 @@ public class Tomahawk : ProjectileWeapon
         //link animation events
         hand.animatorEventListener.OnGrapplePulled += DashTowardsProj;
         hand.animatorEventListener.OnTomahawkShot += SpawnProjectile;
+        hand.animatorEventListener.OnAnimationFinished += Reset;
     }
 
     public override void UnEquip()
@@ -69,6 +70,7 @@ public class Tomahawk : ProjectileWeapon
         //unlink animation events
         hand.animatorEventListener.OnGrapplePulled -= DashTowardsProj;
         hand.animatorEventListener.OnTomahawkShot -= SpawnProjectile;
+        hand.animatorEventListener.OnAnimationFinished -= Reset;
     }
 
     void StateChanged_Callback(state previousState, state newState)
@@ -96,7 +98,7 @@ public class Tomahawk : ProjectileWeapon
     public override void StartUsing()
     {
         base.StartUsing();
-
+        print("canshoot : "+canShoot+", current projectile : "+_currentProjectile+", current amo count : "+_currentAmmoCount+", is shooting : "+_isShooting);
         if(canShoot && _currentProjectile == null && _currentAmmoCount > 0 && !_isShooting)
         {
             Shoot();
@@ -109,6 +111,7 @@ public class Tomahawk : ProjectileWeapon
             OnStartGrapple?.Invoke();
 
             _dashDirection = (_currentProjectile.transform.position - playerCharacter.transform.position).normalized;
+            print("start grapple animation.");
             hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.tomahawk_grapple);
         }
     }
@@ -142,9 +145,11 @@ public class Tomahawk : ProjectileWeapon
         }
     }
 
+    
     void Shoot()
     {
         _isShooting = true;
+        print("set is shooting to : true");
         //diminish ammo
 
         _currentAmmoCount--;
@@ -153,12 +158,14 @@ public class Tomahawk : ProjectileWeapon
             OnAmmoEmpty?.Invoke();
         
         //play throw animation
+        print("started throw animation");
         hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.tomahawk_throw);
     }
 
     //appelé par le callback de l'animator
     async void SpawnProjectile()
     {
+        print("animation event, protectile spawned : is shooting = false");
         _isShooting = false;
 
         print("Spawn Projectile");
@@ -184,5 +191,10 @@ public class Tomahawk : ProjectileWeapon
         await Awaitable.WaitForSecondsAsync(_dashDelay);
 
         _canGrapple = true;
+    }
+    
+    private void Reset()
+    {
+        _isShooting = false;
     }
 }

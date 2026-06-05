@@ -14,13 +14,10 @@ public class Item : MonoBehaviour
     public event Action OnDrop;
     public event Action OnPickup;
 
-    public event Action OnThrow;
-    public event Action OnStopThrow;
-
     [HideInInspector] public PlayerCharacter playerCharacter;
     public Hand hand { get; private set; }
     public bool isUsing { get; private set; }
-    public bool isThrowing { get; private set; }
+    public bool canScrolling { get; private set; } = true;
 
 
     [SerializeField] GameObject _pickup;
@@ -110,25 +107,22 @@ public class Item : MonoBehaviour
 
     public virtual void UnEquip()
     {
-        if (isThrowing) return;
-
         OnUnEquip?.Invoke();
 
         isUsing = false;
         holdDuration = 0;
     }
 
-    public virtual void Throw()
+    public virtual void Scrollable()
     {
-        OnThrow?.Invoke();
-
-        isThrowing = true;
+        canScrolling = true;
+        print("[Item] scrollable");
     }
 
-    public virtual void StopThrow()
+    public virtual void StopScrollable()
     {
-        OnStopThrow?.Invoke();
-        isThrowing = false;
+        canScrolling = false;
+        print("[Item] not scrollable");
     }
 
     async void Use()

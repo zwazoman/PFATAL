@@ -38,6 +38,7 @@ public abstract class Cons_RuneBase : Consummable
     {
         if (_breakAnimationIsPlaying) return;
         
+        StopScrollable();
         _breakAnimationIsPlaying = true;
         hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.gem_break);
     }
@@ -53,6 +54,7 @@ public abstract class Cons_RuneBase : Consummable
         if (_breakAnimationIsPlaying)
         {
             _breakAnimationIsPlaying = false;
+            Scrollable();
             BreakItem();
         }
     }

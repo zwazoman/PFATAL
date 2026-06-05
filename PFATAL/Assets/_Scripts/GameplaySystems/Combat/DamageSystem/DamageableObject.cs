@@ -12,7 +12,7 @@ public class DamageableObject : NetworkBehaviour, IDamageable
     public ulong LastDamageSourceClientID { get; private set; }
     public int LastDamageWeaponID { get; private set; }
     public Vector3 SourcePos { get; private set; }
-    public float HP {get; private set;}
+    [field:SerializeField] public float HP { get; private set; }
     [field:SerializeField] public float MaxHP { get; private set; }
     public bool IsDead => HP == 0;
 

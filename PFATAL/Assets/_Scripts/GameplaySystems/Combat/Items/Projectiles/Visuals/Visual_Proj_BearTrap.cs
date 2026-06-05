@@ -12,6 +12,8 @@ public class BearTrapVisuals : MonoBehaviour
 
     void CloseTrap()
     {
+        _animator.enabled = true;
+        _animator.ResetTrigger("Close");
         _animator.SetTrigger("Close");
     }
 }

@@ -20,8 +20,7 @@ public class HandAnimatorEventListener : MonoBehaviour
     public event Action OnGemBroken;
     public event Action OnSpellCast;
     public event Action OnObjectThrown;
-    
-
+    public event Action OnFirstAttackFinished;
     
     
 // == animator messages ==
@@ -32,6 +31,7 @@ public class HandAnimatorEventListener : MonoBehaviour
     //sword
     public void TriggerOnSwordHitboxActivated(){print("TriggerOnSwordHitboxActivated"); OnSwordHitboxActivated?.Invoke(); }
     public void TriggerOnSwordHitboxDeactivated(){print("TriggerOnSwordHitboxDeactivated");OnSwordHitboxDeactivated?.Invoke();}
+    public void TriggerOnFirstAttackFinished(){print("TriggerOnFirstAttackFinished"); OnFirstAttackFinished?.Invoke();}
     
     //tomahawk
     public void TriggerOnGrapplePulled(){print("TriggerOnGrapplePulled");OnGrapplePulled?.Invoke();}

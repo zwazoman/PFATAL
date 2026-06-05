@@ -25,8 +25,7 @@ namespace GameplaySystems.PlayerCharacter
             tomahawk_grapple = 202,
 
             sword_idle = 300,
-            sword_attack_small_0 = 301,
-            sword_attack_small_1 = 302,
+            sword_attack_small = 301,
             sword_charge_release = 303,
             sword_charge_idle = 304,
 
@@ -188,15 +187,6 @@ namespace GameplaySystems.PlayerCharacter
         {
             _animator.SetInteger(MainAnim_AnimatorProperty, id);
             _animator.SetTrigger(PlayMainAnimation_AnimatorProperty);
-        }
-
-        //sword animation
-        private bool _swordAnimFlipFlop;
-        public void PlaySwordAttackAnimation()
-        {
-            PlayAnimation(_swordAnimFlipFlop ? AnimationID.sword_attack_small_0 : AnimationID.sword_attack_small_1);
-            _hand.playerCharacter.visuals.PlaySwordSlashAnimationVFX(_swordAnimFlipFlop);
-            _swordAnimFlipFlop = !_swordAnimFlipFlop;
         }
 
         //crossbow animation

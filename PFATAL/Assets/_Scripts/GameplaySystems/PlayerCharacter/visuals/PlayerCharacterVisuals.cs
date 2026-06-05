@@ -23,6 +23,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     [SerializeField] PlayerCharacter _playerCharacter;
     [SerializeField] StylisedEffect _healVFX;
     [SerializeField] Transform _cameraRoot;
+    [SerializeField] SkinHandler _skinHandler;
     
     [Header("FPS visuals")]
     [SerializeField] List<GameObject> _fpsVisuals;
@@ -104,6 +105,12 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         foreach (var obj in _visualObjects)
             obj.SetActive(true);
     }
+
+    [Rpc(SendTo.Everyone)]
+    public void SwapSkinRpc()
+    {
+        _skinHandler.SwapSkin();
+    }
     
     //events
 
@@ -181,6 +188,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         base.OnNetworkSpawn();
         
         SetFPSViewEnabled(IsInFpsView);
+        SwapSkinRpc();
     }
 
     private void OnStateChanged(State oldState, State newState)

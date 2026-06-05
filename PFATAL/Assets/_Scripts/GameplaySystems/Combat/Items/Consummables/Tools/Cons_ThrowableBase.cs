@@ -33,7 +33,8 @@ public abstract class Cons_ThrowableBase : Consummable
     protected void StartThrowAnimation()
     {
         if (_throwAnimationIsPlaying) return;
-        
+
+        StopScrollable();
         _throwAnimationIsPlaying = true;
         hand.visuals.PlayAnimation(PlayerHandVisuals.AnimationID.bomb_use);
     }
@@ -49,6 +50,7 @@ public abstract class Cons_ThrowableBase : Consummable
         if (_throwAnimationIsPlaying)
         {
             _throwAnimationIsPlaying = false;
+            Scrollable();
             BreakItem();
         }
     }

@@ -45,7 +45,7 @@ namespace Settings
 
         public void OpenClose(InputAction.CallbackContext context)
         {
-            if (Input.GetJoystickNames().Length > 0)
+            if (Input.GetJoystickNames().Length > 0 && Gamepad.current != null)
             {
                 _gamepad = Gamepad.current;
                 //For testing and to know what type of controller we have.

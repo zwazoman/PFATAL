@@ -23,6 +23,8 @@ public class GameLobby : NetworkBehaviour
 
     public PlayerList _allPlayersInLobby = new();
     private int _lobbyIDCounter = 0;
+    SkinHandler _skinHandler;
+
     [SerializeField] private string _gameSceneName;
     public LobbyPlayerData LocalLobbyPlayerData { set; private get; }
 
@@ -30,6 +32,13 @@ public class GameLobby : NetworkBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+
+        _skinHandler = FindAnyObjectByType<SkinHandler>();
+    }
+
+    private void Start()
+    {
+        _skinHandler.OnSkinSwapped += (_) => SetSkinColor();
     }
 
     public override void OnNetworkSpawn()
@@ -147,10 +156,16 @@ public class GameLobby : NetworkBehaviour
         EventOnPlayerStatusChanged?.Invoke(status);
     }
 
+    public void SetSkinColor()
+    {
+        LobbyPlayerData lobbyPlayerData = new(LocalLobbyPlayerData);
+        _allPlayersInLobby.dictionnary[NetworkManager.Singleton.LocalClientId] = lobbyPlayerData;
+        SyncPlayerListRPC(_allPlayersInLobby);
+    }
+
     [Rpc(SendTo.Everyone)]
     void SyncPlayerListRPC(PlayerList newPlayerList)
     {
-        print("SyncPlayerListRPC");
         _allPlayersInLobby = newPlayerList;
         EventOnLobbyUpdated?.Invoke(_allPlayersInLobby);
 
@@ -191,6 +206,7 @@ public struct LobbyPlayerData : INetworkSerializable
         if (this.name == null) Debug.LogError("ahhhhhh");
         this.steamId = "";
         this.lobbyID = lobbyID;
+        this.skinID = PlayerPrefs.GetInt("skinID");
         this.status = status;
     }
 
@@ -200,22 +216,22 @@ public struct LobbyPlayerData : INetworkSerializable
         if (this.name == null) Debug.LogError("ohhhhhh");
         this.steamId = data.steamId;
         this.lobbyID = data.lobbyID;
+        this.skinID = PlayerPrefs.GetInt("skinID");
         this.status = data.status;
     }
 
     public string name;
     public string steamId;
     public int lobbyID;
+    public int skinID;
     public PlayerStatus status;
 
     public string DisplayName => string.IsNullOrEmpty(name) || name == "_" ? "player_" + lobbyID : name;
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
-        Debug.Log("name is null : " + (name == null));
-        Debug.Log("lobbyID is null : " + (lobbyID == null));
-        Debug.Log("status is null : " + (status == null));
         serializer.SerializeValue(ref name);
+        serializer.SerializeValue(ref skinID);
         serializer.SerializeValue(ref steamId);
         serializer.SerializeValue(ref lobbyID);
         serializer.SerializeValue(ref status);
@@ -242,9 +258,6 @@ public class PlayerList : INetworkSerializable
         {
             keys = dictionnary.Keys.ToArray();
             values = dictionnary.Values.ToArray();
-            Debug.Log("dico null : " + (dictionnary == null));
-            Debug.Log("keys null : " + (keys == null));
-            Debug.Log("values null : " + (values == null));
             serializer.SerializeValue(ref keys);
             serializer.SerializeValue(ref values);
         }

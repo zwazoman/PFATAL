@@ -189,7 +189,8 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         base.OnNetworkSpawn();
         
         SetFPSViewEnabled(IsInFpsView);
-        SwapSkinRpc(_skinHandler.GetCurrentSkinID());
+        if(IsOwner)
+            SwapSkinRpc(_skinHandler.GetCurrentSkinID());
     }
 
     private void OnStateChanged(State oldState, State newState)

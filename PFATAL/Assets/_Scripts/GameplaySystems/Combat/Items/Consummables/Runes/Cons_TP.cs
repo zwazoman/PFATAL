@@ -43,7 +43,7 @@ public class Cons_TP : Cons_RuneBase
     protected override void ApplyGemEffect()
     {
         playerCharacter.physics.SetPosition(tpDestination);
-        playerCharacter.physics.AddImpulse(Vector3.up * 7);
+        playerCharacter.physics.AddImpulse(Vector3.up * 6);
         HideMarker();
     }
     protected virtual void Update()

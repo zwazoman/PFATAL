@@ -11,7 +11,6 @@ public class KillUI : MonoBehaviour
     [SerializeField] float topLimit, botLimit, rightLimit, leftLimit;
 
     [Header("Settings")]
-    [SerializeField] string _feedEndText;
     [SerializeField] float _textscalePunchValue = 5;
     [SerializeField] float _textScalePunchDuration = .5f;
     [SerializeField] float _textLifeTime = 2.5f;
@@ -33,30 +32,36 @@ public class KillUI : MonoBehaviour
 
     void HitFeedback_Callback(string killedPlayerName)
     {
+        print("ahhh");
         _textCount++;
 
         PooledObject pooledText = LocalPoolManager.Instance.Pool_UI_Kill.PullObjectFromPool(transform);
 
-        //todo => faut gérer la position en fonction du nombre. placer en dessous en fonction du nombre affichés
+        //todo => faut gï¿½rer la position en fonction du nombre. placer en dessous en fonction du nombre affichï¿½s
         //layout group juste ? prendre des refs
-        pooledText.transform.localPosition = new Vector2(Random.Range(leftLimit, rightLimit), Random.Range(botLimit, topLimit));
+        
+        //pooledText.transform.localPosition = new Vector2(Random.Range(leftLimit, rightLimit), Random.Range(botLimit, topLimit));
 
-        TMP_Text killText = pooledText.GetComponent<TMP_Text>();
-        killText.text = $"{killedPlayerName} {_feedEndText}";
-
+        pooledText.transform.GetChild(0).TryGetComponent(out TMP_Text killText);
+        pooledText.transform.TryGetComponent(out CanvasGroup canvaGroup);
+        pooledText.transform.localPosition = Vector3.zero;
+        killText.text = $"Slayed <color=#FB0D4A>{killedPlayerName}</color> !";
+        
         Sequence tweenSequence = DOTween.Sequence();
-
-        tweenSequence.Insert(0, killText.transform.DOPunchScale(Vector3.one * _textscalePunchValue, _textScalePunchDuration))
-            .Insert(0, killText.transform.DOPunchRotation(new Vector3(0, 0, 50), _textScalePunchDuration, 10, 5))
+        
+        tweenSequence.Insert(0,
+                pooledText.transform.DOPunchScale(Vector3.one * _textscalePunchValue, _textScalePunchDuration,5,.5f))
+            .Insert(0, 
+                pooledText.transform.DOPunchRotation(new Vector3(0, 0, 5), _textScalePunchDuration, 5, 5))
             .AppendInterval(_textLifeTime)
-            .Append(killText.DOFade(0, .5f));
+            .Append(canvaGroup.DOFade(0, .3f).SetEase(Ease.OutQuad));
 
         tweenSequence.onComplete += Reset;
         tweenSequence.Play();
 
         void Reset()
         {
-            killText.alpha = 1;
+            canvaGroup.alpha = 1;
             LocalPoolManager.Instance.Pool_UI_Kill.PutObjectBackInPool(pooledText);
             _textCount--;
         }

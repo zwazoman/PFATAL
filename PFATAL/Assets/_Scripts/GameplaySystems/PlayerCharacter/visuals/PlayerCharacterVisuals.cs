@@ -108,9 +108,9 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    public void SwapSkinRpc()
+    public void SwapSkinRpc(int skinID)
     {
-        _skinHandler.SwapSkin();
+        _skinHandler.SwapSkin(skinID);
     }
     
     //events
@@ -189,7 +189,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         base.OnNetworkSpawn();
         
         SetFPSViewEnabled(IsInFpsView);
-        SwapSkinRpc();
+        SwapSkinRpc(_skinHandler.GetCurrentSkinID());
     }
 
     private void OnStateChanged(State oldState, State newState)

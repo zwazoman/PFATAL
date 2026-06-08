@@ -1819,6 +1819,16 @@ SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 6590781088617565682, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
   m_PrefabInstance: {fileID: 639519014}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &639519016 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5363617528301462799, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
+  m_PrefabInstance: {fileID: 639519014}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &639519017 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6523183398970471151, guid: 40a113209588dd342bf649e525cb2c53, type: 3}
+  m_PrefabInstance: {fileID: 639519014}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &673821553
 GameObject:
   m_ObjectHideFlags: 0
@@ -3497,9 +3507,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 302399904411130402, guid: 512501cc39bbfae4092978526c507bcb, type: 3}
+      propertyPath: leftHandRenderer
+      value: 
+      objectReference: {fileID: 639519017}
+    - target: {fileID: 302399904411130402, guid: 512501cc39bbfae4092978526c507bcb, type: 3}
       propertyPath: localMeshRenderer
       value: 
       objectReference: {fileID: 639519015}
+    - target: {fileID: 302399904411130402, guid: 512501cc39bbfae4092978526c507bcb, type: 3}
+      propertyPath: rightHandRenderer
+      value: 
+      objectReference: {fileID: 639519016}
     - target: {fileID: 8884178015317676200, guid: 512501cc39bbfae4092978526c507bcb, type: 3}
       propertyPath: m_Name
       value: SkinHandler

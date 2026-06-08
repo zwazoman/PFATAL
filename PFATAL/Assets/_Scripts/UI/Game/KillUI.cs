@@ -33,6 +33,8 @@ public class KillUI : MonoBehaviour
 
     void HitFeedback_Callback(string killedPlayerName)
     {
+        return;
+
         _textCount++;
 
         PooledObject pooledText = LocalPoolManager.Instance.Pool_UI_Kill.PullObjectFromPool(transform);

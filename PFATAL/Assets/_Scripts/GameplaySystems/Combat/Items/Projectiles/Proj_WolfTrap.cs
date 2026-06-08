@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -14,11 +15,14 @@ public class Proj_WolfTrap : Projectile
     [SerializeField] float _activationDelay = 0.5f;
     [SerializeField] float _dammage = 1f;
     [SerializeField] float _radius = 1;
+    [SerializeField] ParticleSystem _particles;
 
     float timer;
     bool isArmed = false;
     bool hasActivated = false;
     private static Collider[] buffer = new Collider[20];
+    
+    private Tween _scaleTween;
 
     private void Awake()
     {
@@ -35,6 +39,17 @@ public class Proj_WolfTrap : Projectile
 
         Vector3 force = transform.forward * 5 + transform.up * 3;
         _rb.AddForce(force.normalized * _throwStrength, ForceMode.Impulse);
+    }
+
+    public override void Despawn()
+    {
+        _particles.transform.SetParent(null);
+        _particles.Play();
+    
+        _scaleTween = transform.DOScale(0f, 1f).SetEase(Ease.OutBack).OnComplete(() =>
+        {
+            base.Despawn();
+        });
     }
 
     private void Update()
@@ -78,7 +93,7 @@ public class Proj_WolfTrap : Projectile
             if (!buffer[i].TryGetComponent(out DamageableObject hitObject) || !hitObject.isPlayer) continue;
 
 
-            // Dégâts côté serveur
+            // Dï¿½gï¿½ts cï¿½tï¿½ serveur
             DamageData damageData = new DamageData
             {
                 Amount = _dammage,
@@ -91,7 +106,7 @@ public class Proj_WolfTrap : Projectile
                 WeaponID = (int)spawnContext.Value.floatData2
             };
 
-            // RPC vers le client ciblé
+            // RPC vers le client ciblï¿½
             ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
             ApplyFreezeRPC(_freezeDuration, RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
             hitObject.TakeDamage(damageData);

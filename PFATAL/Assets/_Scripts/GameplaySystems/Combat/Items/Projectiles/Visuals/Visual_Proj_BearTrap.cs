@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class BearTrapVisuals : MonoBehaviour
@@ -10,6 +11,7 @@ public class BearTrapVisuals : MonoBehaviour
         _bearTrap.OnTrapPlayer += CloseTrap;
     }
 
+    [Rpc(SendTo.Everyone)]
     void CloseTrap()
     {
         _animator.enabled = true;

@@ -46,4 +46,10 @@ public class ViewManager : MonoBehaviour
 
         _currentView.Activate();
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
 }

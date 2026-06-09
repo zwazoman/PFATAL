@@ -70,21 +70,6 @@ namespace GameplaySystems.PlayerCharacter
             behaviours = _hand.playerCharacter.GetComponentsInChildren<NetworkBehaviour>();
         }
 
-        public override void OnNetworkSpawn()
-        {
-            base.OnNetworkSpawn();
-
-            print(NetworkBehaviourId);
-
-            TestRPC();
-        }
-
-        [Rpc(SendTo.Everyone)]
-        void TestRPC()
-        {
-            print("hello");
-        }
-
         private void Update()
         {
             _animator.SetBool(IsRunning_AnimatorProperty, _hand.playerCharacter.physics.Velocity.sqrMagnitude > .25f);

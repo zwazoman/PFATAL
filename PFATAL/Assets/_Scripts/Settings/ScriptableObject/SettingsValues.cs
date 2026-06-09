@@ -18,7 +18,7 @@ public class SettingsValues : ScriptableObject
     public string Drop;
 
     [Header("Graphics")]
-    public float Gamma;
+    //public float Gamma;
     public int FramesRates;
     public bool VSync;
 }

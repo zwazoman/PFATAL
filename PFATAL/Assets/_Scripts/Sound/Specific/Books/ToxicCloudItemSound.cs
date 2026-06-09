@@ -7,4 +7,5 @@ public class ToxicCloudItemSound : BookSound<Cons_ToxicCloud>
         base.LinkEvents();
         main.OnStopUsing += () => AudioManager.Instance.PlayOneShot(Sounds.SmokeLaunch);
     }
+
 }

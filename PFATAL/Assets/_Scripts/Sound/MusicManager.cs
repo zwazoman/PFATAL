@@ -30,13 +30,12 @@ public class MusicManager : MonoBehaviour
 
         if(newScene.name == _menuName)
         {
-            //todo => musique dans le menu
+            _splashAmbienceInstance.start();
         }
 
         if (newScene.name == _mapName)
         {
             _splashAmbienceInstance.stop(STOP_MODE.ALLOWFADEOUT);
-            _splashAmbienceInstance.release();
 
             AudioManager.Instance.PlayOneShot(Sounds.Music);
         }

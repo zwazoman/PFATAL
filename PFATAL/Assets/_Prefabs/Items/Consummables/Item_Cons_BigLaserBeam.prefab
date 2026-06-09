@@ -170,6 +170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6436811014836946611}
   - component: {fileID: 597190491085314456}
+  - component: {fileID: 7849214678927583320}
   m_Layer: 10
   m_Name: Item_Cons_BigLaserBeam
   m_TagString: Untagged
@@ -220,6 +221,19 @@ MonoBehaviour:
   _maxChargeTime: 2
   _recoilForce: 10
   _laserProjectilePrefab: {fileID: 6689096035680177183, guid: fae6c80c260029548b06b1e84e392dfa, type: 3}
+--- !u!114 &7849214678927583320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8546402607277789670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87ed76be63f92c43b95c70e7e1b9feb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LaserBeamSound
+  main: {fileID: 597190491085314456}
 --- !u!1001 &2271496042614084317
 PrefabInstance:
   m_ObjectHideFlags: 0

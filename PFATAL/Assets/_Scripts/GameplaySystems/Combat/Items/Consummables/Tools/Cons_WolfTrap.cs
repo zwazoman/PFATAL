@@ -41,7 +41,7 @@ public class Cons_WolfTrap : Cons_ThrowableBase
         _objectRenderer.enabled = true;
         hand.animatorEventListener.OnObjectThrown += HideObject;
     }
-
+    
     public override void UnEquip()
     {
         base.UnEquip();

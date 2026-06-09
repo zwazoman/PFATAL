@@ -121,11 +121,6 @@ namespace _scripts.PlayerCharacter.StateMachine.States
                 0, .2f
             ).SetEase(Ease.InOutSine);
             
-            //vfx
-            PooledObject vfx = LocalPoolManager.Instance.Pool_VFX_GroundSlam.PullObjectFromPool(transform.position+Vector3.down*.5f);
-            vfx.GetComponent<StylisedEffect>().TriggerMainEvent();
-            vfx.GoBackIntoPool_Delayed(3);
-            
             // Restaure la gravit� normale
             playerCharacter.physics.SetGravityStrength(gravityScaleBeforeSlam);
             playerCharacter.movement.enabled = true;

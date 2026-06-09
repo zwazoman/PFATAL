@@ -59,7 +59,7 @@ public class Proj_Bomb : Projectile
         _isExploding = true;
         _rb.isKinematic = true;
 
-        await _explosion.Explode(spawnContext.Value.spawnerClientID, (int)spawnContext.Value.floatData2);
+        await _explosion.Explode(transform.position,spawnContext.Value.spawnerClientID, (int)spawnContext.Value.floatData2);
 
         Despawn();
     }

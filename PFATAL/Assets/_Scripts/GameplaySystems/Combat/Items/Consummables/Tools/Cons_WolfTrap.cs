@@ -3,6 +3,7 @@ using UnityEngine;
 public class Cons_WolfTrap : Cons_ThrowableBase
 {
     [SerializeField] GameObject _wolfTrapPrefab;
+    [SerializeField] private Renderer _objectRenderer;
 
     private void Start()
     {
@@ -32,5 +33,23 @@ public class Cons_WolfTrap : Cons_ThrowableBase
             playerCharacter.transform.rotation, false, context);
 
         //BreakItem();
+    }
+
+    public override void Equip()
+    {
+        base.Equip();
+        _objectRenderer.enabled = true;
+        hand.animatorEventListener.OnObjectThrown += HideObject;
+    }
+
+    public override void UnEquip()
+    {
+        base.UnEquip();
+        hand.animatorEventListener.OnObjectThrown -= HideObject;
+    }
+    
+    public void HideObject()
+    {
+        _objectRenderer.enabled = false;
     }
 }

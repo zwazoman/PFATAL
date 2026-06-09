@@ -58,17 +58,15 @@ public class LobbyBrowserUI : MonoBehaviour
 
         if (lobbies == null || lobbies.Count == 0)
         {
-            statusText.text = "Aucun lobby disponible.";
+            statusText.text = "No lobby available.";
             _eventSystem.SetSelectedGameObject(_wichObject.gameObject);
             return;
         }
 
-        statusText.text = $"{lobbies.Count} lobby(s) disponible(s)";
-
-        print($"[LobbiesBrowser]" + lobbies.Count);
+        statusText.text = $"{lobbies.Count} lobby available";
+        
         foreach (Lobby lobby in lobbies)
         {
-            print($"[LobbiesBrowser]  COUCOU");
             GameObject card = Instantiate(lobbyCardPrefab, lobbyListContent);
             LobbyCard cardScript = card.GetComponent<LobbyCard>();
 
@@ -82,19 +80,17 @@ public class LobbyBrowserUI : MonoBehaviour
     {
         SetLoading(true);
         refreshButton.interactable = false;       
-
-        Debug.Log("avant await");
+        
         bool success = await NetworkConnectionManager.Instance.StartClientById(lobby.Id);
-        Debug.Log("après await");
         
         if (!success)
         {
-            SetLoading(false, "Impossible de rejoindre ce lobby.");
+            SetLoading(false, "Unable to join this lobby.");
             refreshButton.interactable = true;
         }
     }
 
-    private void SetLoading(bool isLoading, string message = "Chargement...")
+    private void SetLoading(bool isLoading, string message = "Loading...")
     {
         loadingPanel.SetActive(isLoading);
         loadingText.text = isLoading ? message : "";

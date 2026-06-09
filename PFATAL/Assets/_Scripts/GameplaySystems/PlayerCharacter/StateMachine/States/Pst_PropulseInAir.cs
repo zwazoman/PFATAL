@@ -33,26 +33,26 @@ namespace _scripts.PlayerCharacter.StateMachine.States
         {
             base.Behave(ctx, updatePoint);
             ApplyAirControls(ctx);
-        }
 
-        protected override void OnExited(PlayerCharacter playerCharacter)
-        {
-            base.OnExited(playerCharacter);
-            
-            if (playerCharacter.TryGetComponent(out DamageableObject damageable) && playerCharacter.physics.Velocity.y >=1 )
+            if (IsOnCeiling(ctx.transform.position) && ctx.TryGetComponent(out DamageableObject damageable) && ctx.physics.Velocity.y >= 1)
             {
                 DamageData damageData = new DamageData
                 {
-                    Amount = _damage * (playerCharacter.physics.Velocity.y/_startVelocityY),
+                    Amount = _damage,
                     SourcePlayerClientID = _spawnerId,
                     Point = transform.position,
                     SourcePos = _spawnPosition,
                     Direction = Vector3.down,
                 };
 
+                Print($"[Pst_PropulseInAir] {damageData.Amount}");
                 damageable.TakeDamage(damageData);
             }
-            
+        }
+
+        protected override void OnExited(PlayerCharacter playerCharacter)
+        {   
+            base.OnExited(playerCharacter);
         }
 
         public override StateBase<PlayerCharacter> FindNextState(PlayerCharacter ctx)
@@ -60,7 +60,7 @@ namespace _scripts.PlayerCharacter.StateMachine.States
             var nextState = base.FindNextState(ctx);
             if(nextState != this) return nextState;
             
-            if (IsOnCeiling(ctx.transform.position) || ctx.physics.Velocity.y < -.1f) 
+            if (ctx.physics.Velocity.y < -.1f) 
                 return Sm.s_Falling;
 
             return this;

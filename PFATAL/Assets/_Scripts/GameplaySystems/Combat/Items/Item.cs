@@ -110,6 +110,7 @@ public class Item : MonoBehaviour
         OnUnEquip?.Invoke();
 
         isUsing = false;
+        canScrolling = true;
         holdDuration = 0;
     }
 

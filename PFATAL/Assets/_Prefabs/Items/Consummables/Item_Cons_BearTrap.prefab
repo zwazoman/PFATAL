@@ -95,7 +95,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Cons_WolfTrap
   playerCharacter: {fileID: 0}
   _pickup: {fileID: 7861026024044232566, guid: 0049ce72b21158a4fb7b4babb2b9cb24, type: 3}
+  uiSprite: {fileID: 0}
   _wolfTrapPrefab: {fileID: 4084173529431785421, guid: 0ca36fa5a797e1b42b97511a210fdfe3, type: 3}
+  _objectRenderer: {fileID: 8292019488368915279}
 --- !u!1001 &5313515223808456583
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -274,5 +276,10 @@ Animator:
 --- !u!4 &5636215956306317420 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0eca0eb5addaff949956efd96845d518, type: 3}
+  m_PrefabInstance: {fileID: 5313515223808456583}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &8292019488368915279 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -4994968920501533496, guid: 0eca0eb5addaff949956efd96845d518, type: 3}
   m_PrefabInstance: {fileID: 5313515223808456583}
   m_PrefabAsset: {fileID: 0}

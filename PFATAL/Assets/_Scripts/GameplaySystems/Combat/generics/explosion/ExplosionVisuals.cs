@@ -34,7 +34,7 @@ public class ExplosionVisuals : MonoBehaviour
             if (_vfxType is ExplosionVfxType.big)
                 explosion.transform.position += Vector3.up * -0.5f;
 
-            explosion.GoBackIntoPool_Delayed(5);
+            explosion.GoBackIntoPool_Delayed(4);
         }
         catch (Exception e)
         {

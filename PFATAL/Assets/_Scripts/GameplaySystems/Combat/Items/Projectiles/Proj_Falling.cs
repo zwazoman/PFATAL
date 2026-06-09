@@ -5,7 +5,7 @@ using UnityEngine;
 public class Proj_Falling : Projectile
 {
     //Events
-    public event Action EventOnContact;
+    public event Action<RaycastHit> EventOnContact;
 
     [Header("Global Settings")]
     [field: SerializeField] public float CollisionRadius { get; private set; }
@@ -57,8 +57,7 @@ public class Proj_Falling : Projectile
             //lifetime
             if (timeSinceSpawn >= _maxLifetime)
                 Despawn();
-
-
+            
             Debug.DrawLine(transform.position, _oldPosition, Color.white, _maxLifetime);
 
             //collisions
@@ -87,7 +86,7 @@ public class Proj_Falling : Projectile
                     data.SourcePlayerClientID = spawnContext.Value.spawnerClientID;
                     data.WeaponID = (int)spawnContext.Value.floatData2;
 
-                    EventOnContact?.Invoke();
+                    EventOnContact?.Invoke(_hitBuffer[i]);
                     OnContact(_hitBuffer[i]);
                     ApplyDamageToHitObject(data, damageable);
 
@@ -95,7 +94,7 @@ public class Proj_Falling : Projectile
                     return;
                 }
                 OnContact(_hitBuffer[i]);
-                EventOnContact?.Invoke();
+                EventOnContact?.Invoke(_hitBuffer[i]);
 
             }
             //print("ActualHitCount : "+actualHitCount);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _Scripts.Exceptions;
+using _scripts.PlayerCharacter;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -20,35 +21,34 @@ public class Explosion : NetworkBehaviour
     /// <summary>
     /// can only be called from the server
     /// </summary>
-    public async Awaitable Explode(ulong askerClientID, int itemID = -1)
+    public async Awaitable Explode(Vector3 position, ulong askerClientID, int itemID = -1)
     {
         if(!IsServer) throw new NetworkAuthorityException();
         
-        CallExplosionEventRPC();
+        CallExplosionEventRPC(position);
 
         //damage setup
-        DamageData damage = new();
-        damage.Amount = Damage;
-        damage.Point = transform.position;
-        damage.SourcePos = transform.position;
-        damage.SourcePlayerClientID = askerClientID;
-        damage.Point = transform.position;
-        damage.Radius = Radius;
-        damage.WeaponID = itemID;
+        DamageData damageData = new();
+        damageData.Amount = Damage;
+        damageData.Point = position;
+        damageData.SourcePos = GameManager.Instance.GetPlayerCharacter(askerClientID).transform.position;
+        damageData.SourcePlayerClientID = askerClientID;
+        damageData.Radius = Radius;
+        damageData.WeaponID = itemID;
         
         //.2s hit detection
         float endTime = Time.time + HIT_DETECTION_DURATION;
         HashSet<DamageableObject> hitObjects = new HashSet<DamageableObject>();
         while (Time.time < endTime && isActiveAndEnabled)
         {
-            TryToHitObjects(damage, ref hitObjects);
+            TryToHitObjects(damageData, ref hitObjects);
             await Awaitable.NextFrameAsync();
         }
     }
 
     private void TryToHitObjects(DamageData damageData, ref HashSet<DamageableObject> alreadyHitObjects)
     {
-        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, Radius, collisionBuffer);
+        int hitCount = Physics.OverlapSphereNonAlloc(damageData.Point, Radius, collisionBuffer);
         for(int i =0; i < hitCount; i++)
         {
             if(collisionBuffer[i].TryGetComponent(out DamageableObject hitObject))
@@ -59,7 +59,7 @@ public class Explosion : NetworkBehaviour
                 print($"{hitObject.gameObject.name} was hit by a bomb !");
                 
                 //direction
-                damageData.Direction = hitObject.transform.position - damageData.Point;
+                damageData.Direction = (hitObject.transform.position - damageData.Point).normalized;
 
                 //damage
                 float normalizedDistance = Vector3.Distance(damageData.Point,hitObject.transform.position) / Radius;
@@ -69,7 +69,7 @@ public class Explosion : NetworkBehaviour
                                     * (((hitObject.OwnerClientId == damageData.SourcePlayerClientID) && hitObject.isPlayer) ? 0.3f : 1);
 
                 //knockBack
-                damageData.KnockbackForce = (hitObject.transform.position - damageData.Point).normalized * KnockBackStrength;
+                damageData.KnockbackForce = damageData.Direction * KnockBackStrength;
 
                 hitObject.TakeDamage(damageData);
             }
@@ -78,9 +78,9 @@ public class Explosion : NetworkBehaviour
 
 
     [Rpc(SendTo.Everyone)]
-    void CallExplosionEventRPC()
+    void CallExplosionEventRPC(Vector3 position)
     {
-        EventOnExplode?.Invoke(transform.position);
+        EventOnExplode?.Invoke(position);
     }
     
     private void OnDrawGizmos()

@@ -1,16 +1,18 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class BearTrapVisuals : MonoBehaviour
+public class BearTrapVisuals : NetworkBehaviour
 {
     [SerializeField] Proj_WolfTrap _bearTrap;
     [SerializeField] Animator _animator;
 
     private void Start()
     {
-        _bearTrap.OnTrapPlayer += CloseTrap;
+        _bearTrap.OnTrapPlayer += CloseTrapRpc;
     }
 
-    void CloseTrap()
+    [Rpc(SendTo.Everyone)]
+    void CloseTrapRpc()
     {
         _animator.enabled = true;
         _animator.ResetTrigger("Close");

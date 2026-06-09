@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -14,11 +15,14 @@ public class Proj_WolfTrap : Projectile
     [SerializeField] float _activationDelay = 0.5f;
     [SerializeField] float _dammage = 1f;
     [SerializeField] float _radius = 1;
+    [SerializeField] ParticleSystem _particleSmoke;
 
     float timer;
     bool isArmed = false;
     bool hasActivated = false;
     private static Collider[] buffer = new Collider[20];
+    
+    private Tween _scaleTween;
 
     private void Awake()
     {
@@ -37,6 +41,16 @@ public class Proj_WolfTrap : Projectile
         _rb.AddForce(force.normalized * _throwStrength, ForceMode.Impulse);
     }
 
+    public override void Despawn()
+    {
+        PlayParticleSystemRpc(true);
+        
+        _scaleTween = transform.DOScale(0f, 1f).SetEase(Ease.OutBack).OnComplete(() =>
+        {
+            base.Despawn();
+        });
+    }
+
     private void Update()
     {
         if (!IsSpawned || !IsServer) return;
@@ -47,6 +61,7 @@ public class Proj_WolfTrap : Projectile
         if (IsGrounded() && timer >= _activationDelay && !isArmed)
         {
             isArmed = true;
+            PlayParticleSystemRpc();
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             _rb.isKinematic = true;
@@ -78,7 +93,7 @@ public class Proj_WolfTrap : Projectile
             if (!buffer[i].TryGetComponent(out DamageableObject hitObject) || !hitObject.isPlayer) continue;
 
 
-            // Dégâts côté serveur
+            // Dï¿½gï¿½ts cï¿½tï¿½ serveur
             DamageData damageData = new DamageData
             {
                 Amount = _dammage,
@@ -91,7 +106,7 @@ public class Proj_WolfTrap : Projectile
                 WeaponID = (int)spawnContext.Value.floatData2
             };
 
-            // RPC vers le client ciblé
+            // RPC vers le client ciblï¿½
             ulong targetClientId = hitObject.NetworkObject.OwnerClientId;
             ApplyFreezeRPC(_freezeDuration, RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
             hitObject.TakeDamage(damageData);
@@ -122,5 +137,16 @@ public class Proj_WolfTrap : Projectile
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, _radius);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void PlayParticleSystemRpc(bool destroy = false)
+    {
+        if (_particleSmoke == null || _particleSmoke.isPlaying) return;
+
+        if (destroy)
+            _particleSmoke.transform.SetParent(null);
+
+        _particleSmoke.Play(true);
     }
 }

@@ -13,6 +13,9 @@ public class SkinHandler : MonoBehaviour
     [SerializeField] SkinnedMeshRenderer localMeshRenderer;
     [SerializeField] SkinnedMeshRenderer outlineMeshRenderer;
 
+    [SerializeField] SkinnedMeshRenderer leftHandRenderer;
+    [SerializeField] SkinnedMeshRenderer rightHandRenderer;
+
     [SerializeField,Tooltip("0=classique, 1=noir, 2=jaune, 3=blanc, 4=rouge, 5=violet, 6=orange, 7=vert")] SkinData[] _skins;
 
     public void SwapSkin()
@@ -28,8 +31,6 @@ public class SkinHandler : MonoBehaviour
     {
         print($"skin swapped to {skinID}");
 
-        OnSkinSwapped?.Invoke(skinID);
-
         SkinData skinData = _skins[skinID];
         
         //meshes
@@ -40,6 +41,7 @@ public class SkinHandler : MonoBehaviour
         MaterialPropertyBlock propertyBlock = new();
         localMeshRenderer.GetPropertyBlock(propertyBlock);
         propertyBlock.Clear();
+
         // texture
         propertyBlock.SetVector("_hsv_contrast", skinData.hsv);
         //emmissive
@@ -47,7 +49,19 @@ public class SkinHandler : MonoBehaviour
 
         localMeshRenderer.SetPropertyBlock(propertyBlock);
 
+        if(leftHandRenderer != null)
+            leftHandRenderer.SetPropertyBlock(propertyBlock);
+        if(rightHandRenderer != null) 
+            rightHandRenderer.SetPropertyBlock(propertyBlock);
+
         PlayerPrefs.SetInt("skinID", skinID);
+
+        OnSkinSwapped?.Invoke(skinID);
+    }
+
+    public int GetCurrentSkinID()
+    {
+        return PlayerPrefs.GetInt("skinID");
     }
 
     [Serializable]

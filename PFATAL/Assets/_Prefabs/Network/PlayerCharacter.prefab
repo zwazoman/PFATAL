@@ -5793,8 +5793,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6571119351779052384}
   - {fileID: 2791196211373816767}
@@ -13277,9 +13277,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 4670963308215862787}
     m_Modifications:
     - target: {fileID: 302399904411130402, guid: 512501cc39bbfae4092978526c507bcb, type: 3}
+      propertyPath: leftHandRenderer
+      value: 
+      objectReference: {fileID: 334675122001509177}
+    - target: {fileID: 302399904411130402, guid: 512501cc39bbfae4092978526c507bcb, type: 3}
       propertyPath: localMeshRenderer
       value: 
       objectReference: {fileID: 376630363583327551}
+    - target: {fileID: 302399904411130402, guid: 512501cc39bbfae4092978526c507bcb, type: 3}
+      propertyPath: rightHandRenderer
+      value: 
+      objectReference: {fileID: 4515941377858711370}
     - target: {fileID: 302399904411130402, guid: 512501cc39bbfae4092978526c507bcb, type: 3}
       propertyPath: outlineMeshRenderer
       value: 
@@ -13360,10 +13368,6 @@ PrefabInstance:
     - target: {fileID: 2837987485113016653, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
       propertyPath: m_Name
       value: HUD UI
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082572948856569208, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6534198949035144743, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -13457,10 +13461,6 @@ PrefabInstance:
       propertyPath: playerCharacter
       value: 
       objectReference: {fileID: 1068121725211319751}
-    - target: {fileID: 8390729821153212983, guid: 0560008710e17ca40a58bc45ffc9e5f0, type: 3}
-      propertyPath: _textscalePunchValue
-      value: 1.61
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

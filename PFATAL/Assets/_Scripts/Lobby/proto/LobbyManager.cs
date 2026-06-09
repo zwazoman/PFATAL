@@ -50,7 +50,6 @@ public class LobbyManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Lobby] Erreur lors de la creation du lobby: {e.Message} type: {e.GetType()}");
             return null;
         }
     }
@@ -64,7 +63,6 @@ public class LobbyManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Lobby] Erreur lors de la jointure du lobby: {e.Message}");
             return false;
         }
     }
@@ -74,12 +72,10 @@ public class LobbyManager : MonoBehaviour
         try
         {
             currentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
-            Debug.Log($"[Lobby] Lobby rejoint par ID: {currentLobby.Name}");
             return true;
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Lobby] Erreur join by ID: {e.Message}");
             return false;
         }
     }
@@ -97,12 +93,10 @@ public class LobbyManager : MonoBehaviour
             };
 
             currentLobby = await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id, options);
-            Debug.Log($"[Lobby] Code Relay mis a jour dans le lobby");
             return true;
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Lobby] Erreur lors de la mise a jour du code Relay: {e.Message}");
             return false;
         }
     }
@@ -116,16 +110,13 @@ public class LobbyManager : MonoBehaviour
             if (currentLobby.Data.ContainsKey(RELAY_JOIN_CODE_KEY))
             {
                 string relayCode = currentLobby.Data[RELAY_JOIN_CODE_KEY].Value;
-                Debug.Log($"[Lobby] Code Relay récupéré: {relayCode}");
                 return relayCode;
             }
-
-            Debug.LogWarning("[Lobby] Aucun code Relay trouvé dans le lobby");
+            
             return null;
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Lobby] Erreur lors de la récupération du code Relay: {e.Message}");
             return null;
         }
     }
@@ -140,7 +131,6 @@ public class LobbyManager : MonoBehaviour
             {
                 IsLocked = locked
             });
-            Debug.Log($"[Lobby] Lobby {(locked ? "verrouillé" : "déverrouillé")}.");
         }
         catch (Exception e)
         {
@@ -161,7 +151,6 @@ public class LobbyManager : MonoBehaviour
                 try
                 {
                     await LobbyService.Instance.SendHeartbeatPingAsync(currentLobby.Id);
-                    Debug.Log("[Lobby] Heartbeat envoyé");
                 }
                 catch (Exception e)
                 {

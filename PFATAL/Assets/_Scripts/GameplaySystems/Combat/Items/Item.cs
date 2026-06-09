@@ -21,6 +21,7 @@ public class Item : MonoBehaviour
 
 
     [SerializeField] GameObject _pickup;
+    [SerializeField] public Sprite uiSprite;
 
     protected float holdDuration;
 

@@ -17,16 +17,15 @@ public class HostingView : View
     {
         string lobbyName = string.IsNullOrEmpty(lobbyNameInput.text) ? "MyGame" : lobbyNameInput.text;
 
-        _loadingView.loadingText.text = "Creation de la partie...";
+        _loadingView.loadingText.text = "Creation of the game...";
         ViewManager.Instance.SwapView(_loadingView);
 
         bool success = await NetworkConnectionManager.Instance.StartHost(lobbyName);
 
         if (!success)
         {
-            Debug.LogError("[Menu] echec du demarrage de l'host");
             ViewManager.Instance.SwapView(this);
-            lobbyCodeText.text = "Erreur lors de la creation";
+            lobbyCodeText.text = "Error during creation";
             lobbyCodeText.color = Color.red;
         }
         else
@@ -34,11 +33,9 @@ public class HostingView : View
             var lobby = LobbyManager.Instance.GetCurrentLobby();
             if (lobby != null)
             {
-                lobbyCodeText.text = $"Code de la partie: {lobby.LobbyCode}";
+                lobbyCodeText.text = $"Game Code: {lobby.LobbyCode}";
                 lobbyCodeText.color = Color.green;
             }
-
-            Debug.Log("[Menu] Host demarre avec succes");
         }
     }
 }

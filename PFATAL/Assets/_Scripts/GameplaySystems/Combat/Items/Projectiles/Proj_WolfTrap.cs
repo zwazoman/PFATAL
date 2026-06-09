@@ -43,13 +43,8 @@ public class Proj_WolfTrap : Projectile
 
     public override void Despawn()
     {
-        if (_particleSmoke != null && !_particleSmoke.isPlaying)
-        {
-            _particleSmoke.transform.SetParent(null);
-            _particleSmoke.Play(true);
-        }
-
-    
+        PlayParticleSystemRpc(true);
+        
         _scaleTween = transform.DOScale(0f, 1f).SetEase(Ease.OutBack).OnComplete(() =>
         {
             base.Despawn();
@@ -66,7 +61,7 @@ public class Proj_WolfTrap : Projectile
         if (IsGrounded() && timer >= _activationDelay && !isArmed)
         {
             isArmed = true;
-            _particleSmoke.Play(true);
+            PlayParticleSystemRpc();
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             _rb.isKinematic = true;
@@ -142,5 +137,16 @@ public class Proj_WolfTrap : Projectile
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, _radius);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void PlayParticleSystemRpc(bool destroy = false)
+    {
+        if (_particleSmoke == null || _particleSmoke.isPlaying) return;
+
+        if (destroy)
+            _particleSmoke.transform.SetParent(null);
+
+        _particleSmoke.Play(true);
     }
 }

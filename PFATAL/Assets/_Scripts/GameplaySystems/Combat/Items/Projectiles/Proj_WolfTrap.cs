@@ -15,7 +15,7 @@ public class Proj_WolfTrap : Projectile
     [SerializeField] float _activationDelay = 0.5f;
     [SerializeField] float _dammage = 1f;
     [SerializeField] float _radius = 1;
-    [SerializeField] ParticleSystem _particles;
+    [SerializeField] ParticleSystem _particleSmoke;
 
     float timer;
     bool isArmed = false;
@@ -43,8 +43,12 @@ public class Proj_WolfTrap : Projectile
 
     public override void Despawn()
     {
-        _particles.transform.SetParent(null);
-        _particles.Play();
+        if (_particleSmoke != null && !_particleSmoke.isPlaying)
+        {
+            _particleSmoke.transform.SetParent(null);
+            _particleSmoke.Play(true);
+        }
+
     
         _scaleTween = transform.DOScale(0f, 1f).SetEase(Ease.OutBack).OnComplete(() =>
         {
@@ -62,6 +66,7 @@ public class Proj_WolfTrap : Projectile
         if (IsGrounded() && timer >= _activationDelay && !isArmed)
         {
             isArmed = true;
+            _particleSmoke.Play(true);
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             _rb.isKinematic = true;

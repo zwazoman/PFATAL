@@ -23,7 +23,7 @@ public class Proj_BigLaserBeam : Projectile
             if (hit.collider.TryGetComponent(out DamageableObject damageable))
             {
                 DamageData damage = new DamageData(
-                    amount:               _maxDamage * chargeRatio,
+                    amount:               _maxDamage,
                     point:                hit.point,
                     sourcePos:            GameManager.Instance.GetPlayerCharacter(spawnContext.Value.spawnerClientID).transform.position,
                     direction:            transform.forward,

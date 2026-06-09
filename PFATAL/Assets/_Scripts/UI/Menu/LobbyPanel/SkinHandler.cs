@@ -31,8 +31,6 @@ public class SkinHandler : MonoBehaviour
     {
         print($"skin swapped to {skinID}");
 
-        OnSkinSwapped?.Invoke(skinID);
-
         SkinData skinData = _skins[skinID];
         
         //meshes
@@ -57,6 +55,8 @@ public class SkinHandler : MonoBehaviour
             rightHandRenderer.SetPropertyBlock(propertyBlock);
 
         PlayerPrefs.SetInt("skinID", skinID);
+
+        OnSkinSwapped?.Invoke(skinID);
     }
 
     public int GetCurrentSkinID()

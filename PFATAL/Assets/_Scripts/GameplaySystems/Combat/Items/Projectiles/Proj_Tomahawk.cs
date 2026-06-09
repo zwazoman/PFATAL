@@ -11,21 +11,7 @@ public class Proj_Tomahawk : Proj_Falling
     [SerializeField] float _spinSpeed = 200;
 
     EventInstance _spinInstance;
-
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-
-        EventOnContact += Explode;
-    }
-
-    public override void OnNetworkDespawn()
-    {
-        base.OnNetworkDespawn();
-
-        EventOnContact -= Explode;
-    }
-
+    
     protected override void Update()
     {
         if(_initialized)
@@ -35,8 +21,15 @@ public class Proj_Tomahawk : Proj_Falling
     }
 
     //[Rpc(SendTo.Server)]
-    public void Explode()
+    protected override void OnContact(RaycastHit sourceHit)
     {
-        _explosion.Explode(spawnContext.Value.spawnerClientID, (int)spawnContext.Value.floatData2);
+        print("contact !");
+        Explode(sourceHit.point);
+    }
+
+    public void Explode(Vector3 position)
+    {
+        _explosion.transform.position = position;
+        _explosion.Explode( position,spawnContext.Value.spawnerClientID, (int)spawnContext.Value.floatData2);
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Settings;
+using System;
 
 public class Setting : MonoBehaviour
 {
@@ -52,7 +53,10 @@ public class Setting : MonoBehaviour
         _setFOV.FOVSet(_values.FOV);
         _setSensitivity.AimingSet(_values.SensitivityMouse);
         //_setGamma.SettingGamma(_values.Gamma);
-        _setFrames.SetLimitToFrames(_values.FramesRates);
+        // If i have time, i must take care of this :
+        //_setFrames.SetLimitToFrames(_values.FramesRates);
 
     }
+
+    
 }

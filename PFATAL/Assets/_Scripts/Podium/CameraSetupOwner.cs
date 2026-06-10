@@ -38,24 +38,15 @@ public class CameraSetupOwner : MonoBehaviour
         vcam.Follow = target;
         vcam.LookAt = target;
 
-        HideOthers(target, playerCharacterParent, namePlayerParent);
+        HideOthers(target, namePlayerParent);
 
         StartCoroutine(ZoomIn());
     }
 
-    private void HideOthers(Transform target, Transform playerCharacterParent, Transform namePlayerParent)
+    private void HideOthers(Transform target, Transform namePlayerParent)
     {
         int localIndex = -1;
         int i = 0;
-        foreach (Transform child in playerCharacterParent)
-        {
-            if (child == target) { localIndex = i; break; }
-            i++;
-        }
-
-        foreach (Transform child in playerCharacterParent)
-            if (child != target)
-                child.gameObject.SetActive(false);
 
         i = 0;
         foreach (Transform child in namePlayerParent)

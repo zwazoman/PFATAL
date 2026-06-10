@@ -11,13 +11,13 @@ public class BookSound<T> : ItemSound<T> where T : Cons_BookBase
     protected override void EquipLink()
     {
         base.EquipLink();
-        //main.hand.animatorEventListener.OnAnimationFinished += PlayCloseSound;
+        main.hand.animatorEventListener.OnBookClose += PlayCloseSound;
     }
 
     protected override void UnEquipLink()
     {
         base.UnEquipLink();
-        //main.hand.animatorEventListener.OnAnimationFinished -= PlayCloseSound;
+        main.hand.animatorEventListener.OnBookClose -= PlayCloseSound;
     }
 
     void PlayCastSound() => AudioManager.Instance.PlayOneShot(Sounds.BookSpellCast);

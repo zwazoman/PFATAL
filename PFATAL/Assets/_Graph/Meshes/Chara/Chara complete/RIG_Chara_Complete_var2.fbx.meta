@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2fa98db9d4566cd42b87f04e27709750
+guid: 8c87bf73d07d9c240b50f836b171e3dc
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,8 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material.013
-    second: {fileID: 2100000, guid: 56f8851d39ad73a4098d2da1d0ace4e7, type: 2}
+      name: Mat_Hand_Character
+    second: {fileID: 2100000, guid: b6995feebabb03b41a15b7a3e0a45619, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mat_Player_Character
+    second: {fileID: 2100000, guid: d1f710b32a1593b4da346ab5e8a97bed, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -36,11 +41,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Rig_Book|bk_Idle
-      takeName: Rig_Book|bk_Idle
-      internalID: -5258094425928368497
+      name: Rig_Player_Character_TPS|Chr_Pod_Loose_TPS
+      takeName: Rig_Player_Character_TPS|Chr_Pod_Loose_TPS
+      internalID: -8309486868179567889
       firstFrame: 0
-      lastFrame: 2
+      lastFrame: 198
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -65,127 +70,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Rig_Book|bk_use
-      takeName: Rig_Book|bk_use
-      internalID: -3925937354056262996
+      name: Rig_Player_Character_TPS|Chr_Pod_Win_TPS
+      takeName: Rig_Player_Character_TPS|Chr_Pod_Win_TPS
+      internalID: -8416721146049430789
       firstFrame: 0
-      lastFrame: 25
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Rig_Book|bk_use_laser_Backup
-      takeName: Rig_Book|bk_use_laser_Backup
-      internalID: -3076646442898831400
-      firstFrame: 0
-      lastFrame: 132
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Rig_Book|bk_use_laser_charge
-      takeName: Rig_Book|bk_use_laser_charge
-      internalID: 7999975585160899407
-      firstFrame: 0
-      lastFrame: 39
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Rig_Book|bk_use_laser_shoot
-      takeName: Rig_Book|bk_use_laser_shoot
-      internalID: -7595606640266039499
-      firstFrame: 0
-      lastFrame: 28
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Rig_Book|bk_use_laser_up
-      takeName: Rig_Book|bk_use_laser_up
-      internalID: 1494797774318107415
-      firstFrame: 0
-      lastFrame: 20
+      lastFrame: 190
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

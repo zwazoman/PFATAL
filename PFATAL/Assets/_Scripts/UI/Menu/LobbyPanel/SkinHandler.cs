@@ -54,9 +54,12 @@ public class SkinHandler : MonoBehaviour
         if(rightHandRenderer != null) 
             rightHandRenderer.SetPropertyBlock(propertyBlock);
 
-        PlayerPrefs.SetInt("skinID", skinID);
-
         OnSkinSwapped?.Invoke(skinID);
+    }
+
+    public void SetCurrentSkinID(int skinID)
+    {
+        PlayerPrefs.SetInt("skinID", skinID);
     }
 
     public int GetCurrentSkinID()

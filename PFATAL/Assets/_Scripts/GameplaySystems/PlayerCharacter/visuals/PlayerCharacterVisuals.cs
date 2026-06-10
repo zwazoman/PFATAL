@@ -43,7 +43,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     [SerializeField] float TorsoPitchAmplitude = 75;
 
     private Vector3 _measuredVelocity;
-    
+
     //public methods
     
     [SerializeField] List<GameObject> _visualObjects;
@@ -218,6 +218,14 @@ public class PlayerCharacterVisuals : NetworkBehaviour
             LocalPoolManager.Instance.Pool_VFX_RockBurst_Big.
                 PullObjectFromPool(transform.position)
                 .GoBackIntoPool_Delayed(2);
+
+        //groundslam vfx
+        if ((oldState & State.GroundSlam) == State.GroundSlam)
+        {
+            PooledObject vfx = LocalPoolManager.Instance.Pool_VFX_GroundSlam.PullObjectFromPool(transform.position+Vector3.down*.5f);
+            vfx.GetComponent<StylisedEffect>().TriggerMainEvent();
+            vfx.GoBackIntoPool_Delayed(3);
+        }
     }
 
     private void OnDamageTaken(DamageData damageData)

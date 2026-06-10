@@ -323,6 +323,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: -7743395388508632297}
+    - targetCorrespondingSourceObject: {fileID: 8346000404641864472, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 80201478222517675}
   m_SourcePrefab: {fileID: 100100000, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}
 --- !u!4 &1734705611953190009 stripped
 Transform:
@@ -348,6 +351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Cons_Tornado
   playerCharacter: {fileID: 0}
   _pickup: {fileID: 7861026024044232566, guid: 830f0c0e962f38840bdf57b0f0812a7a, type: 3}
+  uiSprite: {fileID: 21300000, guid: 2fa694f1b07b1d545a8e2ccaf45a0039, type: 3}
   _animator: {fileID: 2241389691576616700}
   _Vfx: {fileID: 8689209501163083321}
   shootSocket: {fileID: 1736553830689441513}
@@ -358,6 +362,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _tornadoProjectilePrefab: {fileID: 5604889624952730010, guid: 02037c95d101bcd428a252996c2a9e87, type: 3}
+--- !u!114 &80201478222517675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5786053781384723269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb8fa183a1a313479f885147adf3ce3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TornadoBookSound
+  main: {fileID: -7743395388508632297}
 --- !u!4 &7171063974548638414 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4619143820710161043, guid: e8f55405b209e7c468bfebb528ccf4d9, type: 3}

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Settings;
+using System;
 
 public class Setting : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class Setting : MonoBehaviour
     [SerializeField] private TMP_Text _textJump;
     [SerializeField] private TMP_Text _textInteract;
     [SerializeField] private TMP_Text _textDrop;
-    [SerializeField] private Slider _sliderGamma;
+    //[SerializeField] private Slider _sliderGamma;
     [SerializeField] private TMP_Dropdown _dropdownFrames;
     [SerializeField] private Toggle _toggleVSYnc;
 
@@ -27,7 +28,7 @@ public class Setting : MonoBehaviour
     [SerializeField] private FieldOfViewSetter _setFOV;
     [SerializeField] private MouseSensitivitySetter _setSensitivity;
     [SerializeField] private Rebinds _setRebinds;
-    [SerializeField] private GammaSetter _setGamma;
+    //[SerializeField] private GammaSetter _setGamma;
     [SerializeField] private FramesLimiter _setFrames;
 
     void Start()
@@ -44,15 +45,18 @@ public class Setting : MonoBehaviour
         _textInteract.text = _values.Interact;
         _textDrop.text = _values.Drop;
         
-        _sliderGamma.value = _values.Gamma;
+        //_sliderGamma.value = _values.Gamma;
         _dropdownFrames.value = _values.FramesRates;
         _toggleVSYnc.isOn = _values.VSync;
 
         // To Update the values with the previous changes 
         _setFOV.FOVSet(_values.FOV);
         _setSensitivity.AimingSet(_values.SensitivityMouse);
-        _setGamma.SettingGamma(_values.Gamma);
-        _setFrames.SetLimitToFrames(_values.FramesRates);
+        //_setGamma.SettingGamma(_values.Gamma);
+        // If i have time, i must take care of this :
+        //_setFrames.SetLimitToFrames(_values.FramesRates);
 
     }
+
+    
 }

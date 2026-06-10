@@ -21,6 +21,7 @@ public class Item : MonoBehaviour
 
 
     [SerializeField] GameObject _pickup;
+    [SerializeField] public Sprite uiSprite;
 
     protected float holdDuration;
 
@@ -110,6 +111,7 @@ public class Item : MonoBehaviour
         OnUnEquip?.Invoke();
 
         isUsing = false;
+        canScrolling = true;
         holdDuration = 0;
     }
 

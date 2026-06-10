@@ -16,11 +16,10 @@ public class JoiningView : View
 
         if (string.IsNullOrEmpty(joinCode))
         {
-            Debug.LogWarning("[Menu] Code de jointure vide");
             return;
         }
 
-        _loadingView.loadingText.text = "Connexion a la partie...";
+        _loadingView.loadingText.text = "Login to the party...";
         ViewManager.Instance.SwapView(_loadingView);
 
         bool success = await NetworkConnectionManager.Instance.StartClient(joinCode);

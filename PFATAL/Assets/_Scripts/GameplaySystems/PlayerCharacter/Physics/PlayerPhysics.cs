@@ -1,6 +1,9 @@
+using _scripts.PlayerCharacter;
+using _scripts.PlayerCharacter.StateMachine.States;
+using _Scripts.Extensions;
+using _Scripts.StateMachine;
 using System;
 using System.Diagnostics;
-using _Scripts.Extensions;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -11,6 +14,8 @@ using Debug = UnityEngine.Debug;
 [RequireComponent(typeof(Collider))]
 public class PlayerPhysics : MonoBehaviour
 {
+    [SerializeField] private PlayerCharacter playerCharacter;
+
     [field: SerializeField] private Vector3 velocity;
 
     public Vector3 Velocity
@@ -47,6 +52,20 @@ public class PlayerPhysics : MonoBehaviour
     {
         TryGetComponent(out _rb);
         if(col == null) TryGetComponent(out col);
+    }
+
+    private void Start()
+    {
+        playerCharacter.stateMachine.OnStateChanged += StateChanged_Callback;
+    }
+
+    void StateChanged_Callback(StateBase<PlayerCharacter> previousState, StateBase<PlayerCharacter> nextState)
+    {
+        if (nextState is Pst_Alive)
+        {
+            print("alive state entered, resetting physics");
+            SetGravityStrength(_gravityStrength);
+        }
     }
 
     private void FixedUpdate()

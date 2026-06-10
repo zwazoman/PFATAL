@@ -8,6 +8,11 @@ public class SettingsValues : ScriptableObject
     [Range(5f, 30f)]public float SensitivityMouse;
     [Range(5f, 50f)]public float SensitivityController;
 
+    [Header("Volumes")]
+    public float MasterVolume;
+    public float MusicVolume;
+    public float SfxVolume;
+
     [Header("Rebinds")]
     public string MoveUp;
     public string MoveDown;
@@ -18,7 +23,7 @@ public class SettingsValues : ScriptableObject
     public string Drop;
 
     [Header("Graphics")]
-    public float Gamma;
+    //public float Gamma;
     public int FramesRates;
     public bool VSync;
 }

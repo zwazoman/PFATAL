@@ -47,26 +47,23 @@ public class LobbyBrowser : MonoBehaviour
     public async Task<bool> JoinLobby(Lobby lobby)
     {
         QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync();
-        Debug.Log("found " + queryResponse.Results.Count + " lobbies.");
+
         foreach (Lobby lobbys in queryResponse.Results)
         {
             Debug.Log("lobby code: " + lobbys.LobbyCode);
         }
         await Task.Delay(100); 
-        Debug.Log($"[LobbyBrowser] Tentative de rejoindre le lobby avec le code : {lobby.Name} ({lobby.LobbyCode})");
+        
         if (lobby == null)
         {
-            Debug.LogWarning("[LobbyBrowser] Lobby null, impossible de rejoindre.");
             return false;
         }
         else if (lobby.Players.Count >= lobby.MaxPlayers)
         {
-            Debug.LogWarning("[LobbyBrowser] Lobby plein, impossible de rejoindre.");
             return false;
         }
         else if (lobby.LobbyCode == null)
         {
-             Debug.LogWarning("[LobbyBrowser] Lobby sans code, impossible de rejoindre.");
             return false;
         }
         await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id);

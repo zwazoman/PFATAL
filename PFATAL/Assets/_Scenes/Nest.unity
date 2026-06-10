@@ -862,6 +862,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c452df971f73ca94b9e2340b03f8ff78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPhysics
+  playerCharacter: {fileID: 0}
   velocity: {x: 0, y: 0, z: 0}
   _gravityStrength: 0
   _maxCollisionSteps: 5
@@ -1797,6 +1798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ee35ebfdaf5a2448c0421a55c3ddfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioSettings
+  _values: {fileID: 0}
   _masterSlider: {fileID: 0}
   _musicSlider: {fileID: 0}
   _sfxSlider: {fileID: 0}
@@ -2291,6 +2293,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7894843588506975711, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8171293550879517293, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8535136328113993408, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
@@ -2299,11 +2305,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8535136328113993408, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2336377788311908714, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
-    m_RemovedGameObjects: []
+    - {fileID: 645759137448167212, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 8171293550879517293, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44dfda35623467a4b86a65024c2348c8, type: 3}
@@ -3312,6 +3320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c452df971f73ca94b9e2340b03f8ff78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPhysics
+  playerCharacter: {fileID: 0}
   velocity: {x: 0, y: 0, z: 0}
   _gravityStrength: 0
   _maxCollisionSteps: 5
@@ -4459,6 +4468,10 @@ PrefabInstance:
     - target: {fileID: 7071075473917310947, guid: 0049ce72b21158a4fb7b4babb2b9cb24, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 461555183
+      objectReference: {fileID: 0}
+    - target: {fileID: 7071075473917310947, guid: 0049ce72b21158a4fb7b4babb2b9cb24, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3739070610
       objectReference: {fileID: 0}
     - target: {fileID: 7861026024044232566, guid: 0049ce72b21158a4fb7b4babb2b9cb24, type: 3}
       propertyPath: m_Name

@@ -129,18 +129,19 @@ public class Tomahawk : ProjectileWeapon
     void DashTowardsProj()
     {
         StartShootDelay();
-
         _canReload = false;
-
+        
+        //dash
         playerCharacter.physics.SetVelocity(Vector3.zero);
-
         if (playerCharacter.stateMachine.currentState != playerCharacter.stateMachine.s_Frozen)
             playerCharacter.physics.AddImpulse(_dashDirection * _dashStrength);
-
+        
+        //explode tomahawk
         if (_currentProjectile != null)
         {
-            Proj_Tomahawk tomahawk = _currentProjectile as Proj_Tomahawk;
-            tomahawk.Explode();
+            Proj_Tomahawk tomahawk = (Proj_Tomahawk)_currentProjectile;
+            print("grapple !");
+            tomahawk.Explode(tomahawk.transform.position);
             tomahawk.Despawn();
         }
     }

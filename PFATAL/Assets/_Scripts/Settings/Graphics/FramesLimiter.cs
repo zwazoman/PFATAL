@@ -63,6 +63,7 @@ public class FramesLimiter : MonoBehaviour
 
     public void SetLimitToFrames(int limit)
     {
+        if (_values.VSync == true) return;
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = _frameList[limit];
         _values.FramesRates = limit;

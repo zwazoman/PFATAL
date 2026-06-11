@@ -15,6 +15,8 @@ public class InputHandler : MonoBehaviour
 
     [SerializeField] private RawImage ImageCurrentController;
     [SerializeField] private List<Texture2D> GeneralControllerUI;
+    [SerializeField] private GameObject _SensitivitySlider;
+    [SerializeField] private GameObject _ControllerSensitivitySlider;
 
     [Header("UI Rebinds")]
     public List<Texture2D> CurrentControlsUI;
@@ -26,16 +28,16 @@ public class InputHandler : MonoBehaviour
     [SerializeField] private Button _jumpRebind;
     [SerializeField] private Button _pickupRebind;
     [SerializeField] private Button _dropRebind;
-    [SerializeField] private Slider _cameraSensitivity;
+    [SerializeField] private Slider _FOV;
     [SerializeField] private List<GameObject> _controllerUINav;
     private Navigation _oldNavPickup = new Navigation();
     private Navigation _oldNavJump = new Navigation();
     private Navigation _oldNavDrop = new Navigation();
-    private Navigation _oldNavSensitivity = new Navigation();
+    private Navigation _oldNavFOV = new Navigation();
     private Navigation _newNavPickup = new Navigation();
     private Navigation _newNavJump = new Navigation();
     private Navigation _newNavDrop = new Navigation();
-    private Navigation _newNavSensitivity = new Navigation();
+    private Navigation _newNavFOV = new Navigation();
     private Vector3 _oldXPosJump;
     private Vector3 _oldXPosPickup;
     private Vector3 _oldXPosDrop;
@@ -51,16 +53,16 @@ public class InputHandler : MonoBehaviour
         _oldNavPickup.mode = Navigation.Mode.Explicit;
         _oldNavJump.mode = Navigation.Mode.Explicit;
         _oldNavDrop.mode = Navigation.Mode.Explicit;
-        _oldNavSensitivity.mode = Navigation.Mode.Explicit;
+        _oldNavFOV.mode = Navigation.Mode.Explicit;
         _oldNavPickup = _pickupRebind.navigation;
         _oldNavJump = _jumpRebind.navigation;
         _oldNavDrop = _dropRebind.navigation;
-        _oldNavSensitivity = _cameraSensitivity.navigation;
+        _oldNavFOV = _FOV.navigation;
 
         _newNavPickup.mode = Navigation.Mode.Explicit;
         _newNavJump.mode = Navigation.Mode.Explicit;
         _newNavDrop.mode = Navigation.Mode.Explicit;
-        _newNavSensitivity.mode = Navigation.Mode.Explicit;
+        _newNavFOV.mode = Navigation.Mode.Explicit;
 
         _newNavPickup.selectOnUp = _controllerUINav[1].GetComponent<Button>();
         _newNavPickup.selectOnDown = _controllerUINav[3].GetComponent<Button>();
@@ -70,8 +72,8 @@ public class InputHandler : MonoBehaviour
 
         _newNavDrop.selectOnUp = _controllerUINav[2].GetComponent<Button>();
 
-        _newNavSensitivity.selectOnUp = _controllerUINav[4].GetComponent<Slider>();
-        _newNavSensitivity.selectOnDown = _controllerUINav[1].GetComponent<Button>();
+        _newNavFOV.selectOnUp = _controllerUINav[4].GetComponent<Button>();
+        _newNavFOV.selectOnDown = _controllerUINav[0].GetComponent<Slider>();
 
         _oldXPosJump = _controllerUINav[1].transform.position;
         _oldXPosPickup = _controllerUINav[2].transform.position;
@@ -92,10 +94,13 @@ public class InputHandler : MonoBehaviour
             _wichType = "Computer";
             CurrentControlsUI = PCControllsUI;
 
+            _ControllerSensitivitySlider.SetActive(false);
+            _SensitivitySlider.SetActive(true);
+
             _pickupRebind.navigation = _oldNavPickup;
             _jumpRebind.navigation = _oldNavJump;
             _dropRebind.navigation = _oldNavDrop;
-            _cameraSensitivity.navigation = _oldNavSensitivity;
+            _FOV.navigation = _oldNavFOV;
 
             _controllerUINav[1].transform.position = _oldXPosJump;
             _controllerUINav[2].transform.position = _oldXPosPickup;
@@ -117,10 +122,13 @@ public class InputHandler : MonoBehaviour
                         case "Xbox":
                             CurrentControlsUI = XboxControllsUI;
 
+                            _ControllerSensitivitySlider.SetActive(true);
+                            _SensitivitySlider.SetActive(false);
+
                             _pickupRebind.navigation = _newNavPickup;
                             _jumpRebind.navigation = _newNavJump;
                             _dropRebind.navigation = _newNavDrop;
-                            _cameraSensitivity.navigation = _newNavSensitivity;
+                            _FOV.navigation = _newNavFOV;
 
                             _controllerUINav[1].transform.position = _newXPosJump;
                             _controllerUINav[2].transform.position = _newXPosPickup;
@@ -131,10 +139,13 @@ public class InputHandler : MonoBehaviour
                         case "PlayStation":
                             CurrentControlsUI = PlaystationControllsUI;
 
+                            _ControllerSensitivitySlider.SetActive(true);
+                            _SensitivitySlider.SetActive(false);
+
                             _pickupRebind.navigation = _newNavPickup;
                             _jumpRebind.navigation = _newNavJump;
                             _dropRebind.navigation = _newNavDrop;
-                            _cameraSensitivity.navigation = _newNavSensitivity;
+                            _FOV.navigation = _newNavFOV;
 
                             _controllerUINav[1].transform.position = _newXPosJump;
                             _controllerUINav[2].transform.position = _newXPosPickup;
@@ -145,10 +156,13 @@ public class InputHandler : MonoBehaviour
                         case "Switch":
                             CurrentControlsUI = SwitchControllsUI;
 
+                            _ControllerSensitivitySlider.SetActive(true);
+                            _SensitivitySlider.SetActive(false);
+
                             _pickupRebind.navigation = _newNavPickup;
                             _jumpRebind.navigation = _newNavJump;
                             _dropRebind.navigation = _newNavDrop;
-                            _cameraSensitivity.navigation = _newNavSensitivity;
+                            _FOV.navigation = _newNavFOV;
 
                             _controllerUINav[1].transform.position = _newXPosJump;
                             _controllerUINav[2].transform.position = _newXPosPickup;
@@ -168,10 +182,13 @@ public class InputHandler : MonoBehaviour
             {
                 CurrentControlsUI = PCControllsUI;
 
+                _ControllerSensitivitySlider.SetActive(false);
+                _SensitivitySlider.SetActive(true);
+
                 _pickupRebind.navigation = _oldNavPickup;
                 _jumpRebind.navigation = _oldNavJump;
                 _dropRebind.navigation = _oldNavDrop;
-                _cameraSensitivity.navigation = _oldNavSensitivity;
+                _FOV.navigation = _oldNavFOV;
 
                 _controllerUINav[1].transform.position = _oldXPosJump;
                 _controllerUINav[2].transform.position = _oldXPosPickup;

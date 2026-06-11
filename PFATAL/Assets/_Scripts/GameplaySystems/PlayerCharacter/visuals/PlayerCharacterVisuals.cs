@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _Scripts.Extensions;
 using _scripts.PlayerCharacter;
 using _Scripts.Pooling;
 using DG.Tweening;
@@ -11,19 +12,23 @@ using State = PlayerCharacterNetworkStateMachineCallback.PlayerStateEnum;
 public class PlayerCharacterVisuals : NetworkBehaviour
 {
     private static readonly int StateAnimatorPropertyIndex = Animator.StringToHash("State");
-    private static readonly int StrengthAnimatorPropertyIndex = Shader.PropertyToID("_strength");
-
+    private static readonly int StrengthShaderPropertyIndex = Shader.PropertyToID("_strength");
+    private static readonly int IsFallingAnimatorPropertyIndex = Animator.StringToHash("isFalling");
+    private static readonly int IsRunningAnimatorPropertyIndex = Animator.StringToHash("IsRunning");
+    
     public bool IsProxy => !IsOwner;
     public bool IsInFpsView => IsOwner;
     
     public static int fpsLayerMask;
     public static int defaultLayerMask;
+    
 
     [Header("scene references")]
     [SerializeField] PlayerCharacter _playerCharacter;
     [SerializeField] StylisedEffect _healVFX;
     [SerializeField] Transform _cameraRoot;
     [SerializeField] SkinHandler _skinHandler;
+    [SerializeField] Animator _handAdditiveAnimator;
     
     [Header("FPS visuals")]
     [SerializeField] List<GameObject> _fpsVisuals;
@@ -48,6 +53,7 @@ public class PlayerCharacterVisuals : NetworkBehaviour
     
     [SerializeField] List<GameObject> _visualObjects;
 
+    //VFXs
     public async void PlaySwordSlashAnimationVFX(float delay,bool firstSlash)
     {
         await Awaitable.WaitForSecondsAsync(delay);
@@ -60,14 +66,12 @@ public class PlayerCharacterVisuals : NetworkBehaviour
             (float x) =>
             {
                 strength = x;
-                materialPropertyBlock.SetFloat(StrengthAnimatorPropertyIndex, x);
+                materialPropertyBlock.SetFloat(StrengthShaderPropertyIndex, x);
                 renderer.SetPropertyBlock(materialPropertyBlock);
             },
             0f, .25f).SetEase(Ease.OutQuad)
             .onComplete = () => renderer.enabled = false;
     }
-    
-    
     public async void PlaySwordDashAnimationVFX()
     {
         await Awaitable.WaitForSecondsAsync(.12f);
@@ -80,26 +84,25 @@ public class PlayerCharacterVisuals : NetworkBehaviour
                 (float x) =>
                 {
                     strength = x;
-                    materialPropertyBlock.SetFloat(StrengthAnimatorPropertyIndex, x);
+                    materialPropertyBlock.SetFloat(StrengthShaderPropertyIndex, x);
                     renderer.SetPropertyBlock(materialPropertyBlock);
                 },
                 0f, .55f).SetEase(Ease.OutCubic)
             .onComplete = () => renderer.enabled = false;
     }
-    
     public void PlayHealingVFX()
     {
         _healVFX.vfx.SetFloat("Radius", IsInFpsView ? 1 : .5f);
         _healVFX.TriggerMainEvent();
     }
     
+    //visibility
     [Rpc(SendTo.Everyone)]
     public void HideRpc()
     {
         foreach (var obj in _visualObjects)
             obj.SetActive(false);
     }
-
     [Rpc(SendTo.Everyone)]
     public void ShowRpc()
     {
@@ -107,20 +110,20 @@ public class PlayerCharacterVisuals : NetworkBehaviour
             obj.SetActive(true);
     }
 
+    //skins
     [Rpc(SendTo.Everyone)]
     public void SwapSkinRpc(int skinID)
     {
         _skinHandler.SwapSkin(skinID);
     }
     
-    //events
-
+    //feets & torso rotation
     async void Update()
     {
+        Vector3 oldPosition = transform.position;
+        
         if (IsProxy)
         {
-            Vector3 oldPosition = transform.position;
-            
             //feet rotation
             if (_measuredVelocity.magnitude > .1f)
             {
@@ -132,11 +135,16 @@ public class PlayerCharacterVisuals : NetworkBehaviour
             
             //torso rotation
             _proxyTorsoSocket.transform.localRotation = Quaternion.Euler(90+_cameraRoot.transform.localRotation.x*TorsoPitchAmplitude,0,0);
-            
-            //measure velocity
-            await Awaitable.NextFrameAsync();
-            _measuredVelocity = (transform.position - oldPosition)/Time.deltaTime;
         }
+        
+        //hands anim speed
+        float walkSpeedMultiplier = _measuredVelocity.XZ().sqrMagnitude / (_playerCharacter.stateMachine.s_Walking._walkSpeed * _playerCharacter.stateMachine.s_Walking._walkSpeed);
+        walkSpeedMultiplier = walkSpeedMultiplier * .5f + .5f;
+        _handAdditiveAnimator.SetFloat("walkSpeed",walkSpeedMultiplier);
+
+        //measure velocity
+        await Awaitable.NextFrameAsync();
+        _measuredVelocity = (transform.position - oldPosition)/Time.deltaTime;
     }
     
     void Awake()
@@ -151,8 +159,10 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         
         //setup events
         _playerCharacter.health.OnDamageTaken += OnDamageTaken;
+        _playerCharacter.playerHands.leftHand.OnEquipItem += (_) => _handAdditiveAnimator.SetTrigger("pickupItem");
+        _playerCharacter.playerHands.rightHand.OnEquipItem += (_) => _handAdditiveAnimator.SetTrigger("pickupWeapon");
     }
-
+    
     void SetFPSViewEnabled(bool enabled)
     {
         //update objects visibility
@@ -183,7 +193,6 @@ public class PlayerCharacterVisuals : NetworkBehaviour
             _playerCharacter.playerHands.rightHand.tpsPosition ;
     }
     
-    
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -192,7 +201,10 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         if(IsOwner)
             SwapSkinRpc(_skinHandler.GetCurrentSkinID());
     }
+    
+    
 
+    //states
     private void OnStateChanged(State oldState, State newState)
     { 
         //tp proxy animation
@@ -200,9 +212,17 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         
         //walk particles
         if ((newState & State.Walking) == State.Walking)
+        {
+            _handAdditiveAnimator.SetBool(IsRunningAnimatorPropertyIndex,true);
             _walkVFX.Play();
-        else 
+        }
+        
+        if ((oldState & State.Walking) == State.Walking)
+        {
+            _handAdditiveAnimator.SetBool(IsRunningAnimatorPropertyIndex,false);
             _walkVFX.Stop();
+        }
+            
         
         //landing particles
         if ((oldState & State.Airborne) == State.Airborne
@@ -211,7 +231,19 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         
         //jump particles
         if ((newState & State.Jumping) == State.Jumping)
+        {
+            _handAdditiveAnimator.SetBool(IsFallingAnimatorPropertyIndex,true);
             _jumpVFX.Play();
+        }
+        
+        if ((newState & State.Falling) == State.Falling)
+        {
+            _handAdditiveAnimator.SetBool(IsFallingAnimatorPropertyIndex,true);
+        }
+        if ((oldState & State.Falling) == State.Falling)
+        {
+            _handAdditiveAnimator.SetBool(IsFallingAnimatorPropertyIndex,false);
+        }
         
         //death particles
         if ((newState & State.Dead) == State.Dead)

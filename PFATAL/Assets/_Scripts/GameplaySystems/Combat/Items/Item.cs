@@ -18,6 +18,7 @@ public class Item : MonoBehaviour
     public Hand hand { get; private set; }
     public bool isUsing { get; private set; }
     public bool canScrolling { get; private set; } = true;
+    public bool effectIsActivate { get; private set; }
 
 
     [SerializeField] GameObject _pickup;
@@ -112,19 +113,30 @@ public class Item : MonoBehaviour
 
         isUsing = false;
         canScrolling = true;
+        effectIsActivate = false;
         holdDuration = 0;
     }
 
     public virtual void Scrollable()
     {
         canScrolling = true;
-        print("[Item] scrollable");
+        //print("[Item] scrollable");
     }
 
     public virtual void StopScrollable()
     {
         canScrolling = false;
-        print("[Item] not scrollable");
+        //print("[Item] not scrollable");
+    }
+
+    public virtual void effectStart()
+    {
+        effectIsActivate = true;
+    }
+
+    public virtual void effectEnd()
+    {
+        effectIsActivate = false;
     }
 
     async void Use()

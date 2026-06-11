@@ -105,6 +105,7 @@ public abstract class Cons_BookBase : Consummable
         if (_spellAnimationIsPlaying)
         {
             _spellAnimationIsPlaying = false;
+            effectEnd();
             Scrollable();
             BreakItem();
         }
@@ -112,6 +113,7 @@ public abstract class Cons_BookBase : Consummable
 
     void OnSpellCast()
     {
+        effectStart();
         ApplySpellEffect();
     }
 

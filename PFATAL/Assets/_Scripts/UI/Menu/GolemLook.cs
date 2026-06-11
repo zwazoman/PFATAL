@@ -13,12 +13,12 @@ public class GolemLook : MonoBehaviour
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _spaceDistance);
         Vector3 lookPoint = _cam.ScreenToWorldPoint(mousePos);
 
-        Vector3 dir = (lookPoint - transform.position).normalized;
+        Vector3 dir = (lookPoint - _golemHead.position).normalized;
 
         // Rotation qui ferait regarder le forward vers la cible
         Quaternion targetRot = Quaternion.LookRotation(dir);
 
-        // Compensation : le "bas" du modèle devient le forward logique
+        // Compensation : le "bas" du modï¿½le devient le forward logique
         _golemHead.rotation = targetRot * Quaternion.Euler(-90, 0, 0);
     }
 }

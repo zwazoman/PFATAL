@@ -8,7 +8,6 @@ public class KillUI : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] HUDManager _hudManager;
-    [SerializeField] float topLimit, botLimit, rightLimit, leftLimit;
 
     [Header("Settings")]
     [SerializeField] float _textscalePunchValue = 5;
@@ -40,7 +39,6 @@ public class KillUI : MonoBehaviour
         //todo => faut g�rer la position en fonction du nombre. placer en dessous en fonction du nombre affich�s
         //layout group juste ? prendre des refs
         
-        //pooledText.transform.localPosition = new Vector2(Random.Range(leftLimit, rightLimit), Random.Range(botLimit, topLimit));
 
         pooledText.transform.GetChild(0).TryGetComponent(out TMP_Text killText);
         pooledText.transform.TryGetComponent(out CanvasGroup canvaGroup);
@@ -49,10 +47,9 @@ public class KillUI : MonoBehaviour
         
         Sequence tweenSequence = DOTween.Sequence();
         
-        tweenSequence.Insert(0,
-                pooledText.transform.DOPunchScale(Vector3.one * _textscalePunchValue, _textScalePunchDuration,5,.5f))
-            .Insert(0, 
-                pooledText.transform.DOPunchRotation(new Vector3(0, 0, 5), _textScalePunchDuration, 5, 5))
+        tweenSequence
+            .Insert(0, pooledText.transform.DOPunchScale(Vector3.one * _textscalePunchValue, _textScalePunchDuration,5,.5f))
+            .Insert(0, pooledText.transform.DOPunchRotation(new Vector3(0, 0, 5), _textScalePunchDuration, 5, 5))
             .AppendInterval(_textLifeTime)
             .Append(canvaGroup.DOFade(0, .3f).SetEase(Ease.OutQuad));
 

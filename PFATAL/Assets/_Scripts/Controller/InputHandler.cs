@@ -23,34 +23,66 @@ public class InputHandler : MonoBehaviour
     [SerializeField] private List<Texture2D> XboxControllsUI;
     [SerializeField] private List<Texture2D> PCControllsUI;
 
-    [SerializeField] private Toggle _switchHandsToggle;
     [SerializeField] private Button _jumpRebind;
+    [SerializeField] private Button _pickupRebind;
+    [SerializeField] private Button _dropRebind;
+    [SerializeField] private Slider _cameraSensitivity;
     [SerializeField] private List<GameObject> _controllerUINav;
-    private Navigation _oldNavToggle = new Navigation();
+    private Navigation _oldNavPickup = new Navigation();
     private Navigation _oldNavJump = new Navigation();
-    private Navigation _newNavToggle = new Navigation();
+    private Navigation _oldNavDrop = new Navigation();
+    private Navigation _oldNavSensitivity = new Navigation();
+    private Navigation _newNavPickup = new Navigation();
     private Navigation _newNavJump = new Navigation();
+    private Navigation _newNavDrop = new Navigation();
+    private Navigation _newNavSensitivity = new Navigation();
+    private Vector3 _oldXPosJump;
+    private Vector3 _oldXPosPickup;
+    private Vector3 _oldXPosDrop;
+    private Vector3 _newXPosJump;
+    private Vector3 _newXPosPickup;
+    private Vector3 _newXPosDrop;
 
 
     private void Start()
     {
         //CurrentControlsUI = SwitchControlls;
 
-        _oldNavToggle.mode = Navigation.Mode.Explicit;
+        _oldNavPickup.mode = Navigation.Mode.Explicit;
         _oldNavJump.mode = Navigation.Mode.Explicit;
-        _oldNavToggle = _switchHandsToggle.navigation;
+        _oldNavDrop.mode = Navigation.Mode.Explicit;
+        _oldNavSensitivity.mode = Navigation.Mode.Explicit;
+        _oldNavPickup = _pickupRebind.navigation;
         _oldNavJump = _jumpRebind.navigation;
+        _oldNavDrop = _dropRebind.navigation;
+        _oldNavSensitivity = _cameraSensitivity.navigation;
 
-        _newNavToggle.mode = Navigation.Mode.Explicit;
+        _newNavPickup.mode = Navigation.Mode.Explicit;
         _newNavJump.mode = Navigation.Mode.Explicit;
+        _newNavDrop.mode = Navigation.Mode.Explicit;
+        _newNavSensitivity.mode = Navigation.Mode.Explicit;
 
-        _newNavToggle.selectOnUp = _controllerUINav[0].GetComponent<Slider>();
-        _newNavToggle.selectOnRight = _controllerUINav[1].GetComponent<Scrollbar>();
-        _newNavToggle.selectOnDown = _controllerUINav[2].GetComponent<Button>();
+        _newNavPickup.selectOnUp = _controllerUINav[1].GetComponent<Button>();
+        _newNavPickup.selectOnDown = _controllerUINav[3].GetComponent<Button>();
 
-        _newNavJump.selectOnUp = _controllerUINav[3].GetComponent<Toggle>();
-        _newNavJump.selectOnRight = _controllerUINav[1].GetComponent<Scrollbar>();
-        _newNavJump.selectOnDown = _controllerUINav[4].GetComponent<Button>();
+        _newNavJump.selectOnUp = _controllerUINav[0].GetComponent<Slider>();
+        _newNavJump.selectOnDown = _controllerUINav[2].GetComponent<Button>();
+
+        _newNavDrop.selectOnUp = _controllerUINav[2].GetComponent<Button>();
+
+        _newNavSensitivity.selectOnUp = _controllerUINav[4].GetComponent<Slider>();
+        _newNavSensitivity.selectOnDown = _controllerUINav[1].GetComponent<Button>();
+
+        _oldXPosJump = _controllerUINav[1].transform.position;
+        _oldXPosPickup = _controllerUINav[2].transform.position;
+        _oldXPosDrop = _controllerUINav[3].transform.position;
+
+        _newXPosJump = _controllerUINav[1].transform.position;
+        _newXPosPickup = _controllerUINav[2].transform.position;
+        _newXPosDrop = _controllerUINav[3].transform.position;
+        _newXPosJump.x = 1125f;
+        _newXPosPickup.x = 1125f;
+        _newXPosDrop.x = 1125;
     }
 
     private void FixedUpdate()
@@ -60,8 +92,14 @@ public class InputHandler : MonoBehaviour
             _wichType = "Computer";
             CurrentControlsUI = PCControllsUI;
 
-            _switchHandsToggle.navigation = _oldNavToggle;
+            _pickupRebind.navigation = _oldNavPickup;
             _jumpRebind.navigation = _oldNavJump;
+            _dropRebind.navigation = _oldNavDrop;
+            _cameraSensitivity.navigation = _oldNavSensitivity;
+
+            _controllerUINav[1].transform.position = _oldXPosJump;
+            _controllerUINav[2].transform.position = _oldXPosPickup;
+            _controllerUINav[3].transform.position = _oldXPosDrop;
 
             ChangeUI("keyboard");
         }
@@ -74,34 +112,47 @@ public class InputHandler : MonoBehaviour
                     switch (_wichType)
                     {
                         case "Computer":
-                            CurrentControlsUI = PCControllsUI;
-
-                            _switchHandsToggle.navigation = _oldNavToggle;
-                            _jumpRebind.navigation = _oldNavJump;
-
-                            ChangeUI("keyboard");
+                            
                             break;
                         case "Xbox":
                             CurrentControlsUI = XboxControllsUI;
 
-                            _switchHandsToggle.navigation = _newNavToggle;
+                            _pickupRebind.navigation = _newNavPickup;
                             _jumpRebind.navigation = _newNavJump;
+                            _dropRebind.navigation = _newNavDrop;
+                            _cameraSensitivity.navigation = _newNavSensitivity;
+
+                            _controllerUINav[1].transform.position = _newXPosJump;
+                            _controllerUINav[2].transform.position = _newXPosPickup;
+                            _controllerUINav[3].transform.position = _newXPosDrop;
 
                             ChangeUI("xbox");
                             break;
                         case "PlayStation":
                             CurrentControlsUI = PlaystationControllsUI;
 
-                            _switchHandsToggle.navigation = _newNavToggle;
+                            _pickupRebind.navigation = _newNavPickup;
                             _jumpRebind.navigation = _newNavJump;
+                            _dropRebind.navigation = _newNavDrop;
+                            _cameraSensitivity.navigation = _newNavSensitivity;
+
+                            _controllerUINav[1].transform.position = _newXPosJump;
+                            _controllerUINav[2].transform.position = _newXPosPickup;
+                            _controllerUINav[3].transform.position = _newXPosDrop;
 
                             ChangeUI("playstation");
                             break;
                         case "Switch":
                             CurrentControlsUI = SwitchControllsUI;
 
-                            _switchHandsToggle.navigation = _newNavToggle;
+                            _pickupRebind.navigation = _newNavPickup;
                             _jumpRebind.navigation = _newNavJump;
+                            _dropRebind.navigation = _newNavDrop;
+                            _cameraSensitivity.navigation = _newNavSensitivity;
+
+                            _controllerUINav[1].transform.position = _newXPosJump;
+                            _controllerUINav[2].transform.position = _newXPosPickup;
+                            _controllerUINav[3].transform.position = _newXPosDrop;
 
                             ChangeUI("switch");
                             break;
@@ -112,6 +163,21 @@ public class InputHandler : MonoBehaviour
                         
                     _setControllerType = false;
                 }
+            }
+            else
+            {
+                CurrentControlsUI = PCControllsUI;
+
+                _pickupRebind.navigation = _oldNavPickup;
+                _jumpRebind.navigation = _oldNavJump;
+                _dropRebind.navigation = _oldNavDrop;
+                _cameraSensitivity.navigation = _oldNavSensitivity;
+
+                _controllerUINav[1].transform.position = _oldXPosJump;
+                _controllerUINav[2].transform.position = _oldXPosPickup;
+                _controllerUINav[3].transform.position = _oldXPosDrop;
+
+                ChangeUI("keyboard");
             }
         }
     }

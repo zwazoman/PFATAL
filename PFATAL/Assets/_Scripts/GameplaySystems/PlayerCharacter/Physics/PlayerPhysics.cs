@@ -48,6 +48,8 @@ public class PlayerPhysics : MonoBehaviour
     public Vector3 Acceleration {get; private set;}
     Vector3 _lastVelocity;
 
+    private float _startGravityStrength;
+
     private void Awake()
     {
         TryGetComponent(out _rb);
@@ -56,6 +58,8 @@ public class PlayerPhysics : MonoBehaviour
 
     private void Start()
     {
+        _startGravityStrength = _gravityStrength;
+
         playerCharacter.stateMachine.OnStateChanged += StateChanged_Callback;
     }
 
@@ -63,8 +67,8 @@ public class PlayerPhysics : MonoBehaviour
     {
         if (nextState is Pst_Alive)
         {
-            print("alive state entered, resetting physics");
-            SetGravityStrength(_gravityStrength);
+            //print($"alive state entered, resetting physics {_gravityStrength} to {_startGravityStrength}");
+            SetGravityStrength(_startGravityStrength);
         }
     }
 

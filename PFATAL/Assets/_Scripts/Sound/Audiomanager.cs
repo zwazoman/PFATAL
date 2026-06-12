@@ -107,6 +107,11 @@ public class AudioManager : NetworkBehaviour
         return instance;
     }
 
+    public void Invoke3DInstancePlayed(EventInstance instance)
+    {
+        On3DSoundPlayed?.Invoke(instance);
+    }
+
     EventReference GetEventReference(Sounds sound)
     {
         if (_eventReferences[(int)sound].IsNull)

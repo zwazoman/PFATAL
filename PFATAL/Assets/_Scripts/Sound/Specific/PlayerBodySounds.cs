@@ -141,12 +141,17 @@ public class PlayerBodySounds : SoundComponent<PlayerAnimationEventsListener>
 
                 //todo pas dans l'eau
             }
-            if (hit.collider.gameObject.GetComponentInChildren<MeshRenderer>())
+            
+
+            if (hit.collider.gameObject.transform.GetChild(0))
             {
-                foreach (Material mat in _woodMaterials)
+                if(hit.collider.gameObject.transform.GetChild(0).TryGetComponent(out MeshRenderer renderer))
                 {
-                    if (mshRenderer.sharedMaterial == mat)
-                        return GroundType.Wood;
+                    foreach (Material mat in _woodMaterials)
+                    {
+                        if (renderer.sharedMaterial == mat)
+                            return GroundType.Wood;
+                    }
                 }
             }
         }

@@ -35,9 +35,10 @@ public class DeathmatchUI : MonoBehaviour
 
     void UpdateTimerText()
     {
-        _timerText.text = Mathf.Ceil(
-            (GameManager.Instance.gameSetting.GameDuration - GameManager.Instance.TimeSinceGameStart))
-            .ToString();
+        int totalSeconds = Mathf.CeilToInt((GameManager.Instance.gameSetting.GameDuration - GameManager.Instance.TimeSinceGameStart));
+        int seconds = totalSeconds % 60;
+        int minutes = totalSeconds / 60;
+        _timerText.text = minutes.ToString("D2") + ':' + seconds.ToString("D2");
     }
     
 }

@@ -13,10 +13,8 @@ public class PlacedSound : MonoBehaviour
 
     private async void Start()
     {
-        await Awaitable.NextFrameAsync();
-
         if (_playOnStart)
-            PlaySound();
+            GameManager.Instance.EventOnGameStarted += PlaySound;
     }
 
     public void PlaySound()
@@ -40,5 +38,10 @@ public class PlacedSound : MonoBehaviour
     {
         _currentInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         _currentInstance.release();
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.EventOnGameStarted -= PlaySound;
     }
 }

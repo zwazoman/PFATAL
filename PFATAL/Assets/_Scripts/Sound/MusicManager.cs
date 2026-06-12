@@ -11,10 +11,18 @@ public class MusicManager : MonoBehaviour
     [SerializeField] string _podiumName = "PodiumScene";
 
     EventInstance _splashAmbienceInstance;
+    EventInstance _MenuMusicInstance;
 
     private void Awake()
     {
         SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) => SceneChanged_Callback(scene);
+    }
+
+    private void Start()
+    {
+        _MenuMusicInstance = AudioManager.Instance.CreateInstance(Sounds.MenuMusic, false, false);
+        _splashAmbienceInstance = AudioManager.Instance.CreateInstance(Sounds.SplashAmbience, false, false);
+
     }
 
     void SceneChanged_Callback(Scene newScene)
@@ -24,17 +32,18 @@ public class MusicManager : MonoBehaviour
 
         if (newScene.name == _splashName)
         {
-            _splashAmbienceInstance = AudioManager.Instance.CreateInstance(Sounds.SplashAmbience,false, false);
             _splashAmbienceInstance.start();
         }
 
         if(newScene.name == _menuName)
         {
             _splashAmbienceInstance.start();
+            _MenuMusicInstance.start();
         }
 
         if (newScene.name == _mapName)
         {
+            _MenuMusicInstance.stop(STOP_MODE.ALLOWFADEOUT);
             _splashAmbienceInstance.stop(STOP_MODE.ALLOWFADEOUT);
 
             AudioManager.Instance.PlayOneShot(Sounds.Music);

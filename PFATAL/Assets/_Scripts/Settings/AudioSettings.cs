@@ -19,6 +19,9 @@ public class AudioSettings : MonoBehaviour
 
     private void Start()
     {
+        if (!AudioManager.Instance.playSounds)
+            return;
+
         _sfxBus = RuntimeManager.GetBus("bus:/GlobalSFX");
         _musicBus = RuntimeManager.GetBus("bus:/Music");
         _masterBus = RuntimeManager.GetBus("bus:/");

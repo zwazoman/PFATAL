@@ -227,7 +227,10 @@ public class PlayerCharacterVisuals : NetworkBehaviour
         //landing particles
         if ((oldState & State.Airborne) == State.Airborne
             && (newState & State.Grounded) == State.Grounded)
+        {
+            //_handAdditiveAnimator.SetTrigger("land");
             _jumpVFX.Play();
+        }
         
         //jump particles
         if ((newState & State.Jumping) == State.Jumping)

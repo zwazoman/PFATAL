@@ -15,6 +15,7 @@ public class PodiumUI : MonoBehaviour
     [SerializeField] private CameraSetupOwner cameraSetupOwner;
 
     private LeaderBoardData leaderBoardData;
+    private Dictionary<ulong, int> _pendingSkins = new();
 
     private void Awake()
     {
@@ -50,6 +51,9 @@ public class PodiumUI : MonoBehaviour
             Transform character = playerCharacterParent.GetChild(i);
             character.gameObject.SetActive(true);
 
+            if (_pendingSkins.TryGetValue(entry.ClientID, out int skinID))
+                character.GetComponent<SkinHandler>().SwapSkin(skinID);
+
             if (entry.ClientID == localClientId)
                 localCharacter = character;
 
@@ -64,5 +68,23 @@ public class PodiumUI : MonoBehaviour
         else
             Debug.LogWarning("[PodiumUI] Joueur local non trouvé dans le leaderboard !");
 
+    }
+
+    public void ApplySkin(ulong clientId, int skinID)
+    {
+        _pendingSkins[clientId] = skinID;
+
+        int i = 0;
+        foreach (var entry in leaderBoardData.entries)
+        {
+            if (entry.ClientID == clientId)
+            {
+                var character = playerCharacterParent.GetChild(i);
+                if (character.gameObject.activeSelf)
+                    character.GetComponent<SkinHandler>().SwapSkin(skinID);
+                return;
+            }
+            i++;
+        }
     }
 }

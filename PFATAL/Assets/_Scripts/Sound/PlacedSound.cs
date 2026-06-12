@@ -11,8 +11,10 @@ public class PlacedSound : MonoBehaviour
 
     EventInstance _currentInstance;
 
-    private void Start()
+    private async void Start()
     {
+        await Awaitable.NextFrameAsync();
+
         if (_playOnStart)
             PlaySound();
     }
@@ -29,6 +31,8 @@ public class PlacedSound : MonoBehaviour
         if (_moving)
             RuntimeManager.AttachInstanceToGameObject(_currentInstance, gameObject);
 
+
+        AudioManager.Instance.Invoke3DInstancePlayed(_currentInstance);
         _currentInstance.start();
     }
 

@@ -15,9 +15,9 @@ public class PlayerBodySounds : SoundComponent<PlayerAnimationEventsListener>
     [SerializeField] LayerMask _groundCheckLayerMask;
 
     [Header("Ground Materials")]
-    [SerializeField] Material _rockMaterial;
-    [SerializeField] Material _grassMaterial;
-    [SerializeField] Material _woodMaterial;
+    [SerializeField] Material[] _rockMaterials;
+    [SerializeField] Material[] _grassMaterials;
+    [SerializeField] Material[] _woodMaterials;
 
     [Header("FootSteps Settings")]
     float _footstepsDelay = .4f;
@@ -122,12 +122,37 @@ public class PlayerBodySounds : SoundComponent<PlayerAnimationEventsListener>
             {
                 //print(mshRenderer.sharedMaterial.name);
 
-                if (mshRenderer.sharedMaterial == _rockMaterial)
-                    return GroundType.Rock;
-                if (mshRenderer.sharedMaterial == _grassMaterial)
-                    return GroundType.Grass;
-                if (mshRenderer.sharedMaterial == _woodMaterial)
-                    return GroundType.Wood;
+                foreach(Material mat in _rockMaterials)
+                {
+                    if (mshRenderer.sharedMaterial == mat)
+                        return GroundType.Rock;
+                }
+
+                foreach (Material mat in _grassMaterials)
+                {
+                    if (mshRenderer.sharedMaterial == mat)
+                        return GroundType.Grass;
+                }
+                foreach (Material mat in _woodMaterials)
+                {
+                    if (mshRenderer.sharedMaterial == mat)
+                        return GroundType.Wood;
+                }
+
+                //todo pas dans l'eau
+            }
+            
+
+            if (hit.collider.gameObject.transform.GetChild(0))
+            {
+                if(hit.collider.gameObject.transform.GetChild(0).TryGetComponent(out MeshRenderer renderer))
+                {
+                    foreach (Material mat in _woodMaterials)
+                    {
+                        if (renderer.sharedMaterial == mat)
+                            return GroundType.Wood;
+                    }
+                }
             }
         }
 

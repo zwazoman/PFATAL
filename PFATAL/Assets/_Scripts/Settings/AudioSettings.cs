@@ -26,11 +26,6 @@ public class AudioSettings : MonoBehaviour
         _musicBus = RuntimeManager.GetBus("bus:/Music");
         _masterBus = RuntimeManager.GetBus("bus:/");
 
-        _sfxBus.getVolume(out float oui);
-        _musicBus.getVolume(out float non);
-        _masterBus.getVolume(out float ptet);
-        print($"{oui} {non} {ptet}");
-
         SetBusVolume(_masterBus, _values.MasterVolume);
         SetBusVolume(_musicBus, _values.MusicVolume);
         SetBusVolume(_sfxBus, _values.SfxVolume);
@@ -46,7 +41,6 @@ public class AudioSettings : MonoBehaviour
 
     void SetBusVolume(Bus bus, float newValue)
     {
-        print(newValue);
         bus.setVolume(newValue);
     }
 }

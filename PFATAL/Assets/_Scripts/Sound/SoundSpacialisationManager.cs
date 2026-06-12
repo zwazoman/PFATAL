@@ -34,22 +34,22 @@ public class SoundSpacialisationManager : NetworkBehaviour
     private void Start()
     {
         if(GameManager.Instance != null)
-            GameManager.Instance.EventOnGameStarted += GameStarted_Callback; 
-    }
+            GameManager.Instance.EventOnGameStarted += GameStarted_Callback;
 
-    void GameStarted_Callback()
-    {
-        _gameStarted = true;
         _audiomanager.On3DSoundPlayed += ApplyOcclusion;
         _audiomanager.On3DSoundPlayed += ApplyReverb;
     }
 
+    void GameStarted_Callback()
+    {
+        print("gameStarted");
+    }
+
     private void Update()
     {
-        if (!_gameStarted)
-            return;
+        if (GameManager.Instance != null)
+            _listener = GameManager.Instance.localPlayerCharacter.listener;
 
-        _listener = GameManager.Instance.localPlayerCharacter.listener;
         if (_listener == null)
             return;
 
@@ -86,6 +86,7 @@ public class SoundSpacialisationManager : NetworkBehaviour
 
     void ApplyReverb(EventInstance instance)
     {
+        print("reverb");
         Collider[] colliders = new Collider[1];
 
         Physics.OverlapSphereNonAlloc(GetInstancePos(instance), _sphereRadius, colliders, _reverbZoneLayerMask);
@@ -93,7 +94,7 @@ public class SoundSpacialisationManager : NetworkBehaviour
         if (colliders[0] != null)
         {
             //todo => récupérer le tag pour pouvoir set des reverbs différentes
-
+            print($"apply la reverb sur {instance}");
             instance.setParameterByName("ReverbAmount", 1);
         }
         else

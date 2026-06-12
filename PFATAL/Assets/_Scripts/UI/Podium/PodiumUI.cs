@@ -41,33 +41,40 @@ public class PodiumUI : MonoBehaviour
     private async void NamePlayerDisplay()
     {
         await Task.Delay(100);
-
         int i = 0;
         ulong localClientId = NetworkManager.Singleton.LocalClientId;
         Transform localCharacter = null;
 
         foreach (var entry in leaderBoardData.entries)
         {
-            Transform character = playerCharacterParent.GetChild(i);
-            character.gameObject.SetActive(true);
+            try
+            {
+                Transform character = playerCharacterParent.GetChild(i);
+                character.gameObject.SetActive(true);
 
-            if (_pendingSkins.TryGetValue(entry.ClientID, out int skinID))
-                character.GetComponent<SkinHandler>().SwapSkin(skinID);
+                if (_pendingSkins.TryGetValue(entry.ClientID, out int skinID))
+                {
+                    Debug.Log($"[PodiumUI] i={i} client={entry.ClientID} skinID={skinID}");
+                    character.GetComponent<SkinHandler>()?.SwapSkin(skinID);
+                }
 
-            if (entry.ClientID == localClientId)
-                localCharacter = character;
+                if (entry.ClientID == localClientId)
+                    localCharacter = character;
 
-            var gametag = namePlayerParent.GetChild(i).GetComponent<GametagUI>();
-            gametag.gameObject.SetActive(true);
-            gametag.SetPlayerName(entry.PlayerName.ToString());
+                var gametag = namePlayerParent.GetChild(i).GetComponent<GametagUI>();
+                gametag.gameObject.SetActive(true);
+                gametag.SetPlayerName(entry.PlayerName.ToString());
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"[PodiumUI] Erreur à i={i} : {e}");
+            }
+
             i++;
         }
 
         if (localCharacter != null)
             cameraSetupOwner.SetTarget(localCharacter, playerCharacterParent, namePlayerParent);
-        else
-            Debug.LogWarning("[PodiumUI] Joueur local non trouvé dans le leaderboard !");
-
     }
 
     public void ApplySkin(ulong clientId, int skinID)

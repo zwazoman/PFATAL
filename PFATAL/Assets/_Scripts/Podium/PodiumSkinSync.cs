@@ -7,14 +7,12 @@ public class PodiumSkinSync : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        // Chaque client envoie son skin au serveur
         SendSkinServerRpc(NetworkManager.LocalClientId, PlayerPrefs.GetInt("skinID"));
     }
 
     [Rpc(SendTo.Server)]
     void SendSkinServerRpc(ulong clientId, int skinID)
     {
-        // Le serveur broadcast à tout le monde
         ReceiveSkinRpc(clientId, skinID);
     }
 

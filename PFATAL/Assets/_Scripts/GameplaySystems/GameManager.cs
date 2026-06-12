@@ -141,7 +141,6 @@ public class GameManager : NetworkBehaviour
 
     void OnGameEnded(GameRulesBase.GameResult gameResult)
     {
-
 		OnServerEndGameRPC(gameResult);
         LeaderBoard.Clear();
     }
@@ -189,8 +188,18 @@ public class GameManager : NetworkBehaviour
         IsPlaying = true;
         _gameStartTime = startTime;
         Debug.Log("Trigger OnGameStarted. start time : "+startTime);
+        TriggerOnGameStarted();
+    }
+
+    async void TriggerOnGameStarted()
+    {
+        //if (delay)
+        await Awaitable.NextFrameAsync();
+        await Awaitable.NextFrameAsync();
+        await Awaitable.NextFrameAsync();
         EventOnGameStarted?.Invoke();
     }
+    
     
     [Rpc(SendTo.Everyone)]
     void OnServerEndGameRPC(GameRulesBase.GameResult gameResult)

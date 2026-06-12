@@ -50,12 +50,15 @@ public abstract class Cons_ThrowableBase : Consummable
         if (_throwAnimationIsPlaying)
         {
             _throwAnimationIsPlaying = false;
+            effectEnd();
             Scrollable();
             BreakItem();
         }
     }
+
     void OnObjectThrown()
     {
+        effectStart();
         ThrowObject();
     }
 }

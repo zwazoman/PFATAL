@@ -54,6 +54,7 @@ public abstract class Cons_RuneBase : Consummable
         if (_breakAnimationIsPlaying)
         {
             _breakAnimationIsPlaying = false;
+            effectEnd();
             Scrollable();
             BreakItem();
         }
@@ -72,7 +73,8 @@ public abstract class Cons_RuneBase : Consummable
         _gemstoneRenderer.enabled = false;
 
         print("Gemstone Destroyed");
-        
+        effectStart();
+
         //gameplay effect
         ApplyGemEffect();
     }

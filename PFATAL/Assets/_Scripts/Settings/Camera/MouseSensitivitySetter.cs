@@ -13,7 +13,14 @@ namespace Settings
 
             if (_aiming == null) return;
             _aiming.Sensitivity = sensitivity;
-            
+        }
+
+        public void ControllerAImingSet(float sensitivity)
+        {
+            _values.SensitivityController = sensitivity;
+
+            if (_aiming == null) return;
+            _aiming.ControllerSensitivity = sensitivity;
         }
     }
 }

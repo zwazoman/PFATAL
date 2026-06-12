@@ -30,7 +30,8 @@ public class GameRulesDeathMatch : GameRulesBase
                 player.Score.Deaths++;
                 player.Score.Points = ComputeScore(player.Score.Deaths,player.Score.Kills);
                 
-                if (player.Character.health.LastDamageSourceClientID != DamageData.NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID)
+                if (player.Character.health.LastDamageSourceClientID != DamageData.NON_PLAYER_DAMAGE_SOURCE_CLIENT_ID &&
+                    player.Character.health.LastDamageSourceClientID != player.ClientID )
                 {
                     PlayerData killer = _players[player.Character.health.LastDamageSourceClientID];
                     killer.Score.Kills++;

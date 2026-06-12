@@ -50,6 +50,8 @@ public class Hand : MonoBehaviour
 
         if (itemInventory.Count < _inventorySize)
         {
+            if (equippedItem != null && !equippedItem.canScrolling && equippedItem.effectIsActivate) DeleteEquippedItem();
+
             itemInventory.Add(item);
             item.Pickup(playerCharacter, this);
             EquipItem(item);

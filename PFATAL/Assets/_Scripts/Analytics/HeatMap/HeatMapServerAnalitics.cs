@@ -51,7 +51,7 @@ public class HeatMapServerAnalitics : MonoBehaviour
 
         OnHeatMapSaved?.Invoke(HeatMapUtility.ConvertMapToByte(mapToSave));
 
-        File.WriteAllBytes(_filePath, HeatMapUtility.ConvertMapToByte(mapToSave));
+        //File.WriteAllBytes(_filePath, HeatMapUtility.ConvertMapToByte(mapToSave));
     }
 
     /*private void Start()

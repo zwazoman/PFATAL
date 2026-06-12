@@ -11,7 +11,7 @@ public class PlacedSound : MonoBehaviour
 
     EventInstance _currentInstance;
 
-    private async void Start()
+    private void Start()
     {
         if (_playOnStart)
             GameManager.Instance.EventOnGameStarted += PlaySound;
@@ -19,6 +19,8 @@ public class PlacedSound : MonoBehaviour
 
     public void PlaySound()
     {
+        print("joue là");
+
         if (!AudioManager.Instance.playSounds)
             return;
 
@@ -38,10 +40,5 @@ public class PlacedSound : MonoBehaviour
     {
         _currentInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         _currentInstance.release();
-    }
-
-    private void OnDestroy()
-    {
-        GameManager.Instance.EventOnGameStarted -= PlaySound;
     }
 }

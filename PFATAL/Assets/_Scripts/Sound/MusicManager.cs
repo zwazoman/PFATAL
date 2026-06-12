@@ -37,7 +37,12 @@ public class MusicManager : MonoBehaviour
 
         if(newScene.name == _menuName)
         {
-            _splashAmbienceInstance.start();
+            if (!_splashAmbienceInstance.isValid())
+            {
+                _splashAmbienceInstance = AudioManager.Instance.CreateInstance(Sounds.SplashAmbience, false, false);
+                _splashAmbienceInstance.start();
+            }
+
             _MenuMusicInstance.start();
         }
 
@@ -47,6 +52,17 @@ public class MusicManager : MonoBehaviour
             _splashAmbienceInstance.stop(STOP_MODE.ALLOWFADEOUT);
 
             AudioManager.Instance.PlayOneShot(Sounds.Music);
+        }
+
+        if(newScene.name == _podiumName)
+        {
+            if (!_splashAmbienceInstance.isValid())
+            {
+                _splashAmbienceInstance = AudioManager.Instance.CreateInstance(Sounds.SplashAmbience, false, false);
+                _splashAmbienceInstance.start();
+            }
+
+            AudioManager.Instance.PlayOneShot(Sounds.PodiumMusic);
         }
 
     }

@@ -15,6 +15,7 @@ public class Proj_WolfTrap : Projectile
     [SerializeField] float _activationDelay = 0.5f;
     [SerializeField] float _dammage = 1f;
     [SerializeField] float _radius = 1;
+    [SerializeField] LayerMask _groundCheckMask;
     [SerializeField] ParticleSystem _particleSmoke;
 
     float timer;
@@ -81,7 +82,7 @@ public class Proj_WolfTrap : Projectile
 
     bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, Vector3.down, 0.1f);
+        return Physics.Raycast(transform.position, Vector3.down, 0.1f, _groundCheckMask );
     }
 
     private void HandlePlayers()

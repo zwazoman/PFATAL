@@ -44,7 +44,7 @@ public class SoundSpacialisationManager : NetworkBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance != null)
+        if (GameManager.Instance != null && _listener == null)
             if (GameManager.Instance.localPlayerCharacter != null)
                 _listener = GameManager.Instance.localPlayerCharacter.listener;
 

@@ -11,16 +11,16 @@ public class PlacedSound : MonoBehaviour
 
     EventInstance _currentInstance;
 
-    private async void Start()
+    private void Start()
     {
-        await Awaitable.NextFrameAsync();
-
         if (_playOnStart)
-            PlaySound();
+            GameManager.Instance.EventOnGameStarted += PlaySound;
     }
 
     public void PlaySound()
     {
+        print("joue là");
+
         if (!AudioManager.Instance.playSounds)
             return;
 

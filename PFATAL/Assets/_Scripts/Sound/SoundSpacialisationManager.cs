@@ -25,9 +25,6 @@ public class SoundSpacialisationManager : NetworkBehaviour
     [SerializeField] LayerMask _reverbZoneLayerMask;
 
     [SerializeField] StudioListener _listener;
-    StudioEventEmitter _emitter;
-
-    bool _gameStarted;
 
     float _timer;
 
@@ -47,8 +44,8 @@ public class SoundSpacialisationManager : NetworkBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance != null)
-            if (GameManager.Instance.localPlayerCharacter.listener != null)
+        if (GameManager.Instance != null && _listener == null)
+            if (GameManager.Instance.localPlayerCharacter != null)
                 _listener = GameManager.Instance.localPlayerCharacter.listener;
 
         if (_listener == null)

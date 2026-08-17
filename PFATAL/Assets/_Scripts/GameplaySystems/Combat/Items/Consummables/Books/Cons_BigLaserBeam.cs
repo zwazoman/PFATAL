@@ -17,6 +17,12 @@ public class Cons_BigLaserBeam : Cons_BookBase
         base.StartUsing();
     }
 
+    public override void UnEquip()
+    {
+        base.UnEquip();
+        playerCharacter.stateMachine.s_Frozen.Unfreeze();
+    }
+
     protected override void ApplySpellEffect()
     {
         playerCharacter.stateMachine.s_Frozen.Unfreeze();

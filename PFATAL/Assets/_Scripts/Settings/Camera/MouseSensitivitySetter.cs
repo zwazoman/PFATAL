@@ -1,26 +1,26 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Settings
 {
     public class MouseSensitivitySetter : MonoBehaviour
     {
         [SerializeField] private CharacterAiming _aiming;
-        [SerializeField] private SettingsValues _values;
+        [SerializeField] Slider _sensSlider;
 
-        public void AimingSet(float sensitivity)
+        private void Start()
         {
-            _values.SensitivityMouse = sensitivity;
-
-            if (_aiming == null) return;
-            _aiming.Sensitivity = sensitivity;
+            _sensSlider.onValueChanged.AddListener(SetSens);
+            _sensSlider.value = PlayerPrefs.GetFloat("Sensitivity", 17.5f);
         }
 
-        public void ControllerAImingSet(float sensitivity)
+        void SetSens(float sens)
         {
-            _values.SensitivityController = sensitivity;
+            PlayerPrefs.SetFloat("Sensitivity", sens);
 
             if (_aiming == null) return;
-            _aiming.ControllerSensitivity = sensitivity;
+            _aiming.Sensitivity = sens;
+            _aiming.ControllerSensitivity = sens; ;
         }
     }
 }

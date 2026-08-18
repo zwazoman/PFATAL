@@ -10,7 +10,14 @@ namespace Settings
 {
     public class Rebinds : MonoBehaviour
     {
-        [SerializeField] private SettingsValues _values;
+        [Header("References")]
+        [SerializeField] private TMP_Text _textMoveUp;
+        [SerializeField] private TMP_Text _textMoveDown;
+        [SerializeField] private TMP_Text _textMoveLeft;
+        [SerializeField] private TMP_Text _textMoveRight;
+        [SerializeField] private TMP_Text _textJump;
+        [SerializeField] private TMP_Text _textInteract;
+        [SerializeField] private TMP_Text _textDrop;
 
         [Header("Rebinds")]
         public InputActionAsset InputActions;
@@ -41,6 +48,17 @@ namespace Settings
         {
             //_moveAction = InputActions.FindAction("Move");
             _moveAction = InputReference;
+        }
+
+        private void Start()
+        {
+            _textMoveUp.text = PlayerPrefs.GetString("MoveUp", "Z");
+            _textMoveDown.text = PlayerPrefs.GetString("MoveDown","S");
+            _textMoveLeft.text = PlayerPrefs.GetString("MoveLeft","Q");
+            _textMoveRight.text = PlayerPrefs.GetString("MoveRight", "D");
+            _textJump.text = PlayerPrefs.GetString("Jump","ESPACE");
+            _textInteract.text = PlayerPrefs.GetString("Interact", "E");
+            _textDrop.text = PlayerPrefs.GetString("Drop", "A");
         }
 
         public void OpenClose(InputAction.CallbackContext context)
@@ -196,16 +214,16 @@ namespace Settings
                 switch (_bindingIndex)
                 {
                     case 2:
-                        _values.MoveUp = newBinding;
+                        PlayerPrefs.SetString("MoveUp",newBinding);
                         break;
                     case 4:
-                        _values.MoveDown = newBinding;
+                        PlayerPrefs.SetString("MoveDown", newBinding);
                         break;
                     case 6:
-                        _values.MoveLeft = newBinding;
+                        PlayerPrefs.SetString("MoveLeft", newBinding);
                         break;
                     case 8:
-                        _values.MoveRight = newBinding;
+                        PlayerPrefs.SetString("MoveRight", newBinding);
                         break;
                     default:
                         Debug.Log("That's not correct");
@@ -214,15 +232,15 @@ namespace Settings
             }
             else if (action.name == "Jump")
             {
-                _values.Jump = newBinding;
+                PlayerPrefs.SetString("Jump", newBinding); ;
             }
             else if (action.name == "Interact")
             {
-                _values.Interact = newBinding;
+                PlayerPrefs.SetString("Interact", newBinding); ;
             }
             else if (action.name == "Drop")
             {
-                _values.Drop = newBinding;
+                PlayerPrefs.SetString("Drop", newBinding); ;
             }
 
             InputActions.FindActionMap("UI").Enable();

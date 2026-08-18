@@ -12,10 +12,22 @@ PrefabInstance:
       propertyPath: _values
       value: 
       objectReference: {fileID: 11400000, guid: 62e0d974cd3d80449b2219c5f1312987, type: 2}
+    - target: {fileID: 671348991751211901, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: _sensSlider
+      value: 
+      objectReference: {fileID: 5252955978997436914}
     - target: {fileID: 738730705601827726, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
       propertyPath: _values
       value: 
       objectReference: {fileID: 11400000, guid: 62e0d974cd3d80449b2219c5f1312987, type: 2}
+    - target: {fileID: 738730705601827726, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: _fovSlider
+      value: 
+      objectReference: {fileID: 5048153019082206036}
+    - target: {fileID: 1647905190711044919, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2225565687168625288, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
       propertyPath: _eventSystem
       value: 
@@ -23,6 +35,38 @@ PrefabInstance:
     - target: {fileID: 3674458171241821603, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
       propertyPath: _system
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3674458171241821603, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: _textDrop
+      value: 
+      objectReference: {fileID: 615620493261567702}
+    - target: {fileID: 3674458171241821603, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: _textJump
+      value: 
+      objectReference: {fileID: 7058129367880291220}
+    - target: {fileID: 3674458171241821603, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: _textMoveUp
+      value: 
+      objectReference: {fileID: 4677601112890035378}
+    - target: {fileID: 3674458171241821603, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: _textInteract
+      value: 
+      objectReference: {fileID: 7467558559817730513}
+    - target: {fileID: 3674458171241821603, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: _textMoveDown
+      value: 
+      objectReference: {fileID: 8687356283802523795}
+    - target: {fileID: 3674458171241821603, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: _textMoveLeft
+      value: 
+      objectReference: {fileID: 324358348441236314}
+    - target: {fileID: 3674458171241821603, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: _textMoveRight
+      value: 
+      objectReference: {fileID: 4337651120548216221}
+    - target: {fileID: 3858292525172570459, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4132391429732839091, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -67,6 +111,10 @@ PrefabInstance:
     - target: {fileID: 4132391429732839091, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: View, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279940089304610467, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4636738970435156865, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
       propertyPath: m_LocalPosition.x
@@ -116,18 +164,20 @@ PrefabInstance:
       propertyPath: _values
       value: 
       objectReference: {fileID: 11400000, guid: 62e0d974cd3d80449b2219c5f1312987, type: 2}
+    - target: {fileID: 5186011140646888032, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7424149340700905238, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1022353811706645741, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7588496723296663936, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4794604278062135931, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7335233961262628428}
     - targetCorrespondingSourceObject: {fileID: 4279940089304610467, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8168204288334353019}
@@ -154,58 +204,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &705512017986720816 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8038536358655716597, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
-  m_PrefabInstance: {fileID: 7369267001298155717}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Toggle
---- !u!114 &1861516639477822377 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9192280933903862636, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
-  m_PrefabInstance: {fileID: 7369267001298155717}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_Dropdown
---- !u!1 &2651844453778866878 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4794604278062135931, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
-  m_PrefabInstance: {fileID: 7369267001298155717}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7335233961262628428
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2651844453778866878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e5b613c2a9eae94ab4cf052872497c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Setting
-  _values: {fileID: 11400000, guid: 62e0d974cd3d80449b2219c5f1312987, type: 2}
-  _sliderFOV: {fileID: 5048153019082206036}
-  _sliderSensitivity: {fileID: 5252955978997436914}
-  _textMoveUp: {fileID: 4677601112890035378}
-  _textMoveDown: {fileID: 8687356283802523795}
-  _textMoveLeft: {fileID: 324358348441236314}
-  _textMoveRight: {fileID: 4337651120548216221}
-  _textJump: {fileID: 7058129367880291220}
-  _textInteract: {fileID: 7467558559817730513}
-  _textDrop: {fileID: 615620493261567702}
-  _sliderGamma: {fileID: 7981386158826091316}
-  _dropdownFrames: {fileID: 1861516639477822377}
-  _toggleVSYnc: {fileID: 705512017986720816}
 --- !u!114 &4337651120548216221 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6518551431501022552, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
@@ -289,17 +287,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &7981386158826091316 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 614584289554467825, guid: d4f03721798a3884ba9b3563114bd521, type: 3}
-  m_PrefabInstance: {fileID: 7369267001298155717}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!114 &8687356283802523795 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2218961559398178902, guid: d4f03721798a3884ba9b3563114bd521, type: 3}

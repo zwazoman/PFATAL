@@ -3852,7 +3852,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b5db1b3097da4b40a5d9052f17a8b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FramesLimiter
-  _values: {fileID: 11400000, guid: 62e0d974cd3d80449b2219c5f1312987, type: 2}
   _frameDropdown: {fileID: 9192280933903862636}
   _framesText: {fileID: 5856996417865326055}
   _vsyncToggle: {fileID: 8038536358655716597}
@@ -3882,8 +3881,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e77b0bdbcda44934ba9a5816b1fc2e43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FieldOfView
-  _values: {fileID: 11400000, guid: 62e0d974cd3d80449b2219c5f1312987, type: 2}
   _camera: {fileID: 0}
+  _fovSlider: {fileID: 2326743795822465937}
 --- !u!114 &2589687299551511296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8082,7 +8081,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4636738970435156865}
-  - component: {fileID: 1022353811706645741}
   m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
@@ -8112,34 +8110,6 @@ Transform:
   - {fileID: 7156559887465872100}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1022353811706645741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4794604278062135931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e5b613c2a9eae94ab4cf052872497c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Setting
-  _values: {fileID: 11400000, guid: 62e0d974cd3d80449b2219c5f1312987, type: 2}
-  _sliderFOV: {fileID: 2326743795822465937}
-  _sliderSensitivity: {fileID: 3360488972803008823}
-  _textMoveUp: {fileID: 2787385289044800631}
-  _textMoveDown: {fileID: 2218961559398178902}
-  _textMoveLeft: {fileID: 7117023833833851807}
-  _textMoveRight: {fileID: 6518551431501022552}
-  _textJump: {fileID: 556025266168900433}
-  _textInteract: {fileID: 137075810400956692}
-  _textDrop: {fileID: 7984876472557637139}
-  _dropdownFrames: {fileID: 9192280933903862636}
-  _toggleVSYnc: {fileID: 8038536358655716597}
-  _setFOV: {fileID: 738730705601827726}
-  _setSensitivity: {fileID: 671348991751211901}
-  _setRebinds: {fileID: 3674458171241821603}
-  _setFrames: {fileID: 4941853801382960494}
 --- !u!1 &4911853815194146390
 GameObject:
   m_ObjectHideFlags: 0
@@ -14042,7 +14012,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87e57e9790cc590449be2626f58ab4c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rebinds
-  _values: {fileID: 11400000, guid: 62e0d974cd3d80449b2219c5f1312987, type: 2}
+  _textMoveUp: {fileID: 2787385289044800631}
+  _textMoveDown: {fileID: 2218961559398178902}
+  _textMoveLeft: {fileID: 7117023833833851807}
+  _textMoveRight: {fileID: 6518551431501022552}
+  _textJump: {fileID: 556025266168900433}
+  _textInteract: {fileID: 137075810400956692}
+  _textDrop: {fileID: 7984876472557637139}
   InputActions: {fileID: -944628639613478452, guid: 9f89cc034e37652488af38161b53ba6c, type: 3}
   InputReference: {fileID: -1680190386980627800, guid: 9f89cc034e37652488af38161b53ba6c, type: 3}
   _system: {fileID: 7341542989217189750}
@@ -14829,7 +14805,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ee35ebfdaf5a2448c0421a55c3ddfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioSettings
-  _values: {fileID: 11400000, guid: 62e0d974cd3d80449b2219c5f1312987, type: 2}
   _masterSlider: {fileID: 5910912784740154105}
   _musicSlider: {fileID: 4072685814973568082}
   _sfxSlider: {fileID: 8430637406737599766}
@@ -16602,7 +16577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Settings.MouseSensitivitySetter
   _aiming: {fileID: 0}
-  _values: {fileID: 11400000, guid: 62e0d974cd3d80449b2219c5f1312987, type: 2}
+  _sensSlider: {fileID: 3360488972803008823}
 --- !u!1 &8994795824856221502
 GameObject:
   m_ObjectHideFlags: 0

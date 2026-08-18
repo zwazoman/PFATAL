@@ -6,7 +6,9 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class AudioSettings : MonoBehaviour
 {
-    [SerializeField] SettingsValues _values;
+    string _masterVolumePref = "MasterVolume";
+    string _musicVolumePref = "MusicVolume";
+    string _sfxVolumePref = "SFXVolume";
 
     [Header("Sliders")]
     [SerializeField] Slider _masterSlider;
@@ -26,21 +28,18 @@ public class AudioSettings : MonoBehaviour
         _musicBus = RuntimeManager.GetBus("bus:/Music");
         _masterBus = RuntimeManager.GetBus("bus:/");
 
-        SetBusVolume(_masterBus, _values.MasterVolume);
-        SetBusVolume(_musicBus, _values.MusicVolume);
-        SetBusVolume(_sfxBus, _values.SfxVolume);
+        _masterSlider.onValueChanged.AddListener((float value) => SetBusVolume(_masterBus, _masterVolumePref, value));
+        _musicSlider.onValueChanged.AddListener((float value) => SetBusVolume(_musicBus, _musicVolumePref, value));
+        _sfxSlider.onValueChanged.AddListener((float value) => SetBusVolume(_sfxBus, _sfxVolumePref, value));
 
-        _masterSlider.value = _values.MasterVolume;
-        _musicSlider.value = _values.MusicVolume;
-        _sfxSlider.value = _values.SfxVolume;
-
-        _masterSlider.onValueChanged.AddListener((float value) => SetBusVolume(_masterBus,value));
-        _musicSlider.onValueChanged.AddListener((float value) => SetBusVolume(_musicBus,value));
-        _sfxSlider.onValueChanged.AddListener((float value) => SetBusVolume(_sfxBus,value));
+        _masterSlider.value = PlayerPrefs.GetFloat(_masterVolumePref, 1);
+        _musicSlider.value = PlayerPrefs.GetFloat(_musicVolumePref, 1);
+        _sfxSlider.value = PlayerPrefs.GetFloat(_sfxVolumePref, 1);
     }
 
-    void SetBusVolume(Bus bus, float newValue)
+    void SetBusVolume(Bus bus, string prefName, float newValue)
     {
         bus.setVolume(newValue);
+        PlayerPrefs.SetFloat(prefName, newValue);
     }
 }

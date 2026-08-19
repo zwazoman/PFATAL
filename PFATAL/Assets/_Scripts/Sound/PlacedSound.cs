@@ -19,8 +19,6 @@ public class PlacedSound : MonoBehaviour
 
     public void PlaySound()
     {
-        print("joue là");
-
         if (!AudioManager.Instance.playSounds)
             return;
 

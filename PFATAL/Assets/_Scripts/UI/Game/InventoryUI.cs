@@ -13,10 +13,13 @@ public class InventoryUI : MonoBehaviour
 
     Hand leftHand;
 
+    Tween punchTween = null;
+    bool fading;
+
     private void Start()
     {
-        print("oui");
-        ClearItems();
+        _unequippedItemIcon.enabled = false;
+        _equippedItemIcon.enabled = false;
 
         leftHand = _hud.playerCharacter.playerHands.leftHand;
 
@@ -28,13 +31,25 @@ public class InventoryUI : MonoBehaviour
 
     void UpdateCurrentEquipped(Item newItem)
     {
-        print("faut afficher là");
+        fading = false;
+
+        Color c = _equippedItemIcon.color;
+        c.a = 1;
+        _equippedItemIcon.color = c;
+
+        _equippedItemIcon.transform.localScale = Vector3.one;
+
+        _equippedItemIcon.enabled = true;
         _equippedItemIcon.sprite = newItem.uiSprite;
-        //_equippedItemIcon.transform.DOPunchScale(new Vector3(2, 2, 1), .4f).SetEase(Ease.InCubic) ;
+
+        punchTween.Kill();
+        punchTween = _equippedItemIcon.transform.DOPunchScale(new Vector3(.8f, .8f, 0), .6f, 2)
+            .SetEase(Ease.OutCubic);     
     }
 
     void UpdateCurrentUnequipped(Item oldItem)
     {
+        _unequippedItemIcon.enabled = true;
         _unequippedItemIcon.sprite = oldItem.uiSprite;
     }
 
@@ -43,9 +58,25 @@ public class InventoryUI : MonoBehaviour
         if (leftHand == null || leftHand.itemInventory == null)
             return;
 
-        if (leftHand.itemInventory.Count != 1)
-            _unequippedItemIcon.sprite = null;
+        _unequippedItemIcon.enabled = false;
 
-        _equippedItemIcon.sprite = null;
+        if (leftHand.itemInventory.Count == 0)
+        {
+            fading = true;
+            //_equippedItemIcon.DOFade(0, .2f).OnComplete(() => _equippedItemIcon.enabled = false);
+            Tween fadeTween = null;
+
+            fadeTween = _equippedItemIcon.DOFade(0, .4f)
+                .SetEase(Ease.InCubic)
+                .OnUpdate(() =>
+            {
+                if (!fading)
+                    fadeTween.Kill();
+            })
+                .OnComplete(() =>
+                {
+                    _equippedItemIcon.enabled = false;
+                });
+        }
     }
 }

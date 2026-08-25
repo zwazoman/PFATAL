@@ -14,6 +14,7 @@ public class Hand : MonoBehaviour
     public event Action OnDeleteItem;
     public event Action<Item> OnEquipItem;
     public event Action<Item> OnUnequipItem;
+    public event Action<Item> OnUnEquipItemNoDeletion;
     public event Action<Crossbow> OnEquipCrossbow;
     public event Action<Tomahawk> OnEquipTomahawk;
     public event Action<Sword> OnEquipHammer;
@@ -89,7 +90,6 @@ public class Hand : MonoBehaviour
         
         if (equippedItem != null)
         {
-            print(equippedItem.name);
             UnEquipItem();
         }
         
@@ -138,9 +138,12 @@ public class Hand : MonoBehaviour
     /// <summary>
     /// retire l'item actuellement port� de la main et update le visuel pour les autres joueurs
     /// </summary>
-    public void UnEquipItem()
+    public void UnEquipItem(bool isDeleted = false)
     {
         print("unequip item " + equippedItem.gameObject.name);
+
+        if (!isDeleted)
+            OnUnEquipItemNoDeletion?.Invoke(equippedItem);
 
         OnUnequipItem?.Invoke(equippedItem);
 
@@ -160,11 +163,11 @@ public class Hand : MonoBehaviour
         if (itemInventory.Count > 1)
             ScrollEquippedItem(true);
         else
-            UnEquipItem();
-
-        OnDeleteItem?.Invoke();
+            UnEquipItem(true);
 
         itemInventory.Remove(oldEquippedOtem);
+
+        OnDeleteItem?.Invoke();
     }
 
     public void DeleteEquippedItem()
